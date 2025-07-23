@@ -1,0 +1,30 @@
+{
+  "name": "spiritualpressure",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 9527 --open",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.10.0",
+    "chart.js": "^4.5.0",
+    "dompurify": "^3.2.6",
+    "echarts": "^5.6.0",
+    "element-plus": "^2.10.2",
+    "lucide-vue-next": "^0.525.0",
+    "mapbox-gl": "^3.12.0",
+    "marked": "^15.0.12",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.3",
+    "vite": "^6.3.5"
+  }
+}

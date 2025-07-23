@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #6c5ce7;
+  --secondary: #a29bfe;
+  --success: #00b894;
+  --danger: #d63031;
+  --warning: #fdcb6e;
+  --info: #0984e3;
+  --dark: #2d3436;
+  --light: #f5f6fa;
+  --white: #ffffff;
+  --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--dark);
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.dashboard-card-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 3px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, var(--white) 0%, var(--light) 100%);
+  padding: 1rem;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.glow {
+  text-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
+}
+
+.display-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+}
+
+.display-container-gap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}

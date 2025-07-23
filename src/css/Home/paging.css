@@ -1,0 +1,113 @@
+.paging-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #606266;
+}
+
+.paging-info {
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.paging-total {
+  font-weight: bold;
+  color: #409EFF;
+}
+
+.paging-size-selector {
+  margin-right: 15px;
+  font-size: 14px;
+}
+
+.paging-size-select {
+  width: 80px;
+  height: 32px;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  padding: 0 10px;
+  margin-left: 10px;
+  outline: none;
+  color: #606266;
+  transition: border-color 0.3s;
+}
+
+.paging-size-select:focus {
+  border-color: #409EFF;
+}
+
+.paging-pages {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0 15px;
+}
+
+.paging-item {
+  min-width: 32px;
+  height: 32px;
+  line-height: 32px;
+  margin: 0 4px;
+  text-align: center;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.paging-item:hover:not(.disabled):not(.active):not(.paging-ellipsis) {
+  color: #409EFF;
+  border-color: #409EFF;
+}
+
+.paging-item.active {
+  background-color: #409EFF;
+  color: white;
+  border-color: #409EFF;
+  font-weight: bold;
+}
+
+.paging-item.disabled {
+  color: #C0C4CC;
+  cursor: not-allowed;
+  background-color: #F5F7FA;
+}
+
+.paging-prev,
+.paging-next {
+  padding: 0 8px;
+}
+
+.paging-icon {
+  font-style: normal;
+  font-weight: bold;
+}
+
+.paging-ellipsis {
+  border: none;
+  cursor: default;
+}
+
+.paging-jumper {
+  margin-left: 15px;
+  font-size: 14px;
+}
+
+.paging-jumper-input {
+  width: 50px;
+  height: 32px;
+  border: 1px solid #DCDFE6;
+  border-radius: 4px;
+  text-align: center;
+  margin: 0 8px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.paging-jumper-input:focus {
+  border-color: #409EFF;
+}

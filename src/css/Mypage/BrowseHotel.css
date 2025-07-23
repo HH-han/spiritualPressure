@@ -1,0 +1,622 @@
+.container-BH {
+  animation: fadeInUp 1s ease-out;
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card_container_BrowseAttractions {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 50px;
+  margin-left: 20px;
+  flex-wrap: wrap;
+}
+
+.card_wrapper {
+  flex: 1 1 20%;
+  /* 每个卡片占据20%的宽度，一行最多显示四个 */
+}
+
+.fileinputstyle_jd {
+  display: none;
+  /* 隐藏原始file输入 */
+}
+
+.custom-file-upload_jd {
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  background-color: #ffffff;
+  /* 自定义背景色 */
+  color: rgb(0, 0, 0);
+  /* 文本颜色 */
+  border-radius: 10px;
+  /* 圆角 */
+  transition: background-color 0.3s ease;
+  /* 过渡效果 */
+}
+
+.ProgramLogic {
+  padding: 10px 0px 10px 0px;
+  display: flex;
+  /* 使用Flexbox布局 */
+  flex-direction: column;
+  /* 垂直排列 */
+  justify-content: center;
+  /* 垂直居中对齐 */
+  align-items: center;
+  /* 水平居中对齐 */
+  gap: 20px;
+  background-color: #f5f5f5;
+  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+
+}
+
+.ProgramLogic button {
+  width: 100px;
+  background-color: #4A9DEC;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0px 10px 0px 0px;
+
+}
+
+.ProgramLogic button:hover {
+  background-color: #0071e2;
+}
+
+.add_input_center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: antiquewhite;
+  width: 400px;
+  height: 250px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 0px 7px rgba(46, 154, 255, 0.445);
+  gap: 20px;
+  z-index: 1000;
+}
+
+.add_input_center input {
+  width: 150px;
+  height: 30px;
+  border: 0;
+  border-radius: 10px;
+  outline: none;
+  text-align: center;
+
+}
+
+.add_input_center img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #4A9DEC;
+  margin: 0px 10px 0px 0px;
+}
+
+.search_background {
+  position: relative;
+  height: 500px;
+  color: rgb(0, 0, 0);
+}
+
+.search_background img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+
+.search_flex {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px;
+  color: white;
+  transition: all 0.5s;
+  border-radius: 15px;
+}
+
+.search_input_Browse {
+  width: 250px;
+  height: 45px;
+  border-radius: 25px;
+  border: 3px solid rgb(29, 179, 239);
+  padding-left: 10px;
+  transition: all 0.5s;
+
+}
+
+.search_input_Browse:hover {
+  border: 2px solid #4A9DEC;
+  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+  background-color: white;
+}
+
+/* From Uiverse.io by felipesntr */
+.button_background_BrowseAttractions {
+  border: 2px solid #dfdfdf;
+  background-color: #24b4fb;
+  border-radius: 0.9em;
+  cursor: pointer;
+  width: 100px;
+  height: 43px;
+  transition: all ease-in-out 0.2s;
+}
+
+.button_background span {
+  color: #fff;
+  font-weight: 600;
+}
+
+.button_background:hover {
+  background-color: #0071e2;
+}
+
+/* From Uiverse.io by Javierrocadev */
+.card_BrowseAttractions {
+  width: 250px;
+  height: 200px;
+  border-radius: 15px;
+  background: rgba(0, 200, 255, 0.232);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.cardBrowseAttractionsIMG {
+  width: 100%;
+  height: 168px;
+}
+
+.cardBrowseAttractionsIMG img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px 15px 0px 0px;
+}
+
+.card_BrowseAttractions::before {
+  content: "";
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  top: -40%;
+  left: -20%;
+  border-radius: 50%;
+  border: 35px solid rgba(255, 255, 255, 0.102);
+  transition: all .8s ease;
+  filter: blur(.5rem);
+}
+
+.text_BrowseAttractions {
+  flex-grow: 1;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  color: aliceblue;
+  font-weight: 900;
+  font-size: 1.2em;
+  z-index: 10;
+  position: absolute;
+}
+
+.subtitle_BrowseAttractions {
+  font-size: .6em;
+  font-weight: 300;
+  color: rgba(240, 248, 255, 0.691);
+}
+
+.icons_BrowseAttractions {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  width: 250px;
+  border-radius: 0px 0px 15px 15px;
+  overflow: hidden;
+}
+
+.btn_BrowseAttractions {
+  border: none;
+  width: 84px;
+  height: 35px;
+  background-color: rgba(247, 234, 234, 0.589);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg-icon_BrowseAttractions {
+  width: 25px;
+  height: 25px;
+  stroke: rgb(38, 59, 126);
+}
+
+.btn_BrowseAttractions:hover {
+  background-color: rgb(247, 234, 234);
+}
+
+.card_BrowseAttractions:hover::before {
+  width: 140px;
+  height: 140px;
+  top: -30%;
+  left: 50%;
+  filter: blur(0rem);
+}
+
+@media (max-width: 768px) {
+  .add_input_center {
+    flex-direction: column;
+  }
+
+  .ProgramLogic {
+    display: none;
+  }
+
+  .card_container_BrowseAttractions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button_background_BrowseAttractions {
+    display: none;
+  }
+
+
+
+}
+
+/* cards样式 */
+.action-H1-BH-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.action-H1-BH-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, #0b90e8, #f719ce);
+  border-radius: 2px;
+}
+
+.action-buttons-BH {
+  margin: 30px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.action-button-BH {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-modal-BH {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container-BH {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.form-group-BH {
+  margin-bottom: 15px;
+}
+
+.form-group-BH label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group-BH input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.image-preview-BH {
+  max-width: 100%;
+  margin-top: 10px;
+}
+
+.form-actions-BH {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.save-button-BH {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-button-BH {
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.attractions-section-BH {
+  margin: 30px;
+
+}
+
+.card-container-BH {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card-BH {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.card-BH:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-image-BH img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.card-content-BH {
+  padding: 15px;
+  flex: 1;
+}
+
+.card-content-BH h3 {
+  margin: 0 0 10px;
+}
+
+.card-content-BH p {
+  margin: 0;
+  color: #666;
+}
+
+.card-actions-xp {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 15px 0px 15px;
+}
+
+.card-actions-xp p {
+  color: #fa1515;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.card-actions-BH {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+
+.card-actions-BH span {
+  font-size: 20px;
+  color: #fa1515;
+  cursor: pointer;
+}
+
+.edit-button-BH {
+  padding: 5px 10px;
+  background-color: #ffc107;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.details-button-GM {
+  padding: 5px 10px;
+  background-color: #63d79b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pay-button-GM {
+  display: flex;
+  justify-items: right;
+  padding: 5px 10px;
+  background-color: #35b0dc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 价格 */
+.price-text {
+  color: #ff5722;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* 自定模态框样式 */
+.custom-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+
+}
+
+.custom-dialog {
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  max-width: 90%;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  animation: scaleUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-button:hover {
+  color: #333;
+}
+
+.dialog-content {
+  padding: 16px;
+}
+
+/* 详情内容样式 */
+.detail-content-BH {
+  display: flex;
+  gap: 20px;
+}
+
+.detail-image-BH {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.detail-info-BH {
+  flex: 1;
+}
+
+.detail-info-BH h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #eee;
+  margin: 12px 0;
+}
+
+.description-BH {
+  line-height: 1.6;
+  color: #444;
+}

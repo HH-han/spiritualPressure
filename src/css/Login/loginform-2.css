@@ -1,0 +1,111 @@
+.context-loginname {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.cornerCut {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+}
+
+.cornerCut img {
+    width: 100%;
+    height: 100%;
+}
+
+.cornerCut:hover {
+    transform: scale(0.9);
+}
+
+.adminlogin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+}
+
+.adminlogin button {
+    border: none;
+    border-radius: 20px;
+    background-color: rgb(122, 217, 235);
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.loginform-2 {
+    width: 450px;
+    height: 500px;
+
+}
+
+.loginform-2-img {
+    width: 450px;
+    height: 500px;
+}
+
+.loginform-2-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px 0 0 20px;
+}
+
+.phone {
+    text-decoration: none;
+    color: brown;
+    font-size: 20px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.newuser {
+    text-decoration: none;
+    color: deepskyblue;
+    font-size: 20px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.Newpage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: absolute;
+    /* 设置为绝对定位 */
+    top: 85%;
+    /* 距离图片顶部 10px */
+    left: 10%;
+    background-color: rgba(208, 208, 208, 0.8);
+    /* 半透明白色背景 */
+    padding: 10px;
+    /* 内边距 */
+    border-radius: 10px;
+    /* 圆角 */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* 阴影 */
+    z-index: 10;
+    /* 确保在图片上方 */
+}
+
+@media (max-width: 768px) {
+    .loginform-2 {
+        display: none;
+    }
+}
