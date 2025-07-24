@@ -231,72 +231,71 @@ const initGauges = () => {
         updateNetworkGauge()
     })
 }
-// 更新CPU表盘
 const updateCpuGauge = () => {
     const option = {
         series: [{
             type: 'gauge',
-            center: ['50%', '60%'],
-            startAngle: 180,
-            endAngle: 0,
+            center: ['50%', '50%'],
+            startAngle: 90,
+            endAngle: -270,
             min: 0,
             max: 100,
-            splitNumber: 10,
-            radius: '100%',
-            axisLine: {
-                lineStyle: {
-                    width: 20,
-                    color: [
-                        [0.3, '#67e0e3'],
-                        [0.7, '#37a2da'],
-                        [1, '#fd666d']
-                    ]
+            radius: '90%',
+            pointer: {
+                show: false
+            },
+            progress: {
+                show: true,
+                overlap: false,
+                roundCap: true,
+                clip: false,
+                itemStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0,
+                            color: '#67e0e3'
+                        }, {
+                            offset: 0.7,
+                            color: '#37a2da'
+                        }, {
+                            offset: 1,
+                            color: '#fd666d'
+                        }]
+                    }
                 }
             },
-            pointer: {
-                icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-                length: '12%',
-                width: 16,
-                offsetCenter: [0, '-60%'],
-                itemStyle: {
-                    color: 'auto'
+            axisLine: {
+                lineStyle: {
+                    width: 12,
+                    color: [[1, 'rgba(200, 200, 200, 0.1)']]
                 }
             },
             axisTick: {
-                length: 8,
-                lineStyle: {
-                    color: 'auto',
-                    width: 1
-                }
+                show: false
             },
             splitLine: {
-                length: 12,
-                lineStyle: {
-                    color: 'auto',
-                    width: 2
-                }
+                show: false
             },
             axisLabel: {
-                color: '#666',
-                fontSize: 12,
-                distance: -30,
-                formatter: function (value) {
-                    if (value === 100) {
-                        return '100%';
-                    }
-                    return value;
-                }
-            },
-            title: {
-                offsetCenter: [0, '-20%'],
-                fontSize: 14
+                show: false
             },
             detail: {
-                fontSize: 24,
-                offsetCenter: [0, '0%'],
                 valueAnimation: true,
+                fontSize: 28,
+                fontWeight: 'bolder',
+                offsetCenter: [0, 0],
                 formatter: '{value}%',
-                color: 'inherit'
+                color: '#333'
+            },
+            title: {
+                fontSize: 14,
+                offsetCenter: [0, '75%'],
+                color: '#666'
             },
             data: [{
                 value: cpuUsage.value,
@@ -307,75 +306,80 @@ const updateCpuGauge = () => {
     cpuGaugeInstance.setOption(option)
 }
 
-// 更新网络表盘
+// 更新网络表盘 - 改为360度环形设计
 const updateNetworkGauge = () => {
-    const maxSpeed = Math.max(100, networkSpeed.value * 1.5) // 动态调整最大值
+    const maxValue = Math.max(100, Math.ceil(networkSpeed.value / 1024 * 1.2))
+    const currentValue = Math.min(networkSpeed.value / 1024, maxValue)
+    
     const option = {
         series: [{
             type: 'gauge',
-            center: ['50%', '60%'],
-            startAngle: 180,
-            endAngle: 0,
+            center: ['50%', '50%'],
+            startAngle: 90,
+            endAngle: -270,
             min: 0,
-            max: maxSpeed,
-            splitNumber: 5,
-            radius: '100%',
-            axisLine: {
-                lineStyle: {
-                    width: 20,
-                    color: [
-                        [0.3, '#a0d911'],
-                        [0.7, '#5b8c00'],
-                        [1, '#fa541c']
-                    ]
+            max: maxValue,
+            radius: '90%',
+            pointer: {
+                show: false
+            },
+            progress: {
+                show: true,
+                overlap: false,
+                roundCap: true,
+                clip: false,
+                itemStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0,
+                            color: '#a0d911'
+                        }, {
+                            offset: 0.7,
+                            color: '#5b8c00'
+                        }, {
+                            offset: 1,
+                            color: '#fa541c'
+                        }]
+                    }
                 }
             },
-            pointer: {
-                icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-                length: '12%',
-                width: 16,
-                offsetCenter: [0, '-60%'],
-                itemStyle: {
-                    color: 'auto'
+            axisLine: {
+                lineStyle: {
+                    width: 12,
+                    color: [[1, 'rgba(200, 200, 200, 0.1)']]
                 }
             },
             axisTick: {
-                length: 8,
-                lineStyle: {
-                    color: 'auto',
-                    width: 1
-                }
+                show: false
             },
             splitLine: {
-                length: 12,
-                lineStyle: {
-                    color: 'auto',
-                    width: 2
-                }
+                show: false
             },
             axisLabel: {
-                color: '#666',
-                fontSize: 12,
-                distance: -30,
-                formatter: function (value) {
-                    return formatBytes(value * 1024, 0).replace(/[A-Za-z]+/, '')
-                }
-            },
-            title: {
-                offsetCenter: [0, '-20%'],
-                fontSize: 14
+                show: false
             },
             detail: {
-                fontSize: 18,
-                offsetCenter: [0, '0%'],
                 valueAnimation: true,
-                formatter: function (value) {
+                fontSize: 22,
+                fontWeight: 'bolder',
+                offsetCenter: [0, 0],
+                formatter: function(value) {
                     return formatBytes(value * 1024) + '/s'
                 },
-                color: 'inherit'
+                color: '#333'
+            },
+            title: {
+                fontSize: 14,
+                offsetCenter: [0, '75%'],
+                color: '#666'
             },
             data: [{
-                value: networkSpeed.value / 1024,
+                value: currentValue,
                 name: '网络速度'
             }]
         }]
@@ -839,27 +843,79 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.gauge-card {
-    grid-column: span 1;
-}
-
 .gauge-container {
-    padding: 10px;
+    padding: 15px;
     height: 220px;
+    position: relative;
 }
 
 .gauge {
     width: 100%;
     height: 100%;
+    transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
-/* 调整仪表盘在移动端的显示 */
+.gauge:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+}
+
+/* 卡片样式增强 */
+.gauge-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+    border: none;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.gauge-card:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.gauge-card .card-header {
+    background: linear-gradient(to right, rgba(74, 144, 226, 0.1), transparent);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    padding: 16px 20px;
+}
+
+.gauge-card .card-header h2 {
+    position: relative;
+    padding-left: 16px;
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.gauge-card .card-header h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 18px;
+    background: linear-gradient(to bottom, #4facfe, #00f2fe);
+    border-radius: 4px;
+}
+
+/* 响应式调整 */
 @media (max-width: 768px) {
     .gauge-container {
         height: 180px;
+        padding: 10px;
+    }
+    
+    .gauge-card .card-header {
+        padding: 12px 15px;
+    }
+    
+    .gauge-card .card-header h2 {
+        font-size: 15px;
     }
 }
-
 .monitor-container {
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
     background: rgba(255, 255, 255, 0.05);
@@ -1091,4 +1147,5 @@ onBeforeUnmount(() => {
         gap: 10px;
     }
 }
+
 </style>
