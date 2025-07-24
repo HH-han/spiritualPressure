@@ -671,7 +671,9 @@
   position: relative;
   flex-direction: column;
 }
-
+.data-management__content::-webkit-scrollbar {
+  display: none;
+}
 .data-management__content::-webkit-scrollbar {
   width: 0;
   height: 0;

@@ -98,8 +98,8 @@
                 <div class="process-list">
                     <div v-for="(proc, index) in topProcesses" :key="index" class="process-item">
                         <span class="process-name">{{ proc.name }}</span>
-                        <span class="process-cpu">{{ proc.cpu }}%</span>
-                        <span class="process-memory">{{ formatBytes(proc.memory) }}</span>
+                        <span class="process-cpu">{{ (proc.cpuUsage/100).toFixed(2) }}%</span>
+                        <span class="process-memory">{{ formatBytes(proc.memoryUsage) }}</span>
                     </div>
                 </div>
             </div>
@@ -256,22 +256,16 @@ const updateCpuGauge = () => {
                         y: 0,
                         x2: 0,
                         y2: 1,
-                        colorStops: [{
-                            offset: 0,
-                            color: '#67e0e3'
-                        }, {
+                        colorStops: [ {
                             offset: 0.7,
                             color: '#37a2da'
-                        }, {
-                            offset: 1,
-                            color: '#fd666d'
                         }]
                     }
                 }
             },
             axisLine: {
                 lineStyle: {
-                    width: 12,
+                    width: 20,
                     color: [[1, 'rgba(200, 200, 200, 0.1)']]
                 }
             },
@@ -336,12 +330,6 @@ const updateNetworkGauge = () => {
                         x2: 0,
                         y2: 1,
                         colorStops: [{
-                            offset: 0,
-                            color: '#a0d911'
-                        }, {
-                            offset: 0.7,
-                            color: '#5b8c00'
-                        }, {
                             offset: 1,
                             color: '#fa541c'
                         }]
@@ -350,7 +338,7 @@ const updateNetworkGauge = () => {
             },
             axisLine: {
                 lineStyle: {
-                    width: 12,
+                    width: 20,
                     color: [[1, 'rgba(200, 200, 200, 0.1)']]
                 }
             },
@@ -368,9 +356,10 @@ const updateNetworkGauge = () => {
                 fontSize: 22,
                 fontWeight: 'bolder',
                 offsetCenter: [0, 0],
-                formatter: function(value) {
-                    return formatBytes(value * 1024) + '/s'
-                },
+            formatter: function(value) {
+                var mbValue = (value * 1024) / (1024 * 1024);
+                return mbValue.toFixed(5) + ' MB/s';
+            },
                 color: '#333'
             },
             title: {
@@ -752,9 +741,8 @@ const fetchServerData = async () => {
         networkHistory.value = [...networkHistory.value.slice(1), data.network.speed / 1024]
 
         // 更新进程数据
-        processCount.value = data.processes;
-        processCount.value = data.processes?.processCount || 0
-        topProcesses.value = Array.isArray(data.processes?.list) ? data.processes.list.slice(0, 5) : []
+        processCount.value = data.processCount || 0
+        topProcesses.value = Array.isArray(data.processes) ? data.processes.slice(0, 5) : []
         // 更新系统信息
         systemInfo.value = {
             hostname: data.system.hostname,
@@ -1093,6 +1081,7 @@ onBeforeUnmount(() => {
     overflow: hidden;
     text-overflow: ellipsis;
     padding-right: 10px;
+    color: #000;
 }
 
 .process-cpu {
