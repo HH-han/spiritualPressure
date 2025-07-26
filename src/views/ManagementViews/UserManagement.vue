@@ -48,7 +48,7 @@
                 <td>{{ formatDate(user.createTime) }}</td>
                 <td>{{ formatDate(user.updateTime) }}</td>
                 <td class="table-btn-display">
-                  <button class="btn details-btn" @click="showEditDialog(user)">详情</button>
+                  <button class="btn details-btn" @click="showUserDetails(user)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(user)">编辑</button>
                   <button class="btn delete-btn" @click="handleDelete(user.id)">删除</button>
                 </td>
@@ -109,7 +109,124 @@
           </form>
         </div>
       </div>
+      <!-- 详情弹窗 -->
+      <div class="user-detail-container" v-if="showDetailsUser" @click.self="closeDialog">
+        <!-- 主卡片 -->
+        <div class="user-detail-card" @click.stop>
+          <!-- 关闭按钮 -->
+          <button class="close-btn" @click="closeDialog">
+            <i class="fas fa-times"></i>
+          </button>
 
+          <!-- 用户头像区 -->
+          <div class="user-avatar-section">
+            <div class="avatar-wrapper">
+              <img :src="userDetail.image" alt="用户头像" class="user-avatar">
+              <div class="avatar-border"></div>
+            </div>
+            <h2 class="user-name">{{ userDetail.username }}</h2>
+            <p class="user-nickname">{{ userDetail.nickname }}</p>
+            <div class="user-tags">
+              <span class="tag">VIP</span>
+              <span class="tag">活跃用户</span>
+              <span class="tag">注册于 {{ formatDate(userDetail.createTime) }}</span>
+            </div>
+          </div>
+
+          <!-- 用户详细信息 -->
+          <div class="user-info-section">
+            <div class="info-grid">
+              <!-- 基本信息 -->
+              <div class="info-card">
+                <div class="info-header">
+                  <i class="fas fa-id-card"></i>
+                  <h3>基本信息</h3>
+                </div>
+                <div class="info-content">
+                  <div class="info-item">
+                    <span class="info-label">用户ID:</span>
+                    <span class="info-value">{{ userDetail.id }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">用户名:</span>
+                    <span class="info-value">{{ userDetail.username }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">昵称:</span>
+                    <span class="info-value">{{ userDetail.nickname }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 联系信息 -->
+              <div class="info-card">
+                <div class="info-header">
+                  <i class="fas fa-envelope"></i>
+                  <h3>联系信息</h3>
+                </div>
+                <div class="info-content">
+                  <div class="info-item">
+                    <span class="info-label">电子邮箱:</span>
+                    <span class="info-value">{{ userDetail.email }}</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">联系电话:</span>
+                    <span class="info-value">{{ userDetail.phone }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 签名 -->
+              <div class="info-card signature-card">
+                <div class="info-header">
+                  <i class="fas fa-quote-left"></i>
+                  <h3>个性签名</h3>
+                </div>
+                <div class="info-content">
+                  <p class="signature-text">{{ userDetail.signature || '暂无签名' }}</p>
+                </div>
+              </div>
+
+              <!-- 经历 -->
+              <div class="info-card experience-card">
+                <div class="info-header">
+                  <i class="fas fa-briefcase"></i>
+                  <h3>个人经历</h3>
+                </div>
+                <div class="info-content">
+                  <p class="experience-text">{{ userDetail.experience || '暂无经历信息' }}</p>
+                </div>
+              </div>
+
+              <!-- 时间信息 -->
+              <div class="info-card timeline-card">
+                <div class="info-header">
+                  <i class="fas fa-clock"></i>
+                  <h3>时间信息</h3>
+                </div>
+                <div class="info-content">
+                  <div class="timeline">
+                    <div class="timeline-item">
+                      <span class="timeline-label">注册时间:</span>
+                      <span class="timeline-value">{{ formatDate(userDetail.createTime) }}</span>
+                    </div>
+                    <div class="timeline-item">
+                      <span class="timeline-label">最后更新:</span>
+                      <span class="timeline-value">{{ formatDate(userDetail.updateTime) }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 操作按钮 -->
+          <div class="action-buttons">
+            <button class="action-btn message-btn" @click="sendMessage">
+              <i class="fas fa-paper-plane"></i> 发送消息
+            </button>
+          </div>
+        </div>
+      </div>
       <!-- 删除提示框 -->
       <div v-if="isDeletePromptVisible" class="delete-prompt-overlay">
         <div class="delete-prompt">
@@ -154,6 +271,9 @@ const users = ref([]);
 const searchKeyword = ref('');
 const showDialog = ref(false);
 const isEditing = ref(false);
+const showDetailsUser = ref(false);
+
+// 表单数据
 const formData = ref({
   id: null,
   username: '',
@@ -165,6 +285,19 @@ const formData = ref({
   createTime: new Date(),
 });
 
+// 详情弹窗
+const userDetail = ref({
+  image: '',
+  username: '',
+  nickname: '',
+  createTime: null,
+  id: '',
+  email: '',
+  phone: '',
+  signature: '',
+  experience: '',
+  updateTime: null
+});
 // 格式化手机号显示
 const formatPhone = (phone) => {
   return String(phone).replace(/(\d{3})(\d{4})(\d{4})/, '$1****$3');
@@ -241,6 +374,12 @@ const showEditDialog = (user) => {
   formData.value = { ...user };
   showDialog.value = true;
 };
+
+// 显示用户详情
+const showUserDetails = (user) => {
+  userDetail.value = { ...user };
+  showDetailsUser.value = true;
+};
 // 显示提示消息的方法
 const showToastMessage = (message, type = 'success') => {
   toastMessage.value = message;
@@ -301,8 +440,8 @@ const confirmDelete = async () => {
 // 关闭对话框
 const closeDialog = () => {
   showDialog.value = false;
+  showDetailsUser.value = false;
 };
-
 // 处理文件上传
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
