@@ -347,7 +347,14 @@
   box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4);
   transform: translateY(-2px);
 }
-
+.details-btn{
+  background: linear-gradient(135deg, #00aeff 0%, #003cff 90%);
+  color: #ffffff;
+}
+.details-btn:hover {
+  background: linear-gradient(135deg, #00aeff 0%, #003cff 90%);
+  transform: translateY(-2px);
+}
 .search-btn {
   background-color: #2196F3;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);

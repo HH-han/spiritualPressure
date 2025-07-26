@@ -44,6 +44,7 @@
                 <td>{{ order.sku }}</td>
                 <td>{{ order.description ? order.description.substring(0, 10) : '' }}...</td>
                 <td class="table-btn-display">
+                  <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(order)">编辑</button>
                   <button class="btn delete-btn" @click="handleDelete(order.id)">删除</button>
                 </td>

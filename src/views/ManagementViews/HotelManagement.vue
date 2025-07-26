@@ -45,6 +45,7 @@
                 <td>{{ formatDate(hotel.created_at) }}</td>
                 <td>{{ formatDate(hotel.updated_at) }}</td>
                 <td class="table-btn-display">
+                  <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(hotel)">编辑</button>
                   <button class="btn delete-btn" @click="handleDelete(hotel.id)">删除</button>
                 </td>

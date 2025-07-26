@@ -46,6 +46,7 @@
                 <td>{{ formatDate(food.createdAt) }}</td>
                 <td>{{ formatDate(food.updatedAt) }}</td>
                 <td class="table-btn-display">
+                  <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(food)">编辑</button>
                   <button class="btn delete-btn" @click="handleDelete(food.id)">删除</button>
                 </td>

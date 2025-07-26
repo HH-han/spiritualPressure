@@ -49,6 +49,7 @@
                   <td>{{ item.created_at }}</td>
                   <td>{{ item.updated_at }}</td>
                   <td class="table-btn-display">
+                    <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                     <button class="btn edit-btn" @click="showEditDialog(item)">编辑</button>
                     <button class="btn delete-btn" @click="handleDelete(item.id)">删除</button>
                   </td>

@@ -42,6 +42,7 @@
                 <td>{{ formatDate(card.updatedAt) }}</td>
                 <td>{{ card.date }}</td>
                 <td class="table-btn-display">
+                  <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(card)">编辑</button>
                   <button class="btn delete-btn" @click="handleDelete(card.id)">删除</button>
                 </td>

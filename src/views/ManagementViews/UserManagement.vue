@@ -48,6 +48,7 @@
                 <td>{{ formatDate(user.createTime) }}</td>
                 <td>{{ formatDate(user.updateTime) }}</td>
                 <td class="table-btn-display">
+                  <button class="btn details-btn" @click="showEditDialog(user)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(user)">编辑</button>
                   <button class="btn delete-btn" @click="handleDelete(user.id)">删除</button>
                 </td>
