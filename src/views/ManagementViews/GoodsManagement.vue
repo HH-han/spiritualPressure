@@ -101,14 +101,6 @@
                   {{ isEditing ? formatDateTime(formData.orderDate) : '系统自动生成' }}
                 </span>
               </div>
-              <!-- <div class="form-group">
-            <label>支付时间:</label>
-            <input 
-              type="datetime-local" 
-              v-model="formData.paymentDate" 
-              :disabled="!isEditing" 
-            />
-          </div> -->
               <div class="form-group">
                 <label>支付方式:</label>
                 <select v-model="formData.paymentMethod" required>
