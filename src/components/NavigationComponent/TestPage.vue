@@ -64,6 +64,7 @@ import TestProject006 from '@/views/TestProject/TestProject006.vue'
 import TestProject007 from '@/views/TestProject/TestProject007.vue'
 import TestProject008 from '@/views/TestProject/TestProject008.vue'
 import TestProject009 from '@/views/TestProject/TestProject009.vue'
+import TestProject010 from '@/views/TestProject/TestProject010.vue'
 import TestProjectPage from '@/views/TestProject/TestProjectPage.vue'
 import Richtext from '@/views/TestProject/Richtext.vue'
 import FavoriteContent from '@/components/DisplayBox/FavoriteContent.vue';
@@ -81,6 +82,7 @@ const pages = [
   { name: '项目七', component: TestProject007, icon: 'fas fa-mobile-alt' },
   { name: '项目八', component: TestProject008, icon: 'fas fa-server' },
   { name: '项目九', component: TestProject009, icon: 'fas fa-cloud' },
+  { name: '项目十', component: TestProject010, icon: 'fas fa-gift' },
   { name: '多语言翻译器', component: TestProjectPage, icon: 'fas fa-rocket' },
   { name: '富文本编辑器', component: Richtext, icon: 'fas fa-edit' },
   { name: '书籍阅读器', component: FavoriteContent, icon: 'fas fa-book' }
