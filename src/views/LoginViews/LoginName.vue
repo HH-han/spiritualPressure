@@ -5,7 +5,7 @@
   </div>
   <!-- 登录页面 -->
   <div class="auth-container">
-    <h2></h2>
+    <span class="welcome-title">博览旅行-登录/注册</span>
     <div class="container-wrapper" :class="{ 'right-panel-active': isSignUpActive }">
       <div class="form-container sign-up-container">
         <form action="#" class="loginpage-form-SignUp">
@@ -23,6 +23,10 @@
       </div>
       <div class="form-container sign-in-container">
         <form @submit.prevent="handleLogin" class="loginpage-form">
+          <div>
+            <h1>欢迎回来</h1>
+            <p>请登录您的账户</p>
+          </div>
           <!-- 二维码登录快捷入口 -->
           <div class="loginpage-qr-link" @click="showQrCode">
             <div class="loginpage-qr-icon">
