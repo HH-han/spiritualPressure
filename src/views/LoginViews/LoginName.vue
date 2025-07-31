@@ -1,6 +1,6 @@
 <template>
   <!-- 背景 -->
-  <div class="">
+  <div>
     <login_1 />
   </div>
   <!-- 登录页面 -->
@@ -8,6 +8,20 @@
     <h2></h2>
     <div class="container-wrapper" :class="{ 'right-panel-active': isSignUpActive }">
       <div class="form-container sign-up-container">
+        <form action="#" class="loginpage-form-SignUp">
+          <div class="loginpage-decoration">
+            <div class="loginpage-decoration-image">
+              <img src="@/assets/loging/lx.webp" alt="Welcome">
+              <div class="loginpage-decoration-links">
+                <button class="loginpage-decoration-btn loginpage-new-user" @click="enrolfirst">新用户注册 →</button>
+                <button class="loginpage-decoration-btn loginpage-phone-login" @click="Fanginter">手机号登录 →</button>
+                <button class="loginpage-decoration-btn loginpage-email-login" @click="EmailLogin">邮箱登录 →</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="form-container sign-in-container">
         <form @submit.prevent="handleLogin" class="loginpage-form">
           <!-- 二维码登录快捷入口 -->
           <div class="loginpage-qr-link" @click="showQrCode">
@@ -91,20 +105,6 @@
           </div>
         </form>
       </div>
-      <div class="form-container sign-in-container">
-        <form action="#" class="loginpage-form-SignUp">
-          <div class="loginpage-decoration">
-            <div class="loginpage-decoration-image">
-              <img src="@/assets/loging/lx.webp" alt="Welcome">
-              <div class="loginpage-decoration-links">
-                <button class="loginpage-decoration-btn loginpage-new-user" @click="enrolfirst">新用户注册 →</button>
-                <button class="loginpage-decoration-btn loginpage-phone-login" @click="Fanginter">手机号登录 →</button>
-                <button class="loginpage-decoration-btn loginpage-email-login" @click="EmailLogin">邮箱登录 →</button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-panel overlay-left">
@@ -130,6 +130,18 @@
       </p>
     </footer>
   </div>
+  <div v-if="isPersonalCenterVisible" class="loginpage-modal" @click="close">
+    <QRcodeLogin @click.stop />
+  </div>
+  <!-- !登录成功提示框 -->
+  <div>
+    <LoginSucceeded v-if="showSucceeded" :username="loginForm.username" :message="successMessage"
+      @close="showSucceeded = false" />
+  </div>
+  <!-- 错误提示框 -->
+  <div>
+    <ErrorMessage v-if="showError" :message="errorMessage" @close="showError = false" />
+  </div>
 </template>
 
 <script setup>
@@ -141,8 +153,8 @@ import ErrorMessage from '@/components/PromptComponent/ErrorMessage.vue';
 import { loginname } from '@/api/user.js';
 import QRcodeLogin from '@/views/LoginViews/QRcodeLogin.vue'
 
+// 登录-注册切换
 const isSignUpActive = ref(false)
-
 const toggleSignUp = (active) => {
   isSignUpActive.value = active
 }
