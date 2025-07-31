@@ -14,7 +14,8 @@
             <div class="loginpage-decoration-imbtn">
               <!-- 背景图片 -->
               <div class="loginpage-background">
-                <img src="@/assets/loging/lx.webp" alt="Welcome">
+                <h1>欢迎加入博览</h1>
+                <img src="@/assets/loging/31d494f83e7fef6eed32f2ac1d746e79dd387cd7bc439-5C2vFY_fw1200webp.webp" alt="Welcome">
               </div>
               <!-- 操作按钮 -->
               <div class="loginpage-decoration-links">
@@ -172,10 +173,10 @@
 
     <footer>
       <p>
-        Created with <i class="fa fa-heart"></i> by
-        <a target="_blank" href="https://florin-pop.com">Florin Pop</a>
-        - Read how I created this and how you can join the challenge
-        <a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
+        欢迎登录 <i class="fa fa-heart"></i> 通过
+        <a target="_blank" href="https://florin-pop.com">博览介绍</a>
+        - 阅读我网站相关的内容
+        <a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">这里</a>。
       </p>
     </footer>
   </div>

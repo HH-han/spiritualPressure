@@ -90,7 +90,7 @@
         <form action="#" class="loginpage-form-SignUp">
           <div class="loginpage-decoration">
             <div class="loginpage-decoration-image">
-              <img src="@/assets/loging/lx.webp" alt="Welcome">
+              <img src="@/assets/loging/31d494f83e7fef6eed32f2ac1d746e79dd387cd7bc439-5C2vFY_fw1200webp.webp" alt="Welcome">
               <div class="loginpage-decoration-links">
                 <button class="loginpage-decoration-btn loginpage-new-user" @click="enrolfirst">新用户注册 →</button>
                 <button class="loginpage-decoration-btn loginpage-phone-login" @click="Fanginter">手机号登录 →</button>

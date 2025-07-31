@@ -141,7 +141,6 @@
         right: 0;
         transform: translateX(0);
     }
-
     .container-wrapper.right-panel-active .overlay-right {
         transform: translateX(20%);
     }
@@ -271,6 +270,7 @@
         padding: 20px;
         margin: 20px;
     }
+    
     .loginpage-background {
         position: fixed;
         top: 0;
@@ -284,7 +284,15 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: blur(5px);
+        
+    }
+    .loginpage-background h1{
+        position: absolute;
+        color: rgb(187, 187, 187);
+        text-shadow: 2px 2px 5px rgb(0, 0, 0);
+        width: 100%;
+        text-align: center;
+        top: 20px;
     }
 
     .loginpage-decoration-links {
@@ -349,7 +357,7 @@
     }
 
     .loginpage-decoration-btn:hover svg {
-        transform: rotate(45deg);
+        transform: scale(1.1);
     }
 
     .loginpage-new-user-phone {
@@ -365,6 +373,7 @@
         flex-direction: column;
         justify-content: center;
         position: relative;
+        gap: 20px;
     }
 
     .loginpage-qr-link {
@@ -396,7 +405,6 @@
     .loginpage-avatar-container {
         display: flex;
         justify-content: center;
-        margin-bottom: 30px;
     }
 
     .loginpage-avatar {
@@ -450,7 +458,6 @@
         display: flex;
         flex-direction: column;
         gap: 30px;
-        margin: 15px 0px 0px 0px;
     }
 
     .userlogin-inputContainer {
@@ -542,12 +549,11 @@
 
     /* 登录按钮 */
     .loginpage-submit-btn {
-        margin-top: 20px;
         padding: 15px;
         background: linear-gradient(135deg, #6e8efb, #a777e3);
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 15px;
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
@@ -602,7 +608,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 20px;
         font-size: 14px;
     }
 
@@ -729,6 +734,14 @@
     .loginpage-form {
         display: flex;
         flex-direction: column;
+        position: fixed;
+        background-color: #fff;
+        width: 400px;
+        border-radius: 15px;
+        padding: 10px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     .loginpage-qr-link {
@@ -1065,5 +1078,8 @@
         .loginpage-mobile-actions {
             display: none;
         }
+    }
+    .overlay-container,.welcome-title,footer{
+        display: none;
     }
 }
