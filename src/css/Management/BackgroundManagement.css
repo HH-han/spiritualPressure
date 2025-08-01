@@ -1243,35 +1243,6 @@
   justify-content: center;
   gap: 15px;
 }
-
-.dialog-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 50px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.cancel-btn {
-  background: #7f8c8d;
-  color: white;
-}
-
-.cancel-btn:hover {
-  background: #95a5a6;
-}
-
-.confirm-btn {
-  background: #e74c3c;
-  color: white;
-}
-
-.confirm-btn:hover {
-  background: #c0392b;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .user-detail-card {
