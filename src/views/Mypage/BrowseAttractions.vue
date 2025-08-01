@@ -50,7 +50,6 @@
             <div class="card-actions-BH">
               <button @click="OrderDetails(card.id)" class="pay-button-GM">前往购买</button>
             </div>
-
             <!-- <button @click="detailsCart(card.id)" class="details-button-GM">查看详情</button> -->
           </div>
         </div>
