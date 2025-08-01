@@ -11,13 +11,18 @@ export function getTravelRecommendations() {
   })
 }
 /**
- * 获取景点详情
+ * 获取景点博客列表
+ * @param {Object} params - 查询参数
+ * @param {number} params.page - 当前页码
+ * @param {number} params.pageSize - 每页数量
+ * @param {string} [params.keyword] - 搜索关键词
  * @returns {Promise}
  */
-export function getAttractionBlogs() {
+export function getAttractionBlogs(params) {
   return request({
-    url: `/api/public/blogs`,
-    method: 'get'
+    url: '/api/public/blogs',
+    method: 'get',
+    params
   })
 }
 /**

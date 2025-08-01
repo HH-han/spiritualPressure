@@ -3,10 +3,8 @@ import { ElMessage } from "element-plus";
 import router from "@/router";
 // 创建axios实例
 const request = axios.create({
-  // 开发环境配置
-  baseURL: "http://localhost:2025",
-  // 生产环境配置
-  // baseURL: "http://106.53.65.147:2025",
+  // 根据环境变量动态设置baseURL
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:2025",
   timeout: 5000,
 });
 
@@ -20,25 +18,27 @@ function getValidToken() {
     return null;
   }
 
-  // 检查token格式
-  if (token.split(".").length !== 3) {
-    ElMessage.warning("无效的token格式");
-    return null;
-  }
-
   // 检查token是否过期
   try {
     const tokenParts = token.split(".");
     if (tokenParts.length !== 3) {
-      throw new Error("Invalid token format");
+      ElMessage.warning("无效的token格式");
+      return null;
     }
     
     // 确保中间部分可以正确解码
     const base64Url = tokenParts[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const payload = JSON.parse(decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join('')));
+    // 使用更安全的方式解码Base64
+    const rawPayload = atob(base64);
+    // 将原始字符串转换为UTF-8字符
+    const payload = JSON.parse(
+      decodeURIComponent(
+        Array.from(rawPayload).map(c => 
+          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        ).join('')
+      )
+    );
     
     if (payload.exp && payload.exp < Date.now() / 1000) {
       localStorage.removeItem("token");
@@ -85,12 +85,13 @@ request.interceptors.response.use(
     let res = response.data;
 
     // 处理字符串类型的响应
-    if (typeof res === "string") {
+    if (typeof res === "string" && res.trim()) {
       try {
-        res = res ? JSON.parse(res) : null;
+        res = JSON.parse(res);
       } catch (e) {
         console.error("JSON解析失败:", e);
-        throw new Error("响应数据格式错误");
+        ElMessage.error("响应数据格式错误");
+        return Promise.reject(new Error("响应数据格式错误"));
       }
     }
 

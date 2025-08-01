@@ -210,7 +210,7 @@ const handleCurrentChange = (newPage) => {
   currentPage.value = newPage;
   fetchItems();
 };
-// 获取订单数据
+// 获取数据
 const fetchItems = async () => {
   try {
     const params = {
@@ -222,7 +222,7 @@ const fetchItems = async () => {
     items.value = response.data.list;
     total.value = response.data.total;
   } catch (error) {
-    console.error('获取订单数据失败:', error);
+    console.error('获取数据失败:', error);
   }
 };
 

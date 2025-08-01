@@ -15,24 +15,24 @@ export function getOperationLogs(params) {
 
 /**
  * 获取操作日志详情
- * @param {Number} 
+ * @param {Number} id 日志ID
  * @returns {Promise}
  */
-export function getOperationLogDetail() {
+export function getOperationLogDetail(id) {
   return request({
-    url: `api/public/system/log/operation/list`,
+    url: `api/public/system/log/operation/${id}`,
     method: 'get'
   })
 }
 
 /**
  * 封禁IP地址
- * @param {Number} id 日志ID
+ * @param {String} ip 需要封禁的IP地址
  * @returns {Promise}
  */
-export function blockIPAddress() {
+export function blockIPAddress(ip) {
   return request({
-    url: `api/public/system/log/operation/block/`,
+    url: `api/public/system/log/operation/block/${ip}`,
     method: 'delete'
   })
 }
@@ -52,12 +52,13 @@ export function getLoginLogDetail(params) {
 
 /**
  * 获取登录日志
- * @param {Number}
+ * @param {Object} params 查询参数，包含分页信息
  * @returns {Promise}
  */
-export function getLoginLogs() {
+export function getLoginLogs(params) {
   return request({
     url: `api/public/system/log/operation/list/`,
-    method: 'get'
+    method: 'get',
+    params
   })
 }

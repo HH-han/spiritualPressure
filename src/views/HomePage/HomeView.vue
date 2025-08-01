@@ -270,12 +270,12 @@
               </div>
 
               <ul class="paging-pages">
-                <li class="paging-item paging-prev" @click="handleCurrentChange(currentPage - 1)"
+                <li class="paging-item paging-prev" @click="currentPage > 1 && handleCurrentChange(currentPage - 1)"
                   :class="{ disabled: currentPage === 1 }">
                   <i class="paging-icon">‹</i>
                 </li>
 
-                <template v-for="page in visiblePages" :key="page">
+                <template v-for="page in computedVisiblePages" :key="page">
                   <li v-if="page === '...'" class="paging-item paging-ellipsis">...</li>
                   <li v-else class="paging-item" :class="{ active: page === currentPage }"
                     @click="handleCurrentChange(page)">
@@ -283,7 +283,7 @@
                   </li>
                 </template>
 
-                <li class="paging-item paging-next" @click="handleCurrentChange(currentPage + 1)"
+                <li class="paging-item paging-next" @click="currentPage < totalPages && handleCurrentChange(currentPage + 1)"
                   :class="{ disabled: currentPage === totalPages }">
                   <i class="paging-icon">›</i>
                 </li>
@@ -291,9 +291,14 @@
 
               <div class="paging-jumper">
                 <span>前往</span>
-                <input type="number" class="paging-jumper-input" v-model.number="jumperPage" @keyup.enter="jumpToPage"
-                  min="1" :max="totalPages">
-                <span>页</span>
+                <input type="number" class="paging-jumper-input" 
+                  v-model.number="jumperPage" 
+                  @keyup.enter="jumpToPage"
+                  @input="validatePageInput"
+                  min="1" 
+                  :max="totalPages">
+                <span v-if="!jumperError">页</span>
+                <span v-else class="error-text">{{ jumperError }}</span>
               </div>
             </div>
           </div>
@@ -384,7 +389,6 @@ const searchKeyword = ref('')
 // 组件引用
 const positioningprogress = ref(null)
 const collectiontips = ref(null)
-
 // 预加载图片
 const loadedImages = ref(Array(images.value.length).fill(false))
 const preloadImages = () => {
@@ -504,76 +508,7 @@ const showLocation = (location) => {
 
 // 博客数据
 const blogs = ref([])
-// 分页相关
-const currentPage = ref(1) // 当前页码
-const pageSize = ref(10) // 每页显示条数
-const total = ref(0) // 总条数
-const jumperPage = ref('') // 跳转页码
-const visiblePages = ref([]) // 可见页码数组
 
-// 计算总页数
-const totalPages = computed(() => {
-  return Math.ceil(total.value / pageSize.value)
-})
-
-// 更新可见页码
-const updateVisiblePages = () => {
-  const pages = []
-  const total = totalPages.value
-  const current = currentPage.value
-
-  if (total <= 7) {
-    for (let i = 1; i <= total; i++) {
-      pages.push(i)
-    }
-  } else {
-    if (current <= 4) {
-      for (let i = 1; i <= 5; i++) {
-        pages.push(i)
-      }
-      pages.push('...')
-      pages.push(total)
-    } else if (current >= total - 3) {
-      pages.push(1)
-      pages.push('...')
-      for (let i = total - 4; i <= total; i++) {
-        pages.push(i)
-      }
-    } else {
-      pages.push(1)
-      pages.push('...')
-      for (let i = current - 1; i <= current + 1; i++) {
-        pages.push(i)
-      }
-      pages.push('...')
-      pages.push(total)
-    }
-  }
-
-  visiblePages.value = pages
-}
-
-// 跳转到指定页
-const jumpToPage = () => {
-  const page = parseInt(jumperPage.value)
-  if (!isNaN(page) && page >= 1 && page <= totalPages.value) {
-    handleCurrentChange(page)
-  }
-  jumperPage.value = ''
-}
-
-// 分页方法
-const handleSizeChange = (newSize) => {
-  pageSize.value = newSize
-  currentPage.value = 1
-  fetchBlogs()
-}
-
-const handleCurrentChange = (newPage) => {
-  if (newPage < 1 || newPage > totalPages.value || newPage === currentPage.value) return
-  currentPage.value = newPage
-  fetchBlogs()
-}
 
 // 默认图片
 const defaultImage = new URL('@/assets/defaultimage/moren.webp', import.meta.url).href
@@ -586,21 +521,20 @@ const handleImageError = (event) => {
 // 获取数据
 const fetchBlogs = async () => {
   try {
-    const res = await getAttractionBlogs({
-      params: {
-        page: currentPage.value,
-        pageSize: pageSize.value,
-        keyword: searchKeyword.value.trim()
-      }
-    })
-    if (res.code === "0") {
-      blogs.value = res.data.list
-      total.value = res.data.total
+    const params = {
+      page: currentPage.value,
+      pageSize: pageSize.value,
+      keyword: searchKeyword.value
+    };
+    const response = await getAttractionBlogs(params);
+    if (response.code === "0") {
+      blogs.value = response.data.list
+      total.value = response.data.total
     } else {
-      console.error('Failed to fetch blogs:', res.msg)
+      console.error('无法获取博客:', response.msg)
     }
   } catch (error) {
-    console.error('Error fetching blogs:', error)
+    console.error('获取博客时出错:', error)
   }
 }
 
@@ -651,18 +585,77 @@ const showDetail = (blog) => {
 const closeDetail = () => {
   isDetailVisible.value = false
 }
+// 分页相关数据
+const total = ref(0)
+const currentPage = ref(1)
+const pageSize = ref(10)
+const jumperPage = ref(1)
+const jumperError = ref('')
 
-// 监听分页相关变化
-watch([currentPage, total, pageSize], () => {
-  updateVisiblePages()
+// 计算总页数
+const totalPages = computed(() => Math.ceil(total.value / pageSize.value))
+
+// 计算可见页码
+const computedVisiblePages = computed(() => {
+  const pages = []
+  const maxVisible = 5 // 最多显示5个页码
+  
+  if (totalPages.value <= maxVisible) {
+    for (let i = 1; i <= totalPages.value; i++) {
+      pages.push(i)
+    }
+  } else {
+    const start = Math.max(1, currentPage.value - 2)
+    const end = Math.min(totalPages.value, currentPage.value + 2)
+    
+    if (start > 1) pages.push(1)
+    if (start > 2) pages.push('...')
+    
+    for (let i = start; i <= end; i++) {
+      pages.push(i)
+    }
+    
+    if (end < totalPages.value - 1) pages.push('...')
+    if (end < totalPages.value) pages.push(totalPages.value)
+  }
+  
+  return pages
 })
 
+// 分页方法
+const handleSizeChange = (size) => {
+  pageSize.value = Number(size)
+  currentPage.value = 1
+  fetchBlogs()
+}
+
+const handleCurrentChange = (page) => {
+  if (page < 1 || page > totalPages.value || page === currentPage.value) return
+  currentPage.value = page
+  fetchBlogs()
+}
+
+const jumpToPage = () => {
+  if (!jumperPage.value || jumperPage.value < 1 || jumperPage.value > totalPages.value) {
+    jumperError.value = '请输入有效页码'
+    return
+  }
+  jumperError.value = ''
+  handleCurrentChange(jumperPage.value)
+}
+
+const validatePageInput = () => {
+  if (jumperPage.value < 1 || jumperPage.value > totalPages.value) {
+    jumperError.value = `请输入1-${totalPages.value}之间的数字`
+  } else {
+    jumperError.value = ''
+  }
+}
 // 生命周期钩子
 onMounted(() => {
   preloadImages()
   startAutoPlay()
   fetchBlogs()
-  updateVisiblePages()
 })
 
 onBeforeUnmount(() => {
