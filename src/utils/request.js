@@ -9,7 +9,7 @@ const request = axios.create({
 });
 
 /**
- * 获取token的增强方法
+ * 获取token方法
  * 添加了token有效性检查
  */
 function getValidToken() {
