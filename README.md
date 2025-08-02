@@ -10,6 +10,11 @@ SpiritualPressure 是一个专注于 [解决大学生毕业项目设计] 的项�
 - **核心功能 3**：[前台商品展示]
 - [更多功能……]
 
+## 项目展示
+- **演示效果图**：
+<img src='assets/videos/index.png' width="600" height="250">
+
+
 ## 技术栈
 - **前端**：[前端技术，Vue3+vite]
 - **后端**：[出后端技术，java-springboot]
