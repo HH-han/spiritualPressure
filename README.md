@@ -12,7 +12,8 @@ SpiritualPressure 是一个专注于 [解决大学生毕业项目设计] 的项�
 
 ## 项目展示
 - **演示效果图**：
-<img src='assets/videos/index.png' width="600" height="250">
+![演示效果图](assets/videos/index.png)
+
 
 
 ## 技术栈
