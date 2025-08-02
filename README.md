@@ -1,5 +1,41 @@
-# Vue 3 + Vite
+```markdown
+# SpiritualPressure
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 项目简介
+SpiritualPressure 是一个专注于 [解决大学生毕业项目设计] 的项目。它旨在通过 [开源]，为用户提供 [毕业项目来源]。
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+## 功能特点
+- **核心功能 1**：[用户权限验证]
+- **核心功能 2**：[后台管理系统]
+- **核心功能 3**：[前台商品展示]
+- [更多功能……]
+
+## 技术栈
+- **前端**：[前端技术，Vue3+vite]
+- **后端**：[出后端技术，java-springboot]
+- **数据库**：[数据库技术，MySQL]
+- **其他**：[其他相关技术，redis]
+
+## 安装与运行
+### 环境要求
+- [运行项目所需的最低环境要求，如操作系统Windows、软件版本IDEA-2024.jdk版本21.数据库MySQL 8...]
+
+## 许可证
+本项目采用 [许可证名称] 许可证，详情请参阅 [LICENSE](LICENSE) 文件。
+
+## 联系方式
+- **作者**：[bolan]
+- **邮箱**：[25601773654@qq.com]
+- **GitHub**：[]
+
+感谢您对 SpiritualPressure 的支持！
+```
+## 后端Github地址:
+[https://github.com/HH-han/springboot-server]
+
+### 说明
+- 你可以根据项目的实际情况，调整功能特点、技术栈等内容。
+- 如果项目有详细的文档或教程，可以在“使用指南”部分添加链接。
+- 如果项目有其他特殊要求或注意事项，可以在“注意事项”部分补充说明。
+
+希望这个项目对你有帮助！

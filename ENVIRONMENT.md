@@ -45,6 +45,3 @@
    VITE_GOOGLE_MAP_KEY=your_key_here
    ```
 3. 在代码中通过 `import.meta.env.VITE_*` 访问
-
-## 后端Github地址:
-[https://github.com/HH-han/springboot-server]
