@@ -262,7 +262,10 @@ const updateScore = (linesCleared) => {
     gameState.score += points;
     gameState.lines += linesCleared;
     gameState.level = Math.floor(gameState.lines / 10) + 1;
-    gameState.dropSpeed = Math.max(100, 1000 - (gameState.level - 1) * 100);
+
+    // 每1000分速度提高30%
+    const speedMultiplier = Math.pow(0.7, Math.floor(gameState.score / 1000));
+    gameState.dropSpeed = Math.max(100, (1000 - (gameState.level - 1) * 100) * speedMultiplier);
 };
 
 // 游戏主循环

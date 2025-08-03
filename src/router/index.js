@@ -1,5 +1,5 @@
 // 引入Vue路由库和创建路由历史的方法
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 //Element Plus
 import { ElMessage} from 'element-plus';
 // 引入各个组件
@@ -186,7 +186,7 @@ const routes = [
 ]
 // 创建路由实例，指定路由历史模式和路由数组
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 })
 // 需要管理员权限的路由列表

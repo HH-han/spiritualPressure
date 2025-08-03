@@ -107,12 +107,17 @@
       </div>
     </div>
   </div>
+  <!-- 动态粒子背景 -->
+   <div>
+    <DynamicParticle />
+   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import MiniGames from '@/components/ErrorPrompt/MiniGames.vue';
+import DynamicParticle from '@/components/ThemeComponents/DynamicParticle.vue';
 
 const router = useRouter();
 // 按钮点击事件
@@ -133,16 +138,13 @@ const goBack = () => {
 }
 
 .body-background {
-  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
-  min-height: 100vh;
-  overflow-x: hidden;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  color: #ffffff;
+
 }
 
 @keyframes gradientBG {
@@ -178,7 +180,11 @@ const goBack = () => {
   font-weight: 900;
   margin-bottom: 10px;
   text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-  background: linear-gradient(45deg, #ff9a9e, #fad0c4, #a1c4fd);
+  background: linear-gradient(90deg, #00d2ff, #3a7bd5, #01d29e, #0088ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: fadeIn 1s ease-out;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
