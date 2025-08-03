@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="introduce-hero-image">
-                    <img src="@/assets/videos/home.png" alt="Vue3 Design" class="introduce-image">
+                    <img src="@/assets/videos/index.png" alt="Vue3 Design" class="introduce-image">
                     <div class="introduce-image-highlight"></div>
                 </div>
             </section>
