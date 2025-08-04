@@ -43,7 +43,7 @@
   </div>
   <div>
     <!-- 背景样式 -->
-    <BackgroundStyle />
+    <DynamicParticle />
   </div>
 </template>
 
@@ -52,7 +52,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus';
-import BackgroundStyle from '@/components/ThemeComponents/BackgroundStyle.vue';
+import DynamicParticle from '@/components/ThemeComponents/DynamicParticle.vue';
 
 const router = useRouter();
 

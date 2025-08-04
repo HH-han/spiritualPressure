@@ -226,6 +226,7 @@ const goBack = () => {
   justify-content: center;
 }
 .footer {
+  width: 100%;
   display: flex;
   gap: 20px;
   flex-wrap: wrap;

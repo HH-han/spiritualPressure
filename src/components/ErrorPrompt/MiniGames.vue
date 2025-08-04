@@ -474,12 +474,11 @@ const nextPieceCells = computed(() => {
     border-radius: 10px;
     overflow: hidden;
     padding: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.629);
 }
 
 .game-board {
     background-color: rgba(255, 255, 255, 0.05);
-    border: 2px solid #6a5acd;
     display: grid;
     grid-template-rows: repeat(20, 30px);
     grid-template-columns: repeat(10, 30px);
