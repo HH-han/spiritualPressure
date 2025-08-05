@@ -520,7 +520,9 @@
   width: var(--main-width);
   height: 80px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #25a1fa 0%, #389d75 100%);
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
   color: white;
   border: none;
   font-size: 14px;
@@ -528,6 +530,21 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 /* 设置侧边栏 */
 .fade-enter-active,
 .fade-leave-active {
@@ -538,6 +555,7 @@
 .fade-leave-to {
   opacity: 0;
 }
+
 .data-management__toggle:hover {
   box-shadow: 0 2px 8px rgba(56, 157, 117, 0.4);
 }
@@ -671,9 +689,11 @@
   position: relative;
   flex-direction: column;
 }
+
 .data-management__content::-webkit-scrollbar {
   display: none;
 }
+
 .data-management__content::-webkit-scrollbar {
   width: 0;
   height: 0;
@@ -1251,10 +1271,12 @@
   justify-content: flex-start;
   display: inline-block;
 }
+
 /* 根据不同的分类调整位置 */
 .menu-category:hover .menu-bubble-button {
   display: block;
 }
+
 /* 气泡主体 */
 .menu-bubble-button .bubble-container {
   position: relative;
@@ -1345,6 +1367,7 @@
     opacity: 0;
     transform: translateX(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
