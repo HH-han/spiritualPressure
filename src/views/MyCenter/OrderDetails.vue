@@ -3,20 +3,15 @@
     <!-- 液态背景元素 -->
     <div class="liquid-bg liquid-blue"></div>
     <div class="liquid-bg liquid-purple"></div>
-    
+
     <!-- 主卡片 -->
     <div class="attraction-card">
       <!-- 景点图片轮播 -->
       <div class="image-carousel">
         <img :src="currentImage" :alt="attraction.name" class="carousel-image">
         <div class="carousel-controls">
-          <button 
-            v-for="(img, index) in attraction.images" 
-            :key="index"
-            class="carousel-dot"
-            :class="{ active: currentImageIndex === index }"
-            @click="currentImageIndex = index"
-          ></button>
+          <button v-for="(img, index) in attraction.images" :key="index" class="carousel-dot"
+            :class="{ active: currentImageIndex === index }" @click="currentImageIndex = index"></button>
         </div>
         <div class="image-overlay">
           <span class="attraction-rating">
@@ -27,7 +22,7 @@
           </span>
         </div>
       </div>
-      
+
       <!-- 景点详情 -->
       <div class="attraction-details">
         <h1 class="attraction-title">{{ attraction.name }}</h1>
@@ -36,11 +31,11 @@
             {{ tag }}
           </span>
         </div>
-        
+
         <div class="attraction-description">
           <p>{{ attraction.details }}</p>
         </div>
-        
+
         <!-- 日期选择 -->
         <div class="date-selector">
           <h2>选择日期</h2>
@@ -62,37 +57,25 @@
               </div>
             </div>
             <div class="days">
-              <div 
-                v-for="day in calendarDays" 
-                :key="day.date"
-                class="day"
-                :class="{
-                  'disabled': !day.available,
-                  'selected': isSelectedDate(day.date),
-                  'today': isToday(day.date)
-                }"
-                @click="selectDate(day)"
-              >
+              <div v-for="day in calendarDays" :key="day.date" class="day" :class="{
+                'disabled': !day.available,
+                'selected': isSelectedDate(day.date),
+                'today': isToday(day.date)
+              }" @click="selectDate(day)">
                 <span>{{ day.day }}</span>
                 <div v-if="isToday(day.date)" class="today-marker"></div>
               </div>
             </div>
           </div>
         </div>
-        
+
         <!-- 门票选择 -->
         <div class="ticket-selection">
           <h2>选择门票</h2>
-          <div 
-            v-for="(ticket, index) in tickets" 
-            :key="index"
-            class="ticket-option"
-            :class="{ 
-              'selected': selectedTicketIndex === index,
-              'recommended': ticket.recommended
-            }"
-            @click="selectTicket(index)"
-          >
+          <div v-for="(ticket, index) in tickets" :key="index" class="ticket-option" :class="{
+            'selected': selectedTicketIndex === index,
+            'recommended': ticket.recommended
+          }" @click="selectTicket(index)">
             <div class="ticket-info">
               <h3>{{ ticket.type }}</h3>
               <p>{{ ticket.description }}</p>
@@ -118,24 +101,17 @@
             </div>
           </div>
         </div>
-        
+
         <!-- 数量选择 -->
         <div class="quantity-section">
           <div class="quantity-control">
             <h3>数量</h3>
             <div class="quantity-selector">
-              <button 
-                class="quantity-btn liquid-btn"
-                @click="decreaseQuantity"
-                :disabled="quantity <= 1"
-              >
+              <button class="quantity-btn liquid-btn" @click="decreaseQuantity" :disabled="quantity <= 1">
                 <i class="fas fa-minus"></i>
               </button>
               <span class="quantity">{{ quantity }}</span>
-              <button 
-                class="quantity-btn liquid-btn"
-                @click="increaseQuantity"
-              >
+              <button class="quantity-btn liquid-btn" @click="increaseQuantity">
                 <i class="fas fa-plus"></i>
               </button>
             </div>
@@ -145,27 +121,20 @@
             <span class="price">¥{{ totalPrice }}</span>
           </div>
         </div>
-        
+
         <!-- 购买按钮 -->
-        <button 
-          class="purchase-btn liquid-btn"
-          :disabled="!canPurchase"
-          @click="handlePurchase"
-        >
+        <button class="purchase-btn liquid-btn" :disabled="!canPurchase" @click="handlePurchase">
           <span class="btn-text">立即购买</span>
           <div class="liquid-effect"></div>
         </button>
         <!-- 加入购物车按钮 -->
-        <button 
-          class="purchase-btn liquid-btn"
-          @click="addToCart"
-        >
+        <button class="add-to-cart-btn liquid-btn" @click="addToCart">
           <span class="btn-text">加入购物车</span>
           <div class="liquid-effect"></div>
         </button>
       </div>
     </div>
-    
+
     <!-- 购买成功模态框 -->
     <div v-if="showSuccessModal" class="modal-overlay">
       <div class="success-modal liquid-modal">
@@ -190,12 +159,17 @@
   <div class="background-overlay">
     <BackgroundStyle />
   </div>
+  <!-- 关闭按钮 -->
+  <div class="orderdetails-close-button">
+    <button @click="goBack">返回</button>
+  </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import BackgroundStyle from '@/components/ThemeComponents/BackgroundStyle.vue';
+import { ElMessage} from 'element-plus';
 
 const route = useRoute();
 const router = useRouter();
@@ -250,6 +224,11 @@ const tickets = ref([
   }
 ]);
 
+// 返回上一页
+function goBack() {
+  router.go(-1);
+  ElMessage.warning('即将返回！')
+}
 // 日历相关数据
 const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
 const currentDate = new Date();
@@ -262,7 +241,7 @@ const currentImage = computed(() => attraction.value.images[currentImageIndex.va
 
 // 门票选择
 const selectedTicketIndex = ref(null);
-const selectedTicket = computed(() => 
+const selectedTicket = computed(() =>
   selectedTicketIndex.value !== null ? tickets.value[selectedTicketIndex.value] : null
 );
 
@@ -294,11 +273,11 @@ const generateCalendarDays = () => {
   const days = [];
   const firstDay = new Date(currentYear.value, currentMonth.value, 1);
   const lastDay = new Date(currentYear.value, currentMonth.value + 1, 0);
-  
+
   // 上个月的最后几天
   const prevMonthLastDay = new Date(currentYear.value, currentMonth.value, 0).getDate();
   const firstDayOfWeek = firstDay.getDay();
-  
+
   for (let i = firstDayOfWeek - 1; i >= 0; i--) {
     const day = prevMonthLastDay - i;
     days.push({
@@ -308,13 +287,13 @@ const generateCalendarDays = () => {
       currentMonth: false
     });
   }
-  
+
   // 当前月的日期
   for (let i = 1; i <= lastDay.getDate(); i++) {
     const date = new Date(currentYear.value, currentMonth.value, i);
     const isWeekend = date.getDay() === 0 || date.getDay() === 6;
     const isAvailable = !isWeekend || (i % 2 === 0); // 模拟可用日期
-    
+
     days.push({
       day: i,
       date: `${currentYear.value}-${currentMonth.value + 1}-${i}`,
@@ -322,7 +301,7 @@ const generateCalendarDays = () => {
       currentMonth: true
     });
   }
-  
+
   // 下个月的前几天
   const daysNeeded = 42 - days.length; // 6行x7天
   for (let i = 1; i <= daysNeeded; i++) {
@@ -333,7 +312,7 @@ const generateCalendarDays = () => {
       currentMonth: false
     });
   }
-  
+
   calendarDays.value = days;
 };
 
@@ -446,7 +425,7 @@ onMounted(() => {
       favorites: item.favorites,
       location: item.location
     });
-    
+
     // 基于传递的价格更新门票数据
     tickets.value = tickets.value.map(ticket => ({
       ...ticket,
@@ -475,13 +454,15 @@ onMounted(() => {
   overflow: hidden;
   z-index: 1000;
 }
-.background-overlay{
+
+.background-overlay {
   width: 100%;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .liquid-bg {
   position: absolute;
   width: 600px;
@@ -506,9 +487,12 @@ onMounted(() => {
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0, 0) rotate(0deg);
   }
+
   50% {
     transform: translate(50px, 50px) rotate(5deg);
   }
@@ -576,7 +560,8 @@ onMounted(() => {
   z-index: 2;
 }
 
-.attraction-rating, .attraction-location {
+.attraction-rating,
+.attraction-location {
   background: rgba(0, 0, 0, 0.6);
   color: white;
   padding: 0.5rem 1rem;
@@ -631,7 +616,8 @@ onMounted(() => {
   margin-bottom: 2rem;
 }
 
-.date-selector h2, .ticket-selection h2 {
+.date-selector h2,
+.ticket-selection h2 {
   font-size: 1.4rem;
   margin-bottom: 1.2rem;
   color: #444;
@@ -639,7 +625,8 @@ onMounted(() => {
   display: inline-block;
 }
 
-.date-selector h2::after, .ticket-selection h2::after {
+.date-selector h2::after,
+.ticket-selection h2::after {
   content: '';
   position: absolute;
   bottom: -5px;
@@ -881,10 +868,13 @@ onMounted(() => {
 }
 
 @keyframes liquidPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.2);
     opacity: 0.7;
@@ -1017,6 +1007,13 @@ onMounted(() => {
   font-size: 1.2rem;
   padding: 1.3rem;
   margin-bottom: 20px;
+  background: linear-gradient(45deg, #64ff9a, #dfff50);
+}
+
+.add-to-cart-btn {
+  font-size: 1.2rem;
+  padding: 1.3rem;
+  background: linear-gradient(45deg, #649dff, #a550ff);
 }
 
 /* 模态框样式 */
@@ -1062,6 +1059,7 @@ onMounted(() => {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -1080,9 +1078,12 @@ onMounted(() => {
 }
 
 @keyframes bounce {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
@@ -1117,7 +1118,8 @@ onMounted(() => {
   position: relative;
 }
 
-.qrcode-placeholder::before, .qrcode-placeholder::after {
+.qrcode-placeholder::before,
+.qrcode-placeholder::after {
   content: '';
   position: absolute;
   background: #ddd;
@@ -1146,39 +1148,71 @@ onMounted(() => {
   .attraction-container {
     padding: 1rem;
   }
-  
+
   .image-carousel {
     height: 250px;
   }
-  
+
   .attraction-details {
     padding: 1.5rem;
   }
-  
+
   .attraction-title {
     font-size: 1.8rem;
   }
-  
+
   .ticket-option {
     flex-direction: column;
     padding: 1.2rem;
   }
-  
+
   .ticket-price {
     align-items: flex-start;
     margin-left: 0;
     margin-top: 1rem;
   }
-  
+
   .quantity-section {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
   }
-  
+
   .total-price {
     align-items: flex-start;
     width: 100%;
   }
+}
+
+/* 关闭按钮 */
+.orderdetails-close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+}
+
+.orderdetails-close-button button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orderdetails-close-button button:hover {
+  background: rgba(255, 107, 107, 0.9);
+  transform: rotate(-35deg);
 }
 </style>

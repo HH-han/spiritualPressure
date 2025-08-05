@@ -252,7 +252,9 @@ const confirmPayment = async () => {
 // 关闭支付成功提示框并返回上一个页面
 const closeModal = () => {
   isPaymentModalVisible.value = false;
-  setTimeout(() => router.back(), 1500);
+  setTimeout(() => router.go(-1), 1500);
+  console.log('关闭支付成功提示框');
+  ElMessage.success('订单支付成功');
 };
 
 // 关闭自定义提示框
@@ -268,7 +270,6 @@ const closeAlert = () => {
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  max-width: 600px;
   position: fixed;
   top: 50%;
   left: 50%;

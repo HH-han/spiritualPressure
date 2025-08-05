@@ -100,7 +100,7 @@ const OrderDetails = (itemId) => {
     const item = rawImageList.value.find((c) => c.id === itemId);
     if (item) {
         router.push({
-            name: 'orderdetails',
+            name: 'itempurchase',
             query: {
                 item: JSON.stringify({
                     id: item.id,

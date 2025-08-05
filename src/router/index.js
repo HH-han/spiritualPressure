@@ -74,6 +74,7 @@ import NetworkAnomaly from '@/components/ErrorPrompt/NetworkAnomaly.vue'
 
 //订单管理
 import OrderDetails from '@/views/MyCenter/OrderDetails.vue'
+import ItemPurchase from '@/views/MyCenter/ItemPurchase.vue'
 import AccountSettings from '@/views/MyCenter/AccountSettings.vue'
 // 响应页面
 import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue'
@@ -160,6 +161,7 @@ const routes = [
   {path: '/networkanomaly',name: 'networkanomaly',component: NetworkAnomaly},
   // 订单页面路由
   {path: '/orderdetails',name: 'orderdetails',component: OrderDetails},
+  {path: '/itempurchase',name: 'itempurchase',component: ItemPurchase},
   // 账户管理
   {path: '/accountsettings',name: 'accountsettings',component: AccountSettings},
   // 响应页面

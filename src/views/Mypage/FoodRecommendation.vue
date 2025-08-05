@@ -116,7 +116,7 @@ const OrderDetails = (foodId) => {
   const food = paginatedFoods.value.find((f) => f.id === foodId);
   if (food) {
     router.push({
-      name: 'orderdetails',
+      name: 'itempurchase',
       query: {
         item: JSON.stringify({
           id: food.id,
