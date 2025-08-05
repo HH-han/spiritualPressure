@@ -476,7 +476,9 @@ const OrderDetails = (blogsId) => {
           name: selectedBlog.title,
           price: selectedBlog.price,
           image: selectedBlog.coverImage,
-          details: selectedBlog.content
+          details: selectedBlog.content,
+          location: selectedBlog.location,
+          favorites: selectedBlog.favorites,
         })
       }
     })

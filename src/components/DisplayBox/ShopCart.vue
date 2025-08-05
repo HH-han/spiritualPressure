@@ -295,14 +295,26 @@ const showAlert = (message) => {
   showCustomAlert.value = true;
 };
 
-// Lifecycle hooks
+// 从路由查询参数中获取商品信息和订单ID
 onMounted(() => {
   loadCartItems();
   if (route.query.item) {
     try {
-      const newItem = JSON.parse(route.query.item);
-      addToCart(newItem);
+      const decodedItem = decodeURIComponent(route.query.item);
+      const parsedItem = JSON.parse(decodedItem);
+      console.log('解析后item对象:', parsedItem);
+      
+      if (parsedItem.list && typeof parsedItem.list === 'object') {
+        addToCart({
+          ...parsedItem.list,
+          price: parsedItem.price || parsedItem.list.price || 0,
+          quantity: parsedItem.quantity || parsedItem.list.quantity || 1
+        });
+      } else {
+        addToCart(parsedItem);
+      }
     } catch (error) {
+      console.error('解析item参数失败:', error);
       showAlert('商品数据格式错误');
     }
   }
