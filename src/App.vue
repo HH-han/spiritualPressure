@@ -13,8 +13,8 @@
 import { ref, onMounted } from 'vue'
 import RefreshLoad from '@/components/TransitionalComponents/RefreshLoad.vue'
 import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
-const isLoading = ref(true)
 
+const isLoading = ref(true)
 onMounted(() => {
   // 模拟加载过程
   setTimeout(() => {
