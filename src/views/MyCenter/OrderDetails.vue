@@ -692,7 +692,7 @@ onMounted(() => {
 }
 
 .day {
-  aspect-ratio: 1;
+  padding: 10px 0px 10px 0px;
   display: flex;
   align-items: center;
   justify-content: center;
