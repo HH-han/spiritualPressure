@@ -141,6 +141,7 @@
         right: 0;
         transform: translateX(0);
     }
+
     .container-wrapper.right-panel-active .overlay-right {
         transform: translateX(20%);
     }
@@ -245,14 +246,13 @@
 
     .loginpage-decoration {
         background-color: rgb(255, 255, 255);
-        padding: 40px;
+        padding: 0px 10px 0px 10px;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
         position: relative;
         overflow: hidden;
         height: 100%;
     }
+
     @keyframes rotate {
         from {
             transform: rotate(0deg);
@@ -265,104 +265,227 @@
 
     .loginpage-decoration-imbtn {
         position: relative;
-        z-index: 1;
-        text-align: center;
-        padding: 20px;
-        margin: 20px;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
     }
-    
+
+    .loginpage-decoration-imbtn:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.35);
+    }
+
     .loginpage-background {
-        position: fixed;
+        position: relative;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        overflow: hidden;
+    }
+
+    .loginpage-background::before {
+        content: "";
+        position: absolute;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
+        width: 100%;
+        height: 100%;
+        background: url('@/assets/loging/31d494f83e7fef6eed32f2ac1d746e79dd387cd7bc439-5C2vFY_fw1200webp.webp') center/cover;
+        opacity: 0.7;
+        z-index: 1;
+    }
+
+    .loginpage-background::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+        z-index: 2;
+    }
+
+    .loginpage-background h1 {
+        position: relative;
+        z-index: 3;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        animation: fadeInDown 0.8s ease-out;
     }
 
     .loginpage-background img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        
-    }
-    .loginpage-background h1{
-        position: absolute;
-        color: rgb(187, 187, 187);
-        text-shadow: 2px 2px 5px rgb(0, 0, 0);
-        width: 100%;
-        text-align: center;
-        top: 20px;
+        position: relative;
+        z-index: 3;
+        max-height: 150px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        opacity: 0.9;
+        transform: perspective(1000px) rotateX(10deg);
+        transition: all 0.5s ease;
+        animation: float 6s ease-in-out infinite;
     }
 
     .loginpage-decoration-links {
         display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 15px;
+        justify-content: center;
+        padding: 30px;
+        background: #fff;
+        gap: 20px;
+        flex-wrap: wrap;
     }
 
     .loginpage-decoration-btn {
-        font-family: inherit;
-        font-size: 18px;
-        background: linear-gradient(to bottom, #77a0ffcf 0%, #3f8efcc1 100%);
-        color: #ffffff;
-        padding: 10px;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 15px 30px;
         border: none;
-        border-radius: 25px;
-        box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 0px 0px 3px rgba(255, 158, 1, 0.845);
-        transition: all 0.3s;
-    }
-
-    .loginpage-decoration-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .loginpage-decoration-btn:active {
-        transform: scale(0.95);
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        z-index: 1;
     }
 
     .loginpage-decoration-btn span {
-        display: block;
-        margin-left: 0.4em;
-        transition: all 0.3s;
+        position: relative;
+        z-index: 3;
+        transition: all 0.3s ease;
     }
 
-    .loginpage-decoration-btn svg {
-        width: 18px;
-        height: 18px;
-        fill: white;
-        transition: all 0.3s;
+    .loginpage-decoration-btn:hover span {
+        transform: translateX(5px);
     }
 
-    .loginpage-decoration-btn .svg-wrapper {
+    .svg-wrapper-1 {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
         display: flex;
-        align-items: center;
         justify-content: center;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.2);
-        margin-right: 0.5em;
-        transition: all 0.3s;
+        align-items: center;
+        z-index: 3;
+    }
+
+    .svg-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
     }
 
     .loginpage-decoration-btn:hover .svg-wrapper {
-        background-color: rgba(255, 255, 255, 0.5);
+        transform: rotate(10deg) scale(1.1);
     }
 
-    .loginpage-decoration-btn:hover svg {
-        transform: scale(1.1);
+    .loginpage-decoration-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+        z-index: 1;
+        transition: all 0.3s ease;
+        opacity: 0;
     }
 
-    .loginpage-new-user-phone {
-        display: none;
+    .loginpage-decoration-btn:hover::before {
+        opacity: 1;
     }
+
+    .loginpage-new-user {
+        background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+    }
+
+    .loginpage-phone-login {
+        background: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%);
+    }
+
+    .loginpage-email-login {
+        background: linear-gradient(45deg, #a1c4fd 0%, #c2e9fb 100%);
+    }
+
+    .loginpage-decoration-btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: inherit;
+        z-index: 2;
+        transition: all 0.3s ease;
+    }
+
+    .loginpage-decoration-btn:hover::after {
+        opacity: 0;
+    }
+
+    @keyframes float {
+        0% {
+            transform: perspective(1000px) rotateX(10deg) translateY(0);
+        }
+
+        50% {
+            transform: perspective(1000px) rotateX(10deg) translateY(-10px);
+        }
+
+        100% {
+            transform: perspective(1000px) rotateX(10deg) translateY(0);
+        }
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .loginpage-decoration-links {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loginpage-decoration-btn {
+            width: 220px;
+        }
+
+        .loginpage-background h1 {
+            font-size: 2rem;
+        }
+    }
+
     /* 右侧表单部分 */
     .loginpage-form {
         flex: 1;
@@ -611,6 +734,9 @@
         font-size: 14px;
     }
 
+    .loginpage-new-user-phone{
+        display: none;
+    }
     .loginpage-remember {
         display: flex;
         align-items: center;
@@ -1079,7 +1205,10 @@
             display: none;
         }
     }
-    .overlay-container,.welcome-title,footer{
+
+    .overlay-container,
+    .welcome-title,
+    footer {
         display: none;
     }
 }

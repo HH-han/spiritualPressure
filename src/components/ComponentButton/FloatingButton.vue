@@ -1,57 +1,66 @@
 <template>
-    <div
-        role="button"
-        class="floating-button"
-        :class="{ dragging: isDragging }"
-        :style="buttonStyle"
-        @mousedown.prevent="startDrag"
-        @mouseenter="showTooltip = true"
-    >
-    <img src="@/assets/floatingbutton/大脑-01.png" class="icon-img">
+    <div role="button" class="floating-button" :class="{ dragging: isDragging }" :style="buttonStyle"
+        @mousedown.prevent="startDrag" @mouseenter="showTooltip = true">
+        <img src="@/assets/floatingbutton/大脑-01.png" class="icon-img">
     </div>
-    
-    <div
-        class="floating-button-show"
-        :class="snapEdge"
-        v-show="showTooltip && !isDragging"
-        @mouseenter="showTooltip = true"
-        @mouseleave="showTooltip = false"
-        :style="tooltipStyle"
-        >
-    
-        <router-link to="/WebsiteIntroduction">
-            <button>
-                <svg t="1745227818821" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5304" width="16" height="16">
-                    <path d="M512 64c247.424 0 448 200.576 448 448s-200.576 448-448 448S64 759.424 64 512 264.576 64 512 64z m0 85.333333C311.701333 149.333333 149.333333 311.701333 149.333333 512s162.368 362.666667 362.666667 362.666667 362.666667-162.368 362.666667-362.666667S712.298667 149.333333 512 149.333333z m21.333333 277.333334a21.333333 21.333333 0 0 1 21.333334 21.333333v298.666667a21.333333 21.333333 0 0 1-21.333334 21.333333h-42.666666a21.333333 21.333333 0 0 1-21.333334-21.333333V448a21.333333 21.333333 0 0 1 21.333334-21.333333h42.666666z m0-170.666667a21.333333 21.333333 0 0 1 21.333334 21.333333v42.666667a21.333333 21.333333 0 0 1-21.333334 21.333333h-42.666666a21.333333 21.333333 0 0 1-21.333334-21.333333v-42.666667a21.333333 21.333333 0 0 1 21.333334-21.333333h42.666666z" fill="#222429" p-id="5305"></path>
-                </svg>
-            </button>
-        </router-link>
-        <router-link to="/systemhomeView">
-            <button>
-                <svg t="1745227777759" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4227" width="16" height="16">
-                    <path d="M512.022729 1024a512 512 0 1 1 512.090917-512 512.045459 512.045459 0 0 1-512.090917 512z m0.681879-932.264583a419.605434 419.605434 0 1 0 419.696351 419.582704 419.650892 419.650892 0 0 0-419.696351-419.582704zM624.328154 679.87854l-65.914943 65.914943-233.679836-233.634378 65.914942-65.801296 169.310486-169.287757 65.914943 65.914943-169.310486 169.265027z" fill="#2F3135" p-id="4228"></path>
-                </svg>
-            </button>
-        </router-link>
-        <router-link to="/aboutweb">
-            <button>
-                <svg t="1745227729358" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3182" width="16" height="16">
-                    <path d="M853.312 128a128 128 0 0 1 127.808 120.448l0.192 7.552v341.312a128 128 0 0 1-120.448 127.808l-50.176-0.064V768a128 128 0 0 1-118.464 127.68l-9.6 0.32h-512a128 128 0 0 1-128-128V426.688a128 128 0 0 1 128-128l42.688-0.064V256a128 128 0 0 1 120.512-127.808L341.312 128h512z m-256 512h-384a42.688 42.688 0 1 0 0 85.312h384a42.688 42.688 0 1 0 0-85.312z m256-426.688h-512a42.688 42.688 0 0 0-42.368 37.76L298.688 256v42.624h384a128 128 0 0 1 127.616 118.464l0.384 9.6v213.056h28.288c10.368 0 19.84-0.064 20.736-0.192a42.688 42.688 0 0 0 36.032-37.248L896 597.312V256a42.688 42.688 0 0 0-37.696-42.368l-4.992-0.32z m-256 256h-384a42.688 42.688 0 0 0 0 85.376h384a42.688 42.688 0 0 0 0-85.376z" fill="#2c2c2c" p-id="3183"></path>
-                </svg>
-            </button>
-        </router-link>
-        <router-link to="/functionswitching">
-            <button>
-                <svg t="1745227919992" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10123" width="16" height="16">
-                    <path d="M929.024 816.2816a452.9152 452.9152 0 0 0-240.2304-239.4112l-1.4336-0.5632a297.728 297.728 0 1 0-348.672 0c-0.512 0-0.9728 0.3584-1.4336 0.6144a449.3824 449.3824 0 0 0-275.712 404.48 9.5744 9.5744 0 0 0 9.6256 9.8304H143.36a9.6256 9.6256 0 0 0 9.6256-9.3184 359.7312 359.7312 0 0 1 360.192-349.5936 359.7312 359.7312 0 0 1 360.192 349.5936 9.472 9.472 0 0 0 9.6256 9.3184h71.9872a9.5744 9.5744 0 0 0 9.6256-9.8304 445.44 445.44 0 0 0-35.584-165.12z m-416-274.688A206.2848 206.2848 0 1 1 658.9952 481.28a205.4144 205.4144 0 0 1-145.9712 60.3136z" fill="#232632" p-id="10124"></path>
-                </svg>
-            </button>
-        </router-link>
+
+    <div class="floating-button-show" :class="snapEdge" v-show="showTooltip && !isDragging"
+        @mouseenter="showTooltip = true" @mouseleave="showTooltip = false" :style="tooltipStyle">
+        <button @click="navigation('/WebsiteIntroduction')">
+            <svg t="1754486868450" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="6299" width="16" height="16">
+                <path
+                    d="M512 1011.2a496.384 496.384 0 0 0 448.3072-279.296 38.4 38.4 0 0 0-68.9664-33.8944A420.0448 420.0448 0 0 1 512 934.4c-232.9088 0-422.4-189.4912-422.4-422.4S279.0912 89.6 512 89.6s422.4 189.4912 422.4 422.4a38.4 38.4 0 0 0 76.8 0c0-275.2512-223.9488-499.2-499.2-499.2S12.8 236.7488 12.8 512s223.9488 499.2 499.2 499.2z"
+                    fill="#438CFF" p-id="6300"></path>
+                <path
+                    d="M760.4224 537.6a38.4 38.4 0 0 0-38.4-38.4h-460.8a38.4 38.4 0 0 0 0 76.8h460.8a38.4 38.4 0 0 0 38.4-38.4zM261.2224 378.8288h307.2a38.4 38.4 0 0 0 0-76.8h-307.2a38.4 38.4 0 0 0 0 76.8zM261.2224 696.3712a38.4 38.4 0 0 0 0 76.8h204.8a38.4 38.4 0 0 0 0-76.8h-204.8z"
+                    fill="#438CFF" p-id="6301"></path>
+                <path d="M711.5776 340.4288m-51.2 0a51.2 51.2 0 1 0 102.4 0 51.2 51.2 0 1 0-102.4 0Z" fill="#438CFF"
+                    p-id="6302"></path>
+            </svg>
+        </button>
+        <button @click="navigation('/systemhomeView')">
+            <svg t="1754486914478" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="8282" width="16" height="16">
+                <path
+                    d="M512 64C264.576 64 64 264.576 64 512s200.576 448 448 448 448-200.576 448-448S759.424 64 512 64z"
+                    fill="#FF934A" p-id="8283"></path>
+                <path
+                    d="M498.56 519.666a10.668 10.668 0 0 1 0-15.332c21.718-21.126 84.97-82.904 148.374-147.128 14.336-14.516 19.86-35.152 7.744-51.408-4.972-6.654-11.584-14.192-20.352-22.284-11.926-11.014-23.296-18.38-32.768-23.28-15.51-8.02-33.686-3.928-47.766 6.24-110.25 79.572-185.43 165.484-221.802 211.612-15.98 20.29-15.98 47.538 0 67.828 36.372 46.128 111.552 132.04 221.802 211.614 14.08 10.166 32.256 14.256 47.766 6.238 9.472-4.9 20.842-12.266 32.768-23.28 8.768-8.092 15.38-15.63 20.352-22.284 12.116-16.256 6.592-36.892-7.744-51.406-63.404-64.226-126.656-126.004-148.374-147.13z"
+                    fill="#FFFFFF" p-id="8284"></path>
+            </svg>
+        </button>
+        <button @click="navigation('/aboutweb')">
+            <svg t="1754487109629" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="25221" width="16" height="16">
+                <path
+                    d="M840.433125 0H183.566875C82.605677 0 0 82.605677 0 183.566875v656.86625c0 100.961198 82.605677 183.566875 183.566875 183.566875h656.86625c100.961198 0 183.566875-82.605677 183.566875-183.566875V183.566875C1024.011669 82.605677 941.394323 0 840.433125 0zM609.653003 453.263501a56.910282 56.910282 0 0 1-5.251102 15.963352l0.081684 0.478433S480.254168 717.475642 461.910316 750.825977c-14.434697 26.255513-2.800588 91.929302 105.232095-16.185064 0 0-122.770777 185.678985-211.316035 102.688227 0 0-13.011065-12.836028-14.458035-35.345755a48.636879 48.636879 0 0 1 3.232345-25.263638 97.285426 97.285426 0 0 1 8.693492-19.837498c6.137955-10.712249 129.958953-222.775107 137.753923-257.88748 1.925404-8.670154 33.245314-113.447153-118.196483-34.190512 0 0 118.021447-123.961027 206.146616-71.403325a57.003635 57.003635 0 0 1 14.376351 10.373845c0.245051 0.210044 0.490103 0.373412 0.735155 0.583456v0.303397a57.237018 57.237018 0 0 1 15.543263 48.601871z m-15.519925-109.864734a89.04703 89.04703 0 1 1 89.035361-89.04703 89.04703 89.04703 0 0 1-89.035361 89.04703z"
+                    fill="#06A3AD" p-id="25222"></path>
+            </svg>
+        </button>
+        <button @click="navigation('/functionswitching')">
+            <svg t="1754487048002" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                p-id="20411" width="16" height="16">
+                <path
+                    d="M512 0a512 512 0 1 0 512 512A512 512 0 0 0 512 0zM455.214545 427.287273h113.57091a12.567273 12.567273 0 0 1 8.843636 21.410909 93.090909 93.090909 0 0 1-131.258182 0 12.567273 12.567273 0 0 1 8.843636-21.410909z m272.756364 369.570909H296.029091a46.545455 46.545455 0 0 1-34.443636-82.850909 348.625455 348.625455 0 0 1 500.82909 0 46.545455 46.545455 0 0 1-34.443636 82.850909z"
+                    fill="#F55E55" p-id="20412"></path>
+                <path
+                    d="M512 210.850909A162.909091 162.909091 0 1 0 674.909091 372.363636 162.909091 162.909091 0 0 0 512 210.850909z m65.629091 237.847273a93.090909 93.090909 0 0 1-131.258182 0 12.567273 12.567273 0 0 1 8.843636-21.410909h113.57091a12.567273 12.567273 0 0 1 8.843636 21.410909z"
+                    fill="#F9BBB8" p-id="20413"></path>
+            </svg>
+        </button>
     </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const navigation = (path) => {
+    router.push(path);
+};
 
 // 控制是否显示提示框
 const showTooltip = ref(false);
@@ -69,7 +78,7 @@ const scale = ref(1);
 // 计算按钮的样式
 const buttonStyle = computed(() => ({
     transform: `translate(${position.value.x}px, ${position.value.y}px) scale(${scale.value})`,
-    borderRadius: isDragging.value ? '50%' : 
+    borderRadius: isDragging.value ? '50%' :
         snapEdge.value === 'left' ? '0 25px 25px 0' : '25px 0 0 25px',
 }));
 
@@ -79,7 +88,7 @@ const tooltipStyle = computed(() => ({
     top: '60px', // 可以根据需要调整
     left: '5px', // 可以根据需要调整
 
-    
+
 }));
 
 // 组件挂载后初始化按钮位置
@@ -110,7 +119,7 @@ const startDrag = (e) => {
 
         // 边界吸附效果
         if (newX < -15) newX = -15 + (newX + 15) * 0.2;
-        if (newX > window.innerWidth - 35) 
+        if (newX > window.innerWidth - 35)
             newX = window.innerWidth - 35 + (newX - (window.innerWidth - 35)) * 0.2;
 
         newX = Math.max(-15, Math.min(newX, window.innerWidth - 35));
@@ -138,9 +147,9 @@ const snapToEdge = () => {
     const buttonCenterX = position.value.x + 25;
     const screenCenter = window.innerWidth / 2;
 
-    const targetX = buttonCenterX < screenCenter ? 
-        { x: 0, edge: 'left' } : 
-        { x: window.innerWidth  -65, edge: 'right' };
+    const targetX = buttonCenterX < screenCenter ?
+        { x: 0, edge: 'left' } :
+        { x: window.innerWidth - 65, edge: 'right' };
 
     // 弹性动画
     const startTime = Date.now();
@@ -172,16 +181,16 @@ const snapToEdge = () => {
     height: 50px;
     background: #2196F3;
     cursor: move;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    transition: 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition:
         transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28),
         border-radius 0.3s ease,
         background 0.3s ease;
-    z-index: 1000; 
+    z-index: 1000;
 }
 
 .floating-button.dragging {
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     background: #42A5F5;
 }
 
@@ -205,6 +214,7 @@ const snapToEdge = () => {
     opacity: 1;
     transition: none;
 }
+
 /* .floating-button :hover {
     
 } */
@@ -218,21 +228,23 @@ const snapToEdge = () => {
     justify-content: center;
     transition: transform 0.3s ease;
 }
+
 /* 新增提示框样式 */
 .floating-button-show {
     cursor: default;
     position: fixed;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.4);
     color: white;
     padding: 5px;
     border-radius: 15px;
     white-space: nowrap;
     transition: opacity 0.3s;
     z-index: 1000;
-    display: flex;               /* 使用 Flexbox 布局 */  
-    flex-direction: column;      /* 设置主轴为垂直方向 */  
-    gap: 10px;                  /* 设置项目之间的间隔 */    
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
+
 .floating-button-show button {
     display: flex;
     align-items: center;
@@ -240,11 +252,13 @@ const snapToEdge = () => {
     width: 30px;
     height: 30px;
     border-radius: 50%;
+    border: none;
     background-color: #fff;
     color: #000;
     font-size: 12px;
     cursor: pointer;
 }
+
 .floating-button-show button:hover {
     background-color: #e9e9e9;
 
@@ -262,23 +276,25 @@ const snapToEdge = () => {
     top: 160px;
     transform: translateY(-50%);
 }
+
 .floating-button-show.left::before {
     right: 100%;
-    border-right-color: rgba(0,0,0,0.8);
+    border-right-color: rgba(0, 0, 0, 0.8);
 }
 
 .floating-button-show.right::before {
     left: 100%;
-    border-left-color: rgba(0,0,0,0.8);
+    border-left-color: rgba(0, 0, 0, 0.8);
 }
+
 /* 跟随动画 */
 .floating-button-show {
-  transition: 
-    opacity 0.3s,
-    transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    transition:
+        opacity 0.3s,
+        transform 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
 .floating-button:hover .floating-button-show {
-  transform: translateY(-50%) scale(1.05);
+    transform: translateY(-50%) scale(1.05);
 }
 </style>

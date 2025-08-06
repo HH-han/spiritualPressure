@@ -4,13 +4,11 @@
         <BackgroundStyle />
         <div class="website-intro-web">
             <div class="back-button-web">
-                <button>
-                    <router-link to="/Home_5">
-                        <svg t="1739694592918" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4167" width="32" height="32">
-                            <path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#F55300" p-id="4168"></path><path d="M258.56 358.912l434.432 434.432a51.2 51.2 0 0 0 72.3968-72.3968L330.9568 286.5152A51.2 51.2 0 1 0 258.56 358.912z" fill="#F9F9F9" p-id="4169"></path>
-                            <path d="M258.56 712.192l434.432-434.432a51.2 51.2 0 0 1 72.448 72.3968l-434.4832 434.432A51.2 51.2 0 1 1 258.56 712.192z" fill="#F9F9F9" p-id="4170"></path>
-                        </svg>
-                    </router-link>
+                <button @click="back">
+                    <svg t="1739694592918" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4167" width="32" height="32">
+                        <path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#F55300" p-id="4168"></path><path d="M258.56 358.912l434.432 434.432a51.2 51.2 0 0 0 72.3968-72.3968L330.9568 286.5152A51.2 51.2 0 1 0 258.56 358.912z" fill="#F9F9F9" p-id="4169"></path>
+                        <path d="M258.56 712.192l434.432-434.432a51.2 51.2 0 0 1 72.448 72.3968l-434.4832 434.432A51.2 51.2 0 1 1 258.56 712.192z" fill="#F9F9F9" p-id="4170"></path>
+                    </svg>
                 </button>
             </div>
             <header class="header-web">
@@ -54,6 +52,13 @@
 <script setup>
 import { ref } from 'vue';
 import BackgroundStyle from '@/components/ThemeComponents/BackgroundStyle.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+// 返回
+const back = () => {
+    router.push('/systemhomeView');
+};
 
 // 数据
 const websiteName = ref('我的网站');
