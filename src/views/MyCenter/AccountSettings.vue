@@ -82,15 +82,10 @@
             </form>
         </div>
     </div>
-    <!-- 按钮 -->
-    <div>
-        <FloatingButton />
-    </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import FloatingButton from '../../components/ComponentButton/FloatingButton.vue';
 
 // 用户数据
 const username = ref('John Doe');

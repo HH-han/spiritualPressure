@@ -1,5 +1,4 @@
 <template>
-  <FloatingButton />
   <!-- 响应式设计 -->
   <div class="navbar_move">
     <div>
@@ -142,7 +141,6 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
-import NavigationBar from '../ResponseComponent/NavigationBar.vue';
 import { ref, onMounted } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import ThemeBackground from '../ThemeComponents/ThemeBackground.vue';

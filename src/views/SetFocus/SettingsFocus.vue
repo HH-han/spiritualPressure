@@ -1,5 +1,4 @@
 <template>
-  <FloatingButton />
   <div class="setting-container">
     <!-- 左侧导航 -->
     <aside class="setting-sidebar">
@@ -111,7 +110,6 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import FloatingButton from '../../components/ComponentButton/FloatingButton.vue';
 
 const router = useRouter()
 

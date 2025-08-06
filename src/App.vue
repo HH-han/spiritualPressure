@@ -1,12 +1,18 @@
 <template>
+  <!-- loading 加载中效果-->
   <div id="app">
     <RefreshLoad v-if="isLoading" />
     <router-view v-else />
+  </div>
+  <!-- 悬浮按钮 -->
+  <div>
+    <FloatingButton />
   </div>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
 import RefreshLoad from '@/components/TransitionalComponents/RefreshLoad.vue'
+import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
 const isLoading = ref(true)
 
 onMounted(() => {

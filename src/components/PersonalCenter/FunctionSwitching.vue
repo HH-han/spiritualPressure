@@ -1,5 +1,4 @@
 <template>
-  <FloatingButton />
   <div class="personalcenter-container">
     <!-- 侧边栏 -->
     <div class="personalcenter-sidebar">
@@ -70,7 +69,6 @@ import MyRelease from '@/views/MyCenter/MyRelease.vue';
 import MessageNotification from '@/views/MyCenter/MessageNotification.vue';
 import ChangePassword from '@/views/MyCenter/ChangePassword.vue';
 import PersonalCenter from '@/views/MyCenter/PersonalCenter.vue';
-import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
 import MyOrder from '@/views/MyCenter/MyOrder.vue';
 import DeleteOrder from '@/views/MyCenter/DeleteOrder.vue';
 import PersonalPosts from '@/views/MyCenter/PersonalPosts.vue';

@@ -1,5 +1,4 @@
 <template>
-    <FloatingButton />
     <div class="personalcenter-container personalcenter-reset">
         <!-- 侧边栏 -->
         <div class="personalcenter-sidebar">
@@ -31,7 +30,6 @@ import ActivitiesGroups from './ActivitiesGroups.vue';
 import TravelNews from './TravelNews.vue';
 import TravelTools from './TravelTools.vue';
 import ContentManagement from './ContentManagement.vue';
-import FloatingButton from '../../components/ComponentButton/FloatingButton.vue';
 
 const router = useRouter();
 

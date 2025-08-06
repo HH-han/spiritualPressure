@@ -186,9 +186,10 @@ const routes = [
 
 
 ]
-// 创建路由实例，指定路由历史模式和路由数组
+// 创建路由实例
+// 使用 createWebHistory 创建基于 HTML5 History 模式的路由
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 // 需要管理员权限的路由列表
