@@ -459,7 +459,6 @@ body {
   align-items: center;
   justify-content: center;
   gap: 16px;
-  background: rgba(251, 194, 23, 0.532);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: none;
   border-radius: 15px;
@@ -567,80 +566,16 @@ body {
   .nav {
     display: flex;
     flex-wrap: wrap;
-    /* 允许换行 */
     justify-content: space-between;
-    /* 或者其他对齐方式 */
     margin: -10px;
-    /* 解决外边距问题 */
   }
-}
-
-.navscenic,
-.navscenic_button {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-  margin: 20px 0;
-  gap: 20px;
-}
-
-.navscenic_button button,
-.navscenic_button-other {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgb(0, 153, 255);
-  border: none;
-  border-radius: 15px;
-  padding: 10px 12px;
-  width: 120px;
-  height: 40px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: rgb(255, 255, 255);
-  font-size: 12px;
-  font-weight: 500;
-  text-decoration: none;
-  min-width: 60px;
-  position: relative;
-  overflow: hidden;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  gap: 10px;
 }
 
 .content_5 {
   display: flex;
-  /* 启用 Flexbox */
   justify-content: center;
-  /* 水平居中 */
   gap: 25px;
 }
-
-/* 按钮悬停效果 */
-.navscenic_button button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.navscenic_button-other:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* 按钮点击效果 */
-.navscenic_button button:active {
-  transform: translateY(1px);
-}
-
-.navscenic_button-other:active {
-  transform: translateY(1px);
-}
-
 /* card */
 .blog-post-container {
   display: flex;
@@ -798,26 +733,42 @@ svg {
   height: 100%;
   background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   margin-bottom: 20px;
 }
 
 /* 按钮区域样式 */
 .recommend-left_button {
-  padding: 10px;
-  background-color: #f5f5f5;
+  padding: 0px 0px 10px 0px;
   border-bottom: 1px solid #eee;
 }
 
 .recommend-left_button button {
   width: 100%;
-  padding: 10px;
+  padding: 0.75rem 1.75rem;
   background-color: #ff9900;
   color: #ffffff;
   border: none;
-  border-radius: 4px;
+  border-radius: 15px;
   font-size: 16px;
   cursor: pointer;
+  transition: 0.5s ease;
+}
+
+.recommend-left_button button:hover {
+  transform: translateY(-2px);
+}
+.recommend-left_button button svg{
+  width: 20px;
+  height: 20px;
+  margin-left: 6px;
+}
+.recommend-left_boxshadow{
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: 0.5s ease;
+}
+.recommend-left_boxshadow:hover{ 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.218);
 }
 
 /* 推荐标题区域样式 */
@@ -828,7 +779,6 @@ svg {
   align-items: center;
   border-bottom: 1px solid #eee;
   flex-wrap: wrap;
-  /* 响应式调整 */
 }
 
 .recommend-left_tj h3 {
@@ -836,7 +786,6 @@ svg {
   font-size: 18px;
   color: #333333;
   flex: 1;
-  /* 确保标题占据剩余空间 */
 }
 
 .recommend-left_tj button {
@@ -848,7 +797,6 @@ svg {
   font-size: 14px;
   cursor: pointer;
   margin-left: 10px;
-  /* 添加间距 */
 }
 
 /* 推荐列表区域样式 */
@@ -1122,7 +1070,173 @@ svg {
     font-size: 1rem;
   }
 }
+/* 热门/最新容器 */
+/* 主容器样式 */
+.blog-post-container-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+/* 左按钮组样式 */
+.blog-post-container-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
 
+.blog-post-container-left-button {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  position: relative;
+}
+.blog-post-container-left-button svg{
+  margin-right: 10px;
+}
+/* 基本按钮样式 */
+.blog-post-container-left button,
+.blog-post-container-right button {
+  position: relative;
+  padding: 0.75rem 1.75rem;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* 热门/新鲜按钮样式 */
+.blog-post-container-left button,
+.blog-post-container-left-button button {
+  background: transparent;
+  color: #4a5568;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.blog-post-container-left button:hover,
+.blog-post-container-left-button button:hover {
+  background: rgba(0, 0, 0, 0.02);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+/* 写帖子按钮样式  */
+.blog-post-container-right button {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
+  padding: 0.85rem 2rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  position: relative;
+}
+
+.blog-post-container-right button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(239, 68, 68, 0.3);
+  background: linear-gradient(135deg, #fbbf24, #f87171);
+}
+
+.blog-post-container-right button:active {
+  transform: translateY(0);
+}
+
+/* 浮动动画 */
+.blog-post-container-right button::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  z-index: -1;
+  opacity: 0.4;
+  filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.blog-post-container-right button:hover::before {
+  opacity: 0.6;
+  filter: blur(12px);
+}
+
+/* 按钮的波纹效果 */
+.blog-post-container-left button::after,
+.blog-post-container-right button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+  z-index: -1;
+}
+
+.blog-post-container-left button:hover::after,
+.blog-post-container-right button:hover::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scale(20, 20);
+    opacity: 0;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .blog-post-container-center {
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.2rem;
+    border-radius: 12px;
+  }
+
+  .blog-post-container-left {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .blog-post-container-left-button {
+    order: 1;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .blog-post-container-left>button:not(.blog-post-container-left-button button) {
+    order: 2;
+  }
+
+  .blog-post-container-right {
+    width: 100%;
+    order: 3;
+  }
+
+  .blog-post-container-right>button {
+    width: 100%;
+  }
+}
 /* 按钮样式 */
 .attractions-modal-buttons button {
   background-color: #2F77F1;

@@ -1,71 +1,53 @@
 <template>
   <div class="more-recommendation-background">
     <div class="dropdown-menu-more">
-        <h1>更多推荐</h1>
-        <div class="dropdown-item_action-btn">
-            <span></span>
-            <input 
-                type="text" 
-                v-model="searchQuery"
-                placeholder="🔍 输入目的地"
-                @keyup.enter="handleSearch"
-            >
-        </div>
-        
-        <div class="recommendations-container">
-            <div 
-                v-for="(card, index) in filteredCards" 
-                :key="index"
-                class="more-recommended-card"
-            >
-                <div class="more-recommended-card__shine"></div>
-                <div class="more-recommended-card__glow"></div>
-                <div class="more-recommended-card__content">
-                    <div v-if="card.badge" class="more-recommended-card__badge">{{ card.badge }}</div>
-                    <div :style="{ '--bg-color': card.color }" class="more-recommended-card__image">
-                        <img :src="card.image" :alt="card.title" class="more-recommended-card__image-img">
-                    </div>
-                    <div class="more-recommended-card__text">
-                        <p class="more-recommended-card__title">{{ card.title }}</p>
-                        <p class="more-recommended-card__description">{{ card.description }}</p>
-                    </div>
-                    <div class="more-recommended-card__footer">
-                        <div class="more-recommended-card__price">￥{{ card.price }}</div>
-                        <div class="more-recommended-card__button" @click="() => handleCardClick(card)">
-                            <svg height="16" width="16" viewBox="0 0 24 24">
-                                <path
-                                    stroke-width="2"
-                                    stroke="currentColor"
-                                    d="M4 12H20M12 4V20"
-                                    fill="currentColor"
-                                ></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
+      <h1>更多推荐</h1>
+      <div class="dropdown-item_action-btn">
+        <span></span>
+        <input type="text" v-model="searchQuery" placeholder="🔍 输入目的地" @keyup.enter="handleSearch">
+      </div>
+
+      <div class="recommendations-container">
+        <div v-for="(card, index) in filteredCards" :key="index" class="more-recommended-card">
+          <div class="more-recommended-card__shine"></div>
+          <div class="more-recommended-card__glow"></div>
+          <div class="more-recommended-card__content">
+            <div v-if="card.badge" class="more-recommended-card__badge">{{ card.badge }}</div>
+            <div :style="{ '--bg-color': card.color }" class="more-recommended-card__image">
+              <img :src="card.image" :alt="card.title" class="more-recommended-card__image-img">
             </div>
+            <div class="more-recommended-card__text">
+              <p class="more-recommended-card__title">{{ card.title }}</p>
+              <p class="more-recommended-card__description">{{ card.description }}</p>
+            </div>
+            <div class="more-recommended-card__footer">
+              <div class="more-recommended-card__price">￥{{ card.price }}</div>
+              <div class="more-recommended-card__button" @click="() => handleCardClick(card)">
+                <svg height="16" width="16" viewBox="0 0 24 24">
+                  <path stroke-width="2" stroke="currentColor" d="M4 12H20M12 4V20" fill="currentColor"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="more-recommended-pagination" v-if="pagination.total > 0">
-            <button 
-                v-for="page in Math.ceil(pagination.total / pagination.pageSize)" 
-                :key="page"
-                @click="handlePageChange(page)"
-                :class="{ 'active': page === pagination.current }"
-            >
-                {{ page }}
-            </button>
-        </div>
-        <div class="more-recommend-button">
-            <button @click="close">
-                <span>关闭</span>
-            </button>
-        </div>
+      </div>
+      <div class="more-recommended-pagination" v-if="pagination.total > 0">
+        <button v-for="page in Math.ceil(pagination.total / pagination.pageSize)" :key="page"
+          @click="handlePageChange(page)" :class="{ 'active': page === pagination.current }">
+          {{ page }}
+        </button>
+      </div>
+      <div class="more-recommend-button">
+        <button @click="close">
+          <span>关闭</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted,defineExpose,defineEmits } from 'vue';
+import { ref, computed, onMounted, defineExpose, defineEmits } from 'vue';
 import request from '../../utils/request';
 import defaultImage from '@/assets/homeimage/VCG211401931282.jpg';
 import { useRouter } from 'vue-router';
@@ -92,7 +74,7 @@ const fetchRecommendations = async (params = {}) => {
   try {
     loading.value = true;
     error.value = null;
-    
+
     // 调用API获取数据
     const response = await request.get('/api/public/scenic', {
       params: {
@@ -101,12 +83,12 @@ const fetchRecommendations = async (params = {}) => {
         ...params
       }
     });
-    
+
     // 检查响应码
     if (response.code !== '0') {
       throw new Error(response.msg || '获取数据失败');
     }
-    
+
     // 处理返回数据
     cardsData.value = response.data.list.map(item => ({
       id: item.id,
@@ -119,10 +101,10 @@ const fetchRecommendations = async (params = {}) => {
       sales: item.sales,
       evaluation: item.evaluation
     }));
-    
+
     // 更新分页信息
     pagination.value.total = response.data.total;
-    
+
   } catch (err) {
     console.error('获取推荐数据失败:', err);
     error.value = err.message || '获取推荐数据失败，请稍后重试';
@@ -181,8 +163,8 @@ const filteredCards = computed(() => {
     return cardsData.value;
   }
   const query = searchQuery.value.toLowerCase();
-  return cardsData.value.filter(card => 
-    card.title.toLowerCase().includes(query) || 
+  return cardsData.value.filter(card =>
+    card.title.toLowerCase().includes(query) ||
     card.description.toLowerCase().includes(query)
   );
 });
@@ -253,42 +235,57 @@ defineExpose({
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* 更深的遮罩层 */
+  background-color: rgba(0, 0, 0, 0.6);
+  /* 更深的遮罩层 */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  -webkit-backdrop-filter: blur(5px); /* 为 Safari 和 iOS Safari 添加前缀 */
-  backdrop-filter: blur(5px); /* 背景模糊效果 */
+  -webkit-backdrop-filter: blur(5px);
+  /* 为 Safari 和 iOS Safari 添加前缀 */
+  backdrop-filter: blur(5px);
+  /* 背景模糊效果 */
 }
+
 .dropdown-menu-more {
-    max-width: 700px;
-    background-color: rgba(255, 255, 255, 0.9);  
-    min-width: 180px;
-    box-shadow: 0px 8px 16px 0px rgba(87, 206, 230, 0.2);
-    z-index: 1;
-    transition: opacity 0.5s ease;
-    border-radius: 15px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ccc; /* 可选: 添加边框 */  
-     
-  }
+  max-width: 700px;
+  background-color: rgba(255, 255, 255, 0.9);
+  min-width: 180px;
+  box-shadow: 0px 8px 16px 0px rgba(87, 206, 230, 0.2);
+  z-index: 1;
+  transition: opacity 0.5s ease;
+  border-radius: 15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  /* 可选: 添加边框 */
+
+}
+
 .recommendations-container {
-    display: grid;  
-    grid-template-columns: repeat(3, 1fr); /* 三列均分 */  
-    gap: 16px;  
-    max-height: 400px;  
-    overflow-y: auto;  
-    padding: 8px;  
-} 
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 三列均分 */
+  gap: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding: 8px;
+}
+
+.recommendations-container::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari */
+}
+
 .more-recommended-card {
   --card-bg: #ffffff;
   --card-accent: #7c3aed;
@@ -311,12 +308,10 @@ defineExpose({
 .more-recommended-card__shine {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 40%,
-    rgba(255, 255, 255, 0.8) 50%,
-    rgba(255, 255, 255, 0) 60%
-  );
+  background: linear-gradient(120deg,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(255, 255, 255, 0) 60%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -324,11 +319,9 @@ defineExpose({
 .more-recommended-card__glow {
   position: absolute;
   inset: -10px;
-  background: radial-gradient(
-    circle at 50% 0%,
-    rgba(124, 58, 237, 0.3) 0%,
-    rgba(124, 58, 237, 0) 70%
-  );
+  background: radial-gradient(circle at 50% 0%,
+      rgba(124, 58, 237, 0.3) 0%,
+      rgba(124, 58, 237, 0) 70%);
   opacity: 0;
   transition: opacity 0.5s ease;
 }
@@ -372,25 +365,23 @@ defineExpose({
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-      circle at 30% 30%,
+  background: radial-gradient(circle at 30% 30%,
       rgba(255, 255, 255, 0.1) 0%,
-      transparent 30%
-    ),
-    repeating-linear-gradient(
-      45deg,
+      transparent 30%),
+    repeating-linear-gradient(45deg,
       rgba(139, 92, 246, 0.1) 0px,
       rgba(139, 92, 246, 0.1) 2px,
       transparent 2px,
-      transparent 4px
-    );
+      transparent 4px);
   opacity: 0.5;
 }
-.more-recommended-card__image .more-recommended-card__image-img{
+
+.more-recommended-card__image .more-recommended-card__image-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .more-recommended-card__text {
   display: flex;
   flex-direction: column;
@@ -504,6 +495,7 @@ defineExpose({
   0% {
     background-position: -100% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
@@ -513,64 +505,77 @@ defineExpose({
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.2);
   }
+
   100% {
     transform: scale(1);
   }
 }
+
 .dropdown-item_action-btn {
-    padding: 8px 12px;  
-    border: none;   
-    cursor: pointer;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
 }
+
 .card_space-container {
-    width: 100%;
-    height: auto;
-    display: grid; /* 启用Grid布局 */  
-    grid-template-columns: repeat(3, auto); /* 定义2列 */  
-    justify-content: center; /* 水平居中对齐 */ 
-    gap: 20px; 
+  width: 100%;
+  height: auto;
+  display: grid;
+  /* 启用Grid布局 */
+  grid-template-columns: repeat(3, auto);
+  /* 定义2列 */
+  justify-content: center;
+  /* 水平居中对齐 */
+  gap: 20px;
 
 }
+
 .dropdown-item_action-btn input {
   width: 300px;
   border: none;
   outline: none;
   font-size: 16px;
-  padding: 8px 12px;  
-  border: none;  
+  padding: 8px 12px;
+  border: none;
   background-color: #ffffff;
-  border: 2px solid #ccc; 
+  border: 2px solid #ccc;
   cursor: pointer;
   border-radius: 10px;
 }
+
 .dropdown-item_action-btn input:hover {
   border: 2px solid #f8e340;
 }
+
 .more-recommend-button {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
+
 .more-recommend-button button {
-    width: 100px;
-    height: 40px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background-color: #ffffff;
-    color: #E50087;
-    text-align: center;
-    cursor: pointer;
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  color: #E50087;
+  text-align: center;
+  cursor: pointer;
 }
+
 .more-recommend-button button:hover {
-    background-color: #E50087;
-    color: #000;
+  background-color: #E50087;
+  color: #000;
 }
+
 /* 分页容器样式 */
 .more-recommended-pagination {
   display: flex;
