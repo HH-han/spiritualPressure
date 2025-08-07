@@ -5,14 +5,10 @@
       <Home_2 />
     </header>
     <!-- 轮播图 -->
-    <div class="banner" @mouseover="stopAutoPlay" @mouseleave="startAutoPlay">
-      <div class="slide-container" @mouseenter="stopAutoPlay" @mouseleave="startAutoPlay" @touchstart="handleTouchStart"
-        @touchend="handleTouchEnd">
-        <transition-group name="slide" tag="div" class="slide-track" :style="trackStyle">
-          <div v-for="(img, index) in images" :key="index" class="slide-item"
-            :class="{ 'active': index === currentIndex }">
-            <img :src="img" :alt="`Slide ${index}`" @load="handleImageLoad" class="carousel-image">
-          </div>
+    <div class="banner">
+      <div class="banner-content-SeamlessCarousel">
+        <transition-group>
+          <SeamlessCarousel :items="slides" :interval="5000" :transitionDuration="700" aspectRatio="16/9" />
         </transition-group>
       </div>
       <!-- 搜索栏 -->
@@ -22,13 +18,6 @@
         <div class="search_input">
           <input v-model="searchKeyword" type="text" placeholder="🔍 输入关键词" @keyup.enter="search">
           <button class="search_button-home-5" @click="search">搜索</button>
-        </div>
-      </div>
-      <!-- 右侧图片展示 -->
-      <div class="search_image_mobile">
-        <div v-for="(image, index) in images" :key="index" class="search_image_mobile-content"
-          :class="{ 'active': index === currentIndex }" @click="currentIndex = index">
-          <img :src="image" alt="Thumbnail" class="thumbnail">
         </div>
       </div>
     </div>
@@ -397,8 +386,38 @@ import BottomPage from '@/components/DisplayBox/BottomPage.vue'
 import CollectionTips from '@/components/PromptComponent/CollectionTips.vue'
 import PositioningProgress from '@/components/PromptComponent/PositioningProgress.vue'
 import AttractionsDisplay from '@/views/HomePage/AttractionsDisplay.vue'
+import SeamlessCarousel from '@/views/HomePage/SeamlessCarousel.vue'
 import { ElMessage } from "element-plus";
 
+// 轮播图数据
+const slides = [
+  {
+    image: 'https://picsum.photos/1200/400?random=1',
+    title: '第一张幻灯片',
+    description: '这是第一张幻灯片的描述内容'
+  },
+  {
+    image: 'https://picsum.photos/1200/400?random=2',
+    title: '第二张幻灯片',
+    description: '这是第二张幻灯片的描述内容'
+  },
+  {
+    image: 'https://picsum.photos/1200/400?random=3',
+    title: '第三张幻灯片',
+    description: '这是第三张幻灯片的描述内容'
+  },
+  {
+    image: 'https://picsum.photos/1200/400?random=3',
+    title: '第四张幻灯片',
+    description: '这是第四张幻灯片的描述内容'
+  },
+  {
+    image: 'https://picsum.photos/1200/400?random=3',
+    title: '第五张幻灯片',
+    description: '这是第五张幻灯片的描述内容'
+  }
+]
+// 路由
 const router = useRouter()
 
 // 控制显示状态
@@ -409,82 +428,12 @@ const isshowComponent = ref(false)
 const currentIndex = ref(0)
 const interval = ref(null)
 const startX = ref(0)
-const imagesModules = import.meta.glob('@/assets/homeimage/*.jpg', { eager: true });
-
-const images = ref(Object.values(imagesModules).map(module => module.default));
-
 // 搜索相关
 const searchKeyword = ref('')
 
 // 组件引用
 const positioningprogress = ref(null)
 const collectiontips = ref(null)
-// 预加载图片
-const loadedImages = ref(Array(images.value.length).fill(false))
-const preloadImages = () => {
-  images.value.forEach((img, index) => {
-    const image = new Image()
-    image.src = img
-    image.onload = () => {
-      loadedImages.value[index] = true
-    }
-  })
-}
-
-// 计算轨道偏移量
-const trackStyle = computed(() => ({
-  transform: `translateX(-${currentIndex.value * 100}%)`
-}))
-
-// 图片加载完成处理
-const handleImageLoad = () => {
-  // 可以添加加载完成后的回调
-}
-
-// 下一张
-const nextImage = () => {
-  if (images.value.length <= 1) return
-  currentIndex.value = (currentIndex.value + 1) % images.value.length
-  resetAutoPlay()
-}
-
-// 上一张
-const prevImage = () => {
-  if (images.value.length <= 1) return
-  currentIndex.value = (currentIndex.value - 1 + images.value.length) % images.value.length
-  resetAutoPlay()
-}
-
-// 启动自动播放
-const startAutoPlay = () => {
-  if (images.value.length <= 1) return
-  stopAutoPlay()
-  interval.value = setInterval(nextImage, 3000)
-}
-
-// 停止自动播放
-const stopAutoPlay = () => {
-  clearInterval(interval.value)
-}
-
-// 重置自动播放计时器
-const resetAutoPlay = () => {
-  stopAutoPlay()
-  startAutoPlay()
-}
-
-// 触摸事件处理
-const handleTouchStart = (e) => {
-  startX.value = e.touches[0].clientX
-}
-
-const handleTouchEnd = (e) => {
-  const endX = e.changedTouches[0].clientX
-  const diff = startX.value - endX
-
-  if (diff > 50) nextImage()  // 向左滑动
-  if (diff < -50) prevImage() // 向右滑动
-}
 // 页面跳转
 const navigateTo = (path) => {
   router.push(path);
@@ -685,13 +634,11 @@ const validatePageInput = () => {
 }
 // 生命周期钩子
 onMounted(() => {
-  preloadImages()
-  startAutoPlay()
   fetchBlogs()
 })
 
 onBeforeUnmount(() => {
-  stopAutoPlay()
+  if (interval.value) clearInterval(interval.value)
 })
 </script>
 <style scoped>
