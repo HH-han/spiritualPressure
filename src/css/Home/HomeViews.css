@@ -896,7 +896,6 @@ svg {
 
 /* 模态框内容容器 */
 .attractions-modal-content {
-  width: 90%;
   max-width: 900px;
   max-height: 90vh;
   background: linear-gradient(145deg, #ffffff, #f8f9fa);
@@ -1202,7 +1201,7 @@ svg {
   }
 }
 
-/* Responsive design */
+/* 响应式设计 */
 @media (max-width: 768px) {
   .blog-post-container-center {
     flex-direction: column;
@@ -1261,7 +1260,6 @@ svg {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  /* 按钮之间的间距 */
   margin-top: 20px;
 }
 
@@ -1351,40 +1349,31 @@ svg {
   /* 在手机屏幕上调整样式 */
   .recommend-left_tj {
     flex-direction: column;
-    /* 垂直排列 */
     align-items: flex-start;
-    /* 顶部对齐 */
   }
 
   .recommend-left_tj button {
     margin-left: 0;
-    /* 移除左边距 */
     margin-top: 10px;
-    /* 添加顶边距 */
   }
 
   .recommend-left_js h3,
   .recommend-left_zx h3 {
     font-size: 14px;
-    /* 减小字体大小 */
   }
 
   .recommend-left_js p,
   .recommend-left_zx p {
     font-size: 12px;
-    /* 减小字体大小 */
   }
 
   .recommend-left_zx button {
     padding: 3px 8px;
-    /* 减小按钮大小 */
     font-size: 12px;
-    /* 减小字体大小 */
   }
 
   .content_5 {
     flex-direction: column;
-    /* 在小屏幕上改为垂直布局 */
     width: 100%;
     height: auto;
     display: flex;
@@ -1399,7 +1388,6 @@ svg {
 
   .modal-content {
     width: 90%;
-    /* 在小屏幕上宽度更大 */
     padding: 20px;
   }
 
