@@ -26,12 +26,10 @@
 
 .card_wrapper {
   flex: 1 1 20%;
-  /* 每个卡片占据20%的宽度，一行最多显示四个 */
 }
 
 .fileinputstyle_jd {
   display: none;
-  /* 隐藏原始file输入 */
 }
 
 .custom-file-upload_jd {
@@ -41,25 +39,17 @@
   display: inline-block;
   cursor: pointer;
   background-color: #ffffff;
-  /* 自定义背景色 */
   color: rgb(0, 0, 0);
-  /* 文本颜色 */
   border-radius: 10px;
-  /* 圆角 */
   transition: background-color 0.3s ease;
-  /* 过渡效果 */
 }
 
 .ProgramLogic {
   padding: 10px 0px 10px 0px;
   display: flex;
-  /* 使用Flexbox布局 */
   flex-direction: column;
-  /* 垂直排列 */
   justify-content: center;
-  /* 垂直居中对齐 */
   align-items: center;
-  /* 水平居中对齐 */
   gap: 20px;
   background-color: #f5f5f5;
   box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
