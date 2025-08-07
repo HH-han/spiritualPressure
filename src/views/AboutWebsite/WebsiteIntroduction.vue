@@ -76,10 +76,10 @@ const currentYear = new Date().getFullYear();
 
 <style scoped>
 .website-intro-web {
-    position: absolute;         /* 使用绝对定位 */  
-    top: 50%;                  /* 离顶部距离 50% */  
-    left: 50%;                 /* 离左边距离 50% */  
-    transform: translate(-50%, -50%); /* 进行移动，使其真正居中 */ 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     max-width: 800px;
     margin: 0 auto;
     padding: 50px;

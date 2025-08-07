@@ -395,27 +395,27 @@ import { ElMessage } from "element-plus";
 // 轮播图数据
 const slides = [
   {
-    image: 'https://picsum.photos/1200/400?random=1',
+    image: new URL('@/assets/homeimage/VCG41N904763840.jpg', import.meta.url).href,
     title: '第一张幻灯片',
     description: '这是第一张幻灯片的描述内容'
   },
   {
-    image: 'https://picsum.photos/1200/400?random=2',
+    image: new URL('@/assets/homeimage/VCG41N1350796318.jpg', import.meta.url).href,
     title: '第二张幻灯片',
     description: '这是第二张幻灯片的描述内容'
   },
   {
-    image: 'https://picsum.photos/1200/400?random=3',
+    image: new URL('@/assets/homeimage/VCG41N1394286655.jpg', import.meta.url).href,
     title: '第三张幻灯片',
     description: '这是第三张幻灯片的描述内容'
   },
   {
-    image: 'https://picsum.photos/1200/400?random=4',
+    image: new URL('@/assets/homeimage/VCG41N1688466328.jpg', import.meta.url).href,
     title: '第四张幻灯片',
     description: '这是第四张幻灯片的描述内容'
   },
   {
-    image: 'https://picsum.photos/1200/400?random=5',
+    image: new URL('@/assets/homeimage/VCG211401931282.jpg', import.meta.url).href,
     title: '第五张幻灯片',
     description: '这是第五张幻灯片的描述内容'
   }
