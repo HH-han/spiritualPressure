@@ -1,10 +1,4 @@
 <template>
-  <!-- 响应式设计 -->
-  <div class="navbar_move">
-    <div>
-      <navigation-bar />
-    </div>
-  </div>
   <!-- 导航栏 -->
   <div class="navbar-background-1">
     <div class="navbar-background-2">
@@ -28,8 +22,10 @@
                 <button class="dropdown-item_action-btn2" style="border-radius: 0 0 10px 10px"
                   @click="navigateTo('/SettingsFocus')">设置中心</button>
                 <button class="dropdown-item_action-btn2" @click="navigateTo('/WebsiteIntroduction')">关于我们</button>
-                <button class="dropdown-item_action-btn2" v-if="userInfo.username === 'admin'"@click="navigateTo('/testpage')">测试页面</button>
-                <button class="dropdown-item_action-btn2" style="border-radius: 10px 10px 0 0"@click="navigateTo('aboutweb')">网站介绍</button>
+                <button class="dropdown-item_action-btn2" v-if="userInfo.username === 'admin'"
+                  @click="navigateTo('/testpage')">测试页面</button>
+                <button class="dropdown-item_action-btn2" style="border-radius: 10px 10px 0 0"
+                  @click="navigateTo('aboutweb')">网站介绍</button>
                 <button class="dropdown-item_action-btn2" @click="navigateTo('/strategygroup')">攻略群</button>
               </div>
             </div>
@@ -195,7 +191,7 @@ const logout = () => {
     isLoggedIn.value = false;
     return;
   }
-   
+
   ElMessageBox.confirm('您确定要退出登录吗？', '确认操作', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',

@@ -1,65 +1,62 @@
 <template>
-    <div class="navigationbar-container">
-      <!-- 顶部导航栏 -->
-      <header>
-        <Header />
-      </header>
-      
-      <!-- 主内容区域 -->
-      <main class="main-content">
-        <!-- 轮播图 -->
-        <div class="swiper-container">
-          <div class="swiper-slide" :style="{ backgroundImage: 'url(' + currentSlide.image + ')' }">
-            <div>
-              <div class="swiper-title">{{ currentSlide.title }}</div>
-              <div class="swiper-subtitle">{{ currentSlide.subtitle }}</div>
-            </div>
-            <div class="swiper-indicators">
-              <div v-for="(slide, index) in slides" 
-                   :key="index" 
-                   class="swiper-indicator" 
-                   :class="{ active: currentIndex === index }"
-                   @click="currentIndex = index"></div>
-            </div>
+  <!-- 导航栏 -->
+  <div>
+    <Header />
+  </div>
+  <div class="navigationbar-container">
+    <!-- 主内容区域 -->
+    <main class="main-content">
+      <!-- 轮播图 -->
+      <div class="swiper-container">
+        <div class="swiper-slide" :style="{ backgroundImage: 'url(' + currentSlide.image + ')' }">
+          <div>
+            <div class="swiper-title">{{ currentSlide.title }}</div>
+            <div class="swiper-subtitle">{{ currentSlide.subtitle }}</div>
+          </div>
+          <div class="swiper-indicators">
+            <div v-for="(slide, index) in slides" :key="index" class="swiper-indicator"
+              :class="{ active: currentIndex === index }" @click="currentIndex = index"></div>
           </div>
         </div>
-        
-        <!-- 快捷入口 -->
-        <div class="quick-entries">
-          <div v-for="(entry, index) in entries" :key="entry.title" class="entry-item fade-in" :class="'delay-' + index">
-            <div class="entry-icon">
-              <i :class="entry.icon"></i>
-            </div>
-            <div class="entry-title">{{ entry.title }}</div>
+      </div>
+
+      <!-- 快捷入口 -->
+      <div class="quick-entries">
+        <div v-for="(entry, index) in entries" :key="entry.title" class="entry-item fade-in" :class="'delay-' + index">
+          <div class="entry-icon">
+            <i :class="entry.icon"></i>
+          </div>
+          <div class="entry-title">{{ entry.title }}</div>
+        </div>
+      </div>
+
+      <!-- 热门推荐 -->
+      <div class="section-title fade-in delay-3">
+        <h2>热门推荐</h2>
+        <button @click="viewmore">查看更多</button>
+      </div>
+
+      <div class="hot-recommend">
+        <div v-for="(item, index) in hotItems" :key="item.id" class="hot-item fade-in" :class="'delay-' + (index + 4)"
+          @click="OrderDetails(item.id)">
+          <div class="hot-img" :style="{ backgroundImage: 'url(' + item.coverImage + ')' }">
+            <div class="hot-tag">点赞{{ item.likes }}</div>
+          </div>
+          <div class="hot-content">
+            <div class="hot-title">{{ item.title }}</div>
+            <div class="hot-desc">{{ item.content }}</div>
+            <div class="hot-price">¥{{ item.price }} <span>¥{{ item.oldPrice }}</span></div>
           </div>
         </div>
-        
-        <!-- 热门推荐 -->
-        <div class="section-title fade-in delay-3">
-          <h2>热门推荐</h2>
-          <button @click="viewmore">查看更多</button>
-        </div>
-        
-        <div class="hot-recommend">
-            <div v-for="(item, index) in hotItems" :key="item.id" class="hot-item fade-in" :class="'delay-' + (index + 4)" @click="OrderDetails(item.id)">
-                <div class="hot-img" :style="{ backgroundImage: 'url(' + item.coverImage + ')' }">
-                <div class="hot-tag">点赞{{ item.likes }}</div>
-                </div>
-                <div class="hot-content">
-                <div class="hot-title">{{ item.title }}</div>
-                <div class="hot-desc">{{ item.content }}</div>
-                <div class="hot-price">¥{{ item.price }} <span>¥{{ item.oldPrice }}</span></div>
-                </div>
-            </div>
-        </div>
-      </main>
-      
-      <!-- 底部导航 -->
-      <footer>
-        <Footer />
-      </footer>
-      
-    </div>
+      </div>
+    </main>
+
+    <!-- 底部导航 -->
+    <footer>
+      <Footer />
+    </footer>
+
+  </div>
 </template>
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
@@ -104,7 +101,7 @@ const OrderDetails = (blogsId) => {
           name: selectedBlog.title,
           price: selectedBlog.price,
           image: selectedBlog.coverImage,
-          details:selectedBlog.content
+          details: selectedBlog.content
         })
       }
     })

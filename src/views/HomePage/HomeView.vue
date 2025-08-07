@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <!-- 顶部导航栏 -->
     <header>
       <Home_2 />
@@ -138,9 +138,7 @@
           <div class="recommend-left_boxshadow">
             <div class="recommend-left_tj">
               <h3>攻略推荐</h3>
-              <router-link to="/RecommendAtion">
-                <button>更多</button>
-              </router-link>
+              <button @click="navigateTo('/RecommendAtion')">更多</button>
             </div>
             <div class="recommend-left_list">
               <div class="recommend-left_imga">
@@ -374,6 +372,10 @@
       <BottomPage />
     </footer>
   </div>
+  <!-- 移动端适配 -->
+  <div class="navbar_move">
+    <NavigationBar />
+  </div>
 </template>
 <script setup>
 import { getAttractionBlogs, likeAttraction, collectAttraction } from '@/api/travel'
@@ -387,6 +389,7 @@ import CollectionTips from '@/components/PromptComponent/CollectionTips.vue'
 import PositioningProgress from '@/components/PromptComponent/PositioningProgress.vue'
 import AttractionsDisplay from '@/views/HomePage/AttractionsDisplay.vue'
 import SeamlessCarousel from '@/views/HomePage/SeamlessCarousel.vue'
+import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue';
 import { ElMessage } from "element-plus";
 
 // 轮播图数据
@@ -407,12 +410,12 @@ const slides = [
     description: '这是第三张幻灯片的描述内容'
   },
   {
-    image: 'https://picsum.photos/1200/400?random=3',
+    image: 'https://picsum.photos/1200/400?random=4',
     title: '第四张幻灯片',
     description: '这是第四张幻灯片的描述内容'
   },
   {
-    image: 'https://picsum.photos/1200/400?random=3',
+    image: 'https://picsum.photos/1200/400?random=5',
     title: '第五张幻灯片',
     description: '这是第五张幻灯片的描述内容'
   }

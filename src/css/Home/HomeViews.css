@@ -42,7 +42,6 @@ body {
 .banner {
   position: relative;
   width: 100%;
-  max-height: 100vh;
   overflow: hidden;
   background: #f8f8f8;
 }
@@ -1126,143 +1125,6 @@ svg {
   margin-top: 20px;
 }
 
-@media (max-width: 768px) {
-
-  /* 轮播图 */
-  .banner {
-    width: 100%;
-    height: 300px;
-    display: none;
-  }
-
-  /* 景点展示 */
-  .backgroundgradient {
-    display: none;
-  }
-
-  /* 底部栏 */
-  .bottom {
-    display: none;
-  }
-
-  .card_alignment {
-    display: flex;
-    flex-direction: column;
-    background-color: #ffffff;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    overflow: hidden;
-    height: 100%;
-  }
-
-  .card {
-    width: 80%;
-    margin-bottom: 20px;
-  }
-
-  .card__content {
-    padding: 10px;
-  }
-
-  .card__title {
-    font-size: 16px;
-  }
-
-  .card__description {
-    font-size: 14px;
-  }
-
-  .card__link {
-    font-size: 14px;
-  }
-
-  .blog-post {
-    gap: 15px;
-    min-width: 250px;
-    height: auto;
-    margin: 20px;
-  }
-
-  .blog-post-image {
-    flex: none;
-    height: 200px;
-  }
-
-  .blog-post_buy {
-    margin-left: 0;
-    flex-direction: row;
-  }
-
-  .blog-post_math {
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-
-  .blog-post_mb {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .flex-align_right {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  /* 在手机屏幕上调整样式 */
-  .recommend-left_tj {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .recommend-left_tj button {
-    margin-left: 0;
-    margin-top: 10px;
-  }
-
-  .recommend-left_js h3,
-  .recommend-left_zx h3 {
-    font-size: 14px;
-  }
-
-  .recommend-left_js p,
-  .recommend-left_zx p {
-    font-size: 12px;
-  }
-
-  .recommend-left_zx button {
-    padding: 3px 8px;
-    font-size: 12px;
-  }
-
-  .content_5 {
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-  }
-
-  .search_input {
-    display: none;
-  }
-
-  .modal-content {
-    width: 90%;
-    padding: 20px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  p {
-    font-size: 14px;
-  }
-}
-
 /* 顶部导航栏 */
 .navbar_move {
   display: none;
@@ -1678,17 +1540,154 @@ svg {
 }
 
 @media (max-width: 768px) {
+  /* 顶部栏 */
+  .navbar-background-1{
+    display: none;
+  }
+  /* 轮播图 */
+  .banner {
+    width: 100%;
+    height: 300px;
+    display: none;
+  }
+
+  /* 景点展示 */
+  .backgroundgradient {
+    display: none;
+  }
+
+  /* 底部栏 */
+  .bottom {
+    display: none;
+  }
+
+  .card_alignment {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .card {
+    width: 80%;
+    margin-bottom: 20px;
+  }
+
+  .card__content {
+    padding: 10px;
+  }
+
+  .card__title {
+    font-size: 16px;
+  }
+
+  .card__description {
+    font-size: 14px;
+  }
+
+  .card__link {
+    font-size: 14px;
+  }
+
+  .blog-post {
+    gap: 15px;
+    min-width: 250px;
+    height: auto;
+    margin: 20px;
+  }
+
+  .blog-post-image {
+    flex: none;
+    height: 200px;
+  }
+
+  .blog-post_buy {
+    margin-left: 0;
+    flex-direction: row;
+  }
+
+  .blog-post_math {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .blog-post_mb {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .flex-align_right {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* 在手机屏幕上调整样式 */
+  .recommend-left_tj {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .recommend-left_tj button {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+
+  .recommend-left_js h3,
+  .recommend-left_zx h3 {
+    font-size: 14px;
+  }
+
+  .recommend-left_js p,
+  .recommend-left_zx p {
+    font-size: 12px;
+  }
+
+  .recommend-left_zx button {
+    padding: 3px 8px;
+    font-size: 12px;
+  }
+
+  .content_5 {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .search_input {
+    display: none;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
   .navbar_move {
     display: block;
     width: 100%;
     height: 100%;
   }
-
+  
   .navbar-home-2 {
     display: none;
 
   }
-
   .navbar {
     display: none;
   }

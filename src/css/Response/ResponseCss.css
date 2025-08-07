@@ -554,3 +554,12 @@
     width: 0%;
     transition: width 0.3s ease;
 }
+@media (min-width: 780px) {
+    .navigationbar {
+        display: none;
+    }
+    
+    .bottom-nav-container{
+        display: none;
+    }
+}

@@ -77,7 +77,6 @@ import OrderDetails from '@/views/MyCenter/OrderDetails.vue'
 import ItemPurchase from '@/views/MyCenter/ItemPurchase.vue'
 import AccountSettings from '@/views/MyCenter/AccountSettings.vue'
 // 响应页面
-import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue'
 import ViewMore from '@/views/ResponseView/ViewMore.vue'
 import ViewOrder from '@/views/ResponseView/ViewOrder.vue'
 import ViewDiscover from '@/views/ResponseView/ViewDiscover.vue'
@@ -165,7 +164,6 @@ const routes = [
   // 账户管理
   {path: '/accountsettings',name: 'accountsettings',component: AccountSettings},
   // 响应页面
-  {path: '/navigationbar',name: 'navigationbar',component: NavigationBar},
   {path: '/viewmore',name: 'viewmore',component: ViewMore},
   {path: '/vieworder',name: 'vieworder',component: ViewOrder},
   {path: '/viewdiscover',name: 'viewdiscover',component: ViewDiscover},
