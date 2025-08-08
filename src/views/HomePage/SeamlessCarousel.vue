@@ -10,6 +10,7 @@
                         <div class="slide-overlay"></div>
                         <div class="slide-caption" v-if="items[items.length - 1].title">
                             <h3>{{ items[items.length - 1].title }}</h3>
+                            <p v-if="items[items.length - 1].location">{{ items[items.length - 1].location }}</p>
                             <p v-if="items[items.length - 1].description">{{ items[items.length - 1].description }}</p>
                         </div>
                     </div>
@@ -22,6 +23,7 @@
                         <div class="slide-overlay"></div>
                         <div class="slide-caption" v-if="item.title">
                             <h3>{{ item.title }}</h3>
+                            <p v-if="item.location">{{ item.location }}</p>
                             <p v-if="item.description">{{ item.description }}</p>
                         </div>
                     </div>
@@ -34,6 +36,7 @@
                         <div class="slide-overlay"></div>
                         <div class="slide-caption" v-if="items[0].title">
                             <h3>{{ items[0].title }}</h3>
+                            <p v-if="items[0].location">{{ items[0].location }}</p>
                             <p v-if="items[0].description">{{ items[0].description }}</p>
                         </div>
                     </div>

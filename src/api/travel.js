@@ -47,3 +47,14 @@ export function collectAttraction(id) {
     method: 'post'
   })
 }
+/**
+ * 轮播列表
+ * @param {String} id
+ * @returns {Promise}
+ * */
+export function getSlideshow() {
+  return request({
+    url: `/api/public/travelcarousel`,
+    method: 'get'
+  })
+}

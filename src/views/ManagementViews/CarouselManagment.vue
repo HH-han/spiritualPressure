@@ -10,7 +10,7 @@
                     <button class="btn search-btn" @click="handleSearch">搜索</button>
                     <button class="btn delete-btn" @click="handleReset">批量删除</button>
                 </div>
-                <button class="btn add-btn" @click="showAddDialog">新增笔记</button>
+                <button class="btn add-btn" @click="showAddDialog">新增轮播</button>
             </div>
             <!-- 数据表格 -->
             <div class="data-table-container">
@@ -29,13 +29,13 @@
                                         class="ui-checkbox" />
                                 </td>
                                 <td>{{ card.id }}</td>
-                                <td>{{ card.name }}</td>
+                                <td>{{ card.title }}</td>
                                 <td>
                                     <img :src="card.image" alt="图片" style="width: 35px; height: 35px;"
                                         @click="triggerFileInput(card)" />
                                 </td>
-                                <td>{{ card.description.substring(0, 25) }}</td>
-                                <td>{{ card.details.substring(0, 35) }}...</td>
+                                <td>{{ card.description.substring(0, 25) }}...</td>
+                                <td>{{ card.location.substring(0, 35) }}...</td>
                                 <td>{{ formatDate(card.createdAt) }}</td>
                                 <td>{{ formatDate(card.updatedAt) }}</td>
                                 <td class="table-btn-display">
@@ -62,7 +62,7 @@
                     <form @submit.prevent="submitForm" class="form-container">
                         <div class="form-row">
                             <div class="form-group">
-                                <label>笔记图片:</label>
+                                <label>轮播图片:</label>
                                 <input type="file" @change="handleFileUpload" class="file-upload-input"
                                     ref="fileInput" />
                                 <!-- 自定义的按钮 -->
@@ -74,16 +74,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>景点标题:</label>
-                                <input v-model="formData.name" required />
+                                <label>轮播标题:</label>
+                                <input v-model="formData.title" required />
                             </div>
                             <div class="form-group">
-                                <label>景点内容:</label>
+                                <label>轮播内容:</label>
                                 <input v-model="formData.description" required />
                             </div>
                             <div class="form-group">
-                                <label>景点详情:</label>
-                                <input v-model="formData.details" required />
+                                <label>轮播地点:</label>
+                                <input v-model="formData.location" required />
                             </div>
                         </div>
                         <!-- 创建修改时间 -->
@@ -123,11 +123,11 @@ import request from '@/utils/request';
 
 const columns = [
     { key: 'checked', title: '多选' },
-    { key: 'id', title: '景点ID' },
-    { key: 'name', title: '景点名称' },
-    { key: 'images', title: '图片' },
-    { key: 'description', title: '景点简介' },
-    { key: 'details', title: '景点详情' },
+    { key: 'id', title: '轮播ID' },
+    { key: 'title', title: '轮播标题' },
+    { key: 'image', title: '轮播图片' },
+    { key: 'description', title: '轮播简介' },
+    { key: 'location', title: '轮播地点' },
     { key: 'createdAt', title: '创建时间' },
     { key: 'updatedAt', title: '更新时间' },
 ];
@@ -140,10 +140,10 @@ const showDialog = ref(false);
 const isEditing = ref(false);
 const formData = ref({
     id: '',
-    name: '',
+    title: '',
     description: '',
     image: '',
-    details: '',
+    location: '',
     createdAt: '',
     updatedAt: '',
 });
@@ -190,11 +190,11 @@ const fetchScenic = async () => {
             pageSize: pageSize.value,
             keyword: searchKeyword.value
         };
-        const response = await request.get('/api/public/travelrecommend', { params });
+        const response = await request.get('/api/public/travelcarousel', { params });
         cards.value = response.data.list;
         total.value = response.data.total;
     } catch (error) {
-        console.error('获取笔记数据失败:', error);
+        console.error('获取数据失败:', error);
     }
 };
 
@@ -204,9 +204,9 @@ const showAddDialog = () => {
     formData.value = {
         id: '',
         title: '',
-        subtitle: '',
+        description: '',
         image: '',
-        price: '',
+        location: '',
         createdAt: '',
         updatedAt: '',
     };
@@ -234,17 +234,17 @@ const submitForm = async () => {
         // 自动设置时间
         if (isEditing.value) {
             formData.value.updatedAt = new Date().toISOString();
-            await request.put(`/api/public/travelrecommend/${formData.value.id}`, formData.value);
-            showToastMessage('更新笔记成功');
+            await request.put(`/api/public/travelcarousel/${formData.value.id}`, formData.value);
+            showToastMessage('更新成功');
         } else {
             formData.value.createdAt = new Date().toISOString();
-            await request.post('/api/public/travelrecommend', formData.value);
-            showToastMessage('新增笔记成功');
+            await request.post('/api/public/travelcarousel', formData.value);
+            showToastMessage('新增成功');
         }
         await fetchScenic();
         closeDialog();
     } catch (error) {
-        const message = isEditing.value ? '更新笔记失败' : '新增笔记失败';
+        const message = isEditing.value ? '更新失败' : '新增失败';
         showToastMessage(message, 'error');
         console.error('操作失败:', error);
     }
@@ -267,13 +267,13 @@ const closeDeletePrompt = () => {
 const confirmDelete = async () => {
     if (deleteCardId.value) {
         try {
-            await request.delete(`/api/public/travelrecommend/${deleteCardId.value}`);
+            await request.delete(`/api/public/travelcarousel/${deleteCardId.value}`);
             await fetchScenic();
             closeDeletePrompt();
-            showToastMessage('删除笔记成功');
+            showToastMessage('删除成功');
         } catch (error) {
             console.error('删除失败:', error);
-            showToastMessage('删除笔记失败', 'error');
+            showToastMessage('删除失败', 'error');
 
         } finally {
             closeDeletePrompt();

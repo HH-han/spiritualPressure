@@ -142,7 +142,7 @@
             </div>
             <div class="recommend-left_list">
               <div class="recommend-left_imga">
-                <img src="@/assets/homeimage/VCG211401931282.jpg" alt="旅游攻略推荐">
+                <img src="@/assets/scenery/风景1.webp" alt="旅游攻略推荐">
               </div>
               <div class="recommend-left_js">
                 <div>
@@ -378,7 +378,7 @@
   </div>
 </template>
 <script setup>
-import { getAttractionBlogs, likeAttraction, collectAttraction } from '@/api/travel'
+import { getAttractionBlogs, likeAttraction, collectAttraction, getSlideshow } from '@/api/travel'
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Home_2 from '@/components/NavigationComponent/HomeHeader.vue'
@@ -393,33 +393,37 @@ import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue';
 import { ElMessage } from "element-plus";
 
 // 轮播图数据
-const slides = [
+const slides = ref([
   {
-    image: new URL('@/assets/homeimage/VCG41N904763840.jpg', import.meta.url).href,
-    title: '第一张幻灯片',
-    description: '这是第一张幻灯片的描述内容'
+    image: '',
+    title: '',
+    location: '',
+    description: ''
   },
-  {
-    image: new URL('@/assets/homeimage/VCG41N1350796318.jpg', import.meta.url).href,
-    title: '第二张幻灯片',
-    description: '这是第二张幻灯片的描述内容'
-  },
-  {
-    image: new URL('@/assets/homeimage/VCG41N1394286655.jpg', import.meta.url).href,
-    title: '第三张幻灯片',
-    description: '这是第三张幻灯片的描述内容'
-  },
-  {
-    image: new URL('@/assets/homeimage/VCG41N1688466328.jpg', import.meta.url).href,
-    title: '第四张幻灯片',
-    description: '这是第四张幻灯片的描述内容'
-  },
-  {
-    image: new URL('@/assets/homeimage/VCG211401931282.jpg', import.meta.url).href,
-    title: '第五张幻灯片',
-    description: '这是第五张幻灯片的描述内容'
+])
+
+// 获取轮播图数据
+const fetchSlideshow = async () => {
+  try {
+    const params = {
+      page: currentPage.value,
+      pageSize: pageSize.value,
+      keyword: searchKeyword.value
+    }
+    const result = await getSlideshow(params)
+    if (result.data && result.data.list) {
+      slides.value = result.data.list.map((item) => ({
+        image: item.image || '默认图片链接',
+        title: item.title || '默认标题',
+        location: item.location || '默认位置',
+        description: item.description || '默认描述'
+      }))
+    }
+  } catch (error) {
+    console.error('获取轮播图数据失败：', error)
   }
-]
+}
+
 // 路由
 const router = useRouter()
 
@@ -637,7 +641,9 @@ const validatePageInput = () => {
 }
 // 生命周期钩子
 onMounted(() => {
-  fetchBlogs()
+  fetchBlogs();
+  fetchSlideshow()
+  
 })
 
 onBeforeUnmount(() => {
