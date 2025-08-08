@@ -197,8 +197,8 @@ const fetchFoods = async () => {
     };
     const response = await request.get('/api/public/foods', { params });
     if (response.code === "0") {
-      foods.value = response.data.list; // 确保解析的是 list 字段
-      total.value = response.data.total; // 确保解析的是 total 字段
+      foods.value = response.data.list;
+      total.value = response.data.total;
     } else {
       console.error('获取美食数据失败:', response.msg);
     }

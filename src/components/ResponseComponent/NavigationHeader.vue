@@ -23,7 +23,7 @@ const defaultAvatar = new URL('@/assets/defaultimage/mrtx.png', import.meta.url)
 const fetchUserInfo = async () => {
   try {
     loading.value = true;
-    const localUser = JSON.parse(localStorage.getItem('user') || {});
+    const localUser = JSON.parse(localStorage.getItem('user') || '{}');
     userInfo.value = { ...localUser };
     
 

@@ -304,7 +304,7 @@ onUnmounted(() => {
 
 .slide-caption {
     position: absolute;
-    bottom: 0;
+    bottom: 15px;
     left: 0;
     right: 0;
     padding: 2rem;
