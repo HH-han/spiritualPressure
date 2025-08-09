@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <Login_1 />
+    <Login_background />
   </div>
   <div class="registered-css-container">
     <div class="registered-css-card">
@@ -81,7 +81,7 @@
 import { ref } from 'vue';
 import request from '@/utils/request';
 import { useRouter } from 'vue-router';
-import Login_1 from '@/components/LoginComponent/Login_1.vue';
+import Login_background from '@/components/LoginComponent/Login_background.vue';
 import ErrorMessage from '@/components/PromptComponent/ErrorMessage.vue';
 import LoginSucceeded from '@/components/PromptComponent/LoginSucceeded.vue';
 

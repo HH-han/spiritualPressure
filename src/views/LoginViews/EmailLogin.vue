@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Login_1 />
+        <Login_background />
     </div>
     <div class="login-container">
         <h2>邮箱验证码登录</h2>
@@ -26,7 +26,7 @@
 
 <script setup>
 import { ref, computed, onUnmounted } from 'vue';
-import Login_1 from '@/components/LoginComponent/Login_1.vue';
+import Login_background from '@/components/LoginComponent/Login_background.vue';
 import { ElMessage } from 'element-plus';
 import { Emaillogin, EmailCaptcha } from '@/api/user';
 import { useRouter } from 'vue-router';

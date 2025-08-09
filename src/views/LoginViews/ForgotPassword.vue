@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <Login_1 />
+      <Login_background />
     </div>
     <div>
       <div class="ForgotPassword">
@@ -40,13 +40,13 @@
 </template>
 
 <script>
-import Login_1 from '../../components/LoginComponent/Login_1.vue'
+import Login_background from '../../components/LoginComponent/Login_background.vue'
 import axios from 'axios'
 
 export default {
   name: 'ForgotPassword',
   components: {
-    Login_1
+    Login_background
   },
   data() {
     return {

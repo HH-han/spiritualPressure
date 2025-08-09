@@ -1,5 +1,5 @@
 <template>
-  <Login_1 />
+  <Login_background />
   <form action="" class="loginform-3" @submit.prevent="handleLogin">
     <div class="login">欢迎登录</div>
     <div class="loginform-3-center">
@@ -51,7 +51,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import Login_1 from '@/components/LoginComponent/Login_1.vue';
+import Login_background from '@/components/LoginComponent/Login_background.vue';
 import request from '@/utils/request';
 
 const router = useRouter();

@@ -1,7 +1,7 @@
 <template>
   <!-- 背景 -->
   <div>
-    <login_1 />
+    <Login_background />
   </div>
   <!-- 登录页面 -->
   <div class="auth-container">
@@ -197,7 +197,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import Login_1 from '@/components/LoginComponent/Login_1.vue';
+import Login_background from '@/components/LoginComponent/Login_background.vue';
 import LoginSucceeded from '@/components/PromptComponent/LoginSucceeded.vue';
 import ErrorMessage from '@/components/PromptComponent/ErrorMessage.vue';
 import { loginname } from '@/api/user.js';

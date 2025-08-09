@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Login_1 />
+    <Login_background />
   </div>
   <div class="phonelogin-container">
     <div class="phonelogin-card">
@@ -63,7 +63,7 @@
 
 <script setup>
 import { ref, watchEffect } from "vue";
-import Login_1 from '@/components/LoginComponent/Login_1.vue';
+import Login_background from '@/components/LoginComponent/Login_background.vue';
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import request from '@/utils/request';

@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="actions">
-          <theme-background />
+          <ThemeSwitching />
           <!-- 微信 -->
           <button class="action-btn2">
             <svg t="1737552806004" class="action-btn2-icon" viewBox="0 0 1024 1024" version="1.1"
@@ -139,7 +139,7 @@ import { useRouter } from 'vue-router';
 import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
 import { ref, onMounted } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import ThemeBackground from '../ThemeComponents/ThemeBackground.vue';
+import ThemeSwitching from '@/components/ThemeComponents/ThemeSwitching.vue'
 
 const defaultAvatar = new URL('@/assets/defaultimage/mrtx.png', import.meta.url).href
 const navigateTo = (path) => {
