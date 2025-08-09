@@ -1,446 +1,364 @@
 <template>
-  <div class="modern-carousel" @mouseenter="pauseAutoPlay" @mouseleave="startAutoPlay">
-    <div class="carousel-viewport">
-      <div 
-        class="carousel-track" 
-        :style="trackStyle"
-        @touchstart="handleTouchStart"
-        @touchmove="handleTouchMove"
-        @touchend="handleTouchEnd"
-      >
-        <!-- 克隆最后一个项目放在前面 -->
-        <div class="carousel-slide" v-if="items.length > 1">
-          <div class="slide-content">
-            <img :src="items[items.length - 1].image" class="slide-image" />
-            <div class="slide-overlay"></div>
-            <div class="slide-caption" v-if="items[items.length - 1].title">
-              <h3>{{ items[items.length - 1].title }}</h3>
-              <p v-if="items[items.length - 1].description">{{ items[items.length - 1].description }}</p>
-            </div>
-          </div>
+  <div class="image-upload-container">
+    <div class="upload-header">
+      <h3>上传图片</h3>
+      <p>支持 JPG, PNG 格式，最大 5MB</p>
+    </div>
+    
+    <div class="upload-area" 
+        @click="triggerFileInput"
+        @dragover.prevent="dragOver = true"
+        @dragleave="dragOver = false"
+        @drop.prevent="handleDrop"
+        :class="{ 'drag-active': dragOver }">
+      <input type="file" 
+            ref="fileInput"
+            @change="handleFileUpload"
+            accept="image/*"
+            class="file-input" />
+      
+      <div class="upload-content">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+          </svg>
         </div>
-        
-        <!-- 正常项目 -->
-        <div class="carousel-slide" v-for="(item, index) in items" :key="index">
-          <div class="slide-content">
-            <img :src="item.image" class="slide-image" />
-            <div class="slide-overlay"></div>
-            <div class="slide-caption" v-if="item.title">
-              <h3>{{ item.title }}</h3>
-              <p v-if="item.description">{{ item.description }}</p>
-            </div>
-          </div>
+        <p class="upload-text">点击或拖拽文件到此处</p>
+        <p class="upload-hint">推荐尺寸：1200×800px</p>
+      </div>
+    </div>
+    
+    <!-- 图片预览区域 -->
+    <div class="preview-container" v-if="previewImage">
+      <div class="preview-card">
+        <img :src="previewImage" alt="预览图片" class="preview-image" />
+        <div class="preview-actions">
+          <button class="action-btn edit-btn" @click="triggerFileInput">
+            <svg viewBox="0 0 24 24">
+              <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+            </svg>
+          </button>
+          <button class="action-btn delete-btn" @click="removeImage">
+            <svg viewBox="0 0 24 24">
+              <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+            </svg>
+          </button>
         </div>
-        
-        <!-- 克隆第一个项目放在后面 -->
-        <div class="carousel-slide" v-if="items.length > 1">
-          <div class="slide-content">
-            <img :src="items[0].image" class="slide-image" />
-            <div class="slide-overlay"></div>
-            <div class="slide-caption" v-if="items[0].title">
-              <h3>{{ items[0].title }}</h3>
-              <p v-if="items[0].description">{{ items[0].description }}</p>
-            </div>
+        <div class="preview-footer">
+          <div class="file-info">
+            <span class="file-name">{{ fileName }}</span>
+            <span class="file-size">{{ fileSize }}</span>
+          </div>
+          <div class="upload-progress" v-if="uploading">
+            <div class="progress-bar" :style="{ width: progress + '%' }"></div>
           </div>
         </div>
       </div>
     </div>
-    
-    <!-- 导航指示器 -->
-    <div class="carousel-pagination" v-if="showIndicators && items.length > 1">
-      <button
-        v-for="(item, index) in items" 
-        :key="index"
-        :class="{ 'active': currentIndex === index }"
-        @click="goTo(index)"
-        :aria-label="`Go to slide ${index + 1}`"
-      >
-        <span class="progress-bar" v-if="currentIndex === index"></span>
-      </button>
-    </div>
-    
-    <!-- 导航箭头 -->
-    <button 
-      class="carousel-nav prev" 
-      @click="prev" 
-      v-if="showArrows && items.length > 1"
-      aria-label="Previous slide"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-    <button 
-      class="carousel-nav next" 
-      @click="next" 
-      v-if="showArrows && items.length > 1"
-      aria-label="Next slide"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-    validator: value => value.length > 0 && value.every(item => 'image' in item)
+<script>
+// Vue 组件脚本部分
+export default {
+  data() {
+    return {
+      dragOver: false,
+      previewImage: null,
+      fileName: '',
+      fileSize: '',
+      uploading: false,
+      progress: 0
+    }
   },
-  interval: {
-    type: Number,
-    default: 5000
-  },
-  transitionDuration: {
-    type: Number,
-    default: 700
-  },
-  showArrows: {
-    type: Boolean,
-    default: true
-  },
-  showIndicators: {
-    type: Boolean,
-    default: true
-  },
-  aspectRatio: {
-    type: String,
-    default: '16/9'
-  }
-})
-
-const currentIndex = ref(0)
-const autoPlayTimer = ref(null)
-const isTransitioning = ref(false)
-const touchStartX = ref(0)
-const touchEndX = ref(0)
-const progressInterval = ref(null)
-
-// 计算轨道偏移量
-const trackStyle = computed(() => {
-  const offset = props.items.length > 1 ? -(currentIndex.value + 1) * 100 : -currentIndex.value * 100
-  return {
-    transform: `translateX(${offset}%)`,
-    transition: isTransitioning.value ? `transform ${props.transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)` : 'none'
-  }
-})
-
-// 自动播放控制
-const startAutoPlay = () => {
-  if (props.items.length <= 1) return
-  stopAutoPlay()
-  autoPlayTimer.value = setInterval(() => {
-    next()
-  }, props.interval)
-  
-  // 进度条动画
-  startProgressBar()
-}
-
-const pauseAutoPlay = () => {
-  stopAutoPlay()
-  clearProgressBar()
-}
-
-const stopAutoPlay = () => {
-  if (autoPlayTimer.value) {
-    clearInterval(autoPlayTimer.value)
-    autoPlayTimer.value = null
-  }
-}
-
-// 进度条动画
-const startProgressBar = () => {
-  clearProgressBar()
-  const progressBars = document.querySelectorAll('.progress-bar')
-  if (progressBars[currentIndex.value]) {
-    progressBars[currentIndex.value].style.transition = `width ${props.interval}ms linear`
-    progressBars[currentIndex.value].style.width = '100%'
-  }
-}
-
-const clearProgressBar = () => {
-  const progressBars = document.querySelectorAll('.progress-bar')
-  progressBars.forEach(bar => {
-    bar.style.transition = 'none'
-    bar.style.width = '0%'
-  })
-}
-
-// 导航方法
-const goTo = (index) => {
-  if (isTransitioning.value || index === currentIndex.value) return
-  
-  isTransitioning.value = true
-  currentIndex.value = index
-  
-  setTimeout(() => {
-    isTransitioning.value = false
-    startAutoPlay()
-  }, props.transitionDuration)
-}
-
-const next = () => {
-  if (isTransitioning.value) return
-  
-  isTransitioning.value = true
-  currentIndex.value = (currentIndex.value + 1) % props.items.length
-  
-  setTimeout(() => {
-    isTransitioning.value = false
+  methods: {
+    triggerFileInput() {
+      this.$refs.fileInput.click()
+    },
     
-    // 如果到达克隆的第一个项目（实际是最后一个），无动画跳转到真实位置
-    if (currentIndex.value === props.items.length - 1) {
-      setTimeout(() => {
-        isTransitioning.value = false
-        currentIndex.value = 0
-      }, 50)
-    }
-  }, props.transitionDuration)
-}
-
-const prev = () => {
-  if (isTransitioning.value) return
-  
-  isTransitioning.value = true
-  currentIndex.value = (currentIndex.value - 1 + props.items.length) % props.items.length
-  
-  setTimeout(() => {
-    isTransitioning.value = false
+    handleFileUpload(e) {
+      this.dragOver = false
+      const file = e.target.files[0] || e.dataTransfer.files[0]
+      
+      if (!file) return
+      
+      if (!file.type.match('image.*')) {
+        alert('请选择图片文件')
+        return
+      }
+      
+      if (file.size > 5 * 1024 * 1024) {
+        alert('文件大小不能超过5MB')
+        return
+      }
+      
+      this.fileName = file.name
+      this.fileSize = this.formatFileSize(file.size)
+      
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        this.previewImage = e.target.result
+      }
+      reader.readAsDataURL(file)
+      
+      // 模拟上传进度
+      this.uploading = true
+      const interval = setInterval(() => {
+        this.progress += Math.random() * 10
+        if (this.progress >= 100) {
+          clearInterval(interval)
+          setTimeout(() => {
+            this.uploading = false
+          }, 500)
+        }
+      }, 300)
+    },
     
-    // 如果到达克隆的最后一个项目（实际是第一个），无动画跳转到真实位置
-    if (currentIndex.value === 0) {
-      setTimeout(() => {
-        isTransitioning.value = false
-        currentIndex.value = props.items.length - 1
-      }, 50)
+    handleDrop(e) {
+      this.handleFileUpload(e)
+    },
+    
+    removeImage() {
+      this.previewImage = null
+      this.fileName = ''
+      this.fileSize = ''
+      this.progress = 0
+      this.uploading = false
+      this.$refs.fileInput.value = ''
+    },
+    
+    formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes'
+      const k = 1024
+      const sizes = ['Bytes', 'KB', 'MB', 'GB']
+      const i = Math.floor(Math.log(bytes) / Math.log(k))
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
     }
-  }, props.transitionDuration)
-}
-
-// 触摸事件处理
-const handleTouchStart = (e) => {
-  touchStartX.value = e.touches[0].clientX
-  pauseAutoPlay()
-}
-
-const handleTouchMove = (e) => {
-  touchEndX.value = e.touches[0].clientX
-}
-
-const handleTouchEnd = () => {
-  const diff = touchStartX.value - touchEndX.value
-  if (Math.abs(diff) > 50) { // 滑动阈值
-    if (diff > 0) {
-      next()
-    } else {
-      prev()
-    }
-  } else {
-    startAutoPlay()
   }
 }
-
-// 生命周期
-onMounted(() => {
-  startAutoPlay()
-})
-
-onUnmounted(() => {
-  stopAutoPlay()
-  clearProgressBar()
-})
 </script>
 
 <style scoped>
-.modern-carousel {
-  --carousel-aspect-ratio: v-bind('aspectRatio');
-  --primary-color: #4f46e5;
-  --text-color: #ffffff;
-  --bg-overlay: rgba(0, 0, 0, 0.4);
-  --nav-bg: rgba(255, 255, 255, 0.15);
-  --nav-bg-hover: rgba(255, 255, 255, 0.3);
-  --indicator-size: 10px;
-  --indicator-gap: 8px;
-  --border-radius: 12px;
-  
-  position: relative;
-  width: 100%;
-  aspect-ratio: var(--carousel-aspect-ratio);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+/* 主容器 */
+.image-upload-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-.carousel-viewport {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.carousel-track {
-  display: flex;
-  height: 100%;
-  width: 100%;
-}
-
-.carousel-slide {
-  flex: 0 0 100%;
-  min-width: 100%;
-  position: relative;
-}
-
-.slide-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.slide-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.slide-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--bg-overlay);
-}
-
-.slide-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  color: var(--text-color);
-  max-width: 800px;
-  margin: 0 auto;
+.upload-header {
   text-align: center;
+  margin-bottom: 1.5rem;
 }
 
-.slide-caption h3 {
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 700;
-  margin-bottom: 1rem;
-  line-height: 1.2;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.upload-header h3 {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
-.slide-caption p {
-  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
-  margin-bottom: 0;
-  opacity: 0.9;
-  line-height: 1.6;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+.upload-header p {
+  color: #7f8c8d;
+  font-size: 0.9rem;
 }
 
-.carousel-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
-  background: var(--nav-bg);
-  color: var(--text-color);
-  border: none;
+/* 上传区域 */
+.upload-area {
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-area:hover {
+  border-color: #9ca3af;
+  background-color: #f3f4f6;
+}
+
+.upload-area.drag-active {
+  border-color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.05);
+  transform: translateY(-2px);
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-content {
+  pointer-events: none;
+}
+
+.upload-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
 }
 
-.carousel-nav:hover {
-  background: var(--nav-bg-hover);
-  transform: translateY(-50%) scale(1.1);
+.upload-icon svg {
+  width: 30px;
+  height: 30px;
+  fill: white;
 }
 
-.carousel-nav svg {
-  width: 24px;
-  height: 24px;
+.upload-text {
+  font-size: 1.1rem;
+  color: #1f2937;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
-.prev {
-  left: 2rem;
+.upload-hint {
+  font-size: 0.85rem;
+  color: #6b7280;
 }
 
-.next {
-  right: 2rem;
+/* 预览区域 */
+.preview-container {
+  margin-top: 1.5rem;
+  animation: fadeIn 0.4s ease-out;
 }
 
-.carousel-pagination {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: var(--indicator-gap);
-  z-index: 10;
-}
-
-.carousel-pagination button {
+.preview-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   position: relative;
-  width: calc(var(--indicator-size) * 2);
-  height: var(--indicator-size);
+}
+
+.preview-image {
+  width: 100%;
+  display: block;
+  max-height: 400px;
+  object-fit: contain;
+  background: #f3f4f6;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.preview-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: calc(var(--indicator-size) / 2);
-  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+  transform: scale(1.1);
+}
+
+.action-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.edit-btn {
+  background-color: white;
+}
+
+.edit-btn svg {
+  fill: #3b82f6;
+}
+
+.delete-btn {
+  background-color: white;
+}
+
+.delete-btn svg {
+  fill: #ef4444;
+}
+
+.preview-footer {
+  padding: 1rem;
+  background: white;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.file-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.file-name {
+  font-weight: 500;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80%;
+}
+
+.file-size {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.upload-progress {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
   overflow: hidden;
 }
 
-.carousel-pagination button.active {
-  background: rgba(255, 255, 255, 0.5);
-}
-
 .progress-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
-  width: 0%;
-  background: var(--text-color);
-  border-radius: calc(var(--indicator-size) / 2);
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  transition: width 0.3s ease;
 }
 
-@media (max-width: 768px) {
-  .modern-carousel {
-    --border-radius: 8px;
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 640px) {
+  .image-upload-container {
+    margin: 1rem;
   }
   
-  .carousel-nav {
-    width: 36px;
-    height: 36px;
+  .upload-area {
+    padding: 1.5rem 1rem;
   }
   
-  .prev {
-    left: 1rem;
-  }
-  
-  .next {
-    right: 1rem;
-  }
-  
-  .slide-caption {
-    padding: 1.5rem;
+  .preview-image {
+    max-height: 300px;
   }
 }
 </style>
