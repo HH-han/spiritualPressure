@@ -183,7 +183,7 @@
   <div v-if="isPersonalCenterVisible" class="loginpage-modal" @click="close">
     <QRcodeLogin @click.stop />
   </div>
-  <!-- !登录成功提示框 -->
+  <!-- 成功提示框 -->
   <div>
     <LoginSucceeded v-if="showSucceeded" :username="loginForm.username" :message="successMessage"
       @close="showSucceeded = false" />

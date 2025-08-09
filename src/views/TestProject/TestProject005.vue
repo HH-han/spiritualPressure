@@ -59,26 +59,13 @@
 <script>  
 import DataPage from '../../components/DisplayBox/DataPage.vue';
 import LoaderBook from '../../components/TransitionalComponents/Loader-book.vue';
-import PayPage from '../../components/DisplayBox/PayPage.vue';
 import NotificationContainer from '../../components/DisplayBox/NotificationContainer.vue';
-import DeletePrompt from '../../components/PromptComponent/DeletePrompt.vue';
-import ErrorMessage from '../../components/PromptComponent/ErrorMessage.vue';
-import LoginSucceeded from '../../components/PromptComponent/LoginSucceeded.vue';
-import FloatingButton from '../../components/ComponentButton/FloatingButton.vue';
 import PictureScrolling from '../../components/DisplayBox/PictureScrolling.vue';
 
 export default {  
     name: 'MessageNotification',  
     components: {  
-        DataPage,
         LoaderBook,
-        PayPage,
-        NotificationContainer,
-        DeletePrompt,
-        ErrorMessage,
-        LoginSucceeded,
-        FloatingButton,
-        PictureScrolling
     },  
     mounted() {  
         // 模拟延迟加载消息

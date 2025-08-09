@@ -836,6 +836,8 @@ watch([fontSize, lineHeight], () => {
 /* 主内容区 */
 .novelreading-main {
   display: flex;
+  flex-direction: row;
+  align-items: center;
   flex: 1;
   gap: 20px;
   position: relative;
