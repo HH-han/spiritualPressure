@@ -25,6 +25,7 @@ onMounted(() => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -38,5 +39,30 @@ onMounted(() => {
   box-sizing: border-box;
   font-family: 'Montserrat', 'Noto Sans SC', sans-serif;
 }
-</style>
 
+/* 兼容各浏览器的滚动条样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+*::-webkit-scrollbar {
+  width: 2px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+</style>
