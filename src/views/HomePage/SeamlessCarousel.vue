@@ -84,7 +84,7 @@ const props = defineProps({
     },
     transitionDuration: {
         type: Number,
-        default: 700
+        default: 600
     },
     showArrows: {
         type: Boolean,
@@ -372,40 +372,87 @@ onUnmounted(() => {
 }
 
 .carousel-pagination {
-    position: absolute;
-    bottom: 1rem;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: var(--indicator-gap);
-    z-index: 10;
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+  padding: 6px;
+  border-radius: 24px;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .carousel-pagination button {
-    position: relative;
-    width: var(--indicator-size);
-    height: var(--indicator-size);
-    border: none;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: calc(var(--indicator-size) / 2);
-    padding: 0;
-    cursor: pointer;
-    overflow: hidden;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+  outline: none;
+}
+
+.carousel-pagination button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.carousel-pagination button:hover {
+  transform: scale(1.3);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.carousel-pagination button:active::before {
+  transform: translate(-50%, -50%) scale(2);
+  opacity: 0.4;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .carousel-pagination button.active {
-    background: rgba(255, 255, 255, 0.5);
+  width: 40px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
-.progress-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0%;
-    background: var(--text-color);
-    border-radius: calc(var(--indicator-size) / 2);
+.carousel-pagination button.active .progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #3a7bd5, #00d2ff);
+  animation: progress var(--duration, 5s) linear forwards;
+  border-radius: 0 0 8px 8px;
+}
+
+@keyframes progress {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) {
+  .carousel-pagination button:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.4);
+  }
 }
 
 @media (max-width: 768px) {

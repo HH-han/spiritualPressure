@@ -58,3 +58,19 @@ export function getSlideshow() {
     method: 'get'
   })
 }
+
+/**
+ * 获取世界历史详情
+* @param {Object} params - 查询参数
+ * @param {number} params.page - 当前页码
+ * @param {number} params.pageSize - 每页数量
+ * @param {string} [params.keyword] - 搜索关键词
+ * @returns {Promise}
+ */
+export function getWorldHistoryDetail(params) {
+  return request({
+    url: `/api/public/travelworld`,
+    method: 'get',
+    params
+  })
+}

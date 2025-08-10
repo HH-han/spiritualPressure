@@ -37,7 +37,7 @@
                   <td>
                     <img :src="item.image" alt="图片" style="width: 35px; height: 35px;" />
                   </td>
-                  <td>{{ item.description }}</td>
+                  <td>{{ item.description ? item.description.substring(0, 25) + '...' : '' }}</td>
                   <td>{{ item.rating }}</td>
                   <td>{{ item.badgeText }}</td>
                   <td>{{ item.status }}</td>
@@ -298,7 +298,7 @@ const showEditDialog = (item) => {
   isEditing.value = true;
   formData.value = {
     ...item,
-    cities: item.cities.join(','), // 将数组转换为字符串
+    cities: item.cities.join(','),
   };
   showDialog.value = true;
 };

@@ -33,16 +33,23 @@
           <button @click="prevSlide">‹</button>
           <button @click="nextSlide">›</button>
         </div>
+        <!-- 轮播导航指示器 -->
+        <div class="carousel-indicators">
+          <span 
+            v-for="(item, index) in mediaList.images.concat(mediaList.videos)" 
+            :key="index"
+            :class="{ active: currentIndex === index }"
+            @click="currentIndex = index"
+          ></span>
+        </div>
       </div>
     </header>
     <main class="destination-page">
-      <!-- 互动按钮 -->
-      <div class="action-buttons">
-        <button @click="readMore">阅读全文</button>
-        <button @click="bookTrip">预订行程</button>
-        <button @click="viewMoreRecommendations">查看更多推荐</button>
-        <button @click="share">分享</button>
+      <!-- 目的地导航区域 -->
+      <div>
+        <MydestinationWorld />
       </div>
+      <!-- 目的地列表区域 -->
       <h1 class="page-title">探索世界目的地 🌍</h1>
       <div class="controls">
         <div class="search-container">
@@ -69,6 +76,7 @@
           </div>
           <div class="card-content">
             <h3 class="destination-name">{{ destination.name }}</h3>
+            <p class="destination-description">{{ destination.description ? destination.description.substring(0, 10) + '...' : '' }}</p>
             <ul class="city-list">
               <li v-for="city in destination.cities" :key="city" class="city-item">
                 <svg t="1748482186834" class="icon" viewBox="0 0 1028 1024" version="1.1"
@@ -180,6 +188,7 @@
 <script setup>
 import Home_2 from '@/components/NavigationComponent/HomeHeader.vue';
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
+import MydestinationWorld from '@/views/Mypage/MydestinationWorld.vue';
 import { onBeforeUnmount } from 'vue';
 import { ref, onMounted, computed, } from 'vue';
 import request from '@/utils/request';
