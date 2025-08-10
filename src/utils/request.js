@@ -3,7 +3,6 @@ import { ElMessage } from "element-plus";
 import router from "@/router";
 // 创建axios实例
 const request = axios.create({
-  // 根据环境变量动态设置baseURL
   baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:2025",
   timeout: 5000,
 });
@@ -25,13 +24,10 @@ function getValidToken() {
       ElMessage.warning("无效的token格式");
       return null;
     }
-    
-    // 确保中间部分可以正确解码
+    // 解码 tokenPayload
     const base64Url = tokenParts[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    // 使用更安全的方式解码Base64
     const rawPayload = atob(base64);
-    // 将原始字符串转换为UTF-8字符
     const payload = JSON.parse(
       decodeURIComponent(
         Array.from(rawPayload).map(c => 
@@ -123,7 +119,6 @@ request.interceptors.response.use(
           ElMessage.error("资源不存在");
           break;
         case 500:
-          // 检查是否是token过期导致的500错误
           if (error.response?.data?.message?.includes("token")) {
             handleUnauthorized();
           } else {
