@@ -13,25 +13,26 @@
           <button v-for="(img, index) in attraction.images" :key="index" class="carousel-dot"
             :class="{ active: currentImageIndex === index }" @click="currentImageIndex = index"></button>
         </div>
-        <div class="image-overlay">
-          <span class="attraction-rating">
-            <i class="fas fa-star"></i> {{ attraction.favorites }}
+      </div>
+      <!-- 景点详情 -->
+      <div class="attraction-details">
+        <!-- 景点评分/收藏数/ -->
+        <div class="image-overlay-order">
+          <span class="attraction-rating-order">
+            <i class="fas fa-star"></i> {{ attraction.rating }}
           </span>
-          <span class="attraction-location">
+          <span class="attraction-location-order">
             <i class="fas fa-map-marker-alt"></i> {{ attraction.location }}
           </span>
         </div>
-      </div>
-
-      <!-- 景点详情 -->
-      <div class="attraction-details">
+        <!-- 标题 -->
         <h1 class="attraction-title">{{ attraction.name }}</h1>
         <div class="attraction-tags">
           <span v-for="(tag, index) in attraction.tags" :key="index" class="tag">
             {{ tag }}
           </span>
         </div>
-
+        <!-- 价格 -->
         <div class="attraction-description">
           <p>{{ attraction.details }}</p>
         </div>
@@ -550,15 +551,15 @@ onMounted(() => {
   transform: scale(1.2);
 }
 
-.image-overlay {
-  position: absolute;
+.image-overlay-order {
+  height: 35px;
   display: flex;
-  justify-content: space-between;
-  z-index: 2;
+  justify-content: flex-start;
+  gap: 15px;
 }
 
-.attraction-rating,
-.attraction-location {
+.attraction-rating-order,
+.attraction-location-order {
   background: rgba(0, 0, 0, 0.6);
   color: white;
   padding: 0.5rem 1rem;
@@ -569,11 +570,11 @@ onMounted(() => {
   gap: 0.3rem;
 }
 
-.attraction-rating i {
+.attraction-rating-order i {
   color: #ffcc00;
 }
 
-.attraction-location i {
+.attraction-location-order i {
   color: #ff6b6b;
 }
 
