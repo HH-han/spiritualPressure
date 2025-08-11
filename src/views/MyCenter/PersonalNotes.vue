@@ -52,20 +52,8 @@
             </div>
         </div>
         <!-- 自定义删除确认框 -->
-        <div v-if="showDeleteConfirm" class="glass-modal-overlay" @click.self="cancelDelete">
-            <div class="glass-delete-modal">
-                <div class="modal-header">
-                    <h3>删除确认</h3>
-                </div>
-                <div class="modal-content">
-                    <p>确定要删除这条笔记吗？</p>
-                    <p class="delete-note-title">"{{ noteToDelete?.title }}"</p>
-                </div>
-                <div class="modal-footer">
-                    <button @click="cancelDelete" class="glass-button">取消</button>
-                    <button @click="confirmDelete" class="glass-button danger">确认删除</button>
-                </div>
-            </div>
+        <div v-if="showDeleteConfirm" class="glass-modal-overlay" @click.self="closeDeleteModal">
+            <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
         </div>
 
     </div>
@@ -77,6 +65,7 @@ import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus'
+import DeletePrompt from '@/components/PromptComponent/DeletePrompt.vue'
 
 
 const notes = ref([])
@@ -198,7 +187,7 @@ const confirmDelete = async () => {
             await request.delete(`/api/public/notes/${noteToDelete.value.id}`);
             notes.value = notes.value.filter(note => note.id !== noteToDelete.value.id);
             ElMessage.success('删除成功');
-            cancelDelete();
+            closeDeleteModal();
         } catch (error) {
             ElMessage.error('删除笔记失败');
             console.error('删除笔记失败:', error);
@@ -207,7 +196,7 @@ const confirmDelete = async () => {
 }
 
 // 新增的取消删除函数
-const cancelDelete = () => {
+const closeDeleteModal = () => {
     showDeleteConfirm.value = false
     noteToDelete.value = null
 }
@@ -382,14 +371,6 @@ const cancelDelete = () => {
     align-items: center;
     z-index: 1000;
 }
-.glass-delete-modal{
-    width: 400px;
-    border-radius: 25px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 2px solid #ff6b6b;
-    padding: 20px;
-
-}
 .glass-modal {
     width: 80%;
     max-width: 800px;
@@ -477,13 +458,6 @@ const cancelDelete = () => {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     -ms-overflow-style: none;
-}
-/* 编辑器样式 */
-.delete-note-title {
-    font-weight: 600;
-    margin-top: 0.5rem;
-    color: #ff6b6b;
-    text-align: center;
 }
 .glass-preview::-webkit-scrollbar {
   display: none;

@@ -1,363 +1,371 @@
 <template>
-  <div class="world-liquid-glass-container">
-    <header class="world-page-header">
-      <h1>全球特色地点探索</h1>
-      <p class="world-subtitle">穿越时空的文化与自然奇观</p>
-    </header>
-
-    <div class="world-filter-controls">
-      <button v-for="category in categories" :key="category" @click="filterByCategory(category)"
-        :class="{ 'world-active': activeCategory === category }">
-        {{ category }}
-      </button>
+  <section class="Confirm" @mousemove="onMouseMove" @mouseleave="onMouseLeave">
+    <div class="Confirm-Header">
+      <button class="Confirm-Header-Button Confirm-Header-Button_Close" @click="closeModal"></button>
+      <button class="Confirm-Header-Button Confirm-Header-Button_Minimize" @click="showMinimized"></button>
+      <button class="Confirm-Header-Button Confirm-Header-Button_Maximize" @click="showMaximized"></button>
+      <h1 class="Confirm-Header-Title">软件卸载</h1>
     </div>
 
-    <div class="world-locations-grid">
-      <div v-for="location in filteredLocations" :key="location.id" class="world-location-card"
-        :style="{ '--card-accent': location.color }">
-        <div class="world-card-image">
-          <img :src="location.image" :alt="location.name" />
-          <div class="world-image-overlay"></div>
-        </div>
-        <div class="world-card-content">
-          <div class="world-card-header">
-            <h2>{{ location.name }}</h2>
-            <span class="world-location-country">{{ location.country }}</span>
-          </div>
-          <div class="world-card-tags">
-            <span v-for="tag in location.tags" :key="tag" class="world-tag">{{ tag }}</span>
-          </div>
-          <p class="world-card-description">{{ location.description }}</p>
-          <div class="world-card-details">
-            <div class="world-detail-item">
-              <span class="world-detail-label">特色</span>
-              <p>{{ location.features }}</p>
-            </div>
-            <div class="world-detail-item">
-              <span class="world-detail-label">历史</span>
-              <p>{{ location.history }}</p>
-            </div>
-            <div class="world-detail-item">
-              <span class="world-detail-label">人文</span>
-              <p>{{ location.culture }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="Confirm-Body">
+      <h2 class="Confirm-Body-Title">是否确实要卸载软件？</h2>
+      <figure class="Boi" :style="boiStyle">
+        <div class="Boi-Blush Boi-Blush_L"></div>
+        <div class="Boi-Blush Boi-Blush_R"></div>
+        <div class="Boi-Eye Boi-Eye_L"></div>
+        <div class="Boi-Eye Boi-Eye_R"></div>
+        <div class="Boi-Mouth"></div>
+      </figure>
+      <button class="Confirm-Body-Button Confirm-Body-Button_Cancel" @click="cancelModal">保留</button>
+      <button class="Confirm-Body-Button Confirm-Body-Button_Delete" @click="closeModal">卸载</button>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue'
 
-// 地点数据
-const locations = ref([
-  {
-    id: 1,
-    name: '马丘比丘',
-    country: '秘鲁',
-    image: 'https://images.unsplash.com/photo-1526397751294-331021109fbd',
-    description: '印加帝国的失落之城，坐落在安第斯山脉之巅',
-    features: '古代印加建筑杰作，梯田系统，天文观测点',
-    history: '建于15世纪，西班牙殖民时期被遗弃，1911年被重新发现',
-    culture: '印加文明的精神象征，太阳崇拜的重要遗址',
-    tags: ['世界遗产', '古代文明', '山脉'],
-    category: '历史遗迹',
-    color: '#8B5A2B'
-  },
-  {
-    id: 2,
-    name: '大堡礁',
-    country: '澳大利亚',
-    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5',
-    description: '世界上最大的珊瑚礁系统，海洋生物的天堂',
-    features: '2900多个独立珊瑚礁，1500种鱼类，400种珊瑚',
-    history: '形成于约2000万年前，1770年由库克船长首次记录',
-    culture: '原住民与托雷斯海峡岛民的精神家园',
-    tags: ['自然奇观', '海洋生态', '潜水胜地'],
-    category: '自然景观',
-    color: '#1E90FF'
-  },
-  {
-    id: 3,
-    name: '威尼斯',
-    country: '意大利',
-    image: 'https://images.unsplash.com/photo-1514890547357-a9ee288728e0',
-    description: '建在118个小岛上的水上城市，浪漫之都',
-    features: '运河网络，哥特式建筑，贡多拉船',
-    history: '5世纪为躲避蛮族入侵而建，中世纪成为贸易强国',
-    culture: '威尼斯画派发源地，狂欢节传统，玻璃工艺',
-    tags: ['水上城市', '文艺复兴', '浪漫'],
-    category: '城市风情',
-    color: '#9370DB'
-  },
-  {
-    id: 4,
-    name: '塞伦盖蒂草原',
-    country: '坦桑尼亚',
-    image: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa',
-    description: '非洲最著名的野生动物保护区，动物大迁徙的舞台',
-    features: '狮子、猎豹、大象等大型动物，壮观的迁徙景象',
-    history: '形成于约100万年前，1951年成为国家公园',
-    culture: '马赛人传统游牧文化，人与自然和谐共处',
-    tags: ['野生动物', '草原', '生态'],
-    category: '自然景观',
-    color: '#228B22'
-  },
-  {
-    id: 5,
-    name: '吴哥窟',
-    country: '柬埔寨',
-    image: 'https://images.unsplash.com/photo-1566438480900-0609be27a4be',
-    description: '高棉帝国宏伟的寺庙城市，丛林中的神秘遗迹',
-    features: '世界上最大的宗教建筑群，精美的浮雕艺术',
-    history: '建于12世纪，15世纪被遗弃，19世纪被重新发现',
-    culture: '印度教与佛教融合的艺术杰作，高棉文明的象征',
-    tags: ['世界遗产', '古代文明', '宗教建筑'],
-    category: '历史遗迹',
-    color: '#CD853F'
-  },
-  {
-    id: 6,
-    name: '北极光',
-    country: '北欧多国',
-    image: 'https://images.unsplash.com/photo-1512273222628-4daea6e55abb',
-    description: '夜空中舞动的彩色光带，自然界最壮观的灯光秀',
-    features: '绿色、粉色、紫色光带在天空舞动',
-    history: '古代各民族都有关于极光的神话传说',
-    culture: '北欧萨米人的精神象征，现代极光旅游热点',
-    tags: ['自然奇观', '天文现象', '极地'],
-    category: '自然景观',
-    color: '#20B2AA'
+const target = ref({
+  happiness: 0.9,
+  derp: 1,
+  px: 0.5,
+  py: 0.5
+});
+
+const current = ref({
+  happiness: 0.9,
+  derp: 1,
+  px: 0.5,
+  py: 0.5
+});
+
+const boiStyle = ref({
+  '--happiness': '0.9',
+  '--derp': '1',
+  '--px': '0.5',
+  '--py': '0.5'
+});
+
+let animationFrameId = null;
+
+const onMouseMove = (event) => {
+  const confirmEl = document.querySelector('.Confirm');
+  const btnDelete = document.querySelector('.Confirm-Body-Button_Delete');
+  const btnCancel = document.querySelector('.Confirm-Body-Button_Cancel');
+
+  const x = event.clientX;
+  const y = event.clientY;
+
+  const dx1 = x - btnDelete.getBoundingClientRect().x - btnDelete.getBoundingClientRect().width * 0.5;
+  const dy1 = y - btnDelete.getBoundingClientRect().y - btnDelete.getBoundingClientRect().height * 0.5;
+  const dx2 = x - btnCancel.getBoundingClientRect().x - btnCancel.getBoundingClientRect().width * 0.5;
+  const dy2 = y - btnCancel.getBoundingClientRect().y - btnCancel.getBoundingClientRect().height * 0.5;
+  const px = (x - confirmEl.getBoundingClientRect().x) / confirmEl.getBoundingClientRect().width;
+  const py = (y - confirmEl.getBoundingClientRect().y) / confirmEl.getBoundingClientRect().height;
+  const distDelete = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+  const distCancel = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+  const happiness = Math.pow(distDelete / (distCancel + distDelete), 0.75);
+
+  target.value = {
+    happiness,
+    derp: 0,
+    px,
+    py
+  };
+
+  // 确保更新动画
+  if (!animationFrameId) {
+    update();
   }
-]);
-
-// 分类筛选
-const categories = ref(['全部', '历史遗迹', '自然景观', '城市风情']);
-const activeCategory = ref('全部');
-
-const filterByCategory = (category) => {
-  activeCategory.value = category;
 };
 
-const filteredLocations = computed(() => {
-  if (activeCategory.value === '全部') {
-    return locations.value;
+const onMouseLeave = () => {
+  target.value = {
+    happiness: 0.9,
+    derp: 1,
+    px: 0.5,
+    py: 0.5
+  };
+};
+
+const update = () => {
+  let changed = false;
+
+  for (const prop in target.value) {
+    if (target.value[prop] === current.value[prop]) {
+      continue;
+    } else if (Math.abs(target.value[prop] - current.value[prop]) < 0.01) {
+      current.value[prop] = target.value[prop];
+    } else {
+      current.value[prop] += (target.value[prop] - current.value[prop]) * 0.1;
+    }
+    boiStyle.value[`--${prop}`] = current.value[prop];
+    changed = true;
   }
-  return locations.value.filter(location => location.category === activeCategory.value);
+
+  if (changed) {
+    animationFrameId = requestAnimationFrame(update);
+  } else {
+    animationFrameId = null;
+  }
+};
+
+onMounted(() => {
+  update();
 });
+
+
+
 </script>
 
 <style scoped>
-.world-liquid-glass-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-}
-
-.world-page-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.world-page-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(90deg, #3a7bd5, #00d2ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.world-subtitle {
-  font-size: 1.2rem;
-  color: #666;
-}
-
-.world-filter-controls {
+.Confirm {
+  font-size: 62.5%;
+  position: absolute;
   display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.world-filter-controls button {
-  padding: 0.5rem 1.5rem;
-  border: none;
-  border-radius: 2rem;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  color: #333;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.world-filter-controls button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
-.world-filter-controls button.active {
-  background: linear-gradient(90deg, #3a7bd5, #00d2ff);
-  color: white;
-}
-
-.world-locations-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.world-location-card {
+  flex-direction: column;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  min-width: 52rem;
+  max-height: 100%;
+  height: 30rem;
+  background-color: #ccc;
   border-radius: 1rem;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 10px 5px -3px rgba(0, 0, 0, 0.2);
 }
 
-.world-location-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-}
-
-.world-card-image {
+.Confirm-Header {
+  display: flex;
+  align-items: center;
   position: relative;
-  height: 600px;
-  overflow: hidden;
+  margin: 1rem;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
 }
 
-.world-card-image img {
+.Confirm-Header-Button {
+  display: block;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 1rem;
+  border: none;
+  flex: 0 0 auto;
+  transition: background-color 0.3s;
+}
+
+.Confirm-Header-Button:not(:last-of-type) {
+  margin-right: 1rem;
+}
+
+.Confirm-Header-Button_Close {
+  background-color: #a43;
+}
+
+.Confirm-Header-Button_Close:hover {
+  background-color: #c85a48;
+}
+
+.Confirm-Header-Button_Maximize {
+  background-color: #cb3;
+}
+
+.Confirm-Header-Button_Maximize:hover {
+  background-color: #d6c95c;
+}
+
+.Confirm-Header-Button_Minimize {
+  background-color: #6a4;
+}
+
+.Confirm-Header-Button_Minimize:hover {
+  background-color: #81c061;
+}
+
+.Confirm-Header-Title {
+  margin: 0;
+  padding: 0;
+  transform: translateX(50%);
+  margin-right: 50%;
+  margin-left: auto;
+}
+
+.Confirm-Body {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+  margin: 2rem;
+  align-items: flex-end;
+}
+
+.Confirm-Body-Title {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  transform: translateY(-50%);
+  top: 5%;
+  text-align: center;
+  width: 100%;
+}
+
+.Confirm-Body-Button,
+.Confirm-Body-Button:link,
+.Confirm-Body-Button:visited {
+  color: #fff;
+  border-radius: 1rem;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  margin-bottom: 1rem;
+  border: none;
+  min-width: 10rem;
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.Confirm-Body-Button_Delete {
+  background-color: #a43;
+}
+
+.Confirm-Body-Button_Delete:hover {
+  background-color: #c85a48;
+}
+
+.Confirm-Body-Button_Cancel {
+  background-color: #6a4;
+}
+
+.Confirm-Body-Button_Cancel:hover {
+  background-color: #81c061;
+}
+
+.Boi {
+  --happiness: 0.9;
+  --derp: 1;
+  --px: 0.5;
+  --py: 0.5;
+  width: 15rem;
+  max-width: 100%;
+  height: 15rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: radial-gradient(#f7e0b2, #eb5);
+  border-radius: 100%;
+  overflow: hidden;
+  margin: 0;
+  align-self: center;
+  flex: 0 0 auto;
+  border: solid 2px #ecb23e;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.Boi,
+.Boi * {
+  position: absolute;
+}
+
+.Boi::before {
+  content: '';
+  display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.world-location-card:hover .world-card-image img {
-  transform: scale(1.05);
-}
-
-.world-image-overlay {
-  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7));
+  background-image: linear-gradient(to bottom, #5a8, rgba(85, 170, 136, 0));
+  opacity: calc(1 - var(--happiness));
 }
 
-.world-card-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  opacity: 1;
-  transition: all 0.4s ease;
+.Boi-Blush {
+  width: 20%;
+  height: 10%;
+  background-color: rgba(255, 100, 100, 0.3);
+  border: 3px solid rgba(255, 100, 100, 0.3);
+  top: calc(45% + var(--py) * 10%);
+  border-radius: 100%;
+  opacity: calc(var(--happiness) * var(--happiness) * 0.9 + 0.1);
 }
 
-.world-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  position: relative;
+.Boi-Blush_L {
+  left: calc(7% + var(--px) * 2%);
 }
 
-.world-card-header::after {
+.Boi-Blush_R {
+  right: calc(9% - var(--px) * 2%);
+}
+
+.Boi-Eye {
+  width: calc(26% - var(--happiness) * 2%);
+  height: calc(26% - var(--happiness) * 2%);
+  background-color: #f6f6f6;
+  border-radius: 100%;
+  top: calc(25% + var(--py) * 10%);
+  overflow: hidden;
+}
+
+.Boi-Eye_L {
+  left: calc(18% + var(--px) * 4%);
+}
+
+.Boi-Eye_L::after {
+  transform: translate(calc((var(--px) + var(--derp) * 0.5) * 100%), calc((var(--py) + var(--derp) * 0.5) * 100%));
+}
+
+.Boi-Eye_R {
+  right: calc(22% - var(--px) * 4%);
+}
+
+.Boi-Eye_R::after {
+  transform: translate(calc((var(--px) + var(--derp) * -0.3) * 100%), calc((var(--py) + var(--derp) * -0.3) * 100%));
+}
+
+.Boi-Eye::after {
   content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, var(--card-accent), transparent);
-}
-
-.world-card-header h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0;
-  color: #222;
-}
-
-.world-location-country {
-  background: var(--card-accent);
-  color: white;
-  padding: 0.2rem 0.8rem;
-  border-radius: 1rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.world-card-tags {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-
-.world-tag {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  padding: 0.2rem 0.8rem;
-  border-radius: 1rem;
-  font-size: 0.8rem;
-  color: #343434;
-}
-
-.world-card-description {
-  color: #343434;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.world-card-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1rem;
-}
-
-.world-detail-item {
-  background: rgba(255, 255, 255, 0.3);
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  backdrop-filter: blur(5px);
-}
-
-.world-detail-label {
   display: block;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-  color: var(--card-accent);
+  background-color: #421;
+  width: calc(55% - var(--happiness) * 10%);
+  height: calc(55% - var(--happiness) * 10%);
+  border-radius: 100%;
 }
 
-.world-detail-item p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #343434;
-  line-height: 1.5;
+.Boi-Mouth {
+  width: calc(51% - var(--happiness) * 2%);
+  height: calc(26% - var(--happiness) * 2%);
+  background-color: #a33;
+  border-radius: calc((1 - var(--happiness)) * 10em) calc((1 - var(--happiness)) * 10em) calc(var(--happiness) * 16em) calc(var(--happiness) * 16em);
+  top: calc(57.5% + var(--py) * 5%);
+  left: calc(47.5% + var(--px) * 5%);
+  transform: translateX(-50%);
+  overflow: hidden;
+  border: 3px solid #962d2d;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
 }
 
-@media (max-width: 768px) {
-  .world-locations-grid {
-    grid-template-columns: 1fr;
-  }
+.Boi-Mouth::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  top: 0;
+  left: 50%;
+  background-color: white;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
 
-  .world-filter-controls {
-    flex-wrap: wrap;
-  }
+.Boi-Mouth::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 60%;
+  height: 50%;
+  left: 10%;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 20rem 20rem 0 0;
 }
 </style>

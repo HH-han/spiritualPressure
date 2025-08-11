@@ -15,7 +15,7 @@
         </div>
         <p class="note-preview">{{ truncateContent(note.content) }}</p>
         <div class="note-tags">
-          <span v-for="tag in parseTags(note.tags)" :key="tag" class="tag">{{ tag }}</span>
+          <span v-for="tag in parseTags(note.tags)" :key="tag" class="tag-post">{{ tag }}</span>
         </div>
         <div class="note-meta">
           <span class="note-location" v-if="note.location"><i class="icon-location"></i> {{ note.location }}</span>
@@ -51,20 +51,23 @@
           </div>
           <div class="form-group">
             <label>标签 (逗号分隔):</label>
-            <input v-model="editorData.tagsInput" type="text" placeholder="例如: 旅行,探险">
+            <input v-model="editorData.tagsInput" type="text" placeholder="例如: 旅行,探险...">
           </div>
           <div class="form-group">
             <label>图片:</label>
             <div class="image-preview-container">
               <div v-if="editorData.images" class="preview-images">
-                <img v-for="(img, index) in editorData.images.split('\n')" 
-                    :key="index" 
-                    :src="img" 
-                    class="preview-image" />
+                <img v-for="(img, index) in editorData.images.split('\n')" :key="index" :src="img"
+                  class="preview-image" />
               </div>
               <input v-model="editorData.images" rows="8" required class="note-images"></input>
               <button @click="addImage" class="add-image-btn" type="button" title="添加图片">
-                <svg t="1752841532188" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12057"><path d="M896 0 128 0C57.6 0 0 57.6 0 128L0 896C0 966.4 57.6 1024 128 1024L896 1024C966.4 1024 1024 966.4 1024 896L1024 128C1024 57.6 966.4 0 896 0L896 0ZM256 128C326.4 128 384 185.6 384 256 384 326.4 326.4 384 256 384 185.6 384 128 326.4 128 256 128 185.6 185.6 128 256 128L256 128ZM64 960 64 838.4 179.2 684.8C224 627.2 294.4 627.2 339.2 678.4L563.2 953.6 64 953.6 64 960ZM960 960 640 960 512 793.6 723.2 524.8C768 467.2 838.4 467.2 883.2 524.8L966.4 633.6 966.4 960 960 960Z" fill="#666666" p-id="12058"></path></svg>
+                <svg t="1752841532188" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg" p-id="12057">
+                  <path
+                    d="M896 0 128 0C57.6 0 0 57.6 0 128L0 896C0 966.4 57.6 1024 128 1024L896 1024C966.4 1024 1024 966.4 1024 896L1024 128C1024 57.6 966.4 0 896 0L896 0ZM256 128C326.4 128 384 185.6 384 256 384 326.4 326.4 384 256 384 185.6 384 128 326.4 128 256 128 185.6 185.6 128 256 128L256 128ZM64 960 64 838.4 179.2 684.8C224 627.2 294.4 627.2 339.2 678.4L563.2 953.6 64 953.6 64 960ZM960 960 640 960 512 793.6 723.2 524.8C768 467.2 838.4 467.2 883.2 524.8L966.4 633.6 966.4 960 960 960Z"
+                    fill="#666666" p-id="12058"></path>
+                </svg>
               </button>
             </div>
           </div>
@@ -91,8 +94,7 @@
         </div>
         <div class="note-img">
           <div class="note-img-container" v-if="currentNote.images && currentNote.images.length">
-            <img :src="currentNote.images" alt="Note image"
-              class="note-image" />
+            <img :src="currentNote.images" alt="Note image" class="note-image" />
           </div>
         </div>
         <div class="note-meta">
@@ -106,7 +108,7 @@
         </div>
         <div class="note-content">
           <span class="note-content" v-if="currentNote.location"><i class="icon-location"></i> {{ currentNote.content
-            }}</span>
+          }}</span>
         </div>
         <div class="modal-footer">
           <button class="edit-btn edit-btn-primary" @click="openEditor(currentNote)">编辑</button>
@@ -116,18 +118,7 @@
 
     <!-- 删除确认对话框 -->
     <div v-if="showDeleteConfirm" class="modal-overlay">
-      <div class="confirm-dialog">
-        <div class="modal-header">
-          <h3>确认删除</h3>
-        </div>
-        <div class="confirm-content">
-          <p>确定要删除这篇笔记吗？此操作无法撤销。</p>
-        </div>
-        <div class="confirm-actions">
-          <button @click="showDeleteConfirm = false">取消</button>
-          <button @click="confirmDelete" class="confirm-delete">确认删除</button>
-        </div>
-      </div>
+      <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal"/>
     </div>
   </div>
 </template>
@@ -136,6 +127,7 @@
 import { ref, onMounted } from 'vue'
 import request from '@/utils/request'
 import { ElMessage } from 'element-plus'
+import DeletePrompt from '@/components/PromptComponent/DeletePrompt.vue'
 
 // 笔记数据
 const notes = ref([])
@@ -259,13 +251,15 @@ const confirmDelete = async () => {
     try {
       await request.delete(`/api/public/posts/${noteToDelete.value}`);
       await fetchNotes();
-      showDeleteConfirm.value = false;
       ElMessage.success('删除成功');
     } catch (error) {
       ElMessage.error('删除失败');
       console.error('删除失败:', error);
     }
   }
+};
+const closeDeleteModal = () => {
+  showDeleteConfirm.value = false;
 };
 // 辅助函数
 const parseTags = (tags) => {
@@ -431,7 +425,7 @@ body {
   gap: 0.5rem;
 }
 
-.tag {
+.tag-post {
   background: rgba(108, 92, 231, 0.15);
   color: #6c5ce7;
   padding: 0.25rem 0.75rem;
@@ -441,7 +435,7 @@ body {
   transition: all 0.3s ease;
 }
 
-.tag:hover {
+.tag-post:hover {
   background: rgba(108, 92, 231, 0.3);
 }
 
@@ -545,11 +539,20 @@ body {
 }
 
 .modal-content::-webkit-scrollbar {
-  display: none;            /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .modal-header {
@@ -764,71 +767,16 @@ body {
 .edit-btn-primary:hover {
   background: #a29bfe;
 }
-
-/* 删除确认对话框 */
-.confirm-dialog {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  width: 100%;
-  max-width: 400px;
-  padding: 1.5rem;
-  animation: fadeIn 0.3s ease;
-}
-
-.confirm-content {
-  padding: 1.5rem 0;
-  text-align: center;
-  color: #2d3436;
-}
-
-.confirm-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-
-.confirm-actions button {
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.confirm-actions button:first-child {
-  background: rgba(45, 52, 54, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #2d3436;
-}
-
-.confirm-actions button:first-child:hover {
-  background: rgba(45, 52, 54, 0.2);
-}
-
-.confirm-delete {
-  background: #d63031;
-  border: none;
-  color: white;
-}
-
-.confirm-delete:hover {
-  background: #ff7675;
-}
-
 /* 响应式设计 */
 @media (max-width: 768px) {
   .notes-list {
     grid-template-columns: 1fr;
   }
-  
+
   .modal-content {
     max-height: 85vh;
   }
-  
+
   .note-img-container {
     height: 200px;
   }
@@ -838,21 +786,21 @@ body {
   .notes-container {
     padding: 1rem;
   }
-  
+
   .note-actions {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .note-actions button {
     width: 100%;
   }
-  
+
   .form-actions {
     flex-direction: column-reverse;
     gap: 0.75rem;
   }
-  
+
   .form-actions button {
     width: 100%;
   }

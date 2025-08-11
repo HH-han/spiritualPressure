@@ -56,69 +56,11 @@
     </div>  
 </template>  
 
-<script>  
+<script setup>  
 import DataPage from '../../components/DisplayBox/DataPage.vue';
 import LoaderBook from '../../components/TransitionalComponents/Loader-book.vue';
-import NotificationContainer from '../../components/DisplayBox/NotificationContainer.vue';
 import PictureScrolling from '../../components/DisplayBox/PictureScrolling.vue';
 
-export default {  
-    name: 'MessageNotification',  
-    components: {  
-        LoaderBook,
-    },  
-    mounted() {  
-        // 模拟延迟加载消息
-    },  
-    data() {  
-        return {  
-            newMessage: '',  
-            messages: [],  
-            notifications: [  
-                {  
-                    message: '您有一条新的消息',  
-                    time: '5分钟前',  
-                    icon: '✍️',  
-                },  
-                {  
-                    message: '您的邮件已发送',  
-                    time: '10分钟前',  
-                    icon: '📧',  
-                },  
-                {  
-                    message: '系统更新可用',  
-                    time: '1小时前',  
-                    icon: '🌍',  
-                },  
-            ] ,
-        };  
-    },  
-    methods: {  
-        addMessage() {  
-            if (this.newMessage.trim() === '') {  
-                alert('请输入消息内容!');  
-                return;  
-            }  
-            this.messages.push({ text: this.newMessage, reminded: false });  
-            this.newMessage = ''; // 清空输入框  
-        },  
-        setReminder(message) {  
-            if (message.reminded) {  
-                alert('提醒已设置过！');  
-                return;  
-            }  
-            message.reminded = true;  
-            alert(`提醒设置成功: "${message.text}"`);  
-        },  
-        showDetails(notification) {  
-            alert(`通知详情: ${notification.message}`);  
-        },  
-        deleteNotification(index) {  
-            this.notifications.splice(index, 1);  
-            alert('通知已删除');  
-        }  
-    }  
-};  
 </script>  
 
 <style>  

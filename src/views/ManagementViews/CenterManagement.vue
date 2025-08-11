@@ -52,7 +52,7 @@
                 <section v-if="activeTab === 'notification'" class="tab-content active">
                     <h2 class="section-title">通知设置</h2>
                     <div class="personal-info-grid">
-                        <NotificationContainer />
+                        <MessageNotification />
                     </div>
                 </section>
             </main>
@@ -64,7 +64,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import PersonalCenter from '@/views/MyCenter/PersonalCenter.vue';
 import ChangePassword from '@/views/MyCenter/ChangePassword.vue';
-import NotificationContainer from '@/components/DisplayBox/NotificationContainer.vue'
+import MessageNotification from '@/views/MyCenter/MessageNotification.vue'
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus';
 

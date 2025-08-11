@@ -31,7 +31,7 @@
 
                 <div class="delete-card-footer">
                   <!-- 删除按钮 -->
-                  <button class="delete-action-button delete-delete" @click="confirmDelete(order.id)">
+                  <button class="delete-action-button delete-delete" @click="deleteshows(order.id)">
                     删除订单
                   </button>
                 </div>
@@ -46,19 +46,7 @@
     <teleport to="body">
       <transition name="delete-modal">
         <div v-if="showDeleteModal" class="delete-modal-mask">
-          <div class="delete-modal-container">
-            <div class="delete-modal-header">
-              <h2>确认删除</h2>
-              <button class="delete-close-button" @click="closeDeleteModal">×</button>
-            </div>
-            <div class="delete-modal-content">
-              <p>确定要删除此订单吗？</p>
-            </div>
-            <div class="delete-modal-footer">
-              <button class="delete-action-button" @click="closeDeleteModal">取消</button>
-              <button class="delete-action-button delete-delete" @click="deleteOrder">删除</button>
-            </div>
-          </div>
+          <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
         </div>
       </transition>
     </teleport>
@@ -69,6 +57,7 @@
 import { ref, onMounted } from 'vue';
 import request from '@/utils/request';
 import { ElMessage } from "element-plus";
+import DeletePrompt from '@/components/PromptComponent/DeletePrompt.vue'
 
 // 响应式状态
 const searchQuery = ref('');
@@ -109,13 +98,13 @@ const handlePayment = (orderId) => {
 };
 
 // 显示删除确认框
-const confirmDelete = (orderId) => {
+const deleteshows = (orderId) => {
   selectedOrderId.value = orderId;
   showDeleteModal.value = true;
 };
 
 // 删除订单
-const deleteOrder = async () => {
+const confirmDelete = async () => {
   try {
     const response = await request({
       url: `/api/public/payment/${selectedOrderId.value}`,
@@ -381,75 +370,5 @@ onMounted(() => {
   align-items: center;
   z-index: 1000;
   transition: opacity 0.3s ease;
-}
-
-.delete-modal-container {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  width: 90%;
-  max-width: 400px;
-  transition: all 0.3s ease;
-}
-
-.delete-modal-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.delete-modal-header h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  color: #2d3748;
-}
-
-.delete-close-button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #718096;
-  transition: color 0.2s ease;
-}
-
-.delete-close-button:hover {
-  color: #e53e3e;
-}
-
-.delete-modal-content {
-  padding: 1.5rem;
-}
-
-.delete-modal-content p {
-  margin: 0;
-  color: #4a5568;
-}
-
-.delete-modal-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-}
-
-/* Transitions */
-.delete-fade-enter-active,
-.delete-fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.delete-fade-enter-from,
-.delete-fade-leave-to {
-  opacity: 0;
-}
-
-.delete-modal-enter-from .delete-modal-container,
-.delete-modal-leave-to .delete-modal-container {
-  opacity: 0;
-  transform: scale(1.1);
 }
 </style>

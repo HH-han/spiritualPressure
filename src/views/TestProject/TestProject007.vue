@@ -1,12 +1,8 @@
 <template>
     <div>
-      <TestPage/>
-      <h1>TestProject007</h1>
-      <MyNamePage/>
-      <ShopCart/>
+      <button class="delete-btn" @click.stop="postToDelete(note.id)">删除</button>
     </div>
   </template>
 <script setup>
-import MyNamePage from '../../components/DisplayBox/MyNamePage.vue';
-import ShopCart from "../../components/DisplayBox/ShopCart.vue";
+
 </script>
