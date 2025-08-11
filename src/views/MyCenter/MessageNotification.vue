@@ -129,7 +129,8 @@ const confirmDelete = () => {
     padding: 20px;
     color: white;
     width: 100%;
-    margin: 20px;
+    height: 100%;
+    min-height: 100vh;
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.4);
 }
 

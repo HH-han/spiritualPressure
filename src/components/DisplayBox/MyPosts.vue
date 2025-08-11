@@ -71,7 +71,7 @@
         </div>
       </form>
       <!-- 提交按钮 -->
-      <div>
+      <div class="myposts-submit-container">
         <button @click="submitPost" class="myposts-submit-btn">
             <span v-if="!isSubmitting">发布分享</span>
             <span v-else class="myposts-spinner">
@@ -283,17 +283,18 @@ const resetForm = () => {
   transform-style: preserve-3d;
   transform: perspective(1000px);
   transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .myposts-card:hover {
-  /* transform: perspective(1000px) translateY(-5px) rotateX(1deg); */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .myposts-title {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 2rem;
   color: var(--myposts-primary);
   text-align: center;
   background: linear-gradient(to right, var(--myposts-primary), var(--myposts-secondary));
@@ -334,7 +335,7 @@ const resetForm = () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 0 4px #3f78f4;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(255, 255, 255, 0.2);
   border-radius: 15px;
   padding: 15px;
   flex: 1;
@@ -343,7 +344,7 @@ const resetForm = () => {
 .myposts-form-group-left:hover,
 .myposts-form-group-right:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 0 4px #6db4ee;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(0, 0, 0, 0.214);
 }
 .myposts-label {
   font-size: 1.5rem;
@@ -511,6 +512,13 @@ const resetForm = () => {
   border-color: var(--myposts-primary);
 }
 
+.myposts-submit-container{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+}
+
 .myposts-submit-btn {
   background: linear-gradient(to right, var(--myposts-primary), var(--myposts-secondary));
   color: white;
@@ -523,7 +531,6 @@ const resetForm = () => {
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-top: 1rem;
   box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
   position: relative;
   overflow: hidden;
