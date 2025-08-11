@@ -180,13 +180,13 @@ onMounted(() => {
 
 .world-locations-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 2rem;
 }
 
 .world-location-card {
     width: 100%;
-    max-width: 300px;
+    max-width: 350px;
     border-radius: 1rem;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.2);

@@ -96,6 +96,7 @@
 <script setup>
 import { ref } from 'vue';
 import request from '@/utils/request';
+import { ElMessage } from 'element-plus';
 
 const userInfo = JSON.parse(localStorage.getItem('user'));
 
@@ -133,6 +134,13 @@ const handleFiles = (files) => {
   if (files.length > 0) {
     const file = files[0];
     if (file.type.startsWith('image/')) {
+      // 验证图片大小不超过5MB
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        ElMessage.error('图片大小不能超过5MB');
+        return;
+      }
+      
       const reader = new FileReader();
       reader.onload = (e) => {
         post.value.images = [{

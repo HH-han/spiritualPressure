@@ -45,6 +45,7 @@
                                     <td>{{ item.features }}</td>
                                     <td>{{ item.history }}</td>
                                     <td>{{ item.tags }}</td>
+                                    <td>{{ item.color }}</td>
                                     <td>{{ item.created_at }}</td>
                                     <td>{{ item.updated_at }}</td>
                                     <td class="table-btn-display">
@@ -161,6 +162,11 @@
                                     <label>标签:</label>
                                     <input v-model="formData.tags" placeholder="用逗号分隔多个标签" required />
                                 </div>
+                                <div class="form-group">
+                                    <label>标签:</label>
+                                    <input class="input-color" type="color" v-model="formData.color" placeholder="请选择颜色" required />
+                                    <span>当前颜色值: {{ formData.color }}</span>
+                                </div>
                             </div>
                             <!-- 提交按钮 -->
                             <div class="dialog-buttons">
@@ -197,7 +203,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
-import { ElementPlus } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
+import { color } from 'chart.js/helpers';
 
 
 // 表格列定义
@@ -212,6 +219,7 @@ const columns = [
     { key: 'features', title: '特征' },
     { key: 'history', title: '历史' },
     { key: 'tags', title: '标签' },
+    { key: 'color', title: '颜色' },
     { key: 'created_at', title: '创建时间' },
     { key: 'updated_at', title: '更新时间' }
 ];
@@ -232,6 +240,7 @@ const formData = ref({
     features: '',
     history: '',
     tags: [],
+    color: '',
     created_at: '',
     updated_at: '',
 
@@ -276,7 +285,7 @@ const fetchItems = async () => {
         const params = {
             currentPage: currentPage.value,
             pageSize: pageSize.value,
-            searchQuery: searchKeyword.value, 
+            searchQuery: searchKeyword.value,
             activeCategory: '全部'
         };
         const response = await request.get('/api/public/travelworld', { params });
@@ -309,6 +318,7 @@ const showAddDialog = () => {
         features: '',
         history: '',
         tags: '',
+        color: '',
         created_at: '',
         updated_at: '',
     };
