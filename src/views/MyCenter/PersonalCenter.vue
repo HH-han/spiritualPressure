@@ -402,11 +402,9 @@ onMounted(() => {
 </script>
 <style scoped>
 .PersonalCenter {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
@@ -415,10 +413,12 @@ onMounted(() => {
   backdrop-filter: blur(15px);
   border-radius: 20px;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-  padding: 2.5rem;
   position: relative;
+  width: 100%;
+  top: 0;
+  left: 0;
   overflow: hidden;
-  transform: translateY(0);
+  padding: 2rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -516,6 +516,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
 }
+
 .avatar-preview-container {
   display: flex;
   flex-direction: column;
@@ -577,6 +578,7 @@ onMounted(() => {
   text-align: center;
   width: 100%;
 }
+
 .upload-hint {
   color: #6c757d;
   font-size: 0.9rem;
@@ -659,6 +661,7 @@ onMounted(() => {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .input-note-content-input::-webkit-scrollbar {
   display: none;
 }

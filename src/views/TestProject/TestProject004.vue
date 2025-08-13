@@ -20,21 +20,11 @@
         </div>
       </div>
     </a>
-    <div>
-      <MyPosts />
-    </div>
   </div>
 
 </template>
 <script>
-import MyPosts from '@/components/DisplayBox/MyPosts.vue';
-export default {
-  name: 'TestProject004',
-  components: {
-    MyPosts
 
-  },
-};
 </script>
 <style>
 .fbi {

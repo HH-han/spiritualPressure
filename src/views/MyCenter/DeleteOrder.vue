@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import request from '@/utils/request';
 import { ElMessage } from "element-plus";
 import DeletePrompt from '@/components/PromptComponent/DeletePrompt.vue'
@@ -64,6 +64,10 @@ const searchQuery = ref('');
 const orders = ref([]);
 const showDeleteModal = ref(false);
 const selectedOrderId = ref(null);
+const currentPage = ref(1);
+const totalPages = ref(1);
+const isLoading = ref(false);
+const scrollContainer = ref(null);
 // 配置项
 const statusLabels = {
   PENDING: '待支付',
@@ -133,35 +137,73 @@ const closeDeleteModal = () => {
 
 // 获取订单列表
 const fetchOrders = async () => {
+  if (isLoading.value || currentPage.value > totalPages.value) return;
+  
+  isLoading.value = true;
+  
   // 获取完整的用户信息
   const userInfo = JSON.parse(localStorage.getItem('user'));
   if (!userInfo || !userInfo.username) {
     ElMessage.error('用户信息获取失败');
+    isLoading.value = false;
     return;
   }
+  
   try {
     const response = await request({
       url: '/api/public/payment',
       method: 'GET',
       params: {
         search: searchQuery.value,
-        username: userInfo.username
+        username: userInfo.username,
+        page: currentPage.value,
+        pageSize: 10
       },
     });
 
     if (response.code === '0') {
-      orders.value = Array.isArray(response.data.payments) ? response.data.payments : [];
+      const newOrders = Array.isArray(response.data.payments) ? response.data.payments : [];
+      if (currentPage.value === 1) {
+        orders.value = newOrders;
+      } else {
+        orders.value = [...orders.value, ...newOrders];
+      }
+      totalPages.value = response.data.totalPages || 1;
+      currentPage.value += 1;
     } else {
       console.error('获取订单列表失败：', response.msg);
     }
   } catch (error) {
     console.error('请求失败：', error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const handleScroll = () => {
+  if (!scrollContainer.value) return;
+  
+  const { scrollTop, scrollHeight, clientHeight } = scrollContainer.value;
+  const isNearBottom = scrollTop + clientHeight >= scrollHeight - 100;
+  
+  if (isNearBottom && !isLoading.value) {
+    fetchOrders();
   }
 };
 
 // 初始化加载
 onMounted(() => {
+  scrollContainer.value = document.querySelector('.delete-order-list');
+  if (scrollContainer.value) {
+    scrollContainer.value.addEventListener('scroll', handleScroll);
+  }
   fetchOrders();
+});
+
+onUnmounted(() => {
+  if (scrollContainer.value) {
+    scrollContainer.value.removeEventListener('scroll', handleScroll);
+  }
 });
 </script>
 <style setup>
@@ -230,6 +272,14 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  max-height: 50vh;
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-right: 10px;
+}
+.delete-order-list::-webkit-scrollbar {
+  display: none;
 }
 
 /* Order Card */

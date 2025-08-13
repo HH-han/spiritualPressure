@@ -52,7 +52,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 // 导入页面
 import TestProjecthome from '@/views/TestProject/TestProjecthome.vue'
 import TestProject001 from '@/views/TestProject/TestProject001.vue'
@@ -70,6 +70,7 @@ import Richtext from '@/views/TestProject/Richtext.vue'
 import FavoriteContent from '@/components/DisplayBox/FavoriteContent.vue';
 
 const router = useRouter()
+const route = useRoute()
 // 页面配置
 const pages = [
   { name: '项目主页', component: TestProjecthome, icon: 'fas fa-home' },
@@ -92,17 +93,14 @@ const pages = [
 // 当前页面
 const currentPage = ref(TestProjecthome)
 
-// 切换页面
-const switchPage = (component) => {
-  currentPage.value = component
-}
-
 // 获取当前页面名称
 const currentPageName = computed(() => {
-  const page = pages.find(p => p.component.name === currentPage.value.name)
-  console.log('Current page:', currentPage.value, 'Found page:', page)
-  return page ? page.name : '未知页面'
-})
+  const page = pages.find(p => {
+    return p.component.__name === currentPage.value.__name;
+  });
+  if (!page) return '未知页面';
+  return page.name;
+});
 // 返回主页
 const backhome = () => {
   router.push('/systemhomeView')
@@ -120,9 +118,40 @@ const fetchUserInfo = async () => {
   userInfo.value = { ...localUser };
 };
 
+// 在onMounted中添加从路由或本地存储恢复当前页面的逻辑
 onMounted(() => {
   fetchUserInfo();
+  
+  // 从路由参数获取当前页面
+  if (route.query.page) {
+    const targetPage = pages.find(p => p.component.__name === route.query.page);
+    if (targetPage) {
+      currentPage.value = targetPage.component;
+      return;
+    }
+  }
+  
+  // 从本地存储获取上次访问的页面
+  const lastPage = localStorage.getItem('lastPage');
+  if (lastPage) {
+    const targetPage = pages.find(p => p.component.__name === lastPage);
+    if (targetPage) {
+      currentPage.value = targetPage.component;
+    }
+  }
 });
+
+// 保留已修改的switchPage函数
+const switchPage = (component) => {
+  currentPage.value = component;
+  // 保存到本地存储
+  localStorage.setItem('lastPage', component.name);
+  // 更新路由参数
+  router.replace({ 
+    path: route.path, 
+    query: { ...route.query, page: component.name }
+  });
+};
 </script>
 
 <style scoped>

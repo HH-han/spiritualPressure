@@ -11,6 +11,7 @@
                 <div class="note-content-preview" v-html="renderMarkdownPreview(note.content)"></div>
                 <div class="note-footer">
                     <span>{{ formatDate(note.updatedAt) }}</span>
+                    <span>{{ note.username }}</span>
                 </div>
                 <div class="note-actions">
                     <button @click.stop="editNote(note.id)" class="icon-button">
@@ -372,6 +373,9 @@ const closeDeleteModal = () => {
     font-size: 0.8rem;
     opacity: 0.7;
     margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     color: #ffbf47;
 }
 

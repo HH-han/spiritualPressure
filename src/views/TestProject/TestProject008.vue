@@ -1,298 +1,278 @@
 <template>
-  <div class="destination-list">
-    <div class="tabs">
+  <div class="seasonal-recommendations">
+    <h2 class="section-title-conter">当季推荐</h2>
+    <div class="month-tabs">
       <button
-        v-for="tab in tabs"
-        :key="tab"
-        :class="{ active: currentTab === tab }"
-        @click="currentTab = tab"
-        class="tab-button"
+        v-for="month in months"
+        :key="month"
+        :class="{ active: currentMonth === month }"
+        @click="handleMonthChange(month)"
+        class="month-tab"
       >
-        {{ tab }}
-        <span class="tab-indicator"></span>
+        {{ month }}
+        <span class="tab-underline"></span>
       </button>
     </div>
-    
-    <div class="destinations-container">
-      <transition name="fade" mode="out-in">
-        <div v-if="currentTab === '国内'" class="destinations-grid-container">
-          <div v-for="region in destinations" :key="region.name" class="region-card">
-            <h3 class="region-title">{{ region.name }}</h3>
-            <ul class="city-list">
-              <li v-for="destination in region.cities" :key="destination" class="city-item">
-                {{ destination }}
-                <span class="city-hover-effect"></span>
-              </li>
-            </ul>
+    <div class="recommendation-grid">
+      <div 
+        v-for="destination in getRecommendationsForMonth(currentMonth)" 
+        :key="destination.name"
+        class="destination-card"
+      >
+        <div class="image-wrapper">
+          <img 
+            :src="destination.image" 
+            :alt="destination.name + '图片'" 
+            class="destination-image"
+          />
+          <div class="image-overlay"></div>
+        </div>
+        <div class="destination-info">
+          <h3 class="destination-name">{{ destination.name }}</h3>
+          <p class="destination-desc">{{ destination.description }}</p>
+          <div class="destination-tags">
+            <span v-for="tag in destination.tags" :key="tag" class="tag">{{ tag }}</span>
           </div>
         </div>
-        
-        <div v-else class="empty-state">
-          <div class="empty-icon">🌎</div>
-          <h3>更多目的地即将上线</h3>
-          <p>我们正在努力添加更多精彩旅行目的地</p>
-        </div>
-      </transition>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue'
 
-const tabs = ref(['国内', '港澳台', '日本', '东南亚', '南亚西亚', '欧洲美洲', '澳洲非洲']);
-const currentTab = ref('国内');
-const destinations = ref([
-  {
-    name: '直辖市',
-    cities: ['北京', '上海', '重庆', '天津']
-  },
-  {
-    name: '云南',
-    cities: ['丽江', '大理', '昆明', '香格里拉', '泸沽湖', '双廊', '西双版纳', '束河', '腾冲', '雨崩']
-  },
-  {
-    name: '四川',
-    cities: ['成都', '九寨沟', '稻城', '色达', '若尔盖', '都江堰', '亚丁', '阿坝', '峨眉山', '牛背山']
-  },
-  {
-    name: '浙江',
-    cities: ['杭州', '乌镇', '西塘', '千岛湖', '普陀山', '东极岛', '南浔']
-  },
-  {
-    name: '海南 福建',
-    cities: ['三亚', '蜈支洲岛', '海口', '厦门', '鼓浪屿', '武夷山', '泉州']
-  },
-  {
-    name: '江苏',
-    cities: ['南京', '苏州', '无锡', '扬州', '周庄', '常州', '连云港', '同里']
-  },
-  {
-    name: '广东 广西',
-    cities: ['广州', '深圳', '珠海', '汕头', '桂林', '阳朔', '北海', '黄姚古镇', '涠洲岛', '龙脊梯田']
-  },
-  {
-    name: '西藏 贵州',
-    cities: ['拉萨', '林芝', '阿里', '黔东南', '荔波', '镇远', '西江', '黄果树']
-  },
-  {
-    name: '西北',
-    cities: ['西安', '青海湖', '西宁', '祁连', '敦煌', '兰州', '甘南', '张掖', '嘉峪关', '新疆']
-  },
-  {
-    name: '山东 山西',
-    cities: ['青岛', '泰山', '日照', '威海', '烟台', '长岛', '蓬莱', '平遥', '大同', '五台山', '壶口瀑布']
-  },
-  {
-    name: '湖南 湖北',
-    cities: ['张家界', '凤凰', '郴州', '武汉', '恩施', '神农架']
-  },
-  {
-    name: '安徽 江西',
-    cities: ['黄山', '宏村', '婺源', '景德镇', '庐山', '三清山', '南昌']
-  },
-  {
-    name: '河北 河南',
-    cities: ['北戴河', '秦皇岛', '承德', '张北', '少林寺', '洛阳', '龙门石窟']
-  },
-  {
-    name: '内蒙古 东北',
-    cities: ['呼伦贝尔', '阿尔山', '海拉尔', '哈尔滨', '漠河', '雪乡', '大连', '丹东', '盘锦']
-  }
-]);
+const currentMonth = ref('一月')
+
+const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+
+const recommendations = {
+  '一月': [
+    {
+      name: '哈尔滨冰雪大世界',
+      image: 'https://example.com/harbin-ice.jpg',
+      description: '体验世界最大的冰雪艺术景观',
+      tags: ['冰雪', '节庆', '东北']
+    },
+    {
+      name: '三亚亚龙湾',
+      image: 'https://example.com/sanya-beach.jpg',
+      description: '冬日避寒的绝佳选择',
+      tags: ['海滩', '温暖', '海岛']
+    }
+  ],
+  '二月': [
+    {
+      name: '丽江古城',
+      image: 'https://example.com/lijiang.jpg',
+      description: '春节期间的古城年味十足',
+      tags: ['古城', '春节', '云南']
+    },
+    {
+      name: '厦门鼓浪屿',
+      image: 'https://example.com/gulangyu.jpg',
+      description: '温暖的南方小岛，春节度假好去处',
+      tags: ['海岛', '文艺', '福建']
+    }
+  ],
+  // 其他月份数据...
+  '三月': [
+    {
+      name: '婺源油菜花',
+      image: 'https://example.com/wuyuan.jpg',
+      description: '金色花海与徽派建筑的完美结合',
+      tags: ['赏花', '摄影', '江西']
+    }
+  ]
+}
+
+const getRecommendationsForMonth = (month) => {
+  return recommendations[month] || []
+}
+
+const handleMonthChange = (month) => {
+  currentMonth.value = month
+}
 </script>
 
 <style scoped>
-/* 基础样式 */
-.destination-list {
+.seasonal-recommendations {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px;
-  font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  color: #2d3436;
+  padding: 40px 20px;
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
-/* 标签页样式 */
-.tabs {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 32px;
-  position: relative;
-  padding-bottom: 4px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.tab-button {
-  position: relative;
-  padding: 12px 24px;
-  font-size: 16px;
+.section-title-conter {
+  text-align: center;
+  font-size: 32px;
   font-weight: 600;
-  color: #636e72;
+  margin-bottom: 40px;
+  color: #333;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.section-title-conter::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+}
+
+.month-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.month-tab {
+  position: relative;
+  padding: 8px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
   background: none;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-radius: 12px 12px 0 0;
+  border-radius: 20px;
 }
 
-.tab-button:hover {
-  color: #4a6bff;
-  background: rgba(74, 107, 255, 0.05);
+.month-tab:hover {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
 }
 
-.tab-button.active {
-  color: #4a6bff;
+.month-tab.active {
+  color: #ff6b6b;
+  font-weight: 600;
 }
 
-.tab-indicator {
+.tab-underline {
   position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, #4a6bff, #6c5ce7);
-  transform: scaleX(0);
-  transform-origin: left;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b6b, #ff8e53);
   transition: transform 0.3s ease;
-  border-radius: 3px;
 }
 
-.tab-button.active .tab-indicator {
-  transform: scaleX(1);
+.month-tab.active .tab-underline {
+  transform: translateX(-50%) scaleX(1);
 }
 
-/* 目的地内容区域 */
-.destinations-container {
-  min-height: 400px;
-}
-
-.destinations-grid-container {
+.recommendation-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 0 20px;
 }
 
-.region-card {
-  background: #ffffff;
+.destination-card {
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: white;
 }
 
-.region-card:hover {
+.destination-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
 }
 
-.region-title {
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 20px;
-  color: #4a6bff;
+.image-wrapper {
   position: relative;
-  padding-bottom: 12px;
-}
-
-.region-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background: linear-gradient(90deg, #4a6bff, #6c5ce7);
-  border-radius: 3px;
-}
-
-.city-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 12px;
-}
-
-.city-item {
-  position: relative;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  width: 100%;
+  height: 200px;
   overflow: hidden;
 }
 
-.city-hover-effect {
+.destination-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.destination-card:hover .destination-image {
+  transform: scale(1.05);
+}
+
+.image-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(74, 107, 255, 0.1), rgba(108, 94, 231, 0.1));
-  transform: translateX(-100%);
-  transition: all 0.3s ease;
-  z-index: -1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.1));
 }
 
-.city-item:hover {
-  color: #4a6bff;
-  transform: translateX(5px);
+.destination-info {
+  padding: 20px;
 }
 
-.city-item:hover .city-hover-effect {
-  transform: translateY(0);
+.destination-name {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
 }
 
-/* 空状态样式 */
-.empty-state {
+.destination-desc {
+  margin: 0 0 15px;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.destination-tags {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 48px 0;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.empty-icon {
-  font-size: 64px;
-  margin-bottom: 24px;
-  opacity: 0.7;
+.tag {
+  padding: 4px 12px;
+  font-size: 12px;
+  background: #f3f3f3;
+  border-radius: 20px;
+  color: #666;
 }
 
-.empty-state h3 {
-  margin: 0 0 8px;
-  color: #2d3436;
-}
-
-.empty-state p {
-  margin: 0;
-  color: #636e72;
-}
-
-/* 过渡动画 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-/* 响应式设计 */
 @media (max-width: 768px) {
-  .tabs {
-    flex-wrap: wrap;
+  .section-title {
+    font-size: 26px;
+    margin-bottom: 30px;
   }
   
-  .destinations-grid {
+  .month-tabs {
+    gap: 6px;
+    margin-bottom: 30px;
+  }
+  
+  .month-tab {
+    padding: 6px 15px;
+    font-size: 14px;
+  }
+  
+  .recommendation-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 10px;
   }
   
-  .city-list {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  .image-wrapper {
+    height: 180px;
   }
 }
 </style>

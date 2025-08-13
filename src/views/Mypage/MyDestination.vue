@@ -35,12 +35,8 @@
         </div>
         <!-- 轮播导航指示器 -->
         <div class="carousel-indicators">
-          <span 
-            v-for="(item, index) in mediaList.images.concat(mediaList.videos)" 
-            :key="index"
-            :class="{ active: currentIndex === index }"
-            @click="currentIndex = index"
-          ></span>
+          <span v-for="(item, index) in mediaList.images.concat(mediaList.videos)" :key="index"
+            :class="{ active: currentIndex === index }" @click="currentIndex = index"></span>
         </div>
       </div>
     </header>
@@ -52,6 +48,10 @@
       <!-- 目的地列表区域 -->
       <div>
         <DestinationList />
+      </div>
+      <!-- 季节性推荐 -->
+      <div>
+        <SeasonalRecommend />
       </div>
       <h1 class="page-title">探索世界目的地 🌍</h1>
       <div class="controls">
@@ -79,7 +79,8 @@
           </div>
           <div class="card-content">
             <h3 class="destination-name">{{ destination.name }}</h3>
-            <p class="destination-description">{{ destination.description ? destination.description.substring(0, 10) + '...' : '' }}</p>
+            <p class="destination-description">{{ destination.description ? destination.description.substring(0, 10) +
+              '...' : '' }}</p>
             <ul class="city-list">
               <li v-for="city in destination.cities" :key="city" class="city-item">
                 <svg t="1748482186834" class="icon" viewBox="0 0 1028 1024" version="1.1"
@@ -181,6 +182,7 @@
           </svg>
         </button>
       </div>
+      <!-- 底部 -->
       <div>
         <HomeFooter />
       </div>
@@ -193,6 +195,7 @@ import Home_2 from '@/components/NavigationComponent/HomeHeader.vue';
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
 import MydestinationWorld from '@/views/Mypage/MydestinationWorld.vue';
 import DestinationList from '@/views/Mypage/DestinationList.vue';
+import SeasonalRecommend from '@/views/Mypage/SeasonalRecommendations.vue';
 import { onBeforeUnmount } from 'vue';
 import { ref, onMounted, computed, } from 'vue';
 import request from '@/utils/request';

@@ -125,7 +125,7 @@ const routes = [
   // 支付页面路由
   {path: '/payviews',name: 'payviews',component: PayViews},
   // 测试项目页面路由
-  {path: '/testpage',name: 'testpage',component: TestPage},
+  {path: '/testpage',name: 'testpage',component: TestPage, props: (route) => ({ query: route.query })},
   // 注册第二步页面路由
   {path: '/favoritepage',name: 'favoritepage',component: FavoritePage},
   // 个人中心页面路由

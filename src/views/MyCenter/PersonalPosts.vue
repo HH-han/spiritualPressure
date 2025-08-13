@@ -443,6 +443,7 @@ body {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  gap: 10px;
   font-size: 0.85rem;
   color: #ffbf47;
 }

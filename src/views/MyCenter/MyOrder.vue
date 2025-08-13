@@ -63,12 +63,10 @@
               </div>
             </transition-group>
 
-            <!-- 分页加载 -->
-            <div v-if="showPagination" class="pagination">
-              <button :class="['load-more', { loading: isPaginationLoading }]" @click="loadMore"
-                :disabled="isPaginationLoading">
-                {{ isPaginationLoading ? '正在加载...' : '加载更多' }}
-              </button>
+            <div class="pagination" ref="paginationTrigger">
+              <div v-if="loadingMore" class="loading-more">
+                加载中...
+              </div>
             </div>
           </div>
 
@@ -127,7 +125,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onUnmounted, onMounted, nextTick } from 'vue';
 import request from '@/utils/request';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
@@ -192,13 +190,7 @@ const displayedOrders = computed(() => {
   return filteredOrders.value.slice(0, currentPage.value * pageSize);
 });
 
-const showEmptyState = computed(() => {
-  return !isLoading.value && filteredOrders.value.length === 0;
-});
 
-const showPagination = computed(() => {
-  return !showEmptyState.value && filteredOrders.value.length > displayedOrders.value.length;
-});
 
 // 方法
 const changeTab = (tab) => {
@@ -272,8 +264,13 @@ const fetchOrders = async () => {
     });
 
     if (response.code === '0') {
-      orders.value = Array.isArray(response.data.payments) ? response.data.payments : [];
+      if (currentPage.value === 1) {
+        orders.value = Array.isArray(response.data.payments) ? response.data.payments : [];
+      } else {
+        orders.value = [...orders.value, ...(Array.isArray(response.data.payments) ? response.data.payments : [])];
+      }
       totalOrders.value = response.data.total || 0;
+      showEmptyState.value = orders.value.length === 0;
     } else {
       console.error('获取订单列表失败：', response.msg);
     }
@@ -281,12 +278,53 @@ const fetchOrders = async () => {
     console.error('请求失败：', error);
   } finally {
     isLoading.value = false;
+    loadingMore.value = false;
   }
 };
 
-// 初始化加载
+const paginationTrigger = ref(null);
+
+const showEmptyState = ref(false);
+const loadingMore = ref(false);
+
+const observer = ref(null);
+
+const setupInfiniteScroll = () => {
+  nextTick(() => {
+    if (observer.value) {
+      observer.value.disconnect();
+    }
+    
+    const triggerElement = document.querySelector('.pagination') || document.querySelector('.loading-more');
+    if (!triggerElement) {
+      console.error('未找到.pagination或.loading-more元素');
+      return;
+    }
+    
+    observer.value = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !loadingMore.value && currentPage.value * pageSize < totalOrders.value) {
+        loadingMore.value = true;
+        loadMore().finally(() => {
+          loadingMore.value = false;
+        });
+      }
+    }, { 
+      rootMargin: '100px',
+      threshold: 0.01 
+    });
+    
+    observer.value.observe(triggerElement);
+  });
+};
+
+onUnmounted(() => {
+  if (observer.value) {
+    observer.value.disconnect();
+  }
+});
 onMounted(() => {
   fetchOrders();
+  setupInfiniteScroll();
 });
 </script>
 
@@ -382,8 +420,14 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  max-height: 50vh;
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-
+.order-list::-webkit-scrollbar {
+  display: none;
+}
 .order-card {
   background: white;
   border-radius: 12px;
