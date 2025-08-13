@@ -4,22 +4,37 @@
             <h1>旅行笔记</h1>
         </div>
         <div class="notes-container">
-            <div v-for="note in notes" :key="note.id" class="glass-note"
-                @click="selectNote(note.id)">
+            <div v-for="note in notes" :key="note.id" class="glass-note" @click="selectNote(note.id)">
                 <div class="note-header">
                     <h3>{{ note.title }}</h3>
-                    <div class="note-actions">
-                        <button @click.stop="editNote(note.id)" class="icon-button">
-                            <svg t="1751019530438" class="icon" viewBox="0 0 1070 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6150"><path d="M876.683636 1014.737455H175.848727a153.320727 153.320727 0 0 1-153.181091-153.134546V160.721455a153.320727 153.320727 0 0 1 153.134546-153.134546h350.487273a50.362182 50.362182 0 1 1 0 100.770909h-350.487273c-28.858182 0-52.363636 23.458909-52.363637 52.363637v700.881454c0 28.858182 23.458909 52.363636 52.410182 52.363636h700.834909c28.858182 0 52.363636-23.458909 52.363637-52.363636v-350.487273a50.362182 50.362182 0 1 1 100.817454 0v350.487273a153.320727 153.320727 0 0 1-153.181091 153.134546z" fill="#FFB730" p-id="6151"></path><path d="M475.089455 799.650909c-2.141091 0-4.142545-0.139636-6.237091-0.372364l-158.72-19.828363a50.269091 50.269091 0 0 1-43.659637-43.659637l-19.828363-158.72c-1.861818-15.453091 3.397818-30.906182 14.382545-41.890909l442.042182-442.042181a154.763636 154.763636 0 0 1 218.670545 0l31.045819 30.999272c29.277091 29.184 45.335273 67.956364 45.335272 109.381818a153.6 153.6 0 0 1-45.335272 109.428364l-442.042182 441.949091a50.408727 50.408727 0 0 1-35.653818 14.754909z m-113.617455-115.293091l95.325091 11.915637 424.587636-424.587637a53.666909 53.666909 0 0 0 0-76.241454l-31.045818-31.045819a53.992727 53.992727 0 0 0-76.194909 0L349.556364 588.986182l11.915636 95.371636z" fill="#FFB730" p-id="6152"></path></svg>
-                        </button>
-                        <button @click.stop="deleteNote(note.id)" class="icon-button">
-                            <svg t="1751019574529" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7140" width="256" height="256"><path d="M519.620465 0c-103.924093 0-188.511256 82.467721-192.083349 185.820279H85.015814A48.91386 48.91386 0 0 0 36.101953 234.686512a48.91386 48.91386 0 0 0 48.913861 48.866232h54.010046V831.345116c0 102.852465 69.822512 186.844279 155.909954 186.844279h439.200744c86.087442 0 155.909953-83.491721 155.909954-186.844279V284.100465h48.91386a48.91386 48.91386 0 0 0 48.913861-48.890046 48.91386 48.91386 0 0 0-48.913861-48.866233h-227.756651A191.559442 191.559442 0 0 0 519.620465 0z m-107.234232 177.080558c3.548279-49.771163 46.627721-88.540279 99.851907-88.540279 53.224186 0 96.327442 38.745302 99.351813 88.540279h-199.20372z m-111.997024 752.044651c-30.981953 0-65.083535-39.15014-65.083535-95.041488V287.744h575.488v546.839814c0 55.915163-34.077767 95.041488-65.059721 95.041488H300.389209v-0.500093z" fill="#D81E06" p-id="7141"></path><path d="M368.116093 796.814884c24.361674 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.908465-48.818605-44.27014-48.818604-24.33786 0-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.293954 48.818605z m154.933581 0c24.361674 0 44.293953-21.670698 44.293954-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.293954-48.818604-24.33786 0-44.27014 21.670698-44.270139 48.818604v278.623256c0 27.147907 19.932279 48.818605 44.293953 48.818605z m132.810419 0c24.33786 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.27014-48.818604s-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.27014 48.818605z" fill="#D81E06" p-id="7142"></path></svg>
-                        </button>
-                    </div>
                 </div>
                 <div class="note-content-preview" v-html="renderMarkdownPreview(note.content)"></div>
                 <div class="note-footer">
                     <span>{{ formatDate(note.updatedAt) }}</span>
+                </div>
+                <div class="note-actions">
+                    <button @click.stop="editNote(note.id)" class="icon-button">
+                        <svg t="1751019530438" class="icon" viewBox="0 0 1070 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="6150">
+                            <path
+                                d="M876.683636 1014.737455H175.848727a153.320727 153.320727 0 0 1-153.181091-153.134546V160.721455a153.320727 153.320727 0 0 1 153.134546-153.134546h350.487273a50.362182 50.362182 0 1 1 0 100.770909h-350.487273c-28.858182 0-52.363636 23.458909-52.363637 52.363637v700.881454c0 28.858182 23.458909 52.363636 52.410182 52.363636h700.834909c28.858182 0 52.363636-23.458909 52.363637-52.363636v-350.487273a50.362182 50.362182 0 1 1 100.817454 0v350.487273a153.320727 153.320727 0 0 1-153.181091 153.134546z"
+                                fill="#FFB730" p-id="6151"></path>
+                            <path
+                                d="M475.089455 799.650909c-2.141091 0-4.142545-0.139636-6.237091-0.372364l-158.72-19.828363a50.269091 50.269091 0 0 1-43.659637-43.659637l-19.828363-158.72c-1.861818-15.453091 3.397818-30.906182 14.382545-41.890909l442.042182-442.042181a154.763636 154.763636 0 0 1 218.670545 0l31.045819 30.999272c29.277091 29.184 45.335273 67.956364 45.335272 109.381818a153.6 153.6 0 0 1-45.335272 109.428364l-442.042182 441.949091a50.408727 50.408727 0 0 1-35.653818 14.754909z m-113.617455-115.293091l95.325091 11.915637 424.587636-424.587637a53.666909 53.666909 0 0 0 0-76.241454l-31.045818-31.045819a53.992727 53.992727 0 0 0-76.194909 0L349.556364 588.986182l11.915636 95.371636z"
+                                fill="#FFB730" p-id="6152"></path>
+                        </svg>
+                    </button>
+                    <button @click.stop="deleteNote(note.id)" class="icon-button">
+                        <svg t="1751019574529" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="7140" width="256" height="256">
+                            <path
+                                d="M519.620465 0c-103.924093 0-188.511256 82.467721-192.083349 185.820279H85.015814A48.91386 48.91386 0 0 0 36.101953 234.686512a48.91386 48.91386 0 0 0 48.913861 48.866232h54.010046V831.345116c0 102.852465 69.822512 186.844279 155.909954 186.844279h439.200744c86.087442 0 155.909953-83.491721 155.909954-186.844279V284.100465h48.91386a48.91386 48.91386 0 0 0 48.913861-48.890046 48.91386 48.91386 0 0 0-48.913861-48.866233h-227.756651A191.559442 191.559442 0 0 0 519.620465 0z m-107.234232 177.080558c3.548279-49.771163 46.627721-88.540279 99.851907-88.540279 53.224186 0 96.327442 38.745302 99.351813 88.540279h-199.20372z m-111.997024 752.044651c-30.981953 0-65.083535-39.15014-65.083535-95.041488V287.744h575.488v546.839814c0 55.915163-34.077767 95.041488-65.059721 95.041488H300.389209v-0.500093z"
+                                fill="#D81E06" p-id="7141"></path>
+                            <path
+                                d="M368.116093 796.814884c24.361674 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.908465-48.818605-44.27014-48.818604-24.33786 0-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.293954 48.818605z m154.933581 0c24.361674 0 44.293953-21.670698 44.293954-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.293954-48.818604-24.33786 0-44.27014 21.670698-44.270139 48.818604v278.623256c0 27.147907 19.932279 48.818605 44.293953 48.818605z m132.810419 0c24.33786 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.27014-48.818604s-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.27014 48.818605z"
+                                fill="#D81E06" p-id="7142"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -71,17 +86,17 @@ import DeletePrompt from '@/components/PromptComponent/DeletePrompt.vue'
 const notes = ref([])
 // 加载笔记列表
 const fetchNotes = async () => {
-  try {
-    const userInfo = JSON.parse(localStorage.getItem('user'));
-    const response = await request.get('/api/public/notes/search', {
-      params: {
-        username: userInfo?.username
-      }
-    })
-    notes.value = response.data?.list || []
-  } catch (error) {
-    console.error('获取笔记失败:', error)
-  }
+    try {
+        const userInfo = JSON.parse(localStorage.getItem('user'));
+        const response = await request.get('/api/public/notes/search', {
+            params: {
+                username: userInfo?.username
+            }
+        })
+        notes.value = response.data?.list || []
+    } catch (error) {
+        console.error('获取笔记失败:', error)
+    }
 }
 // 初始化时获取数据
 fetchNotes()
@@ -107,29 +122,29 @@ const editNote = (id) => {
 
 // 删除笔记
 const deleteNote = (id) => {
-  const note = notes.value.find(n => n.id === id);
-  if (note) {
-    noteToDelete.value = note;
-    showDeleteConfirm.value = true;
-  }
+    const note = notes.value.find(n => n.id === id);
+    if (note) {
+        noteToDelete.value = note;
+        showDeleteConfirm.value = true;
+    }
 }
 // 保存笔记
 const saveNote = async () => {
-  if (editingNote.value) {
-    try {
-      await request.put('/api/public/notes', editingNote.value);
-      const index = notes.value.findIndex(n => n.id === originalNote.value.id);
-      if (index !== -1) {
-        editingNote.value.updatedAt = new Date().toISOString();
-        notes.value[index] = { ...editingNote.value };
-      }
-        ElMessage.success('保存成功');
-        cancelEdit();
-    } catch (error) {
-        ElMessage.error('保存失败');
-        console.error('更新笔记失败:', error);
+    if (editingNote.value) {
+        try {
+            await request.put('/api/public/notes', editingNote.value);
+            const index = notes.value.findIndex(n => n.id === originalNote.value.id);
+            if (index !== -1) {
+                editingNote.value.updatedAt = new Date().toISOString();
+                notes.value[index] = { ...editingNote.value };
+            }
+            ElMessage.success('保存成功');
+            cancelEdit();
+        } catch (error) {
+            ElMessage.error('保存失败');
+            console.error('更新笔记失败:', error);
+        }
     }
-  }
 }
 
 // 取消编辑
@@ -209,10 +224,6 @@ const closeDeleteModal = () => {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     padding: 2rem;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(197, 197, 197, 0.2) 100%);
-    backdrop-filter: blur(10px);
-    color: #fff;
-    border-radius: 25px;
 }
 
 /* 头部样式 */
@@ -222,6 +233,12 @@ const closeDeleteModal = () => {
     align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -287,6 +304,7 @@ const closeDeleteModal = () => {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
+    gap: 10px;
     height: 100%;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -300,7 +318,6 @@ const closeDeleteModal = () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
 }
 
 .note-header h3 {
@@ -315,6 +332,7 @@ const closeDeleteModal = () => {
 
 .note-actions {
     display: flex;
+    justify-content: flex-end;
     gap: 0.5rem;
 }
 
@@ -333,13 +351,13 @@ const closeDeleteModal = () => {
     justify-content: center;
     border-radius: 50%;
 }
+
 .icon-button:hover {
     opacity: 1;
 }
 
 .note-content-preview {
     flex-grow: 1;
-    margin-bottom: 1rem;
     font-size: 0.9rem;
     line-height: 1.5;
     opacity: 0.9;
@@ -354,6 +372,7 @@ const closeDeleteModal = () => {
     font-size: 0.8rem;
     opacity: 0.7;
     margin-top: auto;
+    color: #ffbf47;
 }
 
 /* 模态框样式 */
@@ -371,6 +390,7 @@ const closeDeleteModal = () => {
     align-items: center;
     z-index: 1000;
 }
+
 .glass-modal {
     width: 80%;
     max-width: 800px;
@@ -439,18 +459,21 @@ const closeDeleteModal = () => {
     font-family: 'Courier New', monospace;
     -ms-overflow-style: none;
 }
+
 .markdown-editor::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
+
 /* 编辑背景 */
 .container-textarea {
-  width: 100%;
-  --color: #E1E1E1;
-  background-color: #F3F3F3;
-  background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent),
-      linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent);
-  background-size: 55px 55px;
+    width: 100%;
+    --color: #E1E1E1;
+    background-color: #F3F3F3;
+    background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%, transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%, transparent);
+    background-size: 55px 55px;
 }
+
 .glass-preview {
     height: 250px;
     overflow-y: auto;
@@ -459,9 +482,11 @@ const closeDeleteModal = () => {
     border-radius: 12px;
     -ms-overflow-style: none;
 }
+
 .glass-preview::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
+
 /* 响应式调整 */
 @media (max-width: 768px) {
     .editor-container {

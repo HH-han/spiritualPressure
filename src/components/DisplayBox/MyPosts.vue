@@ -230,7 +230,9 @@ const resetForm = () => {
 .myposts-container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  top: 0;
+  left: 0;
   overflow: hidden;
   padding: 2rem;
   display: flex;
@@ -270,7 +272,7 @@ const resetForm = () => {
 }
 
 .myposts-card {
-  position: relative;
+  position: fixed;
   z-index: 1;
   width: 100%;
   max-width: 1200px;
@@ -302,6 +304,7 @@ const resetForm = () => {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   position: relative;
+  margin-bottom: 10px;
 }
 
 
@@ -335,16 +338,15 @@ const resetForm = () => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.516);
   border-radius: 15px;
-  padding: 15px;
+  padding: 25px;
   flex: 1;
   transition: all 0.3s ease;
 }
 .myposts-form-group-left:hover,
 .myposts-form-group-right:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(0, 0, 0, 0.214);
 }
 .myposts-label {
   font-size: 1.5rem;

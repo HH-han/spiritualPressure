@@ -18,6 +18,7 @@
           <span v-for="tag in parseTags(note.tags)" :key="tag" class="tag-post">{{ tag }}</span>
         </div>
         <div class="note-meta">
+          <span class="date"><i class="icon-calendar"></i> {{ formatDateTime(currentNote.date) }}</span>
           <span class="note-location" v-if="note.location"><i class="icon-location"></i> {{ note.location }}</span>
           <span class="author"><i class="icon-user"></i> {{ note.username }}</span>
         </div>
@@ -99,8 +100,7 @@
         </div>
         <div class="note-meta">
           <span class="date"><i class="icon-calendar"></i> {{ formatDateTime(currentNote.date) }}</span>
-          <span class="note-location" v-if="currentNote.location"><i class="icon-location"></i> {{ currentNote.location
-          }}</span>
+          <span class="note-location" v-if="currentNote.location"><i class="icon-location"></i> {{ currentNote.location}}</span>
           <span class="author"><i class="icon-user"></i> {{ currentNote.username }}</span>
         </div>
         <div class="note-tags">
@@ -321,7 +321,7 @@ body {
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
+  border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   text-align: center;
@@ -359,6 +359,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .note-card::before {
@@ -387,7 +388,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
 }
 
 .note-header h3 {
@@ -410,7 +410,6 @@ body {
   color: #2d3436;
   font-size: 0.95rem;
   line-height: 1.5;
-  margin-bottom: 1rem;
   display: -webkit-box;
   line-clamp: 3;
   -webkit-line-clamp: 3;
@@ -443,8 +442,9 @@ body {
 .note-meta {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   font-size: 0.85rem;
-  color: #636e72;
+  color: #ffbf47;
 }
 
 .note-meta span {

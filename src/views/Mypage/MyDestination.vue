@@ -50,6 +50,9 @@
         <MydestinationWorld />
       </div>
       <!-- 目的地列表区域 -->
+      <div>
+        <DestinationList />
+      </div>
       <h1 class="page-title">探索世界目的地 🌍</h1>
       <div class="controls">
         <div class="search-container">
@@ -189,6 +192,7 @@
 import Home_2 from '@/components/NavigationComponent/HomeHeader.vue';
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
 import MydestinationWorld from '@/views/Mypage/MydestinationWorld.vue';
+import DestinationList from '@/views/Mypage/DestinationList.vue';
 import { onBeforeUnmount } from 'vue';
 import { ref, onMounted, computed, } from 'vue';
 import request from '@/utils/request';

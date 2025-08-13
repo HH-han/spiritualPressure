@@ -176,7 +176,6 @@ onMounted(() => {
 
 /* Main Container */
 .delete-MyOrder {
-  height: 100%;
   margin: 0 auto;
 }
 

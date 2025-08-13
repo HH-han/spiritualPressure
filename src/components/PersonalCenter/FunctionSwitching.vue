@@ -328,8 +328,9 @@ onMounted(() => {
 .accountsettings-content {
   position: relative;
   z-index: 1;
-  padding: 2.5rem;
-  min-height: 100vh;
+  /* padding: 2.5rem;
+  min-height: 100vh; */
+  height: 100%;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 
@@ -341,9 +342,10 @@ onMounted(() => {
 /* 动态组件容器 */
 .accountsettings-component {
   width: 100%;
+  height: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  position: relative;
+
 }
 
 /* 动画效果 */

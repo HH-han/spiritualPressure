@@ -129,8 +129,9 @@ const confirmDelete = () => {
     padding: 20px;
     color: white;
     width: 100%;
-    height: 100%;
-    min-height: 100vh;
+    position: relative;
+    top: 0;
+    left: 0;
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.4);
 }
 
@@ -152,7 +153,7 @@ const confirmDelete = () => {
 }
 
 .notification-item:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 .notification-icon {
