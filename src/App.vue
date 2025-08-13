@@ -8,11 +8,16 @@
   <div>
     <FloatingButton />
   </div>
+  <!-- 流体仿真效果 -->
+  <!-- <div>
+    <FluidSimulation />
+  </div> -->
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
-import RefreshLoad from '@/components/TransitionalComponents/RefreshLoad.vue'
+import RefreshLoad from '@/components/TransitionalComponents/RefreshLoad.vue';
 import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
+import FluidSimulation from '@/components/DisplayBox/FluidSimulation.vue';
 
 const isLoading = ref(true)
 onMounted(() => {
