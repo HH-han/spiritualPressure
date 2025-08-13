@@ -15,6 +15,10 @@
     </div>
 
     <!-- 操作按钮区域 -->
+    <!-- 景点推荐 -->
+    <div>
+      <BrowseRecommend />
+    </div>
     <h1 class="action-H1-BH-title">景点推荐🏝️</h1>
     <!-- 景点推荐 -->
     <div class="attractions-section-BH">
@@ -144,7 +148,8 @@
 import { ref, computed, onMounted } from 'vue'
 import request from '@/utils/request'
 import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
-import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
+import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
+import BrowseRecommend from '@/views/Mypage/BrowseRecommend.vue'
 import { useRouter } from 'vue-router';
 import { ElMessage } from "element-plus";
 

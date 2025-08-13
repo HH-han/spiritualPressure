@@ -13,6 +13,16 @@
             "普吉岛是泰国最受欢迎的旅游胜地之一，拥有丰富的自然景观和多样的活动选择。无论是潜水、冲浪还是沙滩度假，这里都能满足你的需求。"
           </p>
         </div>
+        <!-- 搜索框 -->
+        <div class="mydestination-hero-search">
+          <div class="mydestination-input-wrapper">
+            <input type="text" placeholder="输入目的地名称" v-model="query" v-on:keyup.enter="search()" />
+            <button>搜索</button>
+          </div>
+          <div class="mydestination-span-wrapper">
+            <span>热门目的地：{{ destinationName }}</span>
+          </div>
+        </div>
         <!-- 轮播图容器 -->
         <div class="carousel">
           <!-- 图片轮播 -->
@@ -277,13 +287,6 @@ const startAutoplay = () => {
 const stopAutoplay = () => {
   clearInterval(autoplayTimer);
 };
-
-// 组件挂载时启动自动播放
-onMounted(() => {
-  startAutoplay();
-  fetchDestinations(); // 初始化时加载数据
-});
-
 // 组件卸载时停止自动播放
 onBeforeUnmount(() => {
   stopAutoplay();
@@ -392,7 +395,24 @@ const showDestinationDetail = (destination) => {
 const closeDetail = () => {
   selectedDestination.value = null;
 };
-
+onMounted(() => {
+  startAutoplay();
+  fetchDestinations();
+  
+  // 保持轮播图16:9比例
+  const header = document.querySelector('header');
+  const resizeObserver = new ResizeObserver(() => {
+    const width = header.clientWidth;
+    header.style.height = `${width * 9/16}px`;
+  });
+  resizeObserver.observe(header);
+  
+  // 组件卸载时停止观察
+  onBeforeUnmount(() => {
+    resizeObserver.disconnect();
+    stopAutoplay();
+  });
+});
 
 </script>
 

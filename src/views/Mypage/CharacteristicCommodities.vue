@@ -15,9 +15,14 @@
                         @input="handleSearch">
                 </div>
             </div>
-            <!-- 提示区域 -->
-            <h1 class="action-H1-BH-title">小物件点推荐🧺</h1>
+           
         </div>
+        <!-- 纪念品推荐 -->
+        <div>
+            <SouvenirRecommend/>
+        </div>
+        <!-- 提示区域 -->
+        <h1 class="action-H1-BH-title">小物件点推荐🧺</h1>
         <div class="cc-container-bottom">
             <!-- 图片列表 -->
             <div class="cc-card-container">
@@ -73,7 +78,8 @@
 
 <script setup>
 import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
-import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
+import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
+import SouvenirRecommend from '@/views/Mypage/SouvenirRecommend.vue'
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus';

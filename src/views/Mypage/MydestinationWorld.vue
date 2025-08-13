@@ -64,7 +64,7 @@ const locations = ref([]);
 const loading = ref(false);
 // 分页相关
 const currentPage = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(10);
 const total = ref(0);
 
 const handleSizeChange = (val) => {
@@ -186,7 +186,7 @@ onMounted(() => {
 
 .world-location-card {
     width: 100%;
-    max-width: 350px;
+    min-width: 350px;
     border-radius: 1rem;
     overflow: hidden;
     background: rgba(255, 255, 255, 0.2);

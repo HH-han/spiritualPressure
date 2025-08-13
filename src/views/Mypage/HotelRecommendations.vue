@@ -13,7 +13,10 @@
         <input type="text" placeholder="搜索酒店" class="search_input_Browse" v-model="searchTitle">
       </div>
     </div>
-
+    <!-- 酒店推荐 -->
+    <div>
+      <HotelRecommend />
+    </div>
     <!-- 操作按钮区域 -->
     <div class="action-H1-BH">
       <h1 class="action-H1-BH-title">酒店推荐🏬</h1>
@@ -142,6 +145,7 @@
 import { ref, computed, onMounted } from 'vue'
 import request from '@/utils/request'
 import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
+import HotelRecommend from '@/views/Mypage/HotelRecommend.vue'
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
 import { useRouter } from 'vue-router';
 import { ElMessage } from "element-plus";

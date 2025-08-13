@@ -38,13 +38,13 @@ const recommendations = {
     '一月': [
         {
             name: '哈尔滨冰雪大世界',
-            image: 'https://example.com/harbin-ice.jpg',
+            image: 'https://images.unsplash.com/photo-1558029062-a37889b87526?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
             description: '体验世界最大的冰雪艺术景观',
             tags: ['冰雪', '节庆', '东北']
         },
         {
             name: '三亚亚龙湾',
-            image: 'https://example.com/sanya-beach.jpg',
+            image: 'https://images.unsplash.com/photo-1508057198894-247b23fe5ade?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
             description: '冬日避寒的绝佳选择',
             tags: ['海滩', '温暖', '海岛']
         }

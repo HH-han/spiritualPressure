@@ -12,6 +12,11 @@
         <input type="text" v-model="searchQuery" placeholder="搜索美食..." class="food-search-input" @input="searchFoods">
       </div>
     </div>
+    <!-- 美食推荐 -->
+    <div>
+      <FoodRecommend />
+    </div>
+    <!-- 标题 -->
     <div class="food-container-h1">
       <h1 class="action-H1-BH-title">美食推荐🍛</h1>
     </div>
@@ -101,7 +106,8 @@
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
 import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
-import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
+import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
+import FoodRecommend from '@/views/Mypage/FoodRecommend.vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from "element-plus";
 

@@ -128,17 +128,17 @@ body {
 /* 搜索 */
 .homeview-hero-content {
   position: absolute;
+  top: 25%;
+  left: 10%;
   z-index: 2;
-  height: 100%;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 0 10%;
   max-width: 1200px;
   margin: 0 auto;
   color: white;
-  bottom: 50px;
   animation: fadeInUp 1s ease-out;
 }
 
@@ -1167,6 +1167,7 @@ svg {
   flex-grow: 1;
   justify-content: space-between;
   float: left;
+  margin-left: 15px;
 }
 
 .nav-item {
@@ -1180,16 +1181,19 @@ svg {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 
 /*导航图标  */
 .center {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
 }
 
 .action-btn {
   position: relative;
-  margin-left: 15px;
   padding: 10px 15px;
   border: none;
   border-radius: 6px;
@@ -1294,7 +1298,6 @@ svg {
   padding: 8px 12px;
   border: none;
   border-radius: 4px;
-  margin-right: 10px;
   background: none;
   color: rgb(255, 255, 255);
   cursor: pointer;
@@ -1425,7 +1428,6 @@ svg {
 
 /* 头像 */
 .user-actions {
-  margin-left: 15px;
   position: relative;
 }
 
