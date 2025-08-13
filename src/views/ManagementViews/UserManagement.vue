@@ -42,9 +42,9 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
-                <td>{{ user.nickname }}</td>
-                <td>{{ user.signature ? user.signature.substring(0, 10) : '' }}...</td>
-                <td>{{ user.experience ? user.experience.substring(0, 15) : '' }}...</td>
+                <td>{{ user.nickname ? user.nickname : '未设置'}}</td>
+                <td>{{ user.signature ? user.signature.substring(0, 10) : '未设置'}}...</td>
+                <td>{{ user.experience ? user.experience.substring(0, 15) : '未设置' }}...</td>
                 <td>{{ formatDate(user.createTime) }}</td>
                 <td>{{ formatDate(user.updateTime) }}</td>
                 <td class="table-btn-display">

@@ -35,7 +35,7 @@
                 <td>{{ card.orderId }}</td>
                 <td>{{ card.amount }}</td>
                 <td>{{ card.status }}</td>
-                <td>{{ card.paymentMethod }}</td>
+                <td>{{ card.paymentMethod && card.paymentMethod.length ? card.paymentMethod : '未支付'}}</td>
                 <td>{{ formatDate(card.createdAt) }}</td>
                 <td>{{ formatDate(card.updatedAt) }}</td>
                 <td class="table-btn-display">
