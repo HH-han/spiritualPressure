@@ -30,9 +30,14 @@
                 </div>
             </div>
         </div>
-        <div v-if="isDeletePromptVisible" class="glass-modal-overlay">
-            <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
-        </div>
+        <!-- 删除确认弹窗 -->
+        <teleport to="body">
+            <transition name="delete-modal">
+                <div v-if="isDeletePromptVisible" class="delete-modal-mask">
+                    <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
+                </div>
+            </transition>
+        </teleport>
     </div>
 </template>
 
@@ -116,6 +121,7 @@ const confirmDelete = () => {
 };
 </script>
 <style scoped>
+@import '@/css/Globalstyle/Globalstyle.css';
 .notification {
     display: flex;
     justify-content: center;

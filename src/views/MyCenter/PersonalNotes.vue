@@ -67,11 +67,14 @@
                 </div>
             </div>
         </div>
-        <!-- 自定义删除确认框 -->
-        <div v-if="showDeleteConfirm" class="glass-modal-overlay" @click.self="closeDeleteModal">
-            <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
-        </div>
-
+        <!-- 删除确认弹窗 -->
+        <teleport to="body">
+            <transition name="delete-modal">
+                <div v-if="showDeleteConfirm" class="delete-modal-mask">
+                    <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
+                </div>
+            </transition>
+        </teleport>
     </div>
 </template>
 
@@ -220,6 +223,8 @@ const closeDeleteModal = () => {
 </script>
 
 <style scoped>
+@import '@/css/Globalstyle/Globalstyle.css';
+
 /* 基础样式 */
 .glass-app {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -387,7 +392,6 @@ const closeDeleteModal = () => {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
-    border-radius: 25px;
     backdrop-filter: blur(8px);
     display: flex;
     justify-content: center;

@@ -383,13 +383,16 @@
         </div>
         <!-- 面包屑导航 -->
         <div class="breadcrumb-navigation">
-          <div class="breadcrumb-main">
+          <div class="breadcrumb-main fixed-element">
             <span v-for="(item, index) in breadcrumbList" :key="item.id" class="breadcrumb-wrapper">
               <span class="breadcrumb-item" :class="{ 'active': activeMenu === item.id }" @click="navigateTo(item)">
                 {{ item.title }}
               </span>
-              <button class="breadcrumb-close" v-if="item.id !== 1" @click.stop="closeBreadcrumb(item)">X</button>
-              <span class="breadcrumb-separator" v-if="index < breadcrumbList.length - 1">/</span>
+              <button class="breadcrumb-close" v-if="item.id !== 1" @click.stop="closeBreadcrumb(item)">
+                <svg t="1755141750855" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7421">
+                  <path d="M512 595.84765625l195.69757462 195.69757462a59.2473793 59.2473793 0 1 0 83.84765625-83.84765625L595.92644882 512l195.61878205-195.69757462a59.2473793 59.2473793 0 1 0-83.84765625-83.84765625L512 428.07355118 316.30242538 232.45476913a59.2473793 59.2473793 0 1 0-83.84765625 83.84765625L428.07355118 512 232.45476913 707.69757462a59.2473793 59.2473793 0 1 0 83.84765625 83.84765625L512 595.92644882z" fill="#ffffff" p-id="7422"></path>
+                </svg>
+              </button>
             </span>
           </div>
         </div>

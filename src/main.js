@@ -8,7 +8,6 @@ import 'element-plus/dist/index.css';
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 import '@/css/Block/block.css';
 
-
 const app = createApp(App);
 
 // 使用 Pinia 状态管理
@@ -19,6 +18,5 @@ app.use(router);
 app.use(ElementPlus, {
   locale: zhCn
 });
-
 // 挂载应用
 app.mount('#app');

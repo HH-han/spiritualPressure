@@ -371,7 +371,7 @@ button {
 
 .cancel-btn {
     background: transparent;
-    color: #666;
+    color: #ffffff;
     border: 1px solid #ccc;
 }
 

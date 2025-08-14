@@ -46,7 +46,7 @@
     <teleport to="body">
       <transition name="delete-modal">
         <div v-if="showDeleteModal" class="delete-modal-mask">
-          <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
+            <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
         </div>
       </transition>
     </teleport>
@@ -207,6 +207,7 @@ onUnmounted(() => {
 });
 </script>
 <style setup>
+@import '@/css/Globalstyle/Globalstyle.css';
 /* Main Background */
 .delete-MyOrderBackground {
   min-height: 100vh;
@@ -404,20 +405,5 @@ onUnmounted(() => {
 .delete-action-button.delete-delete:hover {
   background-color: #e53e3e;
   color: white;
-}
-
-/* Modal Styles */
-.delete-modal-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  transition: opacity 0.3s ease;
 }
 </style>

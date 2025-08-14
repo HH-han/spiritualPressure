@@ -100,7 +100,8 @@
         </div>
         <div class="note-meta">
           <span class="date"><i class="icon-calendar"></i> {{ formatDateTime(currentNote.date) }}</span>
-          <span class="note-location" v-if="currentNote.location"><i class="icon-location"></i> {{ currentNote.location}}</span>
+          <span class="note-location" v-if="currentNote.location"><i class="icon-location"></i> {{
+            currentNote.location}}</span>
           <span class="author"><i class="icon-user"></i> {{ currentNote.username }}</span>
         </div>
         <div class="note-tags">
@@ -115,11 +116,14 @@
         </div>
       </div>
     </div>
-
-    <!-- 删除确认对话框 -->
-    <div v-if="showDeleteConfirm" class="modal-overlay">
-      <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal"/>
-    </div>
+    <!-- 删除确认弹窗 -->
+    <teleport to="body">
+      <transition name="delete-modal">
+        <div v-if="showDeleteConfirm" class="delete-modal-mask">
+          <DeletePrompt @confirmDelete="confirmDelete" @closeDeleteModal="closeDeleteModal" />
+        </div>
+      </transition>
+    </teleport>
   </div>
 </template>
 
@@ -293,6 +297,8 @@ onMounted(fetchNotes)
 </script>
 
 <style scoped>
+@import '@/css/Globalstyle/Globalstyle.css';
+
 /* 基础样式与变量定义 */
 * {
   margin: 0;
@@ -768,6 +774,7 @@ body {
 .edit-btn-primary:hover {
   background: #a29bfe;
 }
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .notes-list {
