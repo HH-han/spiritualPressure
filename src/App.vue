@@ -46,28 +46,30 @@ onMounted(() => {
 }
 
 /* 兼容各浏览器的滚动条样式 */
-* {
+body{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-y: auto;
 }
 
-*::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 2px;
+  height: 150px;
 }
 
-*::-webkit-scrollbar-track {
+body::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
 
-*::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 10px;
 }
 
-*::-webkit-scrollbar-thumb:hover {
+body::-webkit-scrollbar-thumb:hover {
   background: #a1a1a1;
 }
 </style>
