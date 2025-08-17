@@ -5,12 +5,16 @@
             <div class="action-bar">
                 <div class="search-bar">
                     <div class="search-box-management">
-                        <input type="text" v-model="searchKeyword" placeholder="输入卡片ID或标题搜索" class="search-input-management" />
+                        <input type="text" v-model="searchKeyword" placeholder="输入卡片ID或标题搜索"
+                            class="search-input-management" />
                     </div>
                     <button class="btn search-btn" @click="handleSearch">搜索</button>
                     <button class="btn delete-btn" @click="handleReset">批量删除</button>
                 </div>
-                <button class="btn add-btn" @click="showAddDialog">新增笔记</button>
+                <div class="operate-bar">
+                    <button class="btn import-btn" @click="handleImport">Excel数据导入导出</button>
+                    <button class="btn add-btn" @click="showAddDialog">新增用户</button>
+                </div>
             </div>
             <!-- 数据表格 -->
             <div class="data-table-container">
@@ -95,7 +99,8 @@
                                         <div class="preview-card">
                                             <img :src="previewImage" alt="预览图片" class="preview-image" />
                                             <div class="preview-actions">
-                                                <button class="action-btn-image edit-btn-image" @click="triggerFileInput">
+                                                <button class="action-btn-image edit-btn-image"
+                                                    @click="triggerFileInput">
                                                     <svg viewBox="0 0 24 24">
                                                         <path
                                                             d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />

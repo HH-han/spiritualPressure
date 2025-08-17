@@ -10,7 +10,10 @@
           <button class="btn search-btn" @click="handleSearch">搜索</button>
           <button class="btn delete-btn" @click="handleReset">批量删除</button>
         </div>
-        <button class="btn add-btn" @click="showAddDialog">新增发布</button>
+        <div class="operate-bar">
+          <button class="btn import-btn" @click="handleImport">Excel数据导入导出</button>
+          <button class="btn add-btn" @click="showAddDialog">新增发布</button>
+        </div>
       </div>
       <!-- 数据表格 -->
       <div class="data-table-container">

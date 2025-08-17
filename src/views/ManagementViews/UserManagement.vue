@@ -19,8 +19,7 @@
           <button class="btn delete-btn" @click="handleReset">批量删除</button>
         </div>
         <div class="operate-bar">
-          <button class="btn import-btn" @click="handleImport">导入Excel</button>
-          <button class="btn derived-btn" @click="handleExport">导出Excel</button>
+          <button class="btn import-btn" @click="handleImport">Excel数据导入导出</button>
           <button class="btn add-btn" @click="showAddDialog">新增用户</button>
         </div>
       </div>
@@ -46,8 +45,8 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
-                <td>{{ user.nickname ? user.nickname : '未设置'}}</td>
-                <td>{{ user.signature ? user.signature.substring(0, 10) : '未设置'}}...</td>
+                <td>{{ user.nickname ? user.nickname : '未设置' }}</td>
+                <td>{{ user.signature ? user.signature.substring(0, 10) : '未设置' }}...</td>
                 <td>{{ user.experience ? user.experience.substring(0, 15) : '未设置' }}...</td>
                 <td>{{ formatDate(user.createTime) }}</td>
                 <td>{{ formatDate(user.updateTime) }}</td>
@@ -292,12 +291,24 @@
         {{ toastMessage }}
       </div>
     </div>
+    <!-- 导入导出Excel API -->
+    <div class="app-container" v-if="showExcel">
+      <ExcelImportExportAPI 
+        @import-complete="handleImportComplete" 
+        @export-complete="handleExportComplete"
+        @import-error="handleImportError" 
+        @export-error="handleExportError" 
+        @close="handleCloseImportExport"
+        :export-api-url="exportApiUrl"
+        :import-api-url="importApiUrl" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
+import ExcelImportExportAPI from '@/components/DisplayBox/ExcelImportExportAPI.vue';
 
 const columns = [
   { key: 'checked', title: '多选' },
@@ -318,6 +329,7 @@ const toastType = ref('success');
 const users = ref([]);
 const searchKeyword = ref('');
 const showDialog = ref(false);
+const showExcel = ref(false);
 const isEditing = ref(false);
 const showDetailsUser = ref(false);
 
@@ -582,6 +594,36 @@ const triggerFileInput = () => {
     }
   };
   fileInput.click();
+};
+
+// Excel 导入导出结果处理
+const handleImport = (result) => {
+  showExcel.value = true;
+  console.log('打开Excel导入组件:', showExcel.value);
+};
+
+const exportApiUrl = 'http://localhost:2025/api/public/user/export';
+const importApiUrl = '/api/public/user/import';
+
+const handleImportComplete = (result) => {
+  console.log('导入完成:', result);
+};
+
+const handleExportComplete = (result) => {
+  console.log('导出完成:', result);
+};
+
+const handleImportError = (error) => {
+  console.error('导入错误:', error);
+};
+
+const handleExportError = (error) => {
+  console.error('导出错误:', error);
+};
+
+const handleCloseImportExport = () => {
+  showExcel.value = false;
+  console.log('关闭Excel导入组件:', showExcel.value);
 };
 // 生命周期钩子
 onMounted(
