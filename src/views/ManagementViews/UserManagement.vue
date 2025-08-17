@@ -3,22 +3,26 @@
     <!-- <div class="page-name-GU">
       <h1 class="action-H1-BM-title">用户管理</h1>
     </div> -->
-    <div class="container-008">
+    <div class="container-management">
       <!-- 操作栏 -->
       <div class="action-bar">
         <div class="search-bar">
-          <div class="search-box-008">
+          <div class="search-box-management">
             <span>用户名:</span>
-            <input type="text" v-model="searchKeyword" placeholder="用户名或昵称" class="search-input-008" />
+            <input type="text" v-model="searchKeyword" placeholder="用户名或昵称" class="search-input-management" />
           </div>
-          <div class="search-box-008">
+          <div class="search-box-management">
             <span>手机号:</span>
-            <input type="text" v-model="searchKeyword" placeholder="手机号" class="search-input-008" />
+            <input type="text" v-model="searchKeyword" placeholder="手机号" class="search-input-management" />
           </div>
           <button class="btn search-btn" @click="handleSearch">搜索</button>
           <button class="btn delete-btn" @click="handleReset">批量删除</button>
         </div>
-        <button class="btn add-btn" @click="showAddDialog">新增用户</button>
+        <div class="operate-bar">
+          <button class="btn import-btn" @click="handleImport">导入Excel</button>
+          <button class="btn derived-btn" @click="handleExport">导出Excel</button>
+          <button class="btn add-btn" @click="showAddDialog">新增用户</button>
+        </div>
       </div>
       <!-- 数据表格 -->
       <div class="data-table-container">

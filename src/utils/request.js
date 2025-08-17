@@ -130,7 +130,6 @@ request.interceptors.response.use(
           ElMessage.error(`请求错误: ${error.message}`);
       }
     } else if (error.request) {
-      ElMessage.error("网络异常，请检查您的连接");
       router.push("/networkanomaly");
     } else {
       ElMessage.error(`请求错误: ${error.message}`);

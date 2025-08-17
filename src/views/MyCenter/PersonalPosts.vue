@@ -473,7 +473,7 @@ body {
 
 .note-actions button {
   padding: 0.5rem 1rem;
-  border: none;
+  border: 1px solid;
   border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 500;

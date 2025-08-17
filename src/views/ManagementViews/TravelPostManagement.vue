@@ -1,11 +1,11 @@
 <template>
   <div class="management-page-background">
-    <div class="container-008">
+    <div class="container-management">
       <!-- 操作栏 -->
       <div class="action-bar">
         <div class="search-bar">
-          <div class="search-box-008">
-            <input type="text" v-model="searchKeyword" placeholder="输入卡片ID或标题搜索" class="search-input-008" />
+          <div class="search-box-management">
+            <input type="text" v-model="searchKeyword" placeholder="输入卡片ID或标题搜索" class="search-input-management" />
           </div>
           <button class="btn search-btn" @click="handleSearch">搜索</button>
           <button class="btn delete-btn" @click="handleReset">批量删除</button>

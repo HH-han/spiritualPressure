@@ -13,7 +13,7 @@
   font-weight: bold;
 }
 
-.container-008 {
+.container-management {
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -29,6 +29,7 @@
   height: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 15px;
 }
 
@@ -39,7 +40,7 @@
 }
 
 /* 搜索框容器样式 */
-.search-box-008 {
+.search-box-management {
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -51,7 +52,7 @@
 }
 
 /* 搜索输入框基础样式 */
-.search-input-008 {
+.search-input-management {
   width: 150px;
   height: 100%;
   padding: 0px 20px 0px 20px;
@@ -68,7 +69,7 @@
 }
 
 /* 输入框聚焦效果 */
-.search-input-008:focus {
+.search-input-management:focus {
   outline: none;
   box-shadow:
     inset 3px 3px 7px rgba(0, 0, 0, 0.1),
@@ -79,14 +80,14 @@
 }
 
 /* 占位文字样式 */
-.search-input-008::placeholder {
+.search-input-management::placeholder {
   color: #aaa;
   letter-spacing: 0.5px;
   font-weight: 300;
 }
 
 /* 搜索图标（使用伪元素实现） */
-.search-box-008::before {
+.search-box-management::before {
   content: "";
   position: absolute;
   left: 1.5rem;
@@ -100,13 +101,13 @@
 }
 
 /* 聚焦时图标动画 */
-.search-input-008:focus+.search-box-008::before {
+.search-input-management:focus+.search-box-management::before {
   opacity: 1;
   transform: translateY(-50%) scale(1.1);
 }
 
 /* 输入框悬浮效果 */
-.search-input-008:hover {
+.search-input-management:hover {
   box-shadow:
     inset 3px 3px 7px rgba(0, 0, 0, 0.1),
     inset -3px -3px 7px rgba(255, 255, 255, 0.8),
@@ -114,7 +115,7 @@
 }
 
 /* 清空按钮样式（当有输入时显示） */
-.search-box-008::after {
+.search-box-management::after {
   content: "×";
   position: absolute;
   right: 1.5rem;
@@ -130,33 +131,40 @@
   transition: all 0.3s ease;
 }
 
-.search-input-008:not(:placeholder-shown)+.search-box-008::after {
+.search-input-management:not(:placeholder-shown)+.search-box-management::after {
   transform: translateY(-50%) scale(1);
   opacity: 0.7;
 }
 
-.search-input-008:not(:placeholder-shown)+.search-box-008::after:hover {
+.search-input-management:not(:placeholder-shown)+.search-box-management::after:hover {
   opacity: 1;
   transform: translateY(-50%) scale(1.1);
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .search-box-008 {
+  .search-box-management {
     max-width: 90%;
     margin: 1.5rem auto;
   }
 
-  .search-input-008 {
+  .search-input-management {
     padding: 1rem 1.2rem 1rem 3rem;
     font-size: 0.9rem;
   }
 
-  .search-box-008::before {
+  .search-box-management::before {
     left: 1.2rem;
     width: 18px;
     height: 18px;
   }
+}
+
+/* 操作栏 */
+.operate-bar{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .action-H1-BM-title {
@@ -310,10 +318,11 @@
   gap: 10px;
 }
 
-/* 按钮样式 */
+/* 通用按钮样式 */
 .btn {
   height: 100%;
   padding: 0.5rem 1rem;
+  color: #fff;
   border: none;
   border-radius: 15px;
   font-size: 0.8rem;
@@ -326,11 +335,14 @@
 }
 
 .add-btn {
-  background: linear-gradient(135deg, #2af598 0%, #009653 100%);
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, #11aa65 0%, #009653 100%);
   color: white;
 }
-
+.add-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #11aa65 0%, #10a059 90%);
+  box-shadow: 0 5px 15px rgba(3, 88, 106, 0.4);
+}
 .edit-btn {
   background: linear-gradient(135deg, #ffc400ca 0%, #ffb300c4 100%);
   color: white;
@@ -379,6 +391,23 @@
 .file-upload-button:hover {
   transform: translateY(-2px);
 }
+.import-btn {
+  background-color: #626aef;
+  color: #ffffff;
+}
+.import-btn:hover {
+  box-shadow: 0 3px 15px rgba(41, 34, 255, 0.3);
+  transform: translateY(-2px);
+}
+.derived-btn {
+  background-color: #f9a825;
+  color: #ffffff;
+}
+.derived-btn:hover {
+  box-shadow: 0 3px 15px rgba(255, 163, 34, 0.3);
+  transform: translateY(-2px);
+}
+/* 操作按钮样式 */
 .action-btn-image {
   width: 36px;
   height: 36px;
