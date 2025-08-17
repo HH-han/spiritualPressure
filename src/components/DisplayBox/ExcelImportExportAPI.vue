@@ -3,7 +3,6 @@
         <div class="excel-io-container">
             <div class="header">
                 <h2>Excel 数据导入导出</h2>
-                <p>通过后端 API 实现 Excel 文件处理</p>
             </div>
 
             <div class="io-sections">
@@ -302,7 +301,7 @@ const handleCloseImportExport = () => { emit('close'); };
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(3px);
     z-index: 1000;
 }
@@ -313,7 +312,7 @@ const handleCloseImportExport = () => { emit('close'); };
     margin: 0 auto;
     padding: 2rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     justify-content: center;
