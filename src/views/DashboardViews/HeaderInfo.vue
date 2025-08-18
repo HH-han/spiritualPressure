@@ -1,6 +1,6 @@
 <template>
   <div class="glass-container">
-    <div class="glass-card">
+    <div class="glass-card-container">
       <h2 class="title">业务概览</h2>
       
       <div class="metrics-grid">
@@ -157,13 +157,12 @@ function refreshData() {
 /* 玻璃拟态基础样式 */
 .glass-container {
   position: relative;
-  padding: 2rem;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(210, 224, 225, 0.3) 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   border-radius: 25px;
 }
 
-.glass-card {
+.glass-card-container {
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -172,6 +171,11 @@ function refreshData() {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   padding: 2rem;
   color: #333;
+  transition: all 0.3s ease;
+}
+
+.glass-card-container:hover{
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.248);
 }
 
 .title {

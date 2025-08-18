@@ -122,15 +122,16 @@
                 </div>
                 <!-- 关闭窗口按钮 -->
                 <div class="close-btn-container">
-                    <button class="close-btn" @click="handleCloseImportExport">
-                        <span class="text">关闭窗口</span><span class="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <div class="icon-btn-container">
+                        <button class="icon-btn icon-btn-red" @click="handleCloseImportExport">
+                            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
-                                    d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z">
-                                </path>
+                                    d="M5.1716 8.00003L1.08582 3.91424L3.91424 1.08582L8.00003 5.1716L12.0858 1.08582L14.9142 3.91424L10.8285 8.00003L14.9142 12.0858L12.0858 14.9142L8.00003 10.8285L3.91424 14.9142L1.08582 12.0858L5.1716 8.00003Z"
+                                    fill="#FFFFFF"></path>
                             </svg>
-                        </span>
-                    </button>
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -366,10 +367,11 @@ const handleCloseImportExport = () => { emit('close'); };
 
 .import-section,
 .export-section {
-    background: white;
+    background-color: rgba(255, 255, 255);
+    backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -622,71 +624,54 @@ const handleCloseImportExport = () => { emit('close'); };
 }
 
 /* 关闭按钮 */
-.close-btn-container{
-    grid-column: 1 / 3;
+.close-btn-container {
+    position: absolute;
+    top: 40px;
+    right: 40px;
     width: 100%;
     display: flex;
     justify-content: flex-end;
 }
-.close-btn {
-    width: 150px;
-    height: 50px;
-    cursor: pointer;
+
+/* From Uiverse.io by aa_1123 */
+.icon-btn-container {
+    position: relative;
     display: flex;
-    align-items: center;
-    background: red;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-    background: #e62222;
+    gap: 10px;
 }
 
-.close-btn,
-.close-btn span {
-    transition: 200ms;
-}
-
-.close-btn .text {
-    transform: translateX(35px);
-    color: white;
-    font-weight: bold;
-}
-
-.close-btn .icon {
-    position: absolute;
-    border-left: 1px solid #c41b1b;
-    transform: translateX(110px);
-    height: 40px;
-    width: 40px;
+.icon-btn {
+    font-size: 2.4rem;
+    text-align: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    color: #ffffff;
+    border: 5px solid #fff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.2);
 }
 
-.close-btn svg {
+.icon-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+.icon-btn:hover {
+    transform: scale(0.95);
+    box-shadow: 0 0 15px rgb(255, 0, 0);
+}
+.icon-btn-red {
+    background-color: #f73a45;
+    box-shadow: 0px 0px 5px #f73a45;
+}
+
+.icon-btn-red svg {
     width: 15px;
-    fill: #eee;
-}
-
-.close-btn:hover {
-    background: #ff3636;
-}
-
-.close-btn:hover .text {
-    color: transparent;
-}
-
-.close-btn:hover .icon {
-    width: 150px;
-    border-left: none;
-    transform: translateX(0);
-}
-
-.close-btn:focus {
-    outline: none;
-}
-
-.close-btn:active .icon svg {
-    transform: scale(0.8);
+    height: 15px;
 }
 </style>

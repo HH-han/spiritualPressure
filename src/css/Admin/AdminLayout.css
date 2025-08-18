@@ -199,7 +199,7 @@
   border-radius: 10px;
   border: 2px solid #f8f9fa;
 }
-
+/* 仿谷歌导航条 */
 .breadcrumb-main {
   display: flex;
   padding: 0 15px;
@@ -236,6 +236,17 @@
     no-repeat, 
     no-repeat, 
     repeat-x;
+  transition: all 0.2s ease;
+}
+
+/* 普通状态的悬停效果 */
+.breadcrumb-wrapper:hover {
+  opacity: 0.9;
+}
+
+/* 点击时的效果 */
+.breadcrumb-wrapper.active {
+  opacity: 0.8;
 }
 
 .breadcrumb-main.fixed-element .breadcrumb-wrapper {
@@ -243,8 +254,8 @@
   color: #000;
 }
 
-.breadcrumb-main.fixed-element .breadcrumb-wrapper:hover {
-  --color: #eeeeee;
+.breadcrumb-main.fixed-element .breadcrumb-wrapper.active {
+  --color: #d0d0d0;
 }
 
 .breadcrumb-item {
@@ -283,8 +294,8 @@
 }
 
 .breadcrumb-close svg {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   transition: all ease 0.4s;
 }

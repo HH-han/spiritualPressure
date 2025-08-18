@@ -4,6 +4,9 @@ import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   base: './',
+  server: {
+    host: true
+  },
   plugins: [vue()],
   resolve: {
     alias: {
