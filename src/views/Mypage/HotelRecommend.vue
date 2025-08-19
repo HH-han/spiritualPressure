@@ -180,6 +180,7 @@ header h1 {
 
 /* 搜索栏样式 */
 .search-bar {
+    flex-wrap: wrap;
     display: flex;
     flex-direction: row;
     gap: 1rem;

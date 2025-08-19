@@ -131,7 +131,6 @@
                             </svg>
                         </button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -633,7 +632,6 @@ const handleCloseImportExport = () => { emit('close'); };
     justify-content: flex-end;
 }
 
-/* From Uiverse.io by aa_1123 */
 .icon-btn-container {
     position: relative;
     display: flex;

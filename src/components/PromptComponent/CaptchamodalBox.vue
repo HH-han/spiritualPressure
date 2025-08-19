@@ -15,8 +15,6 @@
       <button class="captcha-action">验证</button>
     </form>
   </div>
-
-
 </template>
 
 <script setup>

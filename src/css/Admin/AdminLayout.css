@@ -185,7 +185,7 @@
 }
 
 .breadcrumb-navigation::-webkit-scrollbar {
-  width: 150px;
+  width: 50px;
   height: 5px;
 }
 
