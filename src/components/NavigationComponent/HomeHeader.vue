@@ -22,7 +22,7 @@
                 <button class="dropdown-item_action-btn2" style="border-radius: 0 0 10px 10px"
                   @click="navigateTo('/SettingsFocus')">设置中心</button>
                 <button class="dropdown-item_action-btn2" @click="navigateTo('/WebsiteIntroduction')">关于我们</button>
-                <button class="dropdown-item_action-btn2" v-if="userInfo.username === 'admin'"
+                <button class="dropdown-item_action-btn2" v-if="userInfo.permissions === 1"
                   @click="navigateTo('/testpage')">测试页面</button>
                 <button class="dropdown-item_action-btn2" style="border-radius: 10px 10px 0 0"
                   @click="navigateTo('aboutweb')">网站介绍</button>
@@ -123,7 +123,7 @@
               </button>
               <div class="profilepicture-inner" v-show="isDropdownVisible">
                 <button style="border-radius: 10px 10px 0 0;" @click="navigateTo('/functionswitching')">个人中心</button>
-                <button v-if="userInfo.username === 'admin'" @click="AdminLayout">管理页面</button>
+                <button v-if="userInfo.permissions === 1" @click="AdminLayout">管理页面</button>
                 <button @click="logout">退出登录</button>
                 <button style="border-radius: 0 0 10px 10px;" @click="navigateTo('/accountsettings')">账户设置</button>
               </div>
@@ -140,6 +140,7 @@ import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
 import { ref, onMounted } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import ThemeSwitching from '@/components/ThemeComponents/ThemeSwitching.vue'
+import { getUserInfo } from '@/api/user';
 
 const defaultAvatar = new URL('@/assets/defaultimage/mrtx.png', import.meta.url).href
 const navigateTo = (path) => {
@@ -217,6 +218,7 @@ const logout = () => {
 const userInfo = ref({
   image: '',
   username: '',
+  permissions: '',
   hasInput: false
 });
 const loading = ref(false);
@@ -232,16 +234,25 @@ const fetchUserInfo = async () => {
       return;
     }
     // 先从本地存储获取，优化用户体验
-    const localUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const localUser = JSON.parse(localStorage.getItem('user') || {});
     userInfo.value = { ...localUser };
 
+    //从服务器获取最新数据
+    const response = await getUserInfo();
+
+    if (response.code === '0') {
+      userInfo.value = response.data;
+      localStorage.setItem('user', JSON.stringify(response.data));
+    } else {
+      ElMessage.error(response.msg || '获取用户信息失败');
+    }
   } catch (error) {
-    ElMessage.error('获取用户信息失败，请稍后再试');
+    ElMessage.error('获取用户信息失败，请检查网络');
+    console.error('获取用户信息失败:', error);
   } finally {
     loading.value = false;
   }
 };
-
 onMounted(() => {
   fetchUserInfo();
 });

@@ -1,352 +1,422 @@
 <template>
-  <div class="animation-container">
-    <div class="loader" id="loader">
-      <div class="loader-wrapper">
-        <span class="loader-letter">B</span>
-        <span class="loader-letter">o</span>
-        <span class="loader-letter">l</span>
-        <span class="loader-letter">a</span>
-        <span class="loader-letter">n</span>
-        <span class="loader-letter">l</span>
-        <span class="loader-letter">v</span>
-        <span class="loader-letter">x</span>
-        <span class="loader-letter">i</span>
-        <span class="loader-letter">n</span>
-        <span class="loader-letter">g</span>
-        <span class="loader-letter">.</span>
-        <span class="loader-letter">.</span>
-        <span class="loader-letter">.</span>
-        <div class="loader-circle"></div>
-      </div>
-    </div>
-    <div class="loader-container"></div>
-    <div class="loader-loading-text">
-      <ul class="text-ul">
-        <li>
-          <div class="text"></div>
-        </li>
-      </ul>
+  <div class="container">
+    <header>
+      <h1>用户搜索系统</h1>
+      <p class="description">根据ID、用户名、昵称、邮箱或手机号搜索用户信息</p>
+    </header>
 
+    <div class="search-container">
+      <div class="search-title">
+        <i class="fas fa-search"></i>
+        <h2>搜索条件</h2>
+      </div>
+
+      <form class="search-form" @submit.prevent="searchUsers">
+        <div class="form-group">
+          <label for="id">ID</label>
+          <input type="number" id="id" v-model="searchParams.id" placeholder="输入用户ID">
+        </div>
+
+        <div class="form-group">
+          <label for="username">用户名</label>
+          <input type="text" id="username" v-model="searchParams.username" placeholder="输入用户名">
+        </div>
+
+        <div class="form-group">
+          <label for="nickname">昵称</label>
+          <input type="text" id="nickname" v-model="searchParams.nickname" placeholder="输入昵称">
+        </div>
+
+        <div class="form-group">
+          <label for="email">邮箱</label>
+          <input type="email" id="email" v-model="searchParams.email" placeholder="输入邮箱地址">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">手机号</label>
+          <input type="tel" id="phone" v-model="searchParams.phone" placeholder="输入手机号码">
+        </div>
+
+        <div class="form-group">
+          <label for="userID">用户ID</label>
+          <input type="number" id="userID" v-model="searchParams.userID" placeholder="输入用户ID">
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="reset-btn" @click="resetForm">
+            <i class="fas fa-redo"></i> 重置
+          </button>
+          <button type="submit" class="search-btn">
+            <i class="fas fa-search"></i> 搜索
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="results-container">
+      <div class="results-header">
+        <h2>搜索结果</h2>
+        <div class="results-count" v-if="!loading && !error">
+          共找到 {{ users.length }} 个用户
+        </div>
+      </div>
+
+      <div v-if="loading" class="loading">
+        <div class="spinner"></div>
+        <p>正在搜索用户，请稍候...</p>
+      </div>
+
+      <div v-else-if="error" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ error }}</span>
+      </div>
+
+      <div v-else-if="users.length === 0" class="no-results">
+        <i class="fas fa-users"></i>
+        <h3>未找到用户</h3>
+        <p>请尝试调整搜索条件后重新搜索</p>
+      </div>
+
+      <div v-else class="user-cards">
+        <div class="user-card" v-for="user in users" :key="user.id">
+          <div class="user-id">ID: {{ user.id }}</div>
+          <h3 class="user-name">{{ user.nickname || user.username }}</h3>
+          <ul class="user-details">
+            <li v-if="user.username">
+              <i class="fas fa-user"></i>
+              <span>{{ user.username }}</span>
+            </li>
+            <li v-if="user.email">
+              <i class="fas fa-envelope"></i>
+              <span>{{ user.email }}</span>
+            </li>
+            <li v-if="user.phone">
+              <i class="fas fa-phone"></i>
+              <span>{{ user.phone }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
 </template>
 
 <script setup>
+import { createApp, ref, reactive } from 'vue'
+import request from '@/utils/request';
+
+const searchParams = reactive({
+  id: null,
+  username: '',
+  nickname: '',
+  email: '',
+  phone: '',
+  userID: null
+})
+
+const users = ref([])
+const loading = ref(false)
+const error = ref(null)
+
+// 模拟API调用
+const mockSearchUsers = (params) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      // 模拟一些用户数据
+      const mockUsers = [
+      ]
+
+      // 简单模拟过滤逻辑
+      const filteredUsers = mockUsers.filter(user => {
+        if (params.id && user.id !== params.id) return false
+        if (params.username && !user.username.includes(params.username)) return false
+        if (params.nickname && !user.nickname.includes(params.nickname)) return false
+        if (params.email && !user.email.includes(params.email)) return false
+        if (params.phone && !user.phone.includes(params.phone)) return false
+        if (params.userID && user.id !== params.userID) return false
+        return true
+      })
+
+      resolve(filteredUsers)
+    }, 1000) // 模拟网络延迟
+  })
+}
+
+const searchUsers = async () => {
+  loading.value = true
+  error.value = null
+
+  try {
+    // 替换为实际的API调用
+    const { data } = await request.get('/api/public/user/search', { params: searchParams })
+    users.value = data // 根据您的API响应结构调整
+  } catch (err) {
+    error.value = '搜索用户时发生错误: ' + err.message
+    console.error('搜索错误:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+const resetForm = () => {
+  searchParams.id = null
+  searchParams.username = ''
+  searchParams.nickname = ''
+  searchParams.email = ''
+  searchParams.phone = ''
+  searchParams.userID = null
+  users.value = []
+  error.value = null
+}
+
+
 
 </script>
 
 <style scoped>
-.animation-container {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.loader {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 0;
-  background: linear-gradient(0deg, #1a3379, #0f172a, #000);
-}
-
-.loader-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 180px;
-  height: 180px;
-  font-family: "Inter", sans-serif;
-  font-size: 1.1em;
-  font-weight: 300;
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
   color: white;
-  border-radius: 50%;
-  background-color: transparent;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.loader-circle {
-  position: absolute;
-  top: 0;
-  left: 0;
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.search-container {
+  background-color: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+.search-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.search-title i {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+input {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  background-color: transparent;
-  animation: loader-combined 2.3s linear infinite;
-  z-index: 0;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s;
 }
 
-@keyframes loader-combined {
-  0% {
-    transform: rotate(90deg);
-    box-shadow:
-      0 6px 12px 0 #38bdf8 inset,
-      0 12px 18px 0 #005dff inset,
-      0 36px 36px 0 #1e40af inset,
-      0 0 3px 1.2px rgba(56, 189, 248, 0.3),
-      0 0 6px 1.8px rgba(0, 93, 255, 0.2);
-  }
-
-  25% {
-    transform: rotate(180deg);
-    box-shadow:
-      0 6px 12px 0 #0099ff inset,
-      0 12px 18px 0 #38bdf8 inset,
-      0 36px 36px 0 #005dff inset,
-      0 0 6px 2.4px rgba(56, 189, 248, 0.3),
-      0 0 12px 3.6px rgba(0, 93, 255, 0.2),
-      0 0 18px 6px rgba(30, 64, 175, 0.15);
-  }
-
-  50% {
-    transform: rotate(270deg);
-    box-shadow:
-      0 6px 12px 0 #60a5fa inset,
-      0 12px 6px 0 #0284c7 inset,
-      0 24px 36px 0 #005dff inset,
-      0 0 3px 1.2px rgba(56, 189, 248, 0.3),
-      0 0 6px 1.8px rgba(0, 93, 255, 0.2);
-  }
-
-  75% {
-    transform: rotate(360deg);
-    box-shadow:
-      0 6px 12px 0 #3b82f6 inset,
-      0 12px 18px 0 #0ea5e9 inset,
-      0 36px 36px 0 #2563eb inset,
-      0 0 6px 2.4px rgba(56, 189, 248, 0.3),
-      0 0 12px 3.6px rgba(0, 93, 255, 0.2),
-      0 0 18px 6px rgba(30, 64, 175, 0.15);
-  }
-
-  100% {
-    transform: rotate(450deg);
-    box-shadow:
-      0 6px 12px 0 #4dc8fd inset,
-      0 12px 18px 0 #005dff inset,
-      0 36px 36px 0 #1e40af inset,
-      0 0 3px 1.2px rgba(56, 189, 248, 0.3),
-      0 0 6px 1.8px rgba(0, 93, 255, 0.2);
-  }
+input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
-.loader-letter {
-  display: inline-block;
-  opacity: 0.4;
-  transform: translateY(0);
-  animation: loader-letter-anim 2.4s infinite;
-  z-index: 1;
-  border-radius: 50ch;
+.buttons {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+button {
+  padding: 12px 25px;
   border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
-.loader-letter:nth-child(1) {
-  animation-delay: 0s;
+.search-btn {
+  background-color: #3498db;
+  color: white;
 }
 
-.loader-letter:nth-child(2) {
-  animation-delay: 0.1s;
+.search-btn:hover {
+  background-color: #2980b9;
 }
 
-.loader-letter:nth-child(3) {
-  animation-delay: 0.2s;
+.reset-btn {
+  background-color: #e74c3c;
+  color: white;
 }
 
-.loader-letter:nth-child(4) {
-  animation-delay: 0.3s;
+.reset-btn:hover {
+  background-color: #c0392b;
 }
 
-.loader-letter:nth-child(5) {
-  animation-delay: 0.4s;
+.results-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
 }
 
-.loader-letter:nth-child(6) {
-  animation-delay: 0.5s;
+.results-header {
+  padding: 20px;
+  background-color: #2c3e50;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.loader-letter:nth-child(7) {
-  animation-delay: 0.6s;
+.results-count {
+  font-weight: 600;
 }
 
-.loader-letter:nth-child(8) {
-  animation-delay: 0.7s;
+.user-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
-.loader-letter:nth-child(9) {
-  animation-delay: 0.8s;
+.user-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s;
 }
 
-.loader-letter:nth-child(10) {
-  animation-delay: 0.9s;
+.user-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.loader-letter:nth-child(11) {
-  animation-delay: 1s;
+.user-id {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 10px;
 }
 
-.loader-letter:nth-child(12) {
-  animation-delay: 1.1s;
+.user-name {
+  font-size: 1.4rem;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-weight: 600;
 }
 
-.loader-letter:nth-child(13) {
-  animation-delay: 1.2s;
-}
-
-@keyframes loader-letter-anim {
-
-  0%,
-  100% {
-    opacity: 0.4;
-    transform: translateY(0);
-  }
-
-  20% {
-    opacity: 1;
-    text-shadow: #f8fcff 0 0 5px;
-  }
-
-  40% {
-    opacity: 0.7;
-    transform: translateY(0);
-  }
-}
-
-/* From Uiverse.io by alexruix */
-.loader-container {
-  --ballcolor: #f2f2f2;
-  --shadow: 0px 0 #ffffff00;
-  --shadowcolor: #ffffff00;
-  width: 10px;
-  height: 10px;
-  left: -200px;
-  border-radius: 50%;
-  position: relative;
-  top: 20px;
-  color: var(--ballcolor);
-  animation: shadowRolling 2s linear infinite;
-}
-
-@keyframes shadowRolling {
-
-  0% {
-    box-shadow: var(--shadow),
-      var(--shadow),
-      var(--shadow),
-      var(--shadow);
-  }
-
-  12% {
-    box-shadow: 100px 0 var(--ballcolor),
-      var(--shadow),
-      var(--shadow),
-      var(--shadow);
-  }
-
-  25% {
-    box-shadow: 110px 0 var(--ballcolor),
-      100px 0 var(--ballcolor),
-      var(--shadow),
-      var(--shadow);
-  }
-
-  36% {
-    box-shadow: 120px 0 var(--ballcolor),
-      110px 0 var(--ballcolor),
-      100px 0 var(--ballcolor),
-      var(--shadow);
-  }
-
-  50% {
-    box-shadow: 130px 0 var(--ballcolor),
-      120px 0 var(--ballcolor),
-      110px 0 var(--ballcolor),
-      100px 0 var(--ballcolor);
-  }
-
-  62% {
-    box-shadow: 200px 0 var(--shadowcolor),
-      130px 0 var(--ballcolor),
-      120px 0 var(--ballcolor),
-      110px 0 var(--ballcolor);
-  }
-
-  75% {
-    box-shadow: 200px 0 var(--shadowcolor),
-      200px 0 var(--shadowcolor),
-      130px 0 var(--ballcolor),
-      120px 0 var(--ballcolor);
-  }
-
-  87% {
-    box-shadow: 200px 0 var(--shadowcolor),
-      200px 0 var(--shadowcolor),
-      200px 0 var(--shadowcolor),
-      130px 0 var(--ballcolor);
-  }
-
-  100% {
-    box-shadow: 200px 0 var(--shadowcolor),
-      200px 0 var(--shadowcolor),
-      200px 0 var(--shadowcolor),
-      200px 0 var(--shadowcolor);
-  }
-}
-
-.loader-loading-text {
-  position: absolute;
-  top: 65%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #fff;
-}
-
-.text-ul {
+.user-details {
   list-style: none;
 }
 
-.text {
-  width: 100px;
-  height: 30px;
-  background-color: transparent;
-  margin-top: 20px;
+.user-details li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+}
+
+.user-details li:last-child {
+  border-bottom: none;
+}
+
+.user-details i {
+  margin-right: 10px;
+  color: #3498db;
+  width: 20px;
+}
+
+.no-results {
   text-align: center;
+  padding: 40px;
+  color: #7f8c8d;
 }
 
-.text::before {
-  content: "Loading";
-  color: white;
-  animation: text 1s 0s infinite;
+.no-results i {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #ddd;
 }
 
-@keyframes text {
-  0% {
-    content: "Loading";
+.loading {
+  text-align: center;
+  padding: 40px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-message {
+  background-color: #ffecec;
+  color: #e74c3c;
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.error-message i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .search-form {
+    grid-template-columns: 1fr;
   }
 
-  30% {
-    content: "Loading.";
-  }
-
-  60% {
-    content: "Loading..";
-  }
-
-  100% {
-    content: "Loading...";
+  .user-cards {
+    grid-template-columns: 1fr;
   }
 }
 </style>

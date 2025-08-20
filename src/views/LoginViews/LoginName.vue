@@ -338,7 +338,7 @@ const handleLogin = async () => {
       showError.value = true;
     }
   } catch (error) {
-    errorMessage.value = error.message || '登录失败，请检查账户/密码';
+    errorMessage.value = error.msg || '登录失败';
     showError.value = true;
     console.error('登录失败:', error);
   }
