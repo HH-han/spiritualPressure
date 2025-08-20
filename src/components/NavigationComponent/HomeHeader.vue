@@ -1,10 +1,10 @@
 <template>
   <!-- 导航栏 -->
-  <div class="navbar-background-1">
-    <div class="navbar-background-2">
-      <div class="navbar-home-2">
+  <div class="navbar-background">
+    <div class="navbar-background-container">
+      <div class="navbar-home">
         <div class="logo" style="display: flex; align-items: center; gap: 10px;">
-          <img src="@/assets/logo/logo.png" alt="" style="width: 50px;height: 50px;border-radius: 10px;">
+          <img src="@/assets/logo/m-logo.png" alt="" style="width: 50px;height: 50px;border-radius: 10px;">
           <span>博览旅行</span>
         </div>
         <div class="nav-items">

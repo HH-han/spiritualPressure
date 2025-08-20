@@ -28,10 +28,12 @@
       </div>
     </aside>
   </div>
+  <Captcha />
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import Captcha from '@/components/PromptComponent/CaptchamodalBox.vue';
 
 // 关闭
 const emit = defineEmits(['close']);
