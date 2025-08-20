@@ -1,26 +1,39 @@
 <template>
     <div class="animation-container">
-        <!-- From Uiverse.io by shadowfax29 -->
-        <div class="loading">
-            <svg viewBox="0 0 187.3 93.7" height="200px" width="300px" class="svgbox">
-                <defs>
-                    <linearGradient y2="0%" x2="100%" y1="0%" x1="0%" id="gradient">
-                        <stop stop-color="pink" offset="0%"></stop>
-                        <stop stop-color="blue" offset="100%"></stop>
-                    </linearGradient>
-                </defs>
-                <path stroke="url(#gradient)"
-                    d="M93.9,46.4c9.3,9.5,13.8,17.9,23.5,17.9s17.5-7.8,17.5-17.5s-7.8-17.6-17.5-17.5c-9.7,0.1-13.3,7.2-22.1,17.1c-8.9,8.8-15.7,17.9-25.4,17.9s-17.5-7.8-17.5-17.5s7.8-17.5,17.5-17.5S86.2,38.6,93.9,46.4z">
-                </path>
-            </svg>
+        <div class="loader" id="loader">
+            <div class="loader-wrapper">
+                <span class="loader-letter">B</span>
+                <span class="loader-letter">o</span>
+                <span class="loader-letter">l</span>
+                <span class="loader-letter">a</span>
+                <span class="loader-letter">n</span>
+                <span class="loader-letter">l</span>
+                <span class="loader-letter">v</span>
+                <span class="loader-letter">x</span>
+                <span class="loader-letter">i</span>
+                <span class="loader-letter">n</span>
+                <span class="loader-letter">g</span>
+                <span class="loader-letter">.</span>
+                <span class="loader-letter">.</span>
+                <span class="loader-letter">.</span>
+                <div class="loader-circle"></div>
+            </div>
+        </div>
+        <div class="loader-container"></div>
+        <div class="loader-loading-text">
+            <ul class="text-ul">
+                <li>
+                    <div class="text"></div>
+                </li>
+            </ul>
 
         </div>
     </div>
- 
+
 </template>
 
 <script setup>
-// 这里可以使用Vue3的Composition API
+
 </script>
 
 <style scoped>
@@ -33,24 +46,307 @@
     z-index: 10;
 }
 
-/* From Uiverse.io by shadowfax29 */
-.svgbox {
-    --blue: rgb(148, 66, 63);
-    stroke: var(--blue);
-    stroke-width: 5;
-    fill: none;
-    stroke-dasharray: 50, 14;
-    stroke-dashoffset: 192;
-    animation: dash_682 1.4s linear infinite;
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    background: linear-gradient(0deg, #1a3379, #0f172a, #000);
 }
 
-@keyframes dash_682 {
-    72.5% {
-        opacity: 1;
+.loader-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 180px;
+    font-family: "Inter", sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    color: white;
+    border-radius: 50%;
+    background-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.loader-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background-color: transparent;
+    animation: loader-combined 2.3s linear infinite;
+    z-index: 0;
+}
+
+@keyframes loader-combined {
+    0% {
+        transform: rotate(90deg);
+        box-shadow:
+            0 6px 12px 0 #38bdf8 inset,
+            0 12px 18px 0 #005dff inset,
+            0 36px 36px 0 #1e40af inset,
+            0 0 3px 1.2px rgba(56, 189, 248, 0.3),
+            0 0 6px 1.8px rgba(0, 93, 255, 0.2);
     }
 
-    to {
-        stroke-dashoffset: 1;
+    25% {
+        transform: rotate(180deg);
+        box-shadow:
+            0 6px 12px 0 #0099ff inset,
+            0 12px 18px 0 #38bdf8 inset,
+            0 36px 36px 0 #005dff inset,
+            0 0 6px 2.4px rgba(56, 189, 248, 0.3),
+            0 0 12px 3.6px rgba(0, 93, 255, 0.2),
+            0 0 18px 6px rgba(30, 64, 175, 0.15);
+    }
+
+    50% {
+        transform: rotate(270deg);
+        box-shadow:
+            0 6px 12px 0 #60a5fa inset,
+            0 12px 6px 0 #0284c7 inset,
+            0 24px 36px 0 #005dff inset,
+            0 0 3px 1.2px rgba(56, 189, 248, 0.3),
+            0 0 6px 1.8px rgba(0, 93, 255, 0.2);
+    }
+
+    75% {
+        transform: rotate(360deg);
+        box-shadow:
+            0 6px 12px 0 #3b82f6 inset,
+            0 12px 18px 0 #0ea5e9 inset,
+            0 36px 36px 0 #2563eb inset,
+            0 0 6px 2.4px rgba(56, 189, 248, 0.3),
+            0 0 12px 3.6px rgba(0, 93, 255, 0.2),
+            0 0 18px 6px rgba(30, 64, 175, 0.15);
+    }
+
+    100% {
+        transform: rotate(450deg);
+        box-shadow:
+            0 6px 12px 0 #4dc8fd inset,
+            0 12px 18px 0 #005dff inset,
+            0 36px 36px 0 #1e40af inset,
+            0 0 3px 1.2px rgba(56, 189, 248, 0.3),
+            0 0 6px 1.8px rgba(0, 93, 255, 0.2);
+    }
+}
+
+.loader-letter {
+    display: inline-block;
+    opacity: 0.4;
+    transform: translateY(0);
+    animation: loader-letter-anim 2.4s infinite;
+    z-index: 1;
+    border-radius: 50ch;
+    border: none;
+}
+
+.loader-letter:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.loader-letter:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.loader-letter:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.loader-letter:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+.loader-letter:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+.loader-letter:nth-child(6) {
+    animation-delay: 0.5s;
+}
+
+.loader-letter:nth-child(7) {
+    animation-delay: 0.6s;
+}
+
+.loader-letter:nth-child(8) {
+    animation-delay: 0.7s;
+}
+
+.loader-letter:nth-child(9) {
+    animation-delay: 0.8s;
+}
+
+.loader-letter:nth-child(10) {
+    animation-delay: 0.9s;
+}
+
+.loader-letter:nth-child(11) {
+    animation-delay: 1s;
+}
+
+.loader-letter:nth-child(12) {
+    animation-delay: 1.1s;
+}
+
+.loader-letter:nth-child(13) {
+    animation-delay: 1.2s;
+}
+
+@keyframes loader-letter-anim {
+
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: translateY(0);
+    }
+
+    20% {
+        opacity: 1;
+        text-shadow: #f8fcff 0 0 5px;
+    }
+
+    40% {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+}
+
+/* From Uiverse.io by alexruix */
+.loader-container {
+    --ballcolor: #f2f2f2;
+    --shadow: 0px 0 #ffffff00;
+    --shadowcolor: #ffffff00;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: relative;
+    left: -120px;
+    top: 120px;
+    color: var(--ballcolor);
+    animation: shadowRolling 2s linear infinite;
+}
+
+@keyframes shadowRolling {
+
+    0% {
+        box-shadow: var(--shadow),
+            var(--shadow),
+            var(--shadow),
+            var(--shadow);
+    }
+
+    12% {
+        box-shadow: 100px 0 var(--ballcolor),
+            var(--shadow),
+            var(--shadow),
+            var(--shadow);
+    }
+
+    25% {
+        box-shadow: 110px 0 var(--ballcolor),
+            100px 0 var(--ballcolor),
+            var(--shadow),
+            var(--shadow);
+    }
+
+    36% {
+        box-shadow: 120px 0 var(--ballcolor),
+            110px 0 var(--ballcolor),
+            100px 0 var(--ballcolor),
+            var(--shadow);
+    }
+
+    50% {
+        box-shadow: 130px 0 var(--ballcolor),
+            120px 0 var(--ballcolor),
+            110px 0 var(--ballcolor),
+            100px 0 var(--ballcolor);
+    }
+
+    62% {
+        box-shadow: 200px 0 var(--shadowcolor),
+            130px 0 var(--ballcolor),
+            120px 0 var(--ballcolor),
+            110px 0 var(--ballcolor);
+    }
+
+    75% {
+        box-shadow: 200px 0 var(--shadowcolor),
+            200px 0 var(--shadowcolor),
+            130px 0 var(--ballcolor),
+            120px 0 var(--ballcolor);
+    }
+
+    87% {
+        box-shadow: 200px 0 var(--shadowcolor),
+            200px 0 var(--shadowcolor),
+            200px 0 var(--shadowcolor),
+            130px 0 var(--ballcolor);
+    }
+
+    100% {
+        box-shadow: 200px 0 var(--shadowcolor),
+            200px 0 var(--shadowcolor),
+            200px 0 var(--shadowcolor),
+            200px 0 var(--shadowcolor);
+    }
+}
+
+.loader-loading-text {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+}
+
+.text-ul {
+    list-style: none;
+}
+
+.text {
+    width: 100px;
+    height: 30px;
+    background-color: transparent;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.text::before {
+    content: "Loading";
+    color: white;
+    animation: text 1s 0s infinite;
+}
+
+@keyframes text {
+    0% {
+        content: "Loading";
+    }
+
+    30% {
+        content: "Loading.";
+    }
+
+    60% {
+        content: "Loading..";
+    }
+
+    100% {
+        content: "Loading...";
     }
 }
 </style>

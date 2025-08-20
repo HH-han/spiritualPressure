@@ -24,7 +24,7 @@ onMounted(() => {
   // 模拟加载过程
   setTimeout(() => {
     isLoading.value = false
-  }, 500)
+  }, 1000)
 })
 </script>
 <style scoped>
