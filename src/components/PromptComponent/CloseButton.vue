@@ -15,7 +15,7 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 const router = useRouter()
 const closethePage = () => {
-    router.go(-1);
+    router.push({ name: 'systemhomeView' });
 }
 </script>
 <style scoped>

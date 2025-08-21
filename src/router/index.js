@@ -58,6 +58,7 @@ import AboutWeb from '@/views/AboutWebsite/AboutWeb.vue'
 import SearchView from '@/views/MapViews/SearchView.vue'
 import GaodeMap from '@/views/MapViews/GaodeMap.vue'
 import MapComponent from '@/views/MapViews/MapComponent.vue'
+import MapLoading from '@/views/mapViews/MapLoading.vue'
 
 //管理页面路由
 import UserGoodsmanagement from '@/views/Management/UserGoodsmanagement.vue'
@@ -148,6 +149,7 @@ const routes = [
   {path: '/searchview',name: 'searchview',component: SearchView},
   {path: '/gaodemap',name: 'gaodemap',component: GaodeMap},
   {path: '/mapcomponent',name: 'mapcomponent',component: MapComponent},
+  {path: '/maploading',name: 'maploading',component: MapLoading},
   //管理页面路由
   {path: '/usergoodsmanagement',name: 'usergoodsmanagement',component: UserGoodsmanagement},
   {path: '/AdminLayout', name: 'AdminLayout',component: AdminLayout},

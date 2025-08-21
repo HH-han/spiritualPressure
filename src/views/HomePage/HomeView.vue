@@ -351,8 +351,6 @@
           </div>
         </div>
         <div>
-          <!-- 引入自定义定位提示框 -->
-          <PositioningProgress ref="positioningprogress" />
           <!-- 引入自定义收藏提示框 -->
           <CollectionTips ref="collectiontips" />
         </div>
@@ -386,11 +384,11 @@ import MyNote from '@/components/DisplayBox/MyNote.vue'
 import MoreRecommend from '@/components/DisplayBox/MoreRecommend.vue'
 import BottomPage from '@/components/DisplayBox/BottomPage.vue'
 import CollectionTips from '@/components/PromptComponent/CollectionTips.vue'
-import PositioningProgress from '@/components/PromptComponent/PositioningProgress.vue'
 import AttractionsDisplay from '@/views/HomePage/AttractionsDisplay.vue'
 import SeamlessCarousel from '@/views/HomePage/SeamlessCarousel.vue'
 import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue';
 import { ElMessage } from "element-plus";
+import { fa, lo } from 'element-plus/es/locales.mjs'
 
 // 轮播图数据
 const slides = ref([
@@ -439,7 +437,6 @@ const startX = ref(0)
 const searchKeyword = ref('')
 
 // 组件引用
-const positioningprogress = ref(null)
 const collectiontips = ref(null)
 // 页面跳转
 const navigateTo = (path) => {
@@ -490,7 +487,13 @@ const NoMore = () => {
 
 // 定位功能
 const showLocation = (location) => {
-  positioningprogress.value.openAlert(`正在为你打开地图：${location}`)
+  router.push({ 
+    name: 'maploading', 
+    query: {
+      location,
+      message: `正在打开地图：${location}`
+    }
+  });
   console.log('正在打开地图...', location)
 }
 
