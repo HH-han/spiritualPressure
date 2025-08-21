@@ -10,45 +10,47 @@
           </div>
 
           <form class="search-form" @submit.prevent="searchUsers">
+            <!-- 搜索框 -->
             <div class="search-box-management-container">
+              <!-- ID -->
               <div class="search-box-management">
-                <label for="id">ID:</label>
+                <label for="id" class="required-label">ID:</label>
                 <input type="number" id="id" v-model="searchParams.id" class="search-input-management"
                   placeholder="输入用户ID">
               </div>
-
+              <!-- 用户名 -->
               <div class="search-box-management">
-                <label for="username">用户名:</label>
+                <label for="username" class="required-label">用户名:</label>
                 <input type="text" id="username" v-model="searchParams.username" class="search-input-management"
                   placeholder="输入用户名">
               </div>
-
+              <!-- 昵称 -->
               <div class="search-box-management">
-                <label for="nickname">昵称:</label>
+                <label for="nickname" class="required-label">昵称:</label>
                 <input type="text" id="nickname" v-model="searchParams.nickname" class="search-input-management"
                   placeholder="输入昵称">
               </div>
-
+              <!-- 邮箱 -->
               <div class="search-box-management">
-                <label for="email">邮箱:</label>
+                <label for="email" class="required-label">邮箱:</label>
                 <input type="email" id="email" v-model="searchParams.email" class="search-input-management"
                   placeholder="输入邮箱地址">
               </div>
-
+              <!-- 手机号 -->
               <div class="search-box-management">
-                <label for="phone">手机号:</label>
+                <label for="phone" class="required-label">手机号:</label>
                 <input type="tel" id="phone" v-model="searchParams.phone" class="search-input-management"
                   placeholder="输入手机号码">
               </div>
-
+              <!-- 用户ID -->
               <div class="search-box-management">
-                <label for="userID">用户ID:</label>
+                <label for="userID" class="required-label">用户ID:</label>
                 <input type="number" id="userID" v-model="searchParams.userID" class="search-input-management"
                   placeholder="输入用户ID">
               </div>
+
             </div>
-
-
+            <!-- 搜索按钮 -->
             <div class="search-box-management-btn">
               <button type="button" class="btn reset-btn" @click="resetForm">
                 <i class="fas fa-redo"></i> 重置
@@ -404,8 +406,8 @@ const columns = [
   { key: 'experience', title: '经验' },
   { key: 'createTime', title: '创建时间' },
   { key: 'updateTime', title: '更新时间' },
-  { key: 'permissions', title: '管理员权限' },
-  { key: 'status', title: '状态(禁止-启用)' },
+  { key: 'permissions', title: '管理员权限(关门-开启)' },
+  { key: 'status', title: '登录状态(禁止-启用)' },
 ];
 const showToast = ref(false);
 const toastMessage = ref('');
