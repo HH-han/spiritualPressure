@@ -406,7 +406,7 @@ const columns = [
   { key: 'experience', title: '经验' },
   { key: 'createTime', title: '创建时间' },
   { key: 'updateTime', title: '更新时间' },
-  { key: 'permissions', title: '管理员权限(关门-开启)' },
+  { key: 'permissions', title: '管理员权限(关闭-开启)' },
   { key: 'status', title: '登录状态(禁止-启用)' },
 ];
 const showToast = ref(false);

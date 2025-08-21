@@ -321,21 +321,13 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(10px);
 }
 
 /* 内容区域 - 玻璃拟态效果 */
 .accountsettings-content {
   position: relative;
   z-index: 1;
-  /* padding: 2.5rem;
-  min-height: 100vh; */
   height: 100%;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 
-    inset 4px 0 8px -4px rgba(255, 255, 255, 0.6),
-    0 0 24px rgba(0, 0, 0, 0.08);
   animation: fadeInUp 0.8s ease-out;
 }
 

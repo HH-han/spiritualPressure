@@ -584,7 +584,7 @@ const resetForm = () => {
 }
 
 .myposts-success-content {
-  background: white;
+  background-color: rgba(255, 255, 255, 0.6);
   padding: 3rem;
   border-radius: 20px;
   text-align: center;

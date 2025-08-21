@@ -1,31 +1,31 @@
 <template>
-  <div class="notes-container">
+  <div class="posts-container">
     <!-- 顶部标题栏 -->
-    <div class="notes-header">
+    <div class="posts-header">
       <h1>我的发布管理</h1>
     </div>
 
     <!-- 笔记列表 -->
-    <div class="notes-list">
-      <div v-for="note in notes" :key="note.id" class="note-card" :class="{ 'active': activeNoteId === note.id }"
-        @click="setActiveNote(note.id)">
-        <div class="note-header">
-          <h3>{{ note.title }}</h3>
-          <span class="note-date">{{ formatDate(note.date) }}</span>
+    <div class="posts-list">
+      <div v-for="post in posts" :key="post.id" class="post-card" :class="{ 'active': activepostId === post.id }"
+        @click="setActivepost(post.id)">
+        <div class="post-header">
+          <h3>{{ post.title }}</h3>
+          <span class="post-date">{{ formatDate(post.date) }}</span>
         </div>
-        <p class="note-preview">{{ truncateContent(note.content) }}</p>
-        <div class="note-tags">
-          <span v-for="tag in parseTags(note.tags)" :key="tag" class="tag-post">{{ tag }}</span>
+        <p class="post-preview">{{ truncateContent(post.content) }}</p>
+        <div class="post-tags">
+          <span v-for="tag in parseTags(post.tags)" :key="tag" class="tag-post">{{ tag }}</span>
         </div>
-        <div class="note-meta">
-          <span class="date"><i class="icon-calendar"></i> {{ formatDateTime(currentNote.date) }}</span>
-          <span class="note-location" v-if="note.location"><i class="icon-location"></i> {{ note.location }}</span>
-          <span class="author"><i class="icon-user"></i> {{ note.username }}</span>
+        <div class="post-meta">
+          <span class="date"><i class="icon-calendar"></i> {{ formatDateTime(currentpost.date) }}</span>
+          <span class="post-location" v-if="post.location"><i class="icon-location"></i> {{ post.location }}</span>
+          <span class="author"><i class="icon-user"></i> {{ post.username }}</span>
         </div>
-        <div class="note-actions">
-          <button class="view-btn" @click.stop="openDetails(note)">查看</button>
-          <button class="edit-btn" @click.stop="openEditor(note)">编辑</button>
-          <button class="delete-btn" @click.stop="postToDelete(note.id)">删除</button>
+        <div class="post-actions">
+          <button class="view-btn" @click.stop="openDetails(post)">查看</button>
+          <button class="edit-btn" @click.stop="openEditor(post)">编辑</button>
+          <button class="delete-btn" @click.stop="postsToDelete(post.id)">删除</button>
         </div>
       </div>
     </div>
@@ -34,10 +34,10 @@
     <div v-if="showEditor" class="modal-overlay" @click.self="closeEditor">
       <div class="modal-content">
         <div class="modal-header">
-          <h2>{{ editingNote ? '编辑笔记' : '新建笔记' }}</h2>
+          <h2>{{ editingpost ? '编辑笔记' : '新建笔记' }}</h2>
           <button class="close-btn" @click="closeEditor">&times;</button>
         </div>
-        <form @submit.prevent="submitNote">
+        <form @submit.prevent="submitpost">
           <div class="form-group">
             <label>标题:</label>
             <input v-model="editorData.title" type="text" required>
@@ -61,7 +61,7 @@
                 <img v-for="(img, index) in editorData.images.split('\n')" :key="index" :src="img"
                   class="preview-image" />
               </div>
-              <input v-model="editorData.images" rows="8" required class="note-images"></input>
+              <input v-model="editorData.images" rows="8" required class="post-images"></input>
               <button @click="addImage" class="add-image-btn" type="button" title="添加图片">
                 <svg t="1752841532188" class="icon" viewBox="0 0 1024 1024" version="1.1"
                   xmlns="http://www.w3.org/2000/svg" p-id="12057">
@@ -90,29 +90,29 @@
     <div v-if="showDetails" class="modal-overlay" @click.self="closeDetails">
       <div class="modal-content details-modal">
         <div class="modal-header">
-          <h2>{{ currentNote.title }}</h2>
+          <h2>{{ currentpost.title }}</h2>
           <button class="close-btn" @click="closeDetails">&times;</button>
         </div>
-        <div class="note-img">
-          <div class="note-img-container" v-if="currentNote.images && currentNote.images.length">
-            <img :src="currentNote.images" alt="Note image" class="note-image" />
+        <div class="post-img">
+          <div class="post-img-container" v-if="currentpost.images && currentpost.images.length">
+            <img :src="currentpost.images" alt="post image" class="post-image" />
           </div>
         </div>
-        <div class="note-meta">
-          <span class="date"><i class="icon-calendar"></i> {{ formatDateTime(currentNote.date) }}</span>
-          <span class="note-location" v-if="currentNote.location"><i class="icon-location"></i> {{
-            currentNote.location}}</span>
-          <span class="author"><i class="icon-user"></i> {{ currentNote.username }}</span>
+        <div class="post-meta">
+          <span class="date"><i class="icon-calendar"></i> {{ formatDateTime(currentpost.date) }}</span>
+          <span class="post-location" v-if="currentpost.location"><i class="icon-location"></i> {{
+            currentpost.location}}</span>
+          <span class="author"><i class="icon-user"></i> {{ currentpost.username }}</span>
         </div>
-        <div class="note-tags">
-          <span v-for="tag in parseTags(currentNote.tags)" :key="tag" class="tag">{{ tag }}</span>
+        <div class="post-tags">
+          <span v-for="tag in parseTags(currentpost.tags)" :key="tag" class="tag">{{ tag }}</span>
         </div>
-        <div class="note-content">
-          <span class="note-content" v-if="currentNote.location"><i class="icon-location"></i> {{ currentNote.content
+        <div class="post-content">
+          <span class="post-content" v-if="currentpost.location"><i class="icon-location"></i> {{ currentpost.content
           }}</span>
         </div>
         <div class="modal-footer">
-          <button class="edit-btn edit-btn-primary" @click="openEditor(currentNote)">编辑</button>
+          <button class="edit-btn edit-btn-primary" @click="openEditor(currentpost)">编辑</button>
         </div>
       </div>
     </div>
@@ -134,17 +134,17 @@ import { ElMessage } from 'element-plus'
 import DeletePrompt from '@/components/PromptComponent/DeletePrompt.vue'
 
 // 笔记数据
-const notes = ref([])
-const activeNoteId = ref(null)
+const posts = ref([])
+const activepostId = ref(null)
 const isSubmitting = ref(false)
-const currentNote = ref({})
+const currentpost = ref({})
 
 // 模态框状态
 const showEditor = ref(false)
 const showDetails = ref(false)
 const showDeleteConfirm = ref(false)
-const editingNote = ref(null)
-const noteToDelete = ref(null)
+const editingpost = ref(null)
+const postToDelete = ref(null)
 
 // 编辑器数据
 const editorData = ref({
@@ -156,7 +156,7 @@ const editorData = ref({
 })
 
 // 加载笔记列表
-const fetchNotes = async () => {
+const fetchposts = async () => {
   try {
     const userInfo = JSON.parse(localStorage.getItem('user'));
     const response = await request.get('/api/public/posts', {
@@ -164,20 +164,20 @@ const fetchNotes = async () => {
         username: userInfo?.username
       }
     })
-    notes.value = response.data?.list || []
+    posts.value = response.data?.list || []
   } catch (error) {
     console.error('获取笔记失败:', error)
   }
 }
 
 // 设置当前活动笔记
-const setActiveNote = (id) => {
-  activeNoteId.value = id
+const setActivepost = (id) => {
+  activepostId.value = id
 }
 
 // 打开详情模态框
-const openDetails = (note) => {
-  currentNote.value = note
+const openDetails = (post) => {
+  currentpost.value = post
   showDetails.value = true
 }
 
@@ -187,15 +187,15 @@ const closeDetails = () => {
 }
 
 // 打开编辑器模态框
-const openEditor = (note = null) => {
-  editingNote.value = note
-  if (note) {
+const openEditor = (post = null) => {
+  editingpost.value = post
+  if (post) {
     editorData.value = {
-      title: note.title,
-      content: note.content,
-      location: note.location || '',
-      date: note.date ? formatDateForInput(note.date) : '',
-      tagsInput: parseTags(note.tags).join(', ')
+      title: post.title,
+      content: post.content,
+      location: post.location || '',
+      date: post.date ? formatDateForInput(post.date) : '',
+      tagsInput: parseTags(post.tags).join(', ')
     }
   } else {
     editorData.value = {
@@ -216,10 +216,10 @@ const closeEditor = () => {
 }
 
 // 提交笔记
-const submitNote = async () => {
+const submitpost = async () => {
   isSubmitting.value = true
   try {
-    const noteData = {
+    const postData = {
       title: editorData.value.title,
       content: editorData.value.content,
       location: editorData.value.location,
@@ -227,15 +227,15 @@ const submitNote = async () => {
       tags: editorData.value.tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag)
     }
 
-    if (editingNote.value) {
+    if (editingpost.value) {
       // 更新现有笔记
-      await request.put(`/api/public/posts/${editingNote.value.id}`, { data: JSON.stringify(noteData) })
+      await request.put(`/api/public/posts/${editingpost.value.id}`, { data: JSON.stringify(postData) })
     } else {
       // 创建新笔记
-      await request.post('/api/public/posts', { data: JSON.stringify(noteData) })
+      await request.post('/api/public/posts', { data: JSON.stringify(postData) })
     }
 
-    await fetchNotes()
+    await fetchposts()
     closeEditor()
   } catch (error) {
     ElMessage.error('保存笔记失败')
@@ -245,16 +245,17 @@ const submitNote = async () => {
   }
 }
 //删除
-const postToDelete = (id) => {
-  noteToDelete.value = id;
+const postsToDelete = (id) => {
+  postToDelete.value = id;
   showDeleteConfirm.value = true;
 };
 
 const confirmDelete = async () => {
-  if (noteToDelete.value) {
+  if (postToDelete.value) {
     try {
-      await request.delete(`/api/public/posts/${noteToDelete.value}`);
-      await fetchNotes();
+      await request.delete(`/api/public/posts/${postToDelete.value}`);
+      await fetchposts();
+      closeDeleteModal();
       ElMessage.success('删除成功');
     } catch (error) {
       ElMessage.error('删除失败');
@@ -293,7 +294,7 @@ const truncateContent = (content) => {
 }
 
 // 初始化加载
-onMounted(fetchNotes)
+onMounted(fetchposts)
 </script>
 
 <style scoped>
@@ -314,14 +315,14 @@ body {
 }
 
 /* 容器样式 */
-.notes-container {
+.posts-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
 }
 
 /* 头部样式 - Liquid Glass 效果 */
-.notes-header {
+.posts-header {
   margin-bottom: 2rem;
   padding: 1.5rem;
   background: rgba(255, 255, 255, 0.25);
@@ -330,10 +331,9 @@ body {
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-  text-align: center;
 }
 
-.notes-header h1 {
+.posts-header h1 {
   color: #6c5ce7;
   font-size: 2.2rem;
   font-weight: 600;
@@ -342,7 +342,7 @@ body {
 }
 
 /* 笔记列表网格布局 */
-.notes-list {
+.posts-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
@@ -350,7 +350,7 @@ body {
 }
 
 /* 笔记卡片 - Liquid Glass 效果 */
-.note-card {
+.post-card {
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -368,7 +368,7 @@ body {
   gap: 10px;
 }
 
-.note-card::before {
+.post-card::before {
   content: '';
   position: absolute;
   top: 0;
@@ -379,24 +379,24 @@ body {
   z-index: -1;
 }
 
-.note-card:hover {
+.post-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
 }
 
-.note-card.active {
+.post-card.active {
   border: 1px solid #6c5ce7;
   box-shadow: 0 0 0 2px #a29bfe;
 }
 
 /* 笔记卡片内部元素 */
-.note-header {
+.post-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.note-header h3 {
+.post-header h3 {
   font-size: 1.2rem;
   font-weight: 600;
   color: #6c5ce7;
@@ -406,13 +406,13 @@ body {
   text-overflow: ellipsis;
 }
 
-.note-date {
+.post-date {
   font-size: 0.85rem;
   color: #636e72;
   margin-left: 1rem;
 }
 
-.note-preview {
+.post-preview {
   color: #2d3436;
   font-size: 0.95rem;
   line-height: 1.5;
@@ -424,7 +424,7 @@ body {
 }
 
 /* 标签样式 */
-.note-tags {
+.post-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -445,7 +445,7 @@ body {
 }
 
 /* 元信息样式 */
-.note-meta {
+.post-meta {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -454,24 +454,24 @@ body {
   color: #ffbf47;
 }
 
-.note-meta span {
+.post-meta span {
   display: flex;
   align-items: center;
 }
 
-.note-meta i {
+.post-meta i {
   margin-right: 0.3rem;
   font-size: 0.9rem;
 }
 
 /* 按钮区域 */
-.note-actions {
+.post-actions {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
 }
 
-.note-actions button {
+.post-actions button {
   padding: 0.5rem 1rem;
   border: 1px solid;
   border-radius: 8px;
@@ -606,7 +606,7 @@ body {
 
 .form-group input,
 .form-group textarea,
-.form-group .note-images {
+.form-group .post-images {
   width: 100%;
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -619,14 +619,14 @@ body {
 
 .form-group input:focus,
 .form-group textarea:focus,
-.form-group .note-images:focus {
+.form-group .post-images:focus {
   outline: none;
   border-color: #6c5ce7;
   box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
 }
 
 .form-group textarea,
-.form-group .note-images {
+.form-group .post-images {
   min-height: 120px;
   resize: vertical;
 }
@@ -728,29 +728,29 @@ body {
   padding: 15px;
 }
 
-.note-img {
+.post-img {
   width: 100%;
 }
 
-.note-img-container {
+.post-img-container {
   width: 100%;
   height: 300px;
   overflow: hidden;
   border-radius: 16px;
 }
 
-.note-image {
+.post-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: all 0.3s ease;
 }
 
-.note-image:hover {
+.post-image:hover {
   transform: scale(1.02);
 }
 
-.note-content {
+.post-content {
   line-height: 1.6;
   color: #2d3436;
 }
@@ -777,7 +777,7 @@ body {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .notes-list {
+  .posts-list {
     grid-template-columns: 1fr;
   }
 
@@ -785,22 +785,22 @@ body {
     max-height: 85vh;
   }
 
-  .note-img-container {
+  .post-img-container {
     height: 200px;
   }
 }
 
 @media (max-width: 480px) {
-  .notes-container {
+  .posts-container {
     padding: 1rem;
   }
 
-  .note-actions {
+  .post-actions {
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .note-actions button {
+  .post-actions button {
     width: 100%;
   }
 
