@@ -132,8 +132,8 @@
                   </td>
                   <td>
                     <label class="switch">
-                      <input type="checkbox" :checked="user.status === 1" @change="toggleStatus(user)">
-                      <span class="slider" :class="{ 'green': user.status === 1, 'red': user.status !== 1 }"></span>
+                      <input type="checkbox" :checked="user.status === 0" @change="toggleStatus(user)">
+                      <span class="slider" :class="{ 'green': user.status === 0, 'red': user.status !== 0 }"></span>
                       <span class="knob"></span>
                     </label>
                   </td>
@@ -636,7 +636,7 @@ const togglePermission = async (user) => {
 // 更改状态
 const toggleStatus = async (user) => {
   try {
-    const newStatus = user.status === 1 ? 0 : 1;
+    const newStatus = user.status === 0 ? 1 : 0;
     const requestData = {
       id: user.id,
       status: newStatus,

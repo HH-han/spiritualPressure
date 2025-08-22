@@ -207,7 +207,7 @@ router.beforeEach((to) => {
   // 检查是否需要管理员权限
   if (adminRoutes.includes(to.name)) {
     const userInfo = JSON.parse(localStorage.getItem('user'));
-    if (!userInfo || userInfo.username !== 'admin') {
+    if (!userInfo || userInfo.permissions !== 1) {
       // 非管理员用户重定向到登录页面
       ElMessage.error('您没有管理员权限，无法访问，请先登录');
       return { path: '/adminlogin' };
