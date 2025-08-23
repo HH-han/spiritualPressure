@@ -159,7 +159,7 @@ const EnrolFirst = () => {
   ElMessage.success('前往注册！');
 };
 const AdminLayout = () => {
-  if (userInfo.value.username === 'admin') {
+  if (userInfo.value.permissions === 1) {
     ElMessage.success('欢迎管理员！');
     router.push('/AdminLayout');
   } else {
