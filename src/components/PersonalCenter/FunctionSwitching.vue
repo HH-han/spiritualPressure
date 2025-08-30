@@ -73,7 +73,7 @@ import MyOrder from '@/views/MyCenter/MyOrder.vue';
 import DeleteOrder from '@/views/MyCenter/DeleteOrder.vue';
 import PersonalPosts from '@/views/MyCenter/PersonalPosts.vue';
 import PersonalNotes from '@/views/MyCenter/PersonalNotes.vue';
-
+import TravelCollection from '@/views/MyCenter/TravelCollection.vue';
 
 const router = useRouter();
 const DEFAULT_PERSONALCENTER_ID = 'personal';
@@ -96,7 +96,8 @@ const personalcenters = reactive([
   { id: 'messages', title: '消息通知', component: MessageNotification },
   { id: 'posts', title: '我的发布', component: MyRelease },
   { id: 'postsdelete', title: '发布管理', component: PersonalPosts },
-  { id: 'note', title: '我的笔记', component: PersonalNotes }
+  { id: 'note', title: '我的笔记', component: PersonalNotes },
+  { id: 'favorites', title: '我的收藏', component: TravelCollection }
 ]);
 
 const activeComponent = shallowRef(PersonalCenter);
@@ -201,7 +202,7 @@ onMounted(() => {
   color: #2a2a72;
   position: fixed;
   height: 100vh;
-  z-index: 10;
+  z-index: 1;
 }
 
 .personalcenter-sidebar-header {
