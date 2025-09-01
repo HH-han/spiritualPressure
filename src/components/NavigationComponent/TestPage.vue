@@ -167,7 +167,6 @@ const switchPage = (component) => {
   display: flex;
   flex-direction: column;
 }
-
 .logo {
   padding: 1.5rem 1rem;
   font-size: 1.2rem;
@@ -180,8 +179,15 @@ const switchPage = (component) => {
 .nav-menu {
   flex: 1;
   overflow-y: auto;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
 }
+.sidebar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 
+}
 .nav-menu ul {
   list-style: none;
   padding: 0.5rem 0;

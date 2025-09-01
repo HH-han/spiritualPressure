@@ -164,7 +164,6 @@ onMounted(() => {
     color: white;
     font-size: 2.5rem;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    margin-bottom: 10px;
 }
 
 .collection-cards-container {
@@ -196,6 +195,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 10px;
 }
 
 .collection-glass-card:hover {
@@ -208,20 +208,17 @@ onMounted(() => {
     height: 180px;
     border-radius: 12px;
     object-fit: cover;
-    margin-bottom: 15px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .collection-card-title {
     font-size: 1.4rem;
-    margin-bottom: 10px;
     font-weight: 600;
 }
 
 .collection-card-location {
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
     color: rgba(255, 255, 255, 0.9);
     font-size: 0.9rem;
 }
@@ -232,7 +229,6 @@ onMounted(() => {
 }
 
 .collection-card-description {
-    margin-bottom: 15px;
     line-height: 1.5;
     color: rgba(255, 255, 255, 0.85);
 }
@@ -240,7 +236,7 @@ onMounted(() => {
 .collection-card-meta {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
+    gap: 10px;
 }
 
 .collection-meta-item {
@@ -251,7 +247,6 @@ onMounted(() => {
     padding: 8px 12px;
     border-radius: 10px;
     flex: 1;
-    margin: 0 5px;
 }
 
 .collection-meta-value {
@@ -268,8 +263,6 @@ onMounted(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
-    padding-top: 15px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
