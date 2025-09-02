@@ -542,6 +542,20 @@
   box-shadow: 0 3px 15px rgba(255, 163, 34, 0.3);
   transform: translateY(-2px);
 }
+.batchlogin-btn{
+  background-color: #257df9;
+}
+.batchlogin-btn:hover {
+  box-shadow: 0 3px 15px rgba(34, 185, 255, 0.3);
+  transform: translateY(-2px);
+}
+.batchpermissions-btn{
+  background-color: #c425f9;
+}
+.batchpermissions-btn:hover {
+  box-shadow: 0 3px 15px rgba(185, 34, 255, 0.3);
+  transform: translateY(-2px);
+}
 .action-btn-image {
   width: 36px;
   height: 36px;

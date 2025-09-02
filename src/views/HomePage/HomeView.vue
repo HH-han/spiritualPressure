@@ -329,24 +329,28 @@
               </div>
               <div class="selectedBlog-modal-content-text">
                 <h2>{{ selectedBlog.title }}</h2>
-                <p>{{ selectedBlog.content }}</p>
-                <p>
-                  <strong>地点:{{ selectedBlog.location }}</strong>
-                </p>
-                <p>
-                  <strong>收藏数:{{ selectedBlog.favorites }}</strong>
-                </p>
-                <p>
-                  <strong>点赞数:{{ selectedBlog.likes }}</strong>
-                </p>
-                <p>
-                  <strong class="price">价格:{{ selectedBlog.price }}￥</strong>
-                </p>
+                <div class="selectedBlog-container">
+                  <p>{{ selectedBlog.content }}</p>
+                  <p>
+                    <strong>地点:{{ selectedBlog.location }}</strong>
+                  </p>
+                  <p>
+                    <strong>收藏数:{{ selectedBlog.favorites }}</strong>
+                  </p>
+                  <p>
+                    <strong>点赞数:{{ selectedBlog.likes }}</strong>
+                  </p>
+                  <p>
+                    <strong class="price">价格:{{ selectedBlog.price }}￥</strong>
+                  </p>
+                </div>
+
               </div>
             </div>
-            <div class="blog-post_buy">
+            <div class="btn-container-collection">
               <!-- 按钮 -->
-              <button @click="OrderDetails(selectedBlog.id)" class="pay-button-GM">前往购买</button>
+              <button @click="OrderDetails(selectedBlog.id)" class="btn pay">前往购买</button>
+              <TavoriteBtn :blog="selectedBlog" @addFavorite="addFavorite" />
             </div>
           </div>
         </div>
@@ -387,6 +391,7 @@ import CollectionTips from '@/components/PromptComponent/CollectionTips.vue'
 import AttractionsDisplay from '@/views/HomePage/AttractionsDisplay.vue'
 import SeamlessCarousel from '@/views/HomePage/SeamlessCarousel.vue'
 import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue';
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
 import { ElMessage } from "element-plus";
 import { fa, lo } from 'element-plus/es/locales.mjs'
 
@@ -657,4 +662,5 @@ onBeforeUnmount(() => {
 /* 导入全局样式HomeViews */
 @import "@/css/Home/HomeViews.css";
 @import "@/css/Home/paging.css";
+@import "@/css/Btn/btn.css";
 </style>

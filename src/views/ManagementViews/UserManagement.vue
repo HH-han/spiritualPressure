@@ -65,6 +65,8 @@
       <!-- 操作栏 -->
       <div class="action-bar">
         <div class="operate-bar">
+          <button class="btn batchlogin-btn" @click="Batchlogin">批量登录</button>
+          <button class="btn batchpermissions-btn" @click="batchpermissions">批量权限</button>
           <button class="btn delete-btn" @click="handleReset">批量删除</button>
           <button class="btn import-btn" @click="handleImport">Excel数据导入导出</button>
           <button class="btn add-btn" @click="showAddDialog">新增用户</button>

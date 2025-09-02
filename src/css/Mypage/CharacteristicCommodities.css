@@ -180,19 +180,21 @@
 
 .cc-price-box {
     text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
 }
 
 .cc-price-label {
     color: #636e72;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
 }
 
 .cc-price {
     color: #ff1500;
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 0.25rem;
 }
 
 .cc-discount {
@@ -201,12 +203,7 @@
     font-weight: 500;
 }
 
-/* 按钮组 */
-.cc-button-group {
-    display: flex;
-    gap: 1rem;
-}
-
+/* 按钮区域 */
 .cc-btn {
     padding: 12px 24px;
     border: none;

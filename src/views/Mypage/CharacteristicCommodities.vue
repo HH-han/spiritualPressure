@@ -15,11 +15,11 @@
                         @input="handleSearch">
                 </div>
             </div>
-           
+
         </div>
         <!-- 纪念品推荐 -->
         <div>
-            <SouvenirRecommend/>
+            <SouvenirRecommend />
         </div>
         <!-- 提示区域 -->
         <h1 class="action-H1-BH-title">小物件点推荐🧺</h1>
@@ -57,14 +57,16 @@
                     </div>
                     <div class="cc-content-center">
                         <div class="cc-price-box">
-                            <p class="cc-price-label">珍藏版画价格</p>
+                            <p class="cc-price-label">珍藏版画价格:</p>
                             <p class="cc-price">¥ {{ formatPrice(currentImage.price) }}</p>
                             <p v-if="currentImage.frameIncluded" class="cc-discount">(含实木框装裱)</p>
                         </div>
-                        <div class="cc-button-group">
-                            <button @click="OrderDetails(currentImage.id)" class="cc-btn cc-btn-secondary">
+                        <!-- 按钮 -->
+                        <div class="btn-container-collection">
+                            <button @click="OrderDetails(currentImage.id)" class="btn pay">
                                 <span class="cc-icon">前往购买</span>
                             </button>
+                            <TavoriteBtn />
                         </div>
                     </div>
                 </div>
@@ -80,6 +82,7 @@
 import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
 import SouvenirRecommend from '@/views/Mypage/SouvenirRecommend.vue'
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus';
@@ -199,4 +202,5 @@ onMounted(() => {
 </script>
 <style scoped>
 @import '@/css/Mypage/CharacteristicCommodities.css';
+@import "@/css/Btn/btn.css";
 </style>

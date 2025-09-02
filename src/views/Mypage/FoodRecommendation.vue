@@ -58,7 +58,7 @@
               <div class="food-card-footer">
                 <span class="food-card-price">¥{{ food.price }}</span>
                 <div class="food-card-buttons">
-                  <button @click="OrderDetails(food.id)" class="pay-button-GM">前往购买</button>
+                  <button @click="OrderDetails(food.id)" class="btn pay">前往购买</button>
                 </div>
               </div>
             </div>
@@ -92,7 +92,12 @@
               <p><i class="fas fa-chart-line"></i> 销量: {{ selectedFood.sales }}</p>
               <p><i class="fas fa-star"></i> 评分: {{ selectedFood.rating }}</p>
             </div>
+            <!-- 按钮 -->
+            <div class="btn-container-collection">
+              <TavoriteBtn :foodId="selectedFood.id" />
+            </div>
           </div>
+
         </div>
       </div>
       <div>
@@ -108,6 +113,7 @@ import request from '@/utils/request';
 import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
 import FoodRecommend from '@/views/Mypage/FoodRecommend.vue';
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
 import { useRouter } from 'vue-router';
 import { ElMessage } from "element-plus";
 
@@ -241,4 +247,5 @@ onMounted(() => {
 
 <style scoped>
 @import '@/css/Mypage/FoodRecommendation.css';
+@import "@/css/Btn/btn.css";
 </style>
