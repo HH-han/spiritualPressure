@@ -329,30 +329,32 @@
               </div>
               <div class="selectedBlog-modal-content-text">
                 <h2>{{ selectedBlog.title }}</h2>
-                <p>{{ selectedBlog.content }}</p>
-                <p>
-                  <strong>地点:{{ selectedBlog.location }}</strong>
-                </p>
-                <p>
-                  <strong>收藏数:{{ selectedBlog.favorites }}</strong>
-                </p>
-                <p>
-                  <strong>点赞数:{{ selectedBlog.likes }}</strong>
-                </p>
-                <p>
-                  <strong class="price">价格:{{ selectedBlog.price }}￥</strong>
-                </p>
+                <div class="selectedBlog-container">
+                  <p>{{ selectedBlog.content }}</p>
+                  <p>
+                    <strong>地点:{{ selectedBlog.location }}</strong>
+                  </p>
+                  <p>
+                    <strong>收藏数:{{ selectedBlog.favorites }}</strong>
+                  </p>
+                  <p>
+                    <strong>点赞数:{{ selectedBlog.likes }}</strong>
+                  </p>
+                  <p>
+                    <strong class="price">价格:{{ selectedBlog.price }}￥</strong>
+                  </p>
+                </div>
+
               </div>
             </div>
-            <div class="blog-post_buy">
+            <div class="btn-container-collection">
               <!-- 按钮 -->
-              <button @click="OrderDetails(selectedBlog.id)" class="pay-button-GM">前往购买</button>
+              <button @click="OrderDetails(selectedBlog.id)" class="btn pay">前往购买</button>
+              <TavoriteBtn :blog="selectedBlog" @addFavorite="addFavorite" />
             </div>
           </div>
         </div>
         <div>
-          <!-- 引入自定义定位提示框 -->
-          <PositioningProgress ref="positioningprogress" />
           <!-- 引入自定义收藏提示框 -->
           <CollectionTips ref="collectiontips" />
         </div>
@@ -386,11 +388,12 @@ import MyNote from '@/components/DisplayBox/MyNote.vue'
 import MoreRecommend from '@/components/DisplayBox/MoreRecommend.vue'
 import BottomPage from '@/components/DisplayBox/BottomPage.vue'
 import CollectionTips from '@/components/PromptComponent/CollectionTips.vue'
-import PositioningProgress from '@/components/PromptComponent/PositioningProgress.vue'
 import AttractionsDisplay from '@/views/HomePage/AttractionsDisplay.vue'
 import SeamlessCarousel from '@/views/HomePage/SeamlessCarousel.vue'
 import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue';
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
 import { ElMessage } from "element-plus";
+import { fa, lo } from 'element-plus/es/locales.mjs'
 
 // 轮播图数据
 const slides = ref([
@@ -439,7 +442,6 @@ const startX = ref(0)
 const searchKeyword = ref('')
 
 // 组件引用
-const positioningprogress = ref(null)
 const collectiontips = ref(null)
 // 页面跳转
 const navigateTo = (path) => {
@@ -490,7 +492,13 @@ const NoMore = () => {
 
 // 定位功能
 const showLocation = (location) => {
-  positioningprogress.value.openAlert(`正在为你打开地图：${location}`)
+  router.push({ 
+    name: 'maploading', 
+    query: {
+      location,
+      message: `正在打开地图：${location}`
+    }
+  });
   console.log('正在打开地图...', location)
 }
 
@@ -654,4 +662,5 @@ onBeforeUnmount(() => {
 /* 导入全局样式HomeViews */
 @import "@/css/Home/HomeViews.css";
 @import "@/css/Home/paging.css";
+@import "@/css/Btn/btn.css";
 </style>

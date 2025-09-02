@@ -73,7 +73,7 @@ import MyOrder from '@/views/MyCenter/MyOrder.vue';
 import DeleteOrder from '@/views/MyCenter/DeleteOrder.vue';
 import PersonalPosts from '@/views/MyCenter/PersonalPosts.vue';
 import PersonalNotes from '@/views/MyCenter/PersonalNotes.vue';
-
+import TravelCollection from '@/views/MyCenter/TravelCollection.vue';
 
 const router = useRouter();
 const DEFAULT_PERSONALCENTER_ID = 'personal';
@@ -96,7 +96,8 @@ const personalcenters = reactive([
   { id: 'messages', title: '消息通知', component: MessageNotification },
   { id: 'posts', title: '我的发布', component: MyRelease },
   { id: 'postsdelete', title: '发布管理', component: PersonalPosts },
-  { id: 'note', title: '我的笔记', component: PersonalNotes }
+  { id: 'note', title: '我的笔记', component: PersonalNotes },
+  { id: 'favorites', title: '我的收藏', component: TravelCollection }
 ]);
 
 const activeComponent = shallowRef(PersonalCenter);
@@ -201,7 +202,7 @@ onMounted(() => {
   color: #2a2a72;
   position: fixed;
   height: 100vh;
-  z-index: 10;
+  z-index: 1;
 }
 
 .personalcenter-sidebar-header {
@@ -321,21 +322,13 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(10px);
 }
 
 /* 内容区域 - 玻璃拟态效果 */
 .accountsettings-content {
   position: relative;
   z-index: 1;
-  /* padding: 2.5rem;
-  min-height: 100vh; */
   height: 100%;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 
-    inset 4px 0 8px -4px rgba(255, 255, 255, 0.6),
-    0 0 24px rgba(0, 0, 0, 0.08);
   animation: fadeInUp 0.8s ease-out;
 }
 

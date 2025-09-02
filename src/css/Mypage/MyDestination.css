@@ -752,11 +752,4 @@
   font-weight: 600;
 }
 
-.destination-detail-actions {
-  width: 100%;
-  padding: 1.5rem;
-  text-align: center;
-  background: #E0EDFE;
-  display: flex;
-  justify-content: flex-end;
-}
+

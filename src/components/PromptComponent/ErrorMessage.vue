@@ -1,7 +1,6 @@
 <template>
     <div v-if="isVisible" class="error-message-box">
         <div class="error-message-content">
-            <!-- <div class="error-message-title">错误提示</div> -->
             <div class="error-message-text">{{ message }}</div>
             <button class="error-message-close" @click="close">关闭</button>
         </div>

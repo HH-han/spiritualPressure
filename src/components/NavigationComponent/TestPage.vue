@@ -35,17 +35,7 @@
     </main>
     <!-- 返回按钮 -->
     <div class="back-home">
-      <button class="Btn" @click="backhome">
-        <span class="svgContainer">
-          <svg t="1752997866226" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-            p-id="12911" width="24" height="24">
-            <path
-              d="M512 0C229.160421 0 0 229.241263 0 512s229.160421 512 512 512c282.758737 0 512-229.241263 512-512S794.758737 0 512 0z m229.079579 686.295579c-13.473684 0-26.031158-3.503158-37.079579-9.566316l-2.263579 2.263579L511.919158 512l-185.263158 166.265263-1.536-1.536a75.964632 75.964632 0 0 1-103.289263-103.208421l-2.479158-2.56 12.288-11.048421c3.799579-4.257684 8.057263-8.111158 12.719158-11.425684l215.498105-193.374316h1.455158a74.213053 74.213053 0 0 1 102.992842 0h0.862316l219.297684 192.943158c4.581053 3.233684 8.757895 6.952421 12.665263 11.129263l12.988632 11.479579-2.694737 2.640842a76.045474 76.045474 0 0 1-66.344421 113.017263z"
-              fill="#ffffff" p-id="12912"></path>
-          </svg>
-        </span>
-        <span class="BG"></span>
-      </button>
+      <CloseButton icon="back" @click="closethePage" />
     </div>
   </div>
 </template>
@@ -68,6 +58,7 @@ import TestProject010 from '@/views/TestProject/TestProject010.vue'
 import TestProjectPage from '@/views/TestProject/TestProjectPage.vue'
 import Richtext from '@/views/TestProject/Richtext.vue'
 import FavoriteContent from '@/components/DisplayBox/FavoriteContent.vue';
+import CloseButton from '@/components/PromptComponent/CloseButton.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -101,10 +92,6 @@ const currentPageName = computed(() => {
   if (!page) return '未知页面';
   return page.name;
 });
-// 返回主页
-const backhome = () => {
-  router.push('/systemhomeView')
-}
 // 用户信息
 const userInfo = ref({
   image: '',
@@ -180,7 +167,6 @@ const switchPage = (component) => {
   display: flex;
   flex-direction: column;
 }
-
 .logo {
   padding: 1.5rem 1rem;
   font-size: 1.2rem;
@@ -193,8 +179,15 @@ const switchPage = (component) => {
 .nav-menu {
   flex: 1;
   overflow-y: auto;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
 }
+.sidebar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 
+}
 .nav-menu ul {
   list-style: none;
   padding: 0.5rem 0;
@@ -319,57 +312,5 @@ const switchPage = (component) => {
   top: 100px;
   left: 200px;
   z-index: 1000;
-}
-
-/* From Uiverse.io by vinodjangid07 */
-.Btn {
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background-color: transparent;
-  position: relative;
-  /* overflow: hidden; */
-  border-radius: 7px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.svgContainer {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  backdrop-filter: blur(0px);
-  letter-spacing: 0.8px;
-  border-radius: 10px;
-  transition: all 0.3s;
-  border: 1px solid rgba(156, 156, 156, 0.466);
-}
-
-.BG {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 100%;
-  background: #f48024;
-  z-index: -1;
-  border-radius: 10px;
-  pointer-events: none;
-  transition: all 0.3s;
-}
-
-.Btn:hover .BG {
-  transform: rotate(35deg);
-  transform-origin: bottom;
-}
-
-.Btn:hover .svgContainer {
-  background-color: rgba(202, 202, 202, 0.466);
-  backdrop-filter: blur(4px);
 }
 </style>

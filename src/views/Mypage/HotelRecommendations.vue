@@ -53,8 +53,8 @@
           </div>
           <div class="card-actions-BH">
             <span>￥{{ card.hotelPrice }}</span>
-            <div class="card-actions-BH">
-              <button @click="OrderDetails(card.id)" class="pay-button-GM">前往购买</button>
+            <div class="btn-container-collection">
+              <button @click="OrderDetails(card.id)" class="btn pay">前往购买</button>
             </div>
             <!-- <button @click="detailsCart(card.id)" class="details-button-GM">查看详情</button> -->
           </div>
@@ -83,7 +83,7 @@
             <img :src="selectedCard.hotelImage" alt="酒店图片" class="detail-image-BH" />
             <div class="detail-info-BH">
               <h2>{{ selectedCard.hotelName }}</h2>
-              <p class="subtitle">{{ selectedCard.hotel_description }}</p>
+              <p class="subtitle-text">{{ selectedCard.hotelDescription }}</p>
               <div class="divider"></div>
               <p>
                 <svg t="1742265297824" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -127,11 +127,13 @@
               <div class="description-BH">
                 {{ selectedCard.hotel_details || '暂无详细描述' }}
               </div>
-              <div>
-
+              <div class="btn-container-collection">
+                <TavoriteBtn :card="selectedCard" />
               </div>
             </div>
+
           </div>
+
         </div>
       </div>
     </div>
@@ -145,8 +147,9 @@
 import { ref, computed, onMounted } from 'vue'
 import request from '@/utils/request'
 import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
-import HotelRecommend from '@/views/Mypage/HotelRecommend.vue'
-import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
+import HotelRecommend from '@/views/Mypage/HotelRecommend.vue';
+import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
 import { useRouter } from 'vue-router';
 import { ElMessage } from "element-plus";
 
@@ -252,4 +255,5 @@ const filteredCards = computed(() => {
 
 <style scoped>
 @import '@/css/Mypage/BrowseHotel.css';
+@import "@/css/Btn/btn.css";
 </style>

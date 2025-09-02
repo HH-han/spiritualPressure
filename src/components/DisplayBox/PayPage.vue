@@ -358,8 +358,15 @@ const closeAlert = () => {
 }
 
 .PayPage_center {
-  margin-bottom: 15px;
-  margin-left: 15px;
+    padding: 10px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    border: 2px dashed transparent;
+}
+
+.PayPage_center:hover {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  border: 2px dashed rgb(107, 176, 255);
 }
 
 .payment-option {

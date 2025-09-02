@@ -1,589 +1,268 @@
 <template>
-  <div class="excel-io-container">
-    <div class="header">
-      <h2>Excel 数据导入导出</h2>
-      <p>通过后端 API 实现 Excel 文件处理</p>
+  <div class="loader">
+    <div class="loader_overlay"></div>
+    <div class="loader_cogs">
+      <div class="loader_cogs__top">
+        <div class="top_part"></div>
+        <div class="top_part"></div>
+        <div class="top_part"></div>
+        <div class="top_hole"></div>
+      </div>
+      <div class="loader_cogs__left">
+        <div class="left_part"></div>
+        <div class="left_part"></div>
+        <div class="left_part"></div>
+        <div class="left_hole"></div>
+      </div>
+      <div class="loader_cogs__bottom">
+        <div class="bottom_part"></div>
+        <div class="bottom_part"></div>
+        <div class="bottom_part"></div>
+        <div class="bottom_hole"></div>
+      </div>
+      <p>loading...</p>
     </div>
-
-    <div class="io-sections">
-      <!-- 导入区域 -->
-      <div class="import-section">
-        <div class="section-header">
-          <svg class="icon" viewBox="0 0 24 24">
-            <path fill="currentColor"
-              d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M8,13V19L10.61,16.39L14,19.17L17.39,16.39L20,19V13H8Z" />
-          </svg>
-          <h3>导入 Excel 文件</h3>
-        </div>
-
-        <div class="dropzone" @dragover.prevent="isDragOver = true" @dragleave="isDragOver = false"
-          @drop.prevent="handleDrop" :class="{ 'drag-active': isDragOver }">
-          <div class="dropzone-content">
-            <svg class="upload-icon" viewBox="0 0 24 24">
-              <path fill="currentColor"
-                d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M8,13V19L10.61,16.39L14,19.17L17.39,16.39L20,19V13H8Z" />
-            </svg>
-            <p class="dropzone-text">拖放文件到这里或点击上传</p>
-            <p class="dropzone-hint">支持 .xlsx, .xls, .csv 格式</p>
-            <input type="file" ref="fileInput" @change="handleFileSelect" accept=".xlsx, .xls, .csv"
-              class="file-input" />
-            <button class="browse-btn" @click="triggerFileInput">选择文件</button>
-          </div>
-        </div>
-
-        <div v-if="importFile" class="file-info">
-          <div class="file-details">
-            <svg class="file-icon" viewBox="0 0 24 24">
-              <path fill="currentColor"
-                d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z" />
-            </svg>
-            <div>
-              <p class="file-name">{{ importFile.name }}</p>
-              <p class="file-size">{{ formatFileSize(importFile.size) }}</p>
-            </div>
-          </div>
-          <button class="clear-btn" @click="clearImportFile">
-            <svg viewBox="0 0 24 24" width="18" height="18">
-              <path fill="currentColor"
-                d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
-            </svg>
-          </button>
-        </div>
-
-        <div class="form-group">
-          <label for="sheet-name">工作表名:</label>
-          <input id="sheet-name" v-model="importOptions.sheetName" type="text" class="form-control"
-            placeholder="Sheet1" />
-        </div>
-
-        <button class="import-btn" @click="handleImport" :disabled="!importFile || isImporting"
-          :class="{ 'loading': isImporting }">
-          <span v-if="!isImporting">导入数据</span>
-          <span v-else class="loading-text">正在导入...</span>
-          <svg v-if="isImporting" class="spinner" viewBox="0 0 50 50">
-            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-          </svg>
-        </button>
-
-        <div v-if="importError" class="error-message">
-          <svg viewBox="0 0 24 24" width="20" height="20">
-            <path fill="currentColor"
-              d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" />
-          </svg>
-          {{ importError }}
-        </div>
-
-        <div v-if="importResult" class="success-message">
-          <svg viewBox="0 0 24 24" width="20" height="20">
-            <path fill="currentColor"
-              d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
-          </svg>
-          导入成功！共处理 {{ importResult.total }} 条记录
-        </div>
-      </div>
-
-      <!-- 导出区域 -->
-      <div class="export-section">
-        <div class="section-header">
-          <svg class="icon" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
-          </svg>
-          <h3>导出 Excel 文件</h3>
-        </div>
-
-        <div class="form-group">
-          <label for="export-filename">文件名:</label>
-          <input id="export-filename" v-model="exportOptions.filename" type="text" class="form-control"
-            placeholder="请输入文件名" />
-        </div>
-
-        <div class="form-group">
-          <label for="export-sheetname">工作表名:</label>
-          <input id="export-sheetname" v-model="exportOptions.sheetName" type="text" class="form-control"
-            placeholder="Sheet1" />
-        </div>
-
-        <button class="export-btn" @click="handleExport" :disabled="isExporting" :class="{ 'loading': isExporting }">
-          <span v-if="!isExporting">导出数据</span>
-          <span v-else class="loading-text">正在导出...</span>
-          <svg v-if="isExporting" class="spinner" viewBox="0 0 50 50">
-            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-          </svg>
-        </button>
-
-        <div v-if="exportError" class="error-message">
-          <svg viewBox="0 0 24 24" width="20" height="20">
-            <path fill="currentColor"
-              d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" />
-          </svg>
-          {{ exportError }}
-        </div>
-      </div>
+    <div class="loader_cogs__text">
+      <h1>Cog loader</h1>
+      <h2>Created with Vue 3</h2>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
-import request from '@/utils/request';
 
-// 导入相关状态
-const fileInput = ref(null);
-const isDragOver = ref(false);
-const importFile = ref(null);
-const isImporting = ref(false);
-const importError = ref(null);
-const importResult = ref(null);
-
-// 导出相关状态
-const isExporting = ref(false);
-const exportError = ref(null);
-
-// 导入选项
-const importOptions = ref({
-  sheetName: 'Sheet1'
-});
-
-// 导出选项
-const exportOptions = ref({
-  filename: 'export',
-  sheetName: 'Sheet1'
-});
-
-// 触发文件选择
-const triggerFileInput = () => {
-  fileInput.value.click();
-};
-
-// 处理文件选择
-const handleFileSelect = (e) => {
-  const files = e.target.files;
-  if (files && files.length > 0) {
-    processSelectedFile(files[0]);
-  }
-};
-
-// 处理拖放
-const handleDrop = (e) => {
-  isDragOver.value = false;
-  const files = e.dataTransfer.files;
-  if (files && files.length > 0) {
-    processSelectedFile(files[0]);
-  }
-};
-
-// 处理选择的文件
-const processSelectedFile = (file) => {
-  const validTypes = [
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'application/vnd.ms-excel',
-    'text/csv'
-  ];
-
-  if (!validTypes.includes(file.type) &&
-    !file.name.match(/\.(xlsx|xls|csv)$/)) {
-    importError.value = '请选择有效的 Excel 或 CSV 文件';
-    return;
-  }
-
-  importFile.value = file;
-  importError.value = null;
-  importResult.value = null;
-};
-
-// 清除导入文件
-const clearImportFile = () => {
-  importFile.value = null;
-  importError.value = null;
-  importResult.value = null;
-  if (fileInput.value) {
-    fileInput.value.value = '';
-  }
-};
-
-// 定义props接收父组件传递的接口地址
-const props = defineProps({
-  exportApiUrl: {
-    type: String,
-    required: true,
-    default: ''
-  },
-  importApiUrl: {
-    type: String,
-    required: true,
-    default: ''
-  },
-
-});
-// 处理导入
-const handleImport = async () => {
-  if (!importFile.value) return;
-
-  isImporting.value = true;
-  importError.value = null;
-  importResult.value = null;
-
-  try {
-    const formData = new FormData();
-    formData.append('file', importFile.value);
-
-    const response = await request.post(props.importApiUrl, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-
-    importResult.value = response.data;
-  } catch (error) {
-    console.error('导入失败:', error);
-    importError.value = error.response?.data?.message || '导入文件时出错';
-  } finally {
-    isImporting.value = false;
-  }
-};
-
-// 修改后的导出处理
-const handleExport = async () => {
-  isExporting.value = true;
-  exportError.value = null;
-
-  try {
-    const link = document.createElement('a');
-    link.href = props.exportApiUrl;
-    link.setAttribute('download', exportOptions.value.filename || '用户列表.xlsx');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } catch (error) {
-    console.error('导出失败:', error);
-    exportError.value = error.response?.data?.message || '导出文件时出错';
-  } finally {
-    isExporting.value = false;
-  }
-};
-
-// 格式化文件大小
-const formatFileSize = (bytes) => {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i]);
-};
-
-// 定义emit事件
-const emit = defineEmits(['import-complete', 'export-complete', 'import-error', 'export-error']);
 </script>
 
 <style scoped>
-.excel-io-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+/* 混合函数替代 */
+.center {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-}
-
-.header h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-}
-
-.header p {
-  font-size: 1rem;
-  color: #7f8c8d;
-}
-
-.io-sections {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-@media (max-width: 768px) {
-  .io-sections {
-    grid-template-columns: 1fr;
-  }
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.section-header h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-left: 0.75rem;
-  color: #2c3e50;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  color: #3498db;
-}
-
-.import-section,
-.export-section {
+.hole {
+  border-radius: 100%;
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: absolute;
 }
 
-.dropzone {
-  border: 2px dashed #bdc3c7;
-  border-radius: 8px;
-  padding: 2rem;
+/* 加载器样式 */
+.loader {
+  height: 100vh;
+  position: relative;
+  margin: auto;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loader_overlay {
+  width: 150px;
+  height: 150px;
+  background: transparent;
+  box-shadow: 0px 0px 0px 400px rgba(255, 255, 255, 0.67),
+    0px 0px 19px 0px rgba(0, 0, 0, 0.16) inset;
+  border-radius: 100%;
+  z-index: -1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader_cogs {
+  z-index: -2;
+  width: 100px;
+  position: absolute;
+}
+
+.loader_cogs__top {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  transform-origin: 50px 50px;
+  animation: rotate 10s infinite linear;
+}
+
+.top_part {
+  width: 100px;
+  border-radius: 10px;
+  position: absolute;
+  height: 100px;
+  background: #f98db9;
+}
+
+.top_part:nth-child(1) {
+  transform: rotate(30deg);
+}
+
+.top_part:nth-child(2) {
+  transform: rotate(60deg);
+}
+
+.top_part:nth-child(3) {
+  transform: rotate(90deg);
+}
+
+.top_hole {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader_cogs__left {
+  position: relative;
+  width: 80px;
+  transform: rotate(16deg);
+  top: 28px;
+  transform-origin: 40px 40px;
+  animation: rotate_left 10s 0.1s infinite reverse linear;
+  left: -24px;
+  height: 80px;
+}
+
+.left_part {
+  width: 80px;
+  border-radius: 6px;
+  position: absolute;
+  height: 80px;
+  background: #97ddff;
+}
+
+.left_part:nth-child(1) {
+  transform: rotate(30deg);
+}
+
+.left_part:nth-child(2) {
+  transform: rotate(60deg);
+}
+
+.left_part:nth-child(3) {
+  transform: rotate(90deg);
+}
+
+.left_hole {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader_cogs__bottom {
+  position: relative;
+  width: 60px;
+  top: -65px;
+  transform-origin: 30px 30px;
+  animation: rotate_left 10.2s 0.4s infinite linear;
+  transform: rotate(4deg);
+  left: 79px;
+  height: 60px;
+}
+
+.bottom_part {
+  width: 60px;
+  border-radius: 5px;
+  position: absolute;
+  height: 60px;
+  background: #ffcd66;
+}
+
+.bottom_part:nth-child(1) {
+  transform: rotate(30deg);
+}
+
+.bottom_part:nth-child(2) {
+  transform: rotate(60deg);
+}
+
+.bottom_part:nth-child(3) {
+  transform: rotate(90deg);
+}
+
+.bottom_hole {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader_cogs p {
+  position: absolute;
+  width: 100%;
   text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 1.5rem;
-  background-color: #f8f9fa;
+  font-weight: 700;
+  color: rgb(87, 110, 129);
 }
 
-.dropzone:hover,
-.drag-active {
-  border-color: #3498db;
-  background-color: #f0f7ff;
-}
-
-.dropzone-content {
+.loader_cogs__text {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
+  top: 10%;
+  gap: 10px;
 }
 
-.upload-icon {
-  width: 48px;
-  height: 48px;
-  color: #7f8c8d;
-  margin-bottom: 1rem;
+h1 {
+  text-transform: uppercase;
+  font-size: 30px;
+  color: rgb(87, 110, 129);
 }
 
-.dropzone-text {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-  color: #2c3e50;
+h2 {
+  font-weight: normal;
+  font-size: 18px;
+  color: #f98db9;
 }
 
-.dropzone-hint {
-  font-size: 0.875rem;
-  color: #7f8c8d;
-  margin-bottom: 1rem;
-}
-
-.file-input {
-  display: none;
-}
-
-.browse-btn {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.browse-btn:hover {
-  background-color: #2980b9;
-}
-
-.file-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.file-details {
-  display: flex;
-  align-items: center;
-}
-
-.file-icon {
-  width: 24px;
-  height: 24px;
-  color: #7f8c8d;
-  margin-right: 0.75rem;
-}
-
-.file-name {
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-}
-
-.file-size {
-  font-size: 0.75rem;
-  color: #7f8c8d;
-}
-
-.clear-btn {
-  background: none;
-  border: none;
-  color: #7f8c8d;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 4px;
-  transition: all 0.2s;
-}
-
-.clear-btn:hover {
-  color: #e74c3c;
-  background-color: #fef0f0;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #2c3e50;
-}
-
-.form-control {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  transition: border-color 0.2s;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: #3498db;
-}
-
-.import-btn,
-.export-btn {
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  position: relative;
-}
-
-.import-btn {
-  background-color: #2ecc71;
-  color: white;
-}
-
-.import-btn:hover:not(:disabled) {
-  background-color: #27ae60;
-}
-
-.import-btn:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
-}
-
-.export-btn {
-  background-color: #3498db;
-  color: white;
-}
-
-.export-btn:hover:not(:disabled) {
-  background-color: #2980b9;
-}
-
-.export-btn:disabled {
-  background-color: #bdc3c7;
-  cursor: not-allowed;
-}
-
-.loading-text {
-  margin-right: 0.5rem;
-}
-
-.spinner {
-  animation: rotate 1.5s linear infinite;
-  width: 20px;
-  height: 20px;
-}
-
-.spinner .path {
-  stroke: white;
-  stroke-linecap: round;
-  animation: dash 1.5s ease-in-out infinite;
-}
-
+/* 动画 */
 @keyframes rotate {
-  100% {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
     transform: rotate(360deg);
   }
 }
 
-@keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
+@keyframes rotate_left {
+  from {
+    transform: rotate(16deg);
   }
 
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
+  to {
+    transform: rotate(376deg);
   }
 }
 
-.error-message {
-  display: flex;
-  align-items: center;
-  background-color: #fef0f0;
-  color: #e74c3c;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  margin-top: 1rem;
-  font-size: 0.875rem;
-}
+@keyframes rotate_right {
+  from {
+    transform: rotate(4deg);
+  }
 
-.success-message {
-  display: flex;
-  align-items: center;
-  background-color: #f0fff4;
-  color: #2ecc71;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  margin-top: 1rem;
-  font-size: 0.875rem;
-}
-
-.error-message svg,
-.success-message svg {
-  margin-right: 0.5rem;
+  to {
+    transform: rotate(364deg);
+  }
 }
 </style>

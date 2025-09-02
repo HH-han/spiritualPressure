@@ -86,7 +86,7 @@ const handleLogin = async () => {
   }
 
   try {
-    const response = await request.post('/api/public/user/login', {
+    const response = await request.post('/api/public/user/adminlogin', {
       username: loginForm.value.username,
       password: loginForm.value.password,
     });
@@ -115,9 +115,8 @@ const handleLogin = async () => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
       // 如果是admin账号，跳转到指定页面
-      if (loginForm.value.username.toLowerCase() === 'admin') {
-        ElMessage.success('登录成功');
-        router.push('/AdminLayout'); // 替换为实际的admin页面路径
+      if (user.permissions === 1) {
+        router.push('/AdminLayout');
       } else {
         ElMessage.error('请输入管理员账号登录');
       }

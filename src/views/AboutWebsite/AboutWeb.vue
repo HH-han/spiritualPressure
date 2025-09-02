@@ -9,24 +9,28 @@
 
     <!-- 导航栏 -->
     <nav class="introduce-nav">
+      <div class="introduce-nav-container">
       <div class="introduce-nav-logo">
         <span class="introduce-logo-text">Vue3</span>
         <span class="introduce-logo-highlight">Element-plus</span>
       </div>
+      <!-- 导航链接 -->
+      <ul class="introduce-nav-links">
+        <li v-for="(link, index) in navLinks" :key="index" @mouseenter="hoverLink(index)"
+          @mouseleave="resetLink(index)">
+          <button :class="{ 'introduce-link-active': activeLink === index }" class="elegant-button">
+            <span class="introduce-link-text">{{ link.text }}</span>
+            <span class="introduce-link-underline" :style="underlineStyle(index)"></span>
+          </button>
+        </li>
+      </ul>
+      </div>
+
       <button class="introduce-nav-button" @click="showContactForm = true">
         <span>联系我们</span>
         <div class="introduce-button-underline"></div>
       </button>
     </nav>
-    <!-- 导航链接 -->
-    <ul class="introduce-nav-links">
-      <li v-for="(link, index) in navLinks" :key="index" @mouseenter="hoverLink(index)" @mouseleave="resetLink(index)">
-        <button @click="home" :class="{ 'introduce-link-active': activeLink === index }" class="elegant-button">
-          <span class="introduce-link-text">{{ link.text }}</span>
-          <span class="introduce-link-underline" :style="underlineStyle(index)"></span>
-        </button>
-      </li>
-    </ul>
     <!-- 主要内容 -->
     <main class="introduce-main">
       <section class="introduce-hero">
@@ -219,11 +223,16 @@
         </div>
       </div>
     </div>
+    <!-- 返回按钮 -->
+    <div class="introduce-back-button">
+      <CloseButton @click="closethePage" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue';
+import CloseButton from '@/components/PromptComponent/CloseButton.vue'
 // 导航链接
 const navLinks = reactive([
   { text: '首页' },
@@ -530,6 +539,11 @@ onMounted(() => {
   align-items: center;
 }
 
+.introduce-nav-container{
+  display: flex;
+  gap: 20px;
+}
+
 .introduce-logo-text {
   color: #333;
 }
@@ -541,9 +555,6 @@ onMounted(() => {
 
 .introduce-nav-links {
   display: flex;
-  position: fixed;
-  left: 5%;
-  top: 10%;
   z-index: 100;
   list-style: none;
   gap: 2rem;
@@ -579,15 +590,14 @@ onMounted(() => {
 /* 基础按钮样式 */
 .elegant-button {
   position: relative;
-  padding: 12px 24px;
+  padding: 12px;
   border: none;
   background-color: #7b1fa2;
   color: white;
-  font-size: 16px;
   font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
-  border-radius: 50px;
+  border-radius: 15px;
   cursor: pointer;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -1404,6 +1414,12 @@ onMounted(() => {
   background-color: #6a1b9a;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(123, 31, 162, 0.3);
+}
+
+.introduce-back-button{
+  position: fixed;
+  top: 10%;
+  left: 20px;
 }
 
 /* 响应式设计 */

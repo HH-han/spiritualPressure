@@ -1,63 +1,153 @@
 <template>
   <div class="management-page-background">
-    <!-- <div class="page-name-GU">
-      <h1 class="action-H1-BM-title">用户管理</h1>
-    </div> -->
     <div class="container-management">
+      <!-- 列表栏 -->
+      <div class="search-bar">
+        <div class="search-container">
+          <div class="search-title">
+            <i class="fas fa-search"></i>
+            <h2>搜索条件</h2>
+          </div>
+
+          <form class="search-form" @submit.prevent="searchUsers">
+            <!-- 搜索框 -->
+            <div class="search-box-management-container">
+              <!-- ID -->
+              <div class="search-box-management">
+                <label for="id" class="required-label">ID:</label>
+                <input type="number" id="id" v-model="searchParams.id" class="search-input-management"
+                  placeholder="输入用户ID">
+              </div>
+              <!-- 用户名 -->
+              <div class="search-box-management">
+                <label for="username" class="required-label">用户名:</label>
+                <input type="text" id="username" v-model="searchParams.username" class="search-input-management"
+                  placeholder="输入用户名">
+              </div>
+              <!-- 昵称 -->
+              <div class="search-box-management">
+                <label for="nickname" class="required-label">昵称:</label>
+                <input type="text" id="nickname" v-model="searchParams.nickname" class="search-input-management"
+                  placeholder="输入昵称">
+              </div>
+              <!-- 邮箱 -->
+              <div class="search-box-management">
+                <label for="email" class="required-label">邮箱:</label>
+                <input type="email" id="email" v-model="searchParams.email" class="search-input-management"
+                  placeholder="输入邮箱地址">
+              </div>
+              <!-- 手机号 -->
+              <div class="search-box-management">
+                <label for="phone" class="required-label">手机号:</label>
+                <input type="tel" id="phone" v-model="searchParams.phone" class="search-input-management"
+                  placeholder="输入手机号码">
+              </div>
+              <!-- 用户ID -->
+              <div class="search-box-management">
+                <label for="userID" class="required-label">用户ID:</label>
+                <input type="number" id="userID" v-model="searchParams.userID" class="search-input-management"
+                  placeholder="输入用户ID">
+              </div>
+
+            </div>
+            <!-- 搜索按钮 -->
+            <div class="search-box-management-btn">
+              <button type="button" class="btn reset-btn" @click="resetForm">
+                <i class="fas fa-redo"></i> 重置
+              </button>
+              <button type="submit" class="btn search-btn">
+                <i class="fas fa-search"></i> 搜索
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
       <!-- 操作栏 -->
       <div class="action-bar">
-        <div class="search-bar">
-          <div class="search-box-management">
-            <span>用户名:</span>
-            <input type="text" v-model="searchKeyword" placeholder="用户名或昵称" class="search-input-management" />
-          </div>
-          <div class="search-box-management">
-            <span>手机号:</span>
-            <input type="text" v-model="searchKeyword" placeholder="手机号" class="search-input-management" />
-          </div>
-          <button class="btn search-btn" @click="handleSearch">搜索</button>
-          <button class="btn delete-btn" @click="handleReset">批量删除</button>
-        </div>
         <div class="operate-bar">
+          <button class="btn batchlogin-btn" @click="Batchlogin">批量登录</button>
+          <button class="btn batchpermissions-btn" @click="batchpermissions">批量权限</button>
+          <button class="btn delete-btn" @click="handleReset">批量删除</button>
           <button class="btn import-btn" @click="handleImport">Excel数据导入导出</button>
           <button class="btn add-btn" @click="showAddDialog">新增用户</button>
         </div>
       </div>
       <!-- 数据表格 -->
-      <div class="data-table-container">
-        <div class="data-table-wrapper">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th v-for="col in columns" :key="col.key">{{ col.title }}</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="user in filteredUsers" :key="user.id">
-                <td>
-                  <input type="checkbox" :checked="user.checked" @change="handleCheck(user)" class="ui-checkbox" />
-                </td>
-                <td>{{ user.id }}</td>
-                <td>
-                  <img :src="user.image" alt="头像" style="width: 35px; height: 35px;" @click="triggerFileInput(user)">
-                </td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone }}</td>
-                <td>{{ user.nickname ? user.nickname : '未设置' }}</td>
-                <td>{{ user.signature ? user.signature.substring(0, 10) : '未设置' }}...</td>
-                <td>{{ user.experience ? user.experience.substring(0, 15) : '未设置' }}...</td>
-                <td>{{ formatDate(user.createTime) }}</td>
-                <td>{{ formatDate(user.updateTime) }}</td>
-                <td class="table-btn-display">
-                  <button class="btn details-btn" @click="showUserDetails(user)">详情</button>
-                  <button class="btn edit-btn" @click="showEditDialog(user)">编辑</button>
-                  <button class="btn delete-btn" @click="handleDelete(user.id)">删除</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="results-container">
+        <div class="results-header">
+          <h2>搜索结果</h2>
+          <div class="results-count" v-if="!loading && !error">
+            共找到 {{ users.length }} 个用户
+          </div>
+        </div>
+
+        <div v-if="loading" class="loading">
+          <div class="spinner"></div>
+          <p>正在搜索用户，请稍候...</p>
+        </div>
+
+        <div v-else-if="error" class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ error }}</span>
+        </div>
+
+        <div v-else-if="users.length === 0" class="no-results">
+          <i class="fas fa-users"></i>
+          <h3>未找到用户</h3>
+          <p>请尝试调整搜索条件后重新搜索</p>
+        </div>
+
+        <div v-else class="data-table-container">
+          <div class="data-table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th v-for="col in columns" :key="col.key">{{ col.title }}</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="user in filteredUsers" :key="user.id">
+                  <td>
+                    <input type="checkbox" :checked="user.checked" @change="handleCheck(user)" class="ui-checkbox" />
+                  </td>
+                  <td>{{ user.id }}</td>
+                  <td>
+                    <img :src="user.image" alt="头像" style="width: 35px; height: 35px;" @click="triggerFileInput(user)">
+                  </td>
+                  <td>{{ user.userId }}</td>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.phone }}</td>
+                  <td>{{ user.nickname ? user.nickname : '未设置' }}</td>
+                  <td>{{ user.signature ? user.signature.substring(0, 10) : '未设置' }}...</td>
+                  <td>{{ user.experience ? user.experience.substring(0, 15) : '未设置' }}...</td>
+                  <td>{{ formatDate(user.createTime) }}</td>
+                  <td>{{ formatDate(user.updateTime) }}</td>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" :checked="user.permissions === 1" @change="togglePermission(user)">
+                      <span class="slider"
+                        :class="{ 'green': user.permissions === 1, 'red': user.permissions !== 1 }"></span>
+                      <span class="knob"></span>
+                    </label>
+                  </td>
+                  <td>
+                    <label class="switch">
+                      <input type="checkbox" :checked="user.status === 0" @change="toggleStatus(user)">
+                      <span class="slider" :class="{ 'green': user.status === 0, 'red': user.status !== 0 }"></span>
+                      <span class="knob"></span>
+                    </label>
+                  </td>
+                  <td class="table-btn-display">
+                    <button class="btn details-btn" @click="showUserDetails(user)">详情</button>
+                    <button class="btn edit-btn" @click="showEditDialog(user)">编辑</button>
+                    <button class="btn delete-btn" @click="handleDelete(user.id)">删除</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <!-- 分页器 -->
@@ -293,20 +383,15 @@
     </div>
     <!-- 导入导出Excel API -->
     <div class="app-container" v-if="showExcel">
-      <ExcelImportExportAPI 
-        @import-complete="handleImportComplete" 
-        @export-complete="handleExportComplete"
-        @import-error="handleImportError" 
-        @export-error="handleExportError" 
-        @close="handleCloseImportExport"
-        :export-api-url="exportApiUrl"
-        :import-api-url="importApiUrl" />
+      <ExcelImportExportAPI @import-complete="handleImportComplete" @export-complete="handleExportComplete"
+        @import-error="handleImportError" @export-error="handleExportError" @close="handleCloseImportExport"
+        :export-api-url="exportApiUrl" :import-api-url="importApiUrl" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, reactive } from 'vue';
 import request from '@/utils/request';
 import ExcelImportExportAPI from '@/components/DisplayBox/ExcelImportExportAPI.vue';
 
@@ -314,6 +399,7 @@ const columns = [
   { key: 'checked', title: '多选' },
   { key: 'id', title: 'ID' },
   { key: 'image', title: '头像' },
+  { key: 'nameId', title: '用户ID' },
   { key: 'username', title: '用户名' },
   { key: 'email', title: '邮箱' },
   { key: 'phone', title: '手机号' },
@@ -322,12 +408,13 @@ const columns = [
   { key: 'experience', title: '经验' },
   { key: 'createTime', title: '创建时间' },
   { key: 'updateTime', title: '更新时间' },
+  { key: 'permissions', title: '管理员权限(关闭-开启)' },
+  { key: 'status', title: '登录状态(禁止-启用)' },
 ];
 const showToast = ref(false);
 const toastMessage = ref('');
 const toastType = ref('success');
 const users = ref([]);
-const searchKeyword = ref('');
 const showDialog = ref(false);
 const showExcel = ref(false);
 const isEditing = ref(false);
@@ -343,6 +430,7 @@ const formData = ref({
   nickname: '',
   image: '',
   createTime: new Date(),
+  updateTime: new Date(),
 });
 
 // 详情弹窗
@@ -371,13 +459,46 @@ const formatDate = (date) => {
 };
 
 // 搜索功能
+const searchParams = reactive({
+  id: null,
+  username: '',
+  nickname: '',
+  email: '',
+  phone: '',
+  userID: null
+});
+
+const loading = ref(false);
+const error = ref(null);
+
+const searchUsers = async () => {
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const { data } = await request.get('/api/public/user/search', { params: searchParams });
+    users.value = data;
+  } catch (err) {
+    error.value = '搜索用户时发生错误: ' + err.message;
+    console.error('搜索错误:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const resetForm = () => {
+  searchParams.id = null;
+  searchParams.username = '';
+  searchParams.nickname = '';
+  searchParams.email = '';
+  searchParams.phone = '';
+  searchParams.userID = null;
+  users.value = [];
+  error.value = null;
+};
+
 const filteredUsers = computed(() => {
-  const keyword = searchKeyword.value.toLowerCase();
-  return users.value.filter(
-    (user) =>
-      user.username.toLowerCase().includes(keyword) ||
-      user.nickname.toLowerCase().includes(keyword)
-  );
+  return users.value;
 });
 // 分页功能
 // 分页相关变量
@@ -401,8 +522,7 @@ const fetchUsers = async () => {
   try {
     const params = {
       page: currentPage.value,
-      pageSize: pageSize.value,
-      keyword: searchKeyword.value
+      pageSize: pageSize.value
     };
     const response = await request.get('/api/public/user', { params });
     users.value = response.data.list;
@@ -424,6 +544,7 @@ const showAddDialog = () => {
     nickname: '',
     image: '',
     createTime: new Date(),
+    updateTime: new Date(),
   };
   showDialog.value = true;
 };
@@ -453,6 +574,7 @@ const showToastMessage = (message, type = 'success') => {
 const submitForm = async () => {
   try {
     if (isEditing.value) {
+      formData.value.updateTime = new Date();
       await request.put(`/api/public/user/${formData.value.id}`, formData.value);
       showToastMessage('更新用户成功');
     } else {
@@ -496,7 +618,40 @@ const confirmDelete = async () => {
     }
   }
 };
-
+// 更改权限
+const togglePermission = async (user) => {
+  try {
+    const newPermission = user.permissions === 1 ? 0 : 1;
+    const requestData = {
+      id: user.id,
+      permissions: newPermission,
+      username: user.username
+    };
+    await request.put(`/api/public/user/updateRole`, requestData);
+    user.permissions = newPermission;
+    showToastMessage('修改权限成功');
+  } catch (error) {
+    console.error('修改权限失败:', error);
+    showToastMessage('修改权限失败', 'error');
+  }
+};
+// 更改状态
+const toggleStatus = async (user) => {
+  try {
+    const newStatus = user.status === 0 ? 1 : 0;
+    const requestData = {
+      id: user.id,
+      status: newStatus,
+      username: user.username
+    };
+    await request.put(`/api/public/user/updateStatus`, requestData);
+    user.status = newStatus;
+    showToastMessage('修改状态成功');
+  } catch (error) {
+    console.error('修改状态失败:', error);
+    showToastMessage('修改状态失败', 'error');
+  }
+};
 // 关闭对话框
 const closeDialog = () => {
   showDialog.value = false;

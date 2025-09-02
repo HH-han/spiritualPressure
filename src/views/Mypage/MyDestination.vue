@@ -167,8 +167,9 @@
               <p class="destination-detail-xx">详细信息: {{ selectedDestination.xx }}</p>
             </div>
           </div>
-          <div class="destination-detail-actions">
-            <button @click="OrderDetails(selectedDestination.id)" class="pay-button-GM">前往购买</button>
+          <div class="btn-container-collection">
+            <button @click="OrderDetails(selectedDestination.id)" class="btn pay">前往购买</button>
+            <button @click="collection(selectedBlog.id)" class="btn collection">收藏</button>
           </div>
         </div>
       </div>
@@ -418,4 +419,5 @@ onMounted(() => {
 
 <style scoped>
 @import '@/css/Mypage/MyDestination.css';
+@import "@/css/Btn/btn.css";
 </style>

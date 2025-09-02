@@ -1,6 +1,5 @@
 <template>
   <div class="uninstall-dialog">
-    <!-- From Uiverse.io by abrahamcalsin -->
     <div class="card-client">
       <div class="user-picture">
         <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
@@ -57,8 +56,6 @@
   gap: 2rem;
   padding: 20px;
 }
-
-/* From Uiverse.io by abrahamcalsin */
 .card-client {
   background: #2cb5a0;
   width: 13rem;

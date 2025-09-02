@@ -1,4 +1,3 @@
-// stores/auth.js
 // 导入 Pinia 的 defineStore 函数和 axios 库
 import { defineStore } from 'pinia'
 import axios from 'axios'
@@ -18,7 +17,7 @@ export const useAuthStore = defineStore('auth', {
     async login(username, password) {
       try {
         // 发送 POST 请求到登录 API
-        const response = await axios.post('/api/auth/login', null, {
+        const response = await axios.post('/api/public/user/login', null, {
           // 将用户名和密码作为请求参数
           params: { username, password }
         })

@@ -196,6 +196,7 @@ const search = ref({
 .search-bar {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 12px;
     background: #fff;
     padding: 18px;
