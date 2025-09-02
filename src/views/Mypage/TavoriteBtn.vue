@@ -11,5 +11,5 @@ const router = useRouter();
 
 </script>
 <style scoped>
-
+@import "@/css/Btn/btn.css";
 </style>

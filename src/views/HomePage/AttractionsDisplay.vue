@@ -10,7 +10,7 @@
             <p class="image-description">{{ item.description }}</p>
             <div class="card-actions">
               <button class="card-button" @click="showModal(index)">查看详情</button>
-              <button class="card-button">收藏</button>
+              <TavoriteBtn />
             </div>
           </div>
         </div>
@@ -34,6 +34,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { getTravelRecommendations } from '@/api/travel';
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
 
 
 const hoveredCard = ref(null);
@@ -195,7 +196,6 @@ const closeModal = () => {
 }
 
 .card-button:hover {
-  background-color: white;
   transform: translateY(-2px);
 }
 
