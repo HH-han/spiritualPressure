@@ -350,7 +350,7 @@
             <div class="btn-container-collection">
               <!-- 按钮 -->
               <button @click="OrderDetails(selectedBlog.id)" class="btn pay">前往购买</button>
-              <TavoriteBtn :blog="selectedBlog" @addFavorite="addFavorite" />
+              <TavoriteBtn @Dataforwarding="Dataforwarding" />
             </div>
           </div>
         </div>
@@ -647,6 +647,32 @@ const validatePageInput = () => {
     jumperError.value = ''
   }
 }
+
+// 数据转发
+const Dataforwarding = (blog) => {
+  const collection = blogs.value.find((b) => b.id === blog.id)
+  if (collection) {
+    router.push({
+      name: 'tavoritebtn',
+      query: {
+        item: JSON.stringify({
+          id: collection.id,
+          characteristics: collection.title,
+          collection: collection.collection,
+          image: collection.coverImage,
+          collectionname: collection.collectionname,
+          location: collection.location,
+          profile: collection.profile,
+          sales: collection.sales,
+          score: collection.score,
+          price: collection.price,
+          username: collection.username
+        })
+      }
+    })
+  }
+}
+
 // 生命周期钩子
 onMounted(() => {
   fetchBlogs();

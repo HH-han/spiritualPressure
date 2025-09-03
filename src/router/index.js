@@ -28,6 +28,7 @@ import ShopCartViews from '@/views/Mypage/ShopCartViews.vue'
 import MyDestination from '@/views/Mypage/MyDestination.vue'
 import CharacteristicCommodities from '@/views/Mypage/CharacteristicCommodities.vue'
 import StrategyGroup from '@/views/Mypage/StrategyGroup.vue'
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
 
 // 测试项目页面路由
 import TestPage from '@/components/NavigationComponent/TestPage.vue';
@@ -121,6 +122,7 @@ const routes = [
   {path: '/hotelrecommendations',name: 'hotelrecommendations',component: HotelRecommendations},
   {path: '/communitycenter',name: 'communitycenter',component: CommunityCenter},
   {path: '/strategygroup',name: 'strategygroup',component: StrategyGroup},
+  {path: '/tavoritebtn',name: 'tavoritebtn',component: TavoriteBtn},
   // 忘记密码页面路由
   {path: '/forgotpassword',name: 'forgotpassword',component: ForgotPassword},
   // 支付页面路由

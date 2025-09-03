@@ -195,13 +195,6 @@ const formData = ref({
   score: '',
 });
 
-// 格式化日期显示
-// const formatDate = (date) => {
-//   if (!date) return '未知日期';
-//   const options = { year: 'numeric', month: 'long', day: 'numeric' };
-//   return new Intl.DateTimeFormat('zh-CN', options).format(new Date(date));
-// };
-
 // 搜索功能
 const filteredCards = computed(() => {
   const keyword = searchKeyword.value.toLowerCase();
@@ -281,11 +274,11 @@ const submitForm = async () => {
     // 自动设置时间
     if (isEditing.value) {
       formData.value.updatedAt = new Date().toISOString();
-      await request.put(`/api/public/scenic/${formData.value.id}`, formData.value);
+      await request.put(`/api/public/travelcard/${formData.value.id}`, formData.value);
       showToastMessage('更新景点成功');
     } else {
       formData.value.createdAt = new Date().toISOString();
-      await request.post('/api/public/scenic', formData.value);
+      await request.post('/api/public/travelcard', formData.value);
       showToastMessage('新增景点成功');
     }
     await fetchScenic();
@@ -314,7 +307,7 @@ const closeDeletePrompt = () => {
 const confirmDelete = async () => {
   if (deleteCardId.value) {
     try {
-      await request.delete(`/api/public/scenic/${deleteCardId.value}`);
+      await request.delete(`/api/public/travelcard/${deleteCardId.value}`);
       await fetchScenic();
       closeDeletePrompt();
       showToastMessage('删除景点成功');
