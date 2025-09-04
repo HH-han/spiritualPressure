@@ -164,17 +164,8 @@
         </div>
       </div>
 
-      <!-- 删除提示框 -->
-      <div v-if="isDeletePromptVisible" class="delete-prompt-overlay">
-        <div class="delete-prompt">
-          <div class="delete-prompt-title">提示</div>
-          <div class="delete-prompt-content">确定要删除吗？</div>
-          <div class="delete-prompt-btn">
-            <button class="delete-prompt-btn-cancel" @click="closeDeletePrompt">取消</button>
-            <button class="delete-prompt-btn-confirm" @click="confirmDelete">确定</button>
-          </div>
-        </div>
-      </div>
+      <!-- 删除提示框组件 -->
+      <DeleteConfirmation v-if="isDeletePromptVisible" @close="closeDeletePrompt" @confirm="confirmDelete" />
 
       <!-- 提示消息 -->
       <div v-if="showToast" class="custom-toast" :class="toastType">
@@ -189,6 +180,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
+import DeleteConfirmation from '@/components/PromptComponent/DeleteConfirmation.vue';
 
 // 数据定义
 const columns = [

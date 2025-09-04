@@ -5,7 +5,8 @@
             <div class="action-bar">
                 <div class="search-bar">
                     <div class="search-box-management">
-                        <input type="text" v-model="searchKeyword" placeholder="输入卡片ID或标题搜索" class="search-input-management" />
+                        <input type="text" v-model="searchKeyword" placeholder="输入卡片ID或标题搜索"
+                            class="search-input-management" />
                     </div>
                     <button class="btn search-btn" @click="handleSearch">搜索</button>
                     <button class="btn delete-btn" @click="handleReset">批量删除</button>
@@ -95,7 +96,8 @@
                                         <div class="preview-card">
                                             <img :src="previewImage" alt="预览图片" class="preview-image" />
                                             <div class="preview-actions">
-                                                <button class="action-btn-image edit-btn-image" @click="triggerFileInput">
+                                                <button class="action-btn-image edit-btn-image"
+                                                    @click="triggerFileInput">
                                                     <svg viewBox="0 0 24 24">
                                                         <path
                                                             d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
@@ -176,17 +178,8 @@
                 </div>
             </div>
 
-            <!-- 删除提示框 -->
-            <div v-if="isDeletePromptVisible" class="delete-prompt-overlay">
-                <div class="delete-prompt">
-                    <div class="delete-prompt-title">提示</div>
-                    <div class="delete-prompt-content">确定要删除吗？</div>
-                    <div class="delete-prompt-btn">
-                        <button class="delete-prompt-btn-cancel" @click="closeDeletePrompt">取消</button>
-                        <button class="delete-prompt-btn-confirm" @click="confirmDelete">确定</button>
-                    </div>
-                </div>
-            </div>
+            <!-- 删除提示框组件 -->
+            <DeleteConfirmation v-if="isDeletePromptVisible" @close="closeDeletePrompt" @confirm="confirmDelete" />
             <!-- 自定义提示框 -->
             <div v-if="showToast" class="custom-toast" :class="toastType">
                 <span class="toast-icon">{{ toastType === 'success' ? '✓' : '✕' }}</span>
@@ -201,6 +194,7 @@
 
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
+import DeleteConfirmation from '@/components/PromptComponent/DeleteConfirmation.vue';
 
 const columns = [
     { key: 'checked', title: '多选' },
