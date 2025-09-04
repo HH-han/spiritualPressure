@@ -35,7 +35,7 @@
                   <img :src="item.coverImage" alt="封面图片" style="width: 35px; height: 35px;"
                     @click="triggerFileInput(item)">
                 </td>
-                <td>{{ item.content }}</td>
+                <td>{{ item.content ? item.content.slice(0, 20) : '无' }}...</td>
                 <td>{{ item.location }}</td>
                 <td>￥{{ item.price }}</td>
                 <td>❤️{{ item.likes }}</td>

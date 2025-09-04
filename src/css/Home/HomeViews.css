@@ -439,7 +439,7 @@ body {
 }
 
 .blog-post:hover {
-  transform: translateY(-5px);
+  transform: translateX(5px);
   border: 1px solid #0984e3;
   background-color: rgba(190, 190, 190, 0.414);
 }
@@ -485,7 +485,11 @@ body {
 .blog-post_text p {
   color: #636e72;
   line-height: 1.6;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   margin-bottom: 15px;
+  max-width: 440px;
 }
 
 .blog-post_mb {
