@@ -366,11 +366,8 @@
       </div>
       <!-- 删除提示框组件 -->
       <DeleteConfirmation v-if="isDeletePromptVisible" @close="closeDeletePrompt" @confirm="confirmDelete" />
-      <!-- 自定义提示框 -->
-      <div v-if="showToast" class="custom-toast" :class="toastType">
-        <span class="toast-icon">{{ toastType === 'success' ? '✓' : '✕' }}</span>
-        {{ toastMessage }}
-      </div>
+      <!-- 自定义提示框组件 -->
+      <ToastType v-if="showToast" :toastMessage="toastMessage" :toastType="toastType" />
     </div>
     <!-- 导入导出Excel API -->
     <div class="app-container" v-if="showExcel">
@@ -386,6 +383,7 @@ import { ref, computed, onMounted, reactive } from 'vue';
 import request from '@/utils/request';
 import ExcelImportExportAPI from '@/components/DisplayBox/ExcelImportExportAPI.vue';
 import DeleteConfirmation from '@/components/PromptComponent/DeleteConfirmation.vue';
+import ToastType from '@/components/PromptComponent/ToastType.vue';
 
 const columns = [
   { key: 'checked', title: '多选' },
