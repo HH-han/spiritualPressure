@@ -338,7 +338,7 @@ const snapToEdge = () => {
     min-width: 100px;
     background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(5px);
-    border-radius: 8px;
+    border-radius: 5px;
     padding: 6px 12px;
     font-size: 13px;
     font-weight: 500;
