@@ -42,13 +42,12 @@
                 <td>{{ item.favorites }}</td>
                 <td>{{ item.browse }}</td>
                 <td>
-                    <label class="switch">
-                      <input type="checkbox" :checked="item.state === 0" @change="toggleState(item)">
-                      <span class="slider"
-                        :class="{ 'green': item.state === 0, 'red': item.state !== 0 }"></span>
-                      <span class="knob"></span>
-                    </label>
-                  </td>
+                  <label class="switch">
+                    <input type="checkbox" :checked="item.state === 0" @change="toggleState(item)">
+                    <span class="slider" :class="{ 'green': item.state === 0, 'red': item.state !== 0 }"></span>
+                    <span class="knob"></span>
+                  </label>
+                </td>
                 <td>{{ formatDate(item.created_at) }}</td>
                 <td>{{ formatDate(item.updata_at) }}</td>
                 <td class="table-btn-display">
@@ -357,13 +356,12 @@ const confirmDelete = async () => {
 // 修改状态
 const toggleState = async (item) => {
   try {
-    const newstate = item.state === 1 ? 0 : 1;
+    const newstate = item.state === 0 ? 1 : 0;
     const requestData = {
       id: item.id,
       state: newstate,
-      username: item.username
     };
-    await request.put(`/api/public/user/`, requestData);
+    await request.put(`/api/public/blogs/`, requestData);
     item.state = newstate;
     showToastMessage('修改状态成功');
   } catch (error) {
