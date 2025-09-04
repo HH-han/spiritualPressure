@@ -167,7 +167,7 @@
       <!-- 删除提示框组件 -->
       <DeleteConfirmation v-if="isDeletePromptVisible" @close="closeDeletePrompt" @confirm="confirmDelete" />
       <!-- 自定义提示框组件 -->
-      <ToastType v-if="showToast" :toastMessage="toastMessage" :toastType="toastType" />
+      <ToastType v-if="showToast" :toastMessage="toastMessage" :toastType="toastType" @close="closeToast" />
     </div>
   </div>
 
@@ -332,6 +332,11 @@ const handleDelete = (id) => {
 const closeDeletePrompt = () => {
   isDeletePromptVisible.value = false;
   deleteItemId.value = null;
+};
+
+// 关闭toast
+const closeToast = () => {
+  showToast.value = false;
 };
 //删除
 const confirmDelete = async () => {

@@ -12,7 +12,11 @@
                 </svg>
             </div>
             <div class="delete-prompt-line"></div>
-            <div class="delete-prompt-content">确定要删除该条数据吗？删除后该条数据将被永久删除，无法恢复。</div>
+            <div class="delete-prompt-content">
+              <span>确定要删除该条数据吗？删除后该条数据将被,</span>
+              <span class="delete-prompt-content-highlight">永久删除</span>
+              <span>无法恢复。</span>
+            </div>
             <div class="delete-prompt-btn">
                 <button class="delete-prompt-btn-cancel" @click="closeDeletePrompt">取消</button>
                 <button class="delete-prompt-btn-confirm" @click="confirmDelete">确定</button>
