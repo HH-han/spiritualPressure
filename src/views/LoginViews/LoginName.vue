@@ -331,7 +331,7 @@ const handleLogin = async () => {
       showSucceeded.value = true;
 
       setTimeout(() => {
-        router.push('/systemhomeView');
+        router.push({ name: 'systemhomeView' });
       }, 2000);
     } else {
       errorMessage.value = response.msg || '登录失败';
