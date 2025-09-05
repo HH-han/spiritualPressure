@@ -9,7 +9,7 @@
         </div>
         <div class="nav-items">
           <div class="center">
-            <button class="action-btn" @click="navigateTo('/systemhomeView')">首页</button>
+            <button class="action-btn" @click="navigateTo('/')">首页</button>
             <button class="action-btn" @click="navigateTo('/MyDestination')">目的地</button>
             <button class="action-btn" @click="navigateTo('/BrowseAttractions')">景点</button>
             <button class="action-btn" @click="navigateTo('/HotelRecommendations')">酒店</button>

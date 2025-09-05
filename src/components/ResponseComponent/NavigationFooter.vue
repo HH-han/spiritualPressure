@@ -52,7 +52,7 @@ function setActiveTab(tab) {
 // 首页
 function home() {
     setActiveTab('home')
-    router.push('/systemhomeView')
+    router.push({ name: 'systemhomeView' });
 }
 // 发现
 function discover() {

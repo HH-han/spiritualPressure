@@ -122,7 +122,7 @@ import DynamicParticle from '@/components/ThemeComponents/DynamicParticle.vue';
 const router = useRouter();
 // 按钮点击事件
 const goHome = () => {
-  router.push('/systemhomeView');
+  router.push('/');
 };
 const goBack = () => {
   router.back();

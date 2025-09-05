@@ -108,14 +108,14 @@ const routes = [
   {path: '/Fanginter',name: 'Fanginter',component: Fanginter},
   {path: '/adminlogin',name: 'adminlogin',component: AdminLogin},
   {path: '/emaillogin',name: 'emaillogin',component: EmailLogin},
-  {path: '/',name: 'load_2',component: Load_2},
+  {path: '/load_2',name: 'load_2',component: Load_2,title: '加载中'},
   // 主页路由
   {path: '/home_2',name: 'home_2',component: Home_2,title: '首页顶部导航'},
   // 结算中心页面路由
   {path: '/clearinghouse',name: 'clearinghouse',component: ClearingHouse},
   // 主页路由
   {path: '/systemhome',name: 'systemhome',component: SystemHome},
-  {path: '/systemhomeView',name: 'systemhomeView',component: HomeView,title: '首页'},
+  {path: '/',name: 'systemhomeView',component: HomeView,title: '首页'},
   // 用户页面路由
   {path: '/usermanagement_1',name: 'usermanagement_1',component: UserManagement_1},
   {path: '/browseattractions',name: 'browseattractions',component: BrowseAttractions},

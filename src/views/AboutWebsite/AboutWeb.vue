@@ -241,7 +241,7 @@ const navLinks = reactive([
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const home = () => {
-  router.push({ path: '/systemhomeView' });
+  router.push({ name: 'systemhomeView' });
 };
 const activeLink = ref(0);
 const underlineWidths = reactive([0, 0, 0, 0, 0]);

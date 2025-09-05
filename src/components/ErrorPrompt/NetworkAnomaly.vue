@@ -93,7 +93,7 @@ const lastOnlineTime = ref('刚刚')
 
 function reloadPage() {
     console.log('重新加载页面...')
-    router.push('/systemhomeView')
+    router.push({ name: 'systemhomeView' });
 }
 const openNetworkSettings = () => {
     // 在实际应用中，这里可以链接到设备的网络设置
