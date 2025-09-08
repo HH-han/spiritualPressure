@@ -121,49 +121,9 @@
         </div>
       </div>
       <div class="content_5">
-        <!-- 安全提示 -->
-        <div class="recommend-left">
-          <div class="recommend-left_button">
-            <button @click="navigateTo('/SafetyTips')">
-              <span>旅游知识安全提示</span>
-              <svg t="1754492983638" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                xmlns="http://www.w3.org/2000/svg" p-id="53974">
-                <path
-                  d="M512 1024C230.4 1024 0 793.6 0 512S230.4 0 512 0s512 230.4 512 512-230.4 512-512 512z m187.733333-546.133333l-256-256C435.2 213.333333 426.666667 213.333333 409.6 213.333333c-8.533333 0-25.6 0-34.133333 8.533334-17.066667 17.066667-17.066667 42.666667 0 59.733333l230.4 230.4-230.4 230.4c-17.066667 17.066667-17.066667 42.666667 0 59.733333 17.066667 17.066667 42.666667 17.066667 59.733333 0l256-264.533333c25.6-17.066667 25.6-42.666667 8.533333-59.733333z"
-                  fill="#1296db" p-id="53975"></path>
-              </svg>
-            </button>
-          </div>
-          <!-- 攻略/当地游推荐 -->
-          <div class="recommend-left_boxshadow">
-            <div class="recommend-left_tj">
-              <h3>攻略推荐</h3>
-              <button @click="navigateTo('/RecommendAtion')">更多</button>
-            </div>
-            <div class="recommend-left_list">
-              <div class="recommend-left_imga">
-                <img src="@/assets/scenery/风景1.webp" alt="旅游攻略推荐">
-              </div>
-              <div class="recommend-left_js">
-                <div>
-                  <h3>第一次去夏威夷欧胡岛玩什么？</h3>
-                </div>
-                <div>
-                  <p>2024-12-1</p>
-                  <p>自古繁华地·今朝更胜昔 浙江，一片被上天眷顾的土地。</p>
-                </div>
-              </div>
-              <div class="recommend-left_zx">
-                <h3>旅游网最新资讯</h3>
-                <p>
-                  <span>2024-12-1</span>
-                  <button>
-                    <span>“云上战疫</span>
-                  </button>
-                </p>
-              </div>
-            </div>
-          </div>
+        <!-- 新闻资讯 -->
+        <div> 
+          <TravelNews />
         </div>
         <!-- 旅游展示 -->
         <div class="blog-post-container">
@@ -391,7 +351,8 @@ import CollectionTips from '@/components/PromptComponent/CollectionTips.vue'
 import AttractionsDisplay from '@/views/HomePage/AttractionsDisplay.vue'
 import SeamlessCarousel from '@/views/HomePage/SeamlessCarousel.vue'
 import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue';
-import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue';
+import TravelNews from '@/views/HomePage/TravelNews.vue';
 import { ElMessage } from "element-plus";
 import { fa, lo } from 'element-plus/es/locales.mjs'
 

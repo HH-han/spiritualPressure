@@ -11,7 +11,10 @@
                     <button class="btn search-btn" @click="handleSearch">搜索</button>
                     <button class="btn delete-btn" @click="handleReset">批量删除</button>
                 </div>
-                <button class="btn add-btn" @click="showAddDialog">新增笔记</button>
+                <div class="operate-bar">
+                    <button class="btn import-btn" @click="handleImport">Excel数据导入导出</button>
+                    <button class="btn add-btn" @click="showAddDialog">新增新闻</button>
+                </div>
             </div>
             <!-- 数据表格 -->
             <div class="data-table-container">
@@ -30,15 +33,14 @@
                                         class="ui-checkbox" />
                                 </td>
                                 <td>{{ card.id }}</td>
-                                <td>{{ card.name }}</td>
+                                <td>{{ card.title }}</td>
                                 <td>
-                                    <img :src="card.image" alt="图片" style="width: 35px; height: 35px;"
-                                        @click="triggerFileInput(card)" />
+                                    <img :src="card.coverImage" alt="封面图片" class="cover-image" />
                                 </td>
-                                <td>{{ card.description.substring(0, 25) }}</td>
-                                <td>{{ card.details.substring(0, 35) }}...</td>
-                                <td>{{ formatDate(card.createdAt) }}</td>
-                                <td>{{ formatDate(card.updatedAt) }}</td>
+                                <td>{{ card.content.substring(0, 15) }}...</td>
+                                <td>{{ card.location }}</td>
+                                <td>{{ formatDate(card.created_at) }}</td>
+                                <td>{{ formatDate(card.updated_at) }}</td>
                                 <td class="table-btn-display">
                                     <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                                     <button class="btn edit-btn" @click="showEditDialog(card)">编辑</button>
@@ -61,6 +63,14 @@
                 <div class="dialog" @click.stop>
                     <h2>{{ isEditing ? '编辑笔记' : '新增笔记' }}</h2>
                     <form @submit.prevent="submitForm" class="form-container">
+                        <div class="form-group">
+                            <label>笔记标题:</label>
+                            <input v-model="formData.title" required />
+                        </div>
+                        <div class="form-group">
+                            <label>笔记内容:</label>
+                            <input v-model="formData.content" required />
+                        </div>
                         <div class="form-group">
                             <div class="image-upload-container">
                                 <div class="upload-header">
@@ -119,16 +129,8 @@
                         <div class="form-row">
 
                             <div class="form-group">
-                                <label>景点标题:</label>
-                                <input v-model="formData.name" required />
-                            </div>
-                            <div class="form-group">
-                                <label>景点内容:</label>
-                                <input v-model="formData.description" required />
-                            </div>
-                            <div class="form-group">
-                                <label>景点详情:</label>
-                                <input v-model="formData.details" required />
+                                <label>地点:</label>
+                                <input v-model="formData.location" required />
                             </div>
                         </div>
                         <!-- 创建修改时间 -->
@@ -150,6 +152,7 @@
 </template>
 
 <script setup>
+
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
 import DeleteConfirmation from '@/components/PromptComponent/DeleteConfirmation.vue';
@@ -157,13 +160,13 @@ import ToastType from '@/components/PromptComponent/ToastType.vue';
 
 const columns = [
     { key: 'checked', title: '多选' },
-    { key: 'id', title: '景点ID' },
-    { key: 'name', title: '景点名称' },
-    { key: 'images', title: '图片' },
-    { key: 'description', title: '景点简介' },
-    { key: 'details', title: '景点详情' },
-    { key: 'createdAt', title: '创建时间' },
-    { key: 'updatedAt', title: '更新时间' },
+    { key: 'id', title: 'ID' },
+    { key: 'title', title: '标题' },
+    { key: 'coverImage', title: '图片' },
+    { key: 'content', title: '内容' },
+    { key: 'location', title: '地点' },
+    { key: 'created_at', title: '创建时间' },
+    { key: 'updated_at', title: '更新时间' },
 ];
 const showToast = ref(false);
 const toastMessage = ref('');
@@ -174,12 +177,12 @@ const showDialog = ref(false);
 const isEditing = ref(false);
 const formData = ref({
     id: '',
-    name: '',
-    description: '',
-    image: '',
-    details: '',
-    createdAt: '',
-    updatedAt: '',
+    title: '',
+    content: '',
+    coverImage: '',
+    location: '',
+    created_at: '',
+    updated_at: '',
 });
 
 // 格式化日期显示
@@ -224,11 +227,14 @@ const fetchScenic = async () => {
             pageSize: pageSize.value,
             keyword: searchKeyword.value
         };
-        const response = await request.get('/api/public/travelrecommend', { params });
-        cards.value = response.data.list;
+        const response = await request.get('/api/public/news', { params });
+        cards.value = response.data.list.map(card => ({
+            ...card,
+            images: typeof card.images === 'string' ? JSON.parse(card.images) : card.images
+        }));
         total.value = response.data.total;
     } catch (error) {
-        console.error('获取笔记数据失败:', error);
+        console.error('获取数据失败:', error);
     }
 };
 
@@ -238,11 +244,11 @@ const showAddDialog = () => {
     formData.value = {
         id: '',
         title: '',
-        subtitle: '',
-        image: '',
-        price: '',
-        createdAt: '',
-        updatedAt: '',
+        content: '',
+        coverImage: '',
+        location: '',
+        created_at: '',
+        updated_at: '',
     };
     showDialog.value = true;
 };
@@ -267,12 +273,12 @@ const submitForm = async () => {
     try {
         // 自动设置时间
         if (isEditing.value) {
-            formData.value.updatedAt = new Date().toISOString();
-            await request.put(`/api/public/travelrecommend/${formData.value.id}`, formData.value);
+            formData.value.updated_at = new Date().toISOString();
+            await request.put(`/api/public/news/${formData.value.id}`, formData.value);
             showToastMessage('更新笔记成功');
         } else {
-            formData.value.createdAt = new Date().toISOString();
-            await request.post('/api/public/travelrecommend', formData.value);
+            formData.value.created_at = new Date().toISOString();
+            await request.post('/api/public/news', formData.value);
             showToastMessage('新增笔记成功');
         }
         await fetchScenic();
@@ -301,13 +307,13 @@ const closeDeletePrompt = () => {
 const confirmDelete = async () => {
     if (deleteCardId.value) {
         try {
-            await request.delete(`/api/public/travelrecommend/${deleteCardId.value}`);
+            await request.delete(`/api/public/news/${deleteCardId.value}`);
             await fetchScenic();
             closeDeletePrompt();
-            showToastMessage('删除笔记成功');
+            showToastMessage('删除成功');
         } catch (error) {
             console.error('删除失败:', error);
-            showToastMessage('删除笔记失败', 'error');
+            showToastMessage('删除失败', 'error');
 
         } finally {
             closeDeletePrompt();
@@ -328,66 +334,6 @@ const fileSize = ref('');
 const uploading = ref(false);
 const progress = ref(0);
 
-// 处理文件上传
-const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    // 验证文件类型
-    const validTypes = ['image/jpeg', 'image/png'];
-    if (!validTypes.includes(file.type)) {
-        showToastMessage('仅支持JPG/PNG格式图片', 'error');
-        return;
-    }
-
-    // 验证文件大小 (5MB)
-    const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) {
-        showToastMessage('图片大小不能超过5MB', 'error');
-        return;
-    }
-
-    // 显示预览
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        previewImage.value = e.target.result;
-        fileName.value = file.name;
-        fileSize.value = formatFileSize(file.size);
-        formData.value.image = e.target.result;
-    };
-    reader.readAsDataURL(file);
-
-    // 模拟上传进度
-    uploading.value = true;
-    progress.value = 0;
-    const interval = setInterval(() => {
-        progress.value += 10;
-        if (progress.value >= 100) {
-            clearInterval(interval);
-            uploading.value = false;
-            showToastMessage('图片上传成功');
-        }
-    }, 200);
-};
-
-// 处理拖放上传
-const handleDrop = (event) => {
-    dragOver.value = false;
-    const file = event.dataTransfer.files[0];
-    if (file) {
-        const inputEvent = { target: { files: [file] } };
-        handleFileUpload(inputEvent);
-    }
-};
-
-// 移除图片
-const removeImage = () => {
-    previewImage.value = '';
-    fileName.value = '';
-    fileSize.value = '';
-    formData.value.image = '';
-};
-
 // 格式化文件大小
 const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
@@ -397,12 +343,80 @@ const formatFileSize = (bytes) => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 };
 
+// 处理文件上传
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // 验证文件类型
+    const validTypes = ['image/jpeg', 'image/png'];
+    if (!validTypes.includes(file.type)) {
+        showToastMessage('只支持JPG/PNG格式图片', 'error');
+        return;
+    }
+
+    // 验证文件大小
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+        showToastMessage('图片大小不能超过5MB', 'error');
+        return;
+    }
+
+    // 显示文件信息
+    fileName.value = file.name;
+    fileSize.value = formatFileSize(file.size);
+
+    // 读取并预览图片
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        previewImage.value = e.target.result;
+        formData.value.coverImage = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // 模拟上传进度
+    uploading.value = true;
+    const interval = setInterval(() => {
+        if (progress.value < 100) {
+            progress.value += 10;
+        } else {
+            clearInterval(interval);
+            uploading.value = false;
+        }
+    }, 100);
+
+    return file;
+};
+
+// 处理拖放上传
+const handleDrop = (event) => {
+    dragOver.value = false;
+    const file = event.dataTransfer.files[0];
+    if (file) {
+        const fakeEvent = { target: { files: [file] } };
+        handleFileUpload(fakeEvent);
+    }
+};
+
+// 移除图片
+const removeImage = () => {
+    previewImage.value = '';
+    fileName.value = '';
+    fileSize.value = '';
+    formData.value.coverImage = '';
+};
+
 // 触发文件输入框
 const triggerFileInput = () => {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
-    fileInput.onchange = (event) => handleFileUpload(event);
+    fileInput.onchange = (event) => {
+        const file = handleFileUpload(event);
+        if (file) {
+            formData.value.coverImage = file;
+        }
+    };
     fileInput.click();
 };
 

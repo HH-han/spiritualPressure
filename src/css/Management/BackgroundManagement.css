@@ -751,8 +751,9 @@
 
 .form-row {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+  align-items: end;
 }
 
 .form-group {
@@ -772,7 +773,7 @@
 .form-group textarea,
 .form-group select,
 .form-group input {
-  padding: 12px 16px;
+  padding: 5px 16px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 14px;

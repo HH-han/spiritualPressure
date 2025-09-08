@@ -625,7 +625,7 @@ svg {
 /* 图片区域样式 */
 .recommend-left_imga img {
   width: 100%;
-  height: auto;
+  height: 180px;
   border-radius: 4px;
   margin-bottom: 10px;
 }
@@ -652,6 +652,10 @@ svg {
   margin-bottom: 5px;
 }
 
+.recommend-left_content{
+  height: 120px;
+}
+
 /* 资讯区域样式 */
 .recommend-left_zx {
   margin-top: 15px;
@@ -676,7 +680,6 @@ svg {
 
 .recommend-left_zx button {
   background-color: #ffffff;
-  color: #ffffff;
   border: none;
   border-radius: 4px;
   padding: 5px 10px;
@@ -684,8 +687,28 @@ svg {
   cursor: pointer;
 }
 
+.recommend-left_zx ul {
+  list-style: none;
+  padding: 0;             
+}
+
 .recommend-left_zx button :hover {
   border-bottom: 1px solid #9a9a9a;
+}
+
+.recommend-left_list-news{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.recommend-left_more-button{
+  color: #d1d1d1;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 /* 模态框遮罩层 */

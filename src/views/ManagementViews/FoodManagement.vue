@@ -67,60 +67,60 @@
         <div class="dialog" @click.stop>
           <h2>{{ isEditing ? '编辑美食' : '新增美食' }}</h2>
           <form @submit.prevent="submitForm" class="form-container">
-            <div class="form-row">
-              <div class="form-group">
-                <div class="image-upload-container">
-                  <div class="upload-header">
-                    <h3>上传图片</h3>
-                    <p>支持 JPG, PNG 格式，最大 5MB</p>
-                  </div>
+            <div class="form-group">
+              <div class="image-upload-container">
+                <div class="upload-header">
+                  <h3>上传图片</h3>
+                  <p>支持 JPG, PNG 格式，最大 5MB</p>
+                </div>
 
-                  <div class="upload-area" @click="triggerFileInput" @dragover.prevent="dragOver = true"
-                    @dragleave="dragOver = false" @drop.prevent="handleDrop" :class="{ 'drag-active': dragOver }">
-                    <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" class="file-input" />
+                <div class="upload-area" @click="triggerFileInput" @dragover.prevent="dragOver = true"
+                  @dragleave="dragOver = false" @drop.prevent="handleDrop" :class="{ 'drag-active': dragOver }">
+                  <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" class="file-input" />
 
-                    <div class="upload-content">
-                      <div class="upload-icon">
-                        <svg viewBox="0 0 24 24">
-                          <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                        </svg>
-                      </div>
-                      <p class="upload-text">点击或拖拽文件到此处</p>
-                      <p class="upload-hint">推荐尺寸：1200×800px</p>
+                  <div class="upload-content">
+                    <div class="upload-icon">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                      </svg>
                     </div>
+                    <p class="upload-text">点击或拖拽文件到此处</p>
+                    <p class="upload-hint">推荐尺寸：1200×800px</p>
                   </div>
+                </div>
 
-                  <!-- 图片预览区域 -->
-                  <div class="preview-container" v-if="previewImage">
-                    <div class="preview-card">
-                      <img :src="previewImage" alt="预览图片" class="preview-image" />
-                      <div class="preview-actions">
-                        <button class="action-btn-image edit-btn-image" @click="triggerFileInput">
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
-                          </svg>
-                        </button>
-                        <button class="action-btn-image delete-btn-image" @click="removeImage">
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                          </svg>
-                        </button>
+                <!-- 图片预览区域 -->
+                <div class="preview-container" v-if="previewImage">
+                  <div class="preview-card">
+                    <img :src="previewImage" alt="预览图片" class="preview-image" />
+                    <div class="preview-actions">
+                      <button class="action-btn-image edit-btn-image" @click="triggerFileInput">
+                        <svg viewBox="0 0 24 24">
+                          <path
+                            d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+                        </svg>
+                      </button>
+                      <button class="action-btn-image delete-btn-image" @click="removeImage">
+                        <svg viewBox="0 0 24 24">
+                          <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="preview-footer">
+                      <div class="file-info">
+                        <span class="file-name">{{ fileName }}</span>
+                        <span class="file-size">{{ fileSize }}</span>
                       </div>
-                      <div class="preview-footer">
-                        <div class="file-info">
-                          <span class="file-name">{{ fileName }}</span>
-                          <span class="file-size">{{ fileSize }}</span>
-                        </div>
-                        <div class="upload-progress" v-if="uploading">
-                          <div class="progress-bar" :style="{ width: progress + '%' }"></div>
-                        </div>
+                      <div class="upload-progress" v-if="uploading">
+                        <div class="progress-bar" :style="{ width: progress + '%' }"></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="form-row">
+
               <div class="form-group">
                 <label>美食名称:</label>
                 <input v-model="formData.name" required />
