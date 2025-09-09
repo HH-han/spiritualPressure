@@ -121,48 +121,48 @@ const routes = [
   {path: '/recommendation',name: 'recommendation',component: RecommendAtion,title: "推荐页面"},
   {path: '/safetytips',name: 'safetytips',component: SafetyTips,title: "安全提示"},
   //设置中心
-   {path: '/settingsfocus',name: 'settingsfocus',component: SettingsFocus,title: "设置中心"},
+  {path: '/settingsfocus',name: 'settingsfocus',component: SettingsFocus,title: "设置中心"},
   // 网站介绍
-    {path: '/websiteintroduction',name: 'websiteintroduction',component: WebsiteIntroduction,title: "网站介绍"},
-    {path: '/aboutweb',name: 'aboutweb',component: AboutWeb,title: "关于网站"},
+  {path: '/websiteintroduction',name: 'websiteintroduction',component: WebsiteIntroduction,title: "网站介绍"},
+  {path: '/aboutweb',name: 'aboutweb',component: AboutWeb,title: "关于网站"},
   //地图页面路由
-    {path: '/searchview',name: 'searchview',component: SearchView,title: "搜索页面"},
-    {path: '/gaodemap',name: 'gaodemap',component: GaodeMap,title: "高德地图"},
-    {path: '/mapcomponent',name: 'mapcomponent',component: MapComponent,title: "地图组件"},
-    {path: '/maploading',name: 'maploading',component: MapLoading,title: "地图加载"},
+  {path: '/searchview',name: 'searchview',component: SearchView,title: "搜索页面"},
+  {path: '/gaodemap',name: 'gaodemap',component: GaodeMap,title: "高德地图"},
+  {path: '/mapcomponent',name: 'mapcomponent',component: MapComponent,title: "地图组件"},
+  {path: '/maploading',name: 'maploading',component: MapLoading,title: "地图加载"},
   //管理页面路由
-    {path: '/usergoodsmanagement',name: 'usergoodsmanagement',component: UserGoodsmanagement,title: "用户商品管理"},
-    {path: '/AdminLayout', name: 'AdminLayout',component: AdminLayout,title: "管理员布局"},
+  {path: '/usergoodsmanagement',name: 'usergoodsmanagement',component: UserGoodsmanagement,title: "用户商品管理"},
+  {path: '/AdminLayout', name: 'AdminLayout',component: AdminLayout,title: "管理员布局"},
   //旅游攻略页面路由
-    {path: '/travelstrategy',name: 'travelstrategy',component: TravelSidebar,title: "旅游攻略"},
+  {path: '/travelstrategy',name: 'travelstrategy',component: TravelSidebar,title: "旅游攻略"},
   //404页面路由
-    {path: '/404',name: '极速赛车开奖直播历史记录404',component: ErrorView404,title: "404错误"},
-    {path: '/404-view',name: '/404-view',component: NotFindView404,title: "404页面"},
-    {path: '/500',name: '500',component: ErrorView500,title: "500错误"},
-    {path: '/networkanomaly',name: 'networkanomaly',component: NetworkAnomaly,title: "网络异常"},
+  {path: '/404',name: '极速赛车开奖直播历史记录404',component: ErrorView404,title: "404错误"},
+  {path: '/404-view',name: '/404-view',component: NotFindView404,title: "404页面"},
+  {path: '/500',name: '500',component: ErrorView500,title: "500错误"},
+  {path: '/networkanomaly',name: 'networkanomaly',component: NetworkAnomaly,title: "网络异常"},
   // 订单页面路由
-    {path: '/orderdetails',name: 'orderdetails',component: OrderDetails,title: "订单详情"},
-    {path: '/itempurchase',name: 'itempurchase',component: ItemPurchase,title: "商品购买"},
+  {path: '/orderdetails',name: 'orderdetails',component: OrderDetails,title: "订单详情"},
+  {path: '/itempurchase',name: 'itempurchase',component: ItemPurchase,title: "商品购买"},
   // 账户管理
-    {path: '/accountsettings',name: 'accountsettings',component: AccountSettings,title: "账户设置"},
+  {path: '/accountsettings',name: 'accountsettings',component: AccountSettings,title: "账户设置"},
   // 响应页面
-    {path: '/viewmore',name: 'viewmore',component: ViewMore,title: "查看更多"},
-    {path: '/vieworder',name: 'vieworder',component: ViewOrder,title: "查看订单"},
-    {path: '/viewdiscover',name: 'viewdiscover',component: ViewDiscover,title: "发现页面"},
-    {path: '/viewprofile',name: 'viewprofile',component: ViewProfile,title: "个人资料"},
-    {path: '/vieworderlist',name: 'viewmorderlist',component: ViewOrderlist,title: "订单列表"},
+  {path: '/viewmore',name: 'viewmore',component: ViewMore,title: "查看更多"},
+  {path: '/vieworder',name: 'vieworder',component: ViewOrder,title: "查看订单"},
+  {path: '/viewdiscover',name: 'viewdiscover',component: ViewDiscover,title: "发现页面"},
+  {path: '/viewprofile',name: 'viewprofile',component: ViewProfile,title: "个人资料"},
+  {path: '/vieworderlist',name: 'viewmorderlist',component: ViewOrderlist,title: "订单列表"},
   // 我的
-    {path: '/helpcenter',name: 'helpcenter',component: HelpCenter,title: "帮助中心"},
-    {path: '/messagecenter',name: 'messagecenter',component: MessageCenter,title: "消息中心"},
-    {path: '/setting',name: 'setting',component: SettingView,title: "设置页面"},
-    {path: '/personaldata',name: 'personaldata',component: PersonalData,title: "个人资料"},
+  {path: '/helpcenter',name: 'helpcenter',component: HelpCenter,title: "帮助中心"},
+  {path: '/messagecenter',name: 'messagecenter',component: MessageCenter,title: "消息中心"},
+  {path: '/setting',name: 'setting',component: SettingView,title: "设置页面"},
+  {path: '/personaldata',name: 'personaldata',component: PersonalData,title: "个人资料"},
 
   // 旅游选项页面路由
-    {path: '/travelfreely',name: 'travelfreely',component: TravelFreely,title: "自由行"},
-    {path: '/hometravelguides',name: 'hometravelguides',component: HometravelGuides,title: "家庭旅游指南"},
-    {path: '/travelworld',name: 'travelworld',component: TravelWorld,title: "世界旅游"},
-    {path: '/travelteam',name: 'travelteam',component: TravelTeam,title: "团队旅游"},
-    {path: '/travelcruise',name: 'travelcruise',component: TravelCruise,title: "邮轮旅游"},
+  {path: '/travelfreely',name: 'travelfreely',component: TravelFreely,title: "自由行"},
+  {path: '/hometravelguides',name: 'hometravelguides',component: HometravelGuides,title: "家庭旅游指南"},
+  {path: '/travelworld',name: 'travelworld',component: TravelWorld,title: "世界旅游"},
+  {path: '/travelteam',name: 'travelteam',component: TravelTeam,title: "团队旅游"},
+  {path: '/travelcruise',name: 'travelcruise',component: TravelCruise,title: "邮轮旅游"},
 
 
 ]
