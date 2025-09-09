@@ -5,11 +5,6 @@
     transform: translate(-50%, -50%);
 }
 
-.center {
-    display: flex;
-    justify-content: center;
-}
-
 .cornerCut {
     width: 80px;
     height: 80px;

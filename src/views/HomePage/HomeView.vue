@@ -1,9 +1,5 @@
 <template>
   <div class="">
-    <!-- 顶部导航栏 -->
-    <header>
-      <Home_2 />
-    </header>
     <!-- 轮播图 -->
     <div class="banner">
       <div class="banner-content-SeamlessCarousel">
@@ -122,7 +118,7 @@
       </div>
       <div class="content_5">
         <!-- 新闻资讯 -->
-        <div> 
+        <div>
           <TravelNews />
         </div>
         <!-- 旅游展示 -->
@@ -310,11 +306,11 @@
             <div class="btn-container-collection">
               <!-- 按钮 -->
               <button @click="OrderDetails(selectedBlog.id)" class="btn pay">前往购买</button>
-              <TavoriteBtn @Dataforwarding="Dataforwarding" />
+              <TavoriteBtn @Collectiondata="Collectiondata" />
             </div>
           </div>
         </div>
-        <div>
+        <div v-if="isDetailVisible">
           <!-- 引入自定义收藏提示框 -->
           <CollectionTips ref="collectiontips" />
         </div>
@@ -433,7 +429,38 @@ const OrderDetails = (blogsId) => {
     })
   }
 }
-
+// 收藏
+const Dataforwarding = (id) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    ElMessage.error('请先登录');
+    return;
+  }
+  const insertedcollection = blogs.value.find((c) => c.id === id)
+  if (insertedcollection) {
+    router.push({
+      name: 'tavoritebtn',
+      query: {
+        item: JSON.stringify({
+            id: insertedcollection.id,
+            username: insertedcollection.username,
+            collectionname: insertedcollection.title,
+            image: insertedcollection.image,
+            price: insertedcollection.price,
+            location: insertedcollection.location,
+            profile: insertedcollection.profile,
+            characteristics: insertedcollection.characteristics,
+            score: insertedcollection.score,
+            collection: insertedcollection.collection,
+            sales: insertedcollection.sales,
+            classification: insertedcollection.classification,
+            createdTime: insertedcollection.createdTime,
+            updatedTime: insertedcollection.updatedTime,
+        })
+      }
+    })
+  }
+}
 // 搜索方法
 const search = () => {
   if (searchKeyword.value.trim()) {
@@ -453,8 +480,8 @@ const NoMore = () => {
 
 // 定位功能
 const showLocation = (location) => {
-  router.push({ 
-    name: 'maploading', 
+  router.push({
+    name: 'maploading',
     query: {
       location,
       message: `正在打开地图：${location}`
@@ -609,36 +636,11 @@ const validatePageInput = () => {
   }
 }
 
-// 数据转发
-const Dataforwarding = (blog) => {
-  const collection = blogs.value.find((b) => b.id === blog.id)
-  if (collection) {
-    router.push({
-      name: 'tavoritebtn',
-      query: {
-        item: JSON.stringify({
-          id: collection.id,
-          characteristics: collection.title,
-          collection: collection.collection,
-          image: collection.coverImage,
-          collectionname: collection.collectionname,
-          location: collection.location,
-          profile: collection.profile,
-          sales: collection.sales,
-          score: collection.score,
-          price: collection.price,
-          username: collection.username
-        })
-      }
-    })
-  }
-}
-
 // 生命周期钩子
 onMounted(() => {
   fetchBlogs();
   fetchSlideshow()
-  
+
 })
 
 onBeforeUnmount(() => {
@@ -646,8 +648,6 @@ onBeforeUnmount(() => {
 })
 </script>
 <style scoped>
-/* 导入全局样式HomeViews */
-@import "@/css/Home/HomeViews.css";
 @import "@/css/Home/paging.css";
 @import "@/css/Btn/btn.css";
 </style>

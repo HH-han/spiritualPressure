@@ -30,6 +30,7 @@
                 </td>
                 <td>{{ card.id }}</td>
                 <td>{{ card.title }}</td>
+                <td>{{ card.phone }}</td>
                 <td>
                   <img :src="card.image" alt="景点图片" style="width: 35px; height: 35px;" @click="triggerFileInput(card)">
                 </td>
@@ -40,6 +41,11 @@
                 <td>{{ card.evaluation }}</td>
                 <td>{{ card.status }}</td>
                 <td>{{ card.type }}</td>
+                <td>{{ card.facility }}</td>
+                <td>{{ card.traffic }}</td>
+                <td>{{ card.service }}</td>
+                <td>{{ card.feature }}</td>
+                <td>{{ card.star }}</td>
                 <td>{{ formatDate(card.created_at) }}</td>
                 <td>{{ formatDate(card.updated_at) }}</td>
                 <td class="table-btn-display">
@@ -168,6 +174,7 @@ const columns = [
   { key: 'checked', title: '多选' },
   { key: 'id', title: '景点ID' },
   { key: 'title', title: '景点标题' },
+  { key: 'phone', title: '景点电话' },
   { key: 'image', title: '景点图片' },
   { key: 'subtitle', title: '景点副标题' },
   { key: 'price', title: '景点价格' },
@@ -176,6 +183,11 @@ const columns = [
   { key: 'evaluation', title: '景点销量' },
   { key: 'status', title: '景点状态' },
   { key: 'type', title: '景点类型' },
+  { key: 'facility', title: '景点设施' },
+  { key: 'traffic', title: '景点交通' },
+  { key: 'service', title: '景点服务' },
+  { key: 'feature', title: '景点特色' },
+  { key: 'star', title: '景点星级' },
   { key: 'createdAt', title: '创建时间' },
   { key: 'updatedAt', title: '更新时间' },
 ];

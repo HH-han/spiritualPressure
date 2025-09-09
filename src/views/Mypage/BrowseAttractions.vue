@@ -1,8 +1,4 @@
 <template>
-  <!-- 顶部导航 -->
-  <div>
-    <Home_2 />
-  </div>
   <div class="container-BH">
     <!-- 搜索区域 -->
     <div class="search_background">

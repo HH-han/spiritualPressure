@@ -61,16 +61,8 @@
             <!-- 新增/编辑弹窗 -->
             <div v-if="showDialog" class="dialog-overlay" @click.self="closeDialog">
                 <div class="dialog" @click.stop>
-                    <h2>{{ isEditing ? '编辑笔记' : '新增笔记' }}</h2>
+                    <h2>{{ isEditing ? '编辑新闻' : '新增新闻' }}</h2>
                     <form @submit.prevent="submitForm" class="form-container">
-                        <div class="form-group">
-                            <label>笔记标题:</label>
-                            <input v-model="formData.title" required />
-                        </div>
-                        <div class="form-group">
-                            <label>笔记内容:</label>
-                            <input v-model="formData.content" required />
-                        </div>
                         <div class="form-group">
                             <div class="image-upload-container">
                                 <div class="upload-header">
@@ -127,7 +119,14 @@
                             </div>
                         </div>
                         <div class="form-row">
-
+                            <div class="form-group">
+                                <label>新闻标题:</label>
+                                <input v-model="formData.title" required />
+                            </div>
+                            <div class="form-group">
+                                <label>新闻内容:</label>
+                                <input v-model="formData.content" required />
+                            </div>
                             <div class="form-group">
                                 <label>地点:</label>
                                 <input v-model="formData.location" required />
@@ -275,16 +274,16 @@ const submitForm = async () => {
         if (isEditing.value) {
             formData.value.updated_at = new Date().toISOString();
             await request.put(`/api/public/news/${formData.value.id}`, formData.value);
-            showToastMessage('更新笔记成功');
+            showToastMessage('更新成功');
         } else {
             formData.value.created_at = new Date().toISOString();
             await request.post('/api/public/news', formData.value);
-            showToastMessage('新增笔记成功');
+            showToastMessage('新增成功');
         }
         await fetchScenic();
         closeDialog();
     } catch (error) {
-        const message = isEditing.value ? '更新笔记失败' : '新增笔记失败';
+        const message = isEditing.value ? '更新失败' : '新增失败';
         showToastMessage(message, 'error');
         console.error('操作失败:', error);
     }

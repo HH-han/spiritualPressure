@@ -7,27 +7,22 @@
     </div>
 </template>
   
-<script>
-export default {
-  data() {
-    return {
-      show: false, // 控制提示框的显示和隐藏
-      message: '', // 提示内容
-    };
-  },
-  methods: {
-    openAlert(message) {
-      this.message = message;
-      this.show = true;
-      // 2秒后自动关闭提示框
-      setTimeout(() => {
-        this.show = false;
-      }, 2000);
-    },
-    closeAlert() {
-      this.show = false;
-    },
-  },
+<script setup>
+import { ref } from 'vue';
+
+const show = ref(false);
+const message = ref('');
+
+const openAlert = (msg) => {
+  message.value = msg;
+  show.value = true;
+  setTimeout(() => {
+    show.value = false;
+  }, 2000);
+};
+
+const closeAlert = () => {
+  show.value = false;
 };
 </script>
 

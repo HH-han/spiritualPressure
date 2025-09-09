@@ -1,6 +1,4 @@
 <template>
-  <!-- 顶部导航 -->
-  <Home_2 />
   <!-- 搜索区域 -->
   <div class="food-container-all">
     <div class="food-search_background">

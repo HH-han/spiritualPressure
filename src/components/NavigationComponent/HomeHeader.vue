@@ -8,14 +8,16 @@
           <span>博览旅行</span>
         </div>
         <div class="nav-items">
-          <div class="center">
-            <button class="action-btn" @click="navigateTo('/')">首页</button>
-            <button class="action-btn" @click="navigateTo('/MyDestination')">目的地</button>
-            <button class="action-btn" @click="navigateTo('/BrowseAttractions')">景点</button>
-            <button class="action-btn" @click="navigateTo('/HotelRecommendations')">酒店</button>
-            <button class="action-btn" @click="navigateTo('/FoodRecommendation')">美食</button>
-            <button class="action-btn" @click="navigateTo('/CharacteristicCommodities')">小物件</button>
-            <button class="action-btn" @click="navigateTo('/travelstrategy')">社区</button>
+            <div class="center-items">
+              <button 
+                v-for="navItem in navItems" 
+                :key="navItem.path"
+                class="action-btn" 
+                @click="handleClick(navItem.path)"
+              >
+                {{ navItem.label }}
+              </button>
+            </div>
             <div class="dropdown">
               <button class="action-btn dropdown-toggle">更多</button>
               <div class="dropdown-menu_Home_2">
@@ -26,10 +28,9 @@
                   @click="navigateTo('/testpage')">测试页面</button>
                 <button class="dropdown-item_action-btn2" style="border-radius: 10px 10px 0 0"
                   @click="navigateTo('aboutweb')">网站介绍</button>
-                <button class="dropdown-item_action-btn2" @click="navigateTo('/strategygroup')">攻略群</button>
+                <button class="dropdown-item_action-btn2" @click="navigateTo('/travelstrategy')">社区</button>
               </div>
             </div>
-          </div>
         </div>
         <div class="actions">
           <ThemeSwitching />
@@ -133,16 +134,58 @@
       </div>
     </div>
   </div>
+  <!-- 渲染器区域 -->
+  <div>
+    <component :is="currentComponent" v-if="currentComponent" />
+  </div>
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
-import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
-import { ref, onMounted } from 'vue';
+
+import HomeView from '@/views/HomePage/HomeView.vue';
+import BrowseAttractions from '@/views/Mypage/BrowseAttractions.vue';
+import HotelRecommendations from '@/views/Mypage/HotelRecommendations.vue';
+import FoodRecommendation from '@/views/Mypage/FoodRecommendation.vue';
+import MyDestination from '@/views/Mypage/MyDestination.vue';
+import CharacteristicCommodities from '@/views/Mypage/CharacteristicCommodities.vue';
+import StrategyGroup from '@/views/Mypage/StrategyGroup.vue';
+
+import { ref, onMounted, shallowRef } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import ThemeSwitching from '@/components/ThemeComponents/ThemeSwitching.vue'
 import { getUserInfo } from '@/api/user';
+import { useAuthStore } from '@/stores/auth';
 
 const defaultAvatar = new URL('@/assets/defaultimage/mrtx.png', import.meta.url).href
+const currentComponent = shallowRef(null);
+const authStore = useAuthStore();
+
+// 导航项数据
+const navItems = [
+  { path: 'HomeView', label: '首页' },
+  { path: 'MyDestination', label: '目的地' },
+  { path: 'BrowseAttractions', label: '景点' },
+  { path: 'HotelRecommendations', label: '酒店' },
+  { path: 'FoodRecommendation', label: '美食' },
+  { path: 'CharacteristicCommodities', label: '小物件' },
+  { path: 'StrategyGroup', label: '攻略群' },
+];
+
+const handleClick = (path) => {
+  const componentMap = {
+    'HomeView': HomeView,
+    'BrowseAttractions': BrowseAttractions,
+    'HotelRecommendations': HotelRecommendations,
+    'FoodRecommendation': FoodRecommendation,
+    'MyDestination': MyDestination,
+    'CharacteristicCommodities': CharacteristicCommodities,
+    'StrategyGroup': StrategyGroup
+  };
+  currentComponent.value = componentMap[path];
+  // 保存当前组件路径到Pinia store
+  authStore.currentComponentPath = path;
+};
+
 const navigateTo = (path) => {
   router.push(path);
 };
@@ -171,6 +214,19 @@ const isDropdownVisible = ref(false);
 
 // 初始化检查登录状态
 onMounted(() => {
+  // 从Pinia store恢复当前组件状态，如果没有则默认显示首页
+  const savedPath = authStore.currentComponentPath;
+  const componentMap = {
+    'HomeView': HomeView,
+    'BrowseAttractions': BrowseAttractions,
+    'HotelRecommendations': HotelRecommendations,
+    'FoodRecommendation': FoodRecommendation,
+    'MyDestination': MyDestination,
+    'CharacteristicCommodities': CharacteristicCommodities,
+    'StrategyGroup': StrategyGroup
+  };
+  currentComponent.value = savedPath ? componentMap[savedPath] : HomeView;
+  
   isLoggedIn.value = !!localStorage.getItem('token');
 });
 

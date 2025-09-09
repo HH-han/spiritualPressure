@@ -31,6 +31,7 @@
                   <input type="checkbox" :checked="food.checked" @change="handleCheck(food)" class="ui-checkbox" />
                 </td>
                 <td>{{ food.id }}</td>
+                <td>{{ food.phone }}</td>
                 <td>{{ food.name }}</td>
                 <td>
                   <img :src="food.image" alt="美食图片" style="width: 35px; height: 35px;"
@@ -43,8 +44,8 @@
                 <td>￥{{ food.price }}</td>
                 <td>{{ food.sales }}</td>
                 <td>{{ food.rating }}</td>
-                <td>{{ formatDate(food.createdAt) }}</td>
-                <td>{{ formatDate(food.updatedAt) }}</td>
+                <td>{{ formatDate(food.created_at) }}</td>
+                <td>{{ formatDate(food.updated_at) }}</td>
                 <td class="table-btn-display">
                   <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(food)">编辑</button>
@@ -169,6 +170,7 @@ import ToastType from '@/components/PromptComponent/ToastType.vue';
 const columns = [
   { key: 'checked', title: '多选' },
   { key: 'id', title: '美食ID' },
+  { key: 'phone', title: '美食电话' },
   { key: 'name', title: '美食名称' },
   { key: 'image', title: '美食图片' },
   { key: 'description', title: '美食描述' },
@@ -178,8 +180,8 @@ const columns = [
   { key: 'price', title: '美食价格' },
   { key: 'sales', title: '销量' },
   { key: 'rating', title: '评分' },
-  { key: 'createdAt', title: '创建时间' },
-  { key: 'updatedAt', title: '更新时间' },
+  { key: 'created_at', title: '创建时间' },
+  { key: 'updated_at', title: '更新时间' },
 ];
 const showToast = ref(false);
 const toastMessage = ref('');

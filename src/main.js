@@ -1,6 +1,7 @@
 // main.js
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import { createPersistedState } from 'pinia-plugin-persistedstate';
 import App from './App.vue';
 import router from './router';
 import ElementPlus from 'element-plus';
@@ -11,7 +12,9 @@ import '@/css/Block/block.css';
 const app = createApp(App);
 
 // 使用 Pinia 状态管理
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(createPersistedState());
+app.use(pinia);
 // 使用 Vue Router
 app.use(router);
 // 使用 Element Plus 并设置语言为中文
