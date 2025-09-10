@@ -12,7 +12,7 @@
           <button class="btn delete-btn" @click="handleReset">批量删除</button>
         </div>
 
-        <button class="btn add-btn" @click="showAddDialog">推荐商品</button>
+        <button class="btn add-btn" @click="showAddDialog">推荐景点</button>
       </div>
       <!-- 数据表格 -->
       <div class="data-table-container">
@@ -35,15 +35,21 @@
                   <img :src="item.coverImage" alt="封面图片" style="width: 35px; height: 35px;"
                     @click="triggerFileInput(item)">
                 </td>
-                <td>{{ item.content }}</td>
+                <td>{{ item.content ? item.content.slice(0, 20) : '无' }}...</td>
                 <td>{{ item.location }}</td>
                 <td>￥{{ item.price }}</td>
                 <td>❤️{{ item.likes }}</td>
                 <td>{{ item.favorites }}</td>
-                <td>{{ item.views }}</td>
-                <td>{{ item.status }}</td>
+                <td>{{ item.browse }}</td>
+                <td>
+                  <label class="switch">
+                    <input type="checkbox" :checked="item.state === 0" @change="toggleState(item)">
+                    <span class="slider" :class="{ 'green': item.state === 0, 'red': item.state !== 0 }"></span>
+                    <span class="knob"></span>
+                  </label>
+                </td>
                 <td>{{ formatDate(item.created_at) }}</td>
-                <td>{{ formatDate(item.updated_at) }}</td>
+                <td>{{ formatDate(item.updata_at) }}</td>
                 <td class="table-btn-display">
                   <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(item)">编辑</button>
@@ -157,22 +163,10 @@
         </div>
       </div>
 
-      <!-- 删除提示框 -->
-      <div v-if="isDeletePromptVisible" class="delete-prompt-overlay">
-        <div class="delete-prompt">
-          <div class="delete-prompt-title">提示</div>
-          <div class="delete-prompt-content">确定要删除吗？</div>
-          <div class="delete-prompt-btn">
-            <button class="delete-prompt-btn-cancel" @click="closeDeletePrompt">取消</button>
-            <button class="delete-prompt-btn-confirm" @click="confirmDelete">确定</button>
-          </div>
-        </div>
-      </div>
-      <!-- 自定义提示框 -->
-      <div v-if="showToast" class="custom-toast" :class="toastType">
-        <span class="toast-icon">{{ toastType === 'success' ? '✓' : '✕' }}</span>
-        {{ toastMessage }}
-      </div>
+      <!-- 删除提示框组件 -->
+      <DeleteConfirmation v-if="isDeletePromptVisible" @close="closeDeletePrompt" @confirm="confirmDelete" />
+      <!-- 自定义提示框组件 -->
+      <ToastType v-if="showToast" :toastMessage="toastMessage" :toastType="toastType" @close="closeToast" />
     </div>
   </div>
 
@@ -181,6 +175,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
+import DeleteConfirmation from '@/components/PromptComponent/DeleteConfirmation.vue';
+import ToastType from '@/components/PromptComponent/ToastType.vue';
 
 
 const columns = [
@@ -193,10 +189,10 @@ const columns = [
   { key: 'price', title: '价格' },
   { key: 'likes', title: '点赞数' },
   { key: 'favorites', title: '收藏数' },
-  { key: 'views', title: '浏览数' },
-  { key: 'status', title: '状态' },
-  { key: 'createdAt', title: '创建时间' },
-  { key: 'updatedAt', title: '更新时间' },
+  { key: 'browse', title: '浏览数' },
+  { key: 'state', title: '状态' },
+  { key: 'created_at', title: '创建时间' },
+  { key: 'updata_at', title: '更新时间' },
 ];
 const showToast = ref(false);
 const toastMessage = ref('');
@@ -215,6 +211,7 @@ const formData = ref({
   price: '',
   favorites: 0,
   createdAt: '',
+  updatedAt: ''
 });
 
 // 格式化日期显示
@@ -281,6 +278,7 @@ const showAddDialog = () => {
     price: '',
     favorites: 0,
     createdAt: '',
+    updatedAt: '',
   };
   showDialog.value = true;
 };
@@ -334,6 +332,11 @@ const closeDeletePrompt = () => {
   isDeletePromptVisible.value = false;
   deleteItemId.value = null;
 };
+
+// 关闭toast
+const closeToast = () => {
+  showToast.value = false;
+};
 //删除
 const confirmDelete = async () => {
   if (deleteItemId.value) {
@@ -350,7 +353,22 @@ const confirmDelete = async () => {
     }
   }
 };
-
+// 修改状态
+const toggleState = async (item) => {
+  try {
+    const newstate = item.state === 0 ? 1 : 0;
+    const requestData = {
+      id: item.id,
+      state: newstate,
+    };
+    await request.put(`/api/public/blogs/`, requestData);
+    item.state = newstate;
+    showToastMessage('修改状态成功');
+  } catch (error) {
+    console.error('修改状态失败:', error);
+    showToastMessage('修改状态失败', 'error');
+  }
+};
 // 关闭对话框
 const closeDialog = () => {
   showDialog.value = false;

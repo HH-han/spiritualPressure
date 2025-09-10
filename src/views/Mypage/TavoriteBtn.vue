@@ -1,6 +1,6 @@
 <template>
     <!-- 按钮 -->
-    <button @click="collection(selectedBlog.id)" class="btn collection">收藏</button>
+    <button @click="collection(blog.id)" class="btn collection">收藏</button>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -23,16 +23,22 @@ const collection = async (blogId) => {
             query: {
                 item: JSON.stringify({
                     id: blog.id,
-                    name: blog.title,
+                    characteristics: blog.characteristics,
+                    collection: blog.collection,
+                    collectionname: blog.collectionname,
+                    image: blog.image   ,
+                    location: blog.location,
                     price: blog.price,
-                    image: blog.image,
-                    rating: blog.sales,
-                    details: blog.description
+                    profile: blog.profile,
+                    sales: blog.sales,
+                    score: blog.score,
+                    username: blog.username
                 }),
             },
         });
     }
 };
+
 const blogs = ref([]);
 const fetchData = async () => {
     try {

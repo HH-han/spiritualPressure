@@ -140,22 +140,10 @@
         </div>
       </div>
 
-      <!-- 删除提示框 -->
-      <div v-if="isDeletePromptVisible" class="delete-prompt-overlay">
-        <div class="delete-prompt">
-          <div class="delete-prompt-title">提示</div>
-          <div class="delete-prompt-content">确定要删除吗？</div>
-          <div class="delete-prompt-btn">
-            <button class="delete-prompt-btn-cancel" @click="closeDeletePrompt">取消</button>
-            <button class="delete-prompt-btn-confirm" @click="confirmDelete">确定</button>
-          </div>
-        </div>
-      </div>
-      <!-- 自定义提示框 -->
-      <div v-if="showToast" class="custom-toast" :class="toastType">
-        <span class="toast-icon">{{ toastType === 'success' ? '✓' : '✕' }}</span>
-        {{ toastMessage }}
-      </div>
+      <!-- 删除提示框组件 -->
+      <DeleteConfirmation v-if="isDeletePromptVisible" @close="closeDeletePrompt" @confirm="confirmDelete" />
+      <!-- 自定义提示框组件 -->
+      <ToastType v-if="showToast" :toastMessage="toastMessage" :toastType="toastType" />
     </div>
   </div>
 
@@ -165,6 +153,8 @@
 
 import { ref, computed, onMounted } from 'vue';
 import request from '@/utils/request';
+import DeleteConfirmation from '@/components/PromptComponent/DeleteConfirmation.vue';
+import ToastType from '@/components/PromptComponent/ToastType.vue';
 
 const columns = [
   { key: 'checked', title: '多选' },
@@ -194,13 +184,6 @@ const formData = ref({
   badgeText: '',
   score: '',
 });
-
-// 格式化日期显示
-// const formatDate = (date) => {
-//   if (!date) return '未知日期';
-//   const options = { year: 'numeric', month: 'long', day: 'numeric' };
-//   return new Intl.DateTimeFormat('zh-CN', options).format(new Date(date));
-// };
 
 // 搜索功能
 const filteredCards = computed(() => {
@@ -281,11 +264,11 @@ const submitForm = async () => {
     // 自动设置时间
     if (isEditing.value) {
       formData.value.updatedAt = new Date().toISOString();
-      await request.put(`/api/public/scenic/${formData.value.id}`, formData.value);
+      await request.put(`/api/public/travelcard/${formData.value.id}`, formData.value);
       showToastMessage('更新景点成功');
     } else {
       formData.value.createdAt = new Date().toISOString();
-      await request.post('/api/public/scenic', formData.value);
+      await request.post('/api/public/travelcard', formData.value);
       showToastMessage('新增景点成功');
     }
     await fetchScenic();
@@ -314,7 +297,7 @@ const closeDeletePrompt = () => {
 const confirmDelete = async () => {
   if (deleteCardId.value) {
     try {
-      await request.delete(`/api/public/scenic/${deleteCardId.value}`);
+      await request.delete(`/api/public/travelcard/${deleteCardId.value}`);
       await fetchScenic();
       closeDeletePrompt();
       showToastMessage('删除景点成功');
