@@ -1,6 +1,6 @@
 <template>
     <div class="monitor-container">
-        <div class="header">
+        <div class="header-container">
             <h1>服务器性能监测系统</h1>
             <div class="status-info">
                 <span>最后更新: {{ lastUpdateTime }}</span>
@@ -917,7 +917,7 @@ onBeforeUnmount(() => {
     padding: 20px;
 }
 
-.header {
+.header-container {
     text-align: center;
     margin-bottom: 30px;
     padding: 20px;
@@ -928,7 +928,7 @@ onBeforeUnmount(() => {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.header h1 {
+.header-container h1 {
     margin: 0;
     font-size: 2.5rem;
     background-color: #000000;

@@ -88,3 +88,17 @@ export function getTravelNews(params) {
     params
   })
 }
+/** * 获取订单列表
+ * @param {Object} params - 查询参数
+ * @param {number} params.page - 当前页码
+ * @param {number} params.pageSize - 每页数量
+ * @param {string} [params.keyword] - 搜索关键词
+ * @returns {Promise}
+ */
+export function getOrderList(params) {
+  return request({
+    url: `/api/public/order`,
+    method: 'get',
+    params
+  })
+}

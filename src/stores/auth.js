@@ -11,7 +11,18 @@ export const useAuthStore = defineStore('auth', {
     // 错误信息，初始为 null
     error: null,
     // 当前组件路径，用于页面刷新后保持状态
-    currentComponentPath: null
+    currentComponentPath: null,
+    // 面包屑导航列表，用于页面刷新后保持面包屑状态
+    breadcrumbList: null,
+    // 侧边栏折叠状态，用于页面刷新后保持侧边栏状态
+    isSidebarCollapsed: false,
+    // 菜单分类折叠状态，用于页面刷新后保持分类展开状态
+    systemCollapsed: true,
+    contentCollapsed: true,
+    travelCollapsed: true,
+    userCollapsed: true,
+    managementCollapsed: true,
+    systemMonitoring: true
   }),
   
   // 配置持久化

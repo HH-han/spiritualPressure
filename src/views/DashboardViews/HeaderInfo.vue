@@ -48,9 +48,8 @@
             </button>
           </div>
         </div>
-        <div class="chart-placeholder">
-          <!-- 这里可以接入实际的图表库如ECharts或Chart.js -->
-          <p>图表区域 - {{ activeFilter }}数据</p>
+        <div class="chart-placeholder" ref="chartRef">
+          <!-- ECharts图表容器 -->
         </div>
       </div>
     </div>
@@ -82,12 +81,21 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { getUserList } from '@/api/user';
+import { getOrderList } from '@/api/travel';
+import * as echarts from 'echarts';
+import { ElMessage } from "element-plus";
+
 import { 
   User, ShoppingCart, DollarSign, Package, 
   ArrowUp, ArrowDown, Bell, Plus, RefreshCw, 
   FileText, Settings, BarChart2 
 } from 'lucide-vue-next'
+
+// ECharts实例
+const chartRef = ref(null)
+let chartInstance = null
 
 // 关键指标数据
 const metrics = ref([
@@ -97,17 +105,14 @@ const metrics = ref([
   { title: '库存商品', value: '1,245', change: -2.1, icon: Package }
 ])
 
-// 快速操作
-const quickActions = ref([
-  { label: '新增订单', icon: Plus, handler: () => console.log('新增订单') },
-  { label: '刷新数据', icon: RefreshCw, handler: refreshData },
-  { label: '生成报表', icon: FileText, handler: () => console.log('生成报表') },
-  { label: '系统设置', icon: Settings, handler: () => console.log('系统设置') }
-])
-
 // 时间过滤器
 const timeFilters = ['今日', '本周', '本月', '全年']
 const activeFilter = ref('本周')
+
+// 监听时间筛选器变化
+watch(activeFilter, () => {
+  updateChart()
+})
 
 // 通知相关
 const notifications = ref([
@@ -143,13 +148,174 @@ function formatTime(date) {
   return `${Math.floor(diff / (1000 * 60 * 60 * 24))}天前`
 }
 
-function refreshData() {
+// 刷新数据函数
+const refreshData = async () => {
   console.log('刷新数据...')
-  // 模拟数据刷新
-  metrics.value.forEach(metric => {
-    const change = (Math.random() * 10 - 2).toFixed(1)
-    metric.change = parseFloat(change)
+  await getUserData(); // 获取最新的用户数据
+  await getOrderData(); // 获取最新的订单数据
+
+  // 模拟其他指标的随机变化
+  metrics.value.forEach((metric, index) => {
+    if (index !== 0) { // 跳过用户总数指标（索引0）
+      const change = (Math.random() * 10 - 2).toFixed(1)
+      metric.change = parseFloat(change)
+    }
   })
+  
+  // 更新图表数据
+  updateChart()
+}
+
+// 获取用户数据
+const getUserData = async () => {
+  try {
+    const res = await getUserList()
+    if (res && res.data) {
+      // 更新用户总数指标
+      metrics.value[0].value = res.data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+    return res?.data
+  } catch (error) {
+    console.error('获取用户数据失败:', error)
+    return null
+  }
+}
+//获取订单数据
+const getOrderData = async () => {
+  try {
+    const res = await getOrderList()
+    if (res && res.data) {
+      // 更新订单总数指标
+      metrics.value[1].value = res.data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+    return res?.data
+  } catch (error) {
+    console.error('获取订单数据失败:', error)
+    return null
+  }
+}
+// 生成报表函数
+const generateReport = async () => {
+  try {
+    console.log('开始生成报表...')
+    
+    // 获取当前时间
+    const now = new Date()
+    const timestamp = now.toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    })
+    
+    // 获取最新的数据
+    await refreshData()
+    
+    // 构建报表数据
+    const reportData = {
+      title: '系统数据统计报表',
+      timestamp: timestamp,
+      metrics: metrics.value.map(metric => ({
+        label: metric.label,
+        value: metric.value,
+        change: metric.change,
+        icon: metric.icon
+      })),
+      timeFilter: activeFilter.value
+    }
+    
+    // 这里可以添加实际的报表生成逻辑
+    // 例如：生成PDF、Excel或发送到服务器
+    
+    console.log('报表数据:', reportData)
+    
+    // 模拟生成报表文件
+    const fileName = `系统报表_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours()}${now.getMinutes()}${now.getSeconds()}.pdf`
+    
+    // 显示成功提示
+    ElMessage.success({
+      message: `报表生成成功！\n文件名: ${fileName}\n生成时间: ${timestamp}\n\n包含 ${reportData.metrics.length} 个指标数据`,
+      duration: 5000,
+      showClose: true
+    })
+    
+    // 这里可以添加实际的文件下载逻辑
+    // const blob = new Blob([reportData], { type: 'application/pdf' })
+    // const url = URL.createObjectURL(blob)
+    // const link = document.createElement('a')
+    // link.href = url
+    // link.download = fileName
+    // link.click()
+    // URL.revokeObjectURL(url)
+    
+  } catch (error) {
+    console.error('生成报表失败:', error)
+    ElMessage.error('生成报表时发生错误，请重试')
+  }
+}
+
+// 快速操作
+const quickActions = ref([
+  { label: '新增订单', icon: Plus, handler: () => console.log('新增订单') },
+  { label: '刷新数据', icon: RefreshCw, handler: refreshData },
+  { label: '生成报表', icon: FileText, handler: generateReport },
+  { label: '系统设置', icon: Settings, handler: () => console.log('系统设置') }
+])
+
+// 定时器引用
+let refreshInterval = null
+
+onMounted(() => {
+  getUserData();
+  getOrderData()
+  // 每5秒刷新一次数据
+  refreshInterval = setInterval(refreshData, 5000)
+  
+  // 初始化ECharts图表
+  if (chartRef.value) {
+    chartInstance = echarts.init(chartRef.value)
+    updateChart()
+  }
+})
+
+onBeforeUnmount(() => {
+  // 清除定时器
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+  }
+  
+  // 销毁ECharts实例
+  if (chartInstance) {
+    chartInstance.dispose()
+  }
+})
+
+// 更新图表数据
+function updateChart() {
+  if (!chartInstance) return
+  
+  const option = {
+    title: {
+      text: `${activeFilter.value}数据统计`
+    },
+    tooltip: {},
+    legend: {
+      data: ['数据']
+    },
+    xAxis: {
+      data: metrics.value.map(item => item.title)
+    },
+    yAxis: {},
+    series: [{
+      name: '数值',
+      type: 'bar',
+      data: metrics.value.map(item => parseFloat(item.value.replace(/[^0-9.]/g, '')))
+    }]
+  }
+  
+  chartInstance.setOption(option)
 }
 </script>
 
@@ -333,7 +499,8 @@ function refreshData() {
 }
 
 .chart-placeholder {
-  height: 300px;
+  width: 100%;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -491,9 +491,10 @@
 
 <script setup>
 // 引入依赖
-import { ref, reactive, shallowRef, onMounted, computed, watchEffect } from 'vue';
+import { ref, reactive, shallowRef, onMounted, computed, watchEffect, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
+import { useAuthStore } from '@/stores/auth';
 // 用户管理组件
 import User from '@/views/ManagementViews/UserManagement.vue';
 import OrderManagement from '@/views/ManagementViews/OrderManagement.vue';
@@ -532,19 +533,21 @@ import ThemeSwitching from '@/components/ThemeComponents/ThemeSwitching.vue'
 
 // 导航路由
 const router = useRouter();
-// 折叠状态控制
-const systemCollapsed = ref(true);
-const contentCollapsed = ref(true);
-const travelCollapsed = ref(true);
-const userCollapsed = ref(true);
-const managementCollapsed = ref(true);
-const systemMonitoring = ref(true);
+// Pinia store
+const authStore = useAuthStore();
+// 折叠状态控制 - 从Pinia store获取
+const systemCollapsed = ref(authStore.systemCollapsed);
+const contentCollapsed = ref(authStore.contentCollapsed);
+const travelCollapsed = ref(authStore.travelCollapsed);
+const userCollapsed = ref(authStore.userCollapsed);
+const managementCollapsed = ref(authStore.managementCollapsed);
+const systemMonitoring = ref(authStore.systemMonitoring);
 const isExpanded = ref(false);
 
 // 气泡提示控制
 const showBubble = ref(false);
-// 侧边栏控制
-const isSidebarCollapsed = ref(false);
+// 侧边栏控制 - 从Pinia store获取
+const isSidebarCollapsed = ref(authStore.isSidebarCollapsed);
 const showTooltip = ref(true);
 // 鼠标悬停状态
 const isHovering = ref(false);
@@ -572,6 +575,7 @@ const closeBubble = () => {
 
 const handleClick = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
+  authStore.isSidebarCollapsed = isSidebarCollapsed.value;
   // 根据侧边栏状态控制气泡显示
   showBubble.value = isSidebarCollapsed.value;
   // 鼠标离开时隐藏气泡
@@ -602,6 +606,7 @@ watchEffect(() => {
 
 const toggleSidebar = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
+  authStore.isSidebarCollapsed = isSidebarCollapsed.value;
 };
 // 设置侧边栏
 const openSettings = () => {
@@ -609,16 +614,34 @@ const openSettings = () => {
 };
 // 菜单分类
 const toggleCategory = (type) => {
-  if (type === 'system') systemCollapsed.value = !systemCollapsed.value;
-  if (type === 'content') contentCollapsed.value = !contentCollapsed.value;
-  if (type === 'travel') travelCollapsed.value = !travelCollapsed.value;
-  if (type === 'user') userCollapsed.value = !userCollapsed.value;
-  if (type === 'management') managementCollapsed.value = !managementCollapsed.value;
-  if (type === 'monitoring') systemMonitoring.value = !systemMonitoring.value;
+  if (type === 'system') {
+    systemCollapsed.value = !systemCollapsed.value;
+    authStore.systemCollapsed = systemCollapsed.value;
+  }
+  if (type === 'content') {
+    contentCollapsed.value = !contentCollapsed.value;
+    authStore.contentCollapsed = contentCollapsed.value;
+  }
+  if (type === 'travel') {
+    travelCollapsed.value = !travelCollapsed.value;
+    authStore.travelCollapsed = travelCollapsed.value;
+  }
+  if (type === 'user') {
+    userCollapsed.value = !userCollapsed.value;
+    authStore.userCollapsed = userCollapsed.value;
+  }
+  if (type === 'management') {
+    managementCollapsed.value = !managementCollapsed.value;
+    authStore.managementCollapsed = managementCollapsed.value;
+  }
+  if (type === 'monitoring') {
+    systemMonitoring.value = !systemMonitoring.value;
+    authStore.systemMonitoring = systemMonitoring.value;
+  }
 };
 
-// 从本地存储获取上次激活的菜单，默认为1（系统管理）
-const activeMenu = ref(Number(localStorage.getItem('activeMenu')) || 1);
+// 从Pinia store获取上次激活的菜单，默认为1（系统管理）
+const activeMenu = ref(authStore.currentComponentPath || 1);
 const menuItems = reactive([
   { id: 1, title: '系统首页', icon: homeIcon, component: AdminsystemHome },
   { id: 2, title: '控制台', icon: mh, component: ManagementHomepage },
@@ -671,7 +694,7 @@ const Monitoring = computed(() =>
 // 使用shallowRef优化性能
 const activeComponent = shallowRef(null);
 const showContent = ref(true);
-// 初始化时设置组件
+// 初始化时设置组件和侧边栏状态
 onMounted(() => {
   const savedMenuId = Number(localStorage.getItem('activeMenu')) || 1;
   const menuItem = menuItems.find(item => item.id === savedMenuId) || menuItems[1];
@@ -687,6 +710,18 @@ onMounted(() => {
       wrapper.classList.add('active');
     }
   });
+  
+  // 恢复侧边栏折叠状态
+  document.documentElement.style.setProperty(
+    '--sidebar-width',
+    isSidebarCollapsed.value ? '64px' : '180px'
+  );
+  
+  // 恢复内容区域宽度
+  document.documentElement.style.setProperty(
+    '--main-width',
+    isSidebarCollapsed.value ? '64px' : '180px'
+  );
 });
 
 
@@ -786,7 +821,7 @@ const toggleFullScreen = () => {
   }
 };
 // 面包屑导航相关
-const breadcrumbList = ref([{ title: '系统首页', id: 1 }]);
+const breadcrumbList = ref(authStore.breadcrumbList || [{ title: '系统首页', id: 1 }]);
 // 根据当前激活的菜单更新面包屑
 const updateBreadcrumb = (menuItem) => {
   // 检查是否已存在该菜单项
@@ -803,7 +838,8 @@ const updateBreadcrumb = (menuItem) => {
 // 修改changeMenu函数，添加面包屑更新
 const changeMenu = (item) => {
   activeMenu.value = item.id;
-  localStorage.setItem('activeMenu', item.id);
+  authStore.currentComponentPath = item.id;
+  authStore.breadcrumbList = breadcrumbList.value;
   updateBreadcrumb(item);
   
   // 更新面包屑导航的active样式
@@ -841,6 +877,8 @@ const navigateTo = (item) => {
       });
     });
     changeMenu(menuItem);
+    // 保存面包屑列表到Pinia
+    authStore.breadcrumbList = breadcrumbList.value;
   }
 };
 
@@ -849,11 +887,13 @@ const closeBreadcrumb = (item) => {
   if (!item) return;
   if (item.id === 1) return;
   breadcrumbList.value = breadcrumbList.value.filter(b => b.id !== item.id);
+  // 保存面包屑列表到Pinia
+  authStore.breadcrumbList = breadcrumbList.value;
 };
 // 面包屑菜单导航
 const switchMenu = (menuItem) => {
   activeMenu.value = menuItem.id;
-  localStorage.setItem('activeMenu', menuItem.id);
+  authStore.currentComponentPath = menuItem.id;
 };
 // 获取当前菜单的所有相关分类
 const currentCategories = computed(() => {
@@ -877,11 +917,28 @@ const currentCategories = computed(() => {
 });
 onMounted(() => {
   fetchUserInfo();
-  const savedMenuId = Number(localStorage.getItem('activeMenu')) || 1;
+  const savedMenuId = authStore.currentComponentPath || 1;
   const menuItem = menuItems.find(item => item.id === savedMenuId) || menuItems[0];
   activeComponent.value = menuItem.component;
   activeMenu.value = menuItem.id;
-  updateBreadcrumb(menuItem);
+  // 如果Pinia中有保存的面包屑列表，则使用保存的列表
+  if (authStore.breadcrumbList && authStore.breadcrumbList.length > 0) {
+    breadcrumbList.value = authStore.breadcrumbList;
+  } else {
+    updateBreadcrumb(menuItem);
+  }
+  
+  // 在下一个tick中更新面包屑导航的active样式
+  nextTick(() => {
+    const breadcrumbWrappers = document.querySelectorAll('.breadcrumb-main.fixed-element .breadcrumb-wrapper');
+    breadcrumbWrappers.forEach(wrapper => {
+      wrapper.classList.remove('active');
+      const breadcrumbItem = wrapper.querySelector('.breadcrumb-item');
+      if (breadcrumbItem && breadcrumbItem.textContent === menuItem.title) {
+        wrapper.classList.add('active');
+      }
+    });
+  });
 });
 
 //svg图标

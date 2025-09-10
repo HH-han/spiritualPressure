@@ -141,7 +141,10 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
-
+import { ref, onMounted, shallowRef } from 'vue';
+import { ElMessageBox, ElMessage } from 'element-plus';
+// 页面组件
+import ThemeSwitching from '@/components/ThemeComponents/ThemeSwitching.vue';
 import HomeView from '@/views/HomePage/HomeView.vue';
 import BrowseAttractions from '@/views/Mypage/BrowseAttractions.vue';
 import HotelRecommendations from '@/views/Mypage/HotelRecommendations.vue';
@@ -149,10 +152,7 @@ import FoodRecommendation from '@/views/Mypage/FoodRecommendation.vue';
 import MyDestination from '@/views/Mypage/MyDestination.vue';
 import CharacteristicCommodities from '@/views/Mypage/CharacteristicCommodities.vue';
 import StrategyGroup from '@/views/Mypage/StrategyGroup.vue';
-
-import { ref, onMounted, shallowRef } from 'vue';
-import { ElMessageBox, ElMessage } from 'element-plus';
-import ThemeSwitching from '@/components/ThemeComponents/ThemeSwitching.vue'
+// 接口
 import { getUserInfo } from '@/api/user';
 import { useAuthStore } from '@/stores/auth';
 

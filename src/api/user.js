@@ -49,6 +49,20 @@ export function getUserInfo() {
     method: 'get'
   })
 }
+
+/**
+ * 获取用户列表
+ * @param {Object} data 查询参数
+ * @returns {Promise}
+ */
+export function getUserList(data) {
+  return request({
+    url: '/api/public/user',
+    method: 'get',
+    params: data
+  })
+}
+
 /**
  * 更新用户信息
  * @param {Object} data 用户信息
