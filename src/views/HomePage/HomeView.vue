@@ -349,6 +349,7 @@ import SeamlessCarousel from '@/views/HomePage/SeamlessCarousel.vue'
 import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue';
 import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue';
 import TravelNews from '@/views/HomePage/TravelNews.vue';
+
 import { ElMessage } from "element-plus";
 import { fa, lo } from 'element-plus/es/locales.mjs'
 

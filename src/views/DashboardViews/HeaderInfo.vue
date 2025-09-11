@@ -83,7 +83,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { getUserList } from '@/api/user';
-import { getOrderList } from '@/api/travel';
+import { getPaymentList } from '@/api/travel';
 import * as echarts from 'echarts';
 import { ElMessage } from "element-plus";
 
@@ -183,7 +183,7 @@ const getUserData = async () => {
 //获取订单数据
 const getOrderData = async () => {
   try {
-    const res = await getOrderList()
+    const res = await getPaymentList()
     if (res && res.data) {
       // 更新订单总数指标
       metrics.value[1].value = res.data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')

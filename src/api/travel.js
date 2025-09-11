@@ -95,10 +95,70 @@ export function getTravelNews(params) {
  * @param {string} [params.keyword] - 搜索关键词
  * @returns {Promise}
  */
-export function getOrderList(params) {
+export function getPaymentList(params) {
   return request({
-    url: `/api/public/order`,
+    url: `/api/public/payment/all`,
     method: 'get',
     params
+  })
+}
+/**
+ * 获取新闻详情
+ * @param {Object} params - 查询参数
+ * @param {string} params.id - 新闻ID
+ * @param {number} params.page - 当前页码
+ * @param {number} params.pageSize - 每页数量
+ * @param {string} [params.keyword] - 搜索关键词
+ * @returns {Promise}
+ */
+export function getNewsDetail(params) {
+  return request({
+    url: `/api/public/news`,
+    method: 'get',
+    params
+  })
+}
+/**
+ * 获取攻略群详情
+ * @param {Object} params - 查询参数
+ * @param {string} params.id - 攻略群ID
+ * @param {number} params.page - 当前页码
+ * @param {number} params.pageSize - 每页数量
+ * @param {string} [params.keyword] - 搜索关键词
+ * @returns {Promise}
+ */
+export function getStrategyDetail(params) {
+  return request({
+    url: `/api/public/strategy-groups`,
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 获取收藏详情
+ * @param {Object} params - 查询参数
+ * @param {string} params.id - 收藏ID
+ * @param {number} params.page - 当前页码
+ * @param {number} params.pageSize - 每页数量
+ * @param {string} [params.keyword] - 搜索关键词
+ * @returns {Promise}
+ */
+export function getTravelCollections(params) {
+  return request({
+    url: `/api/public/travel-collections`,
+    method: 'get',
+    params
+  })
+}
+/**
+ * 删除收藏
+ * @param {String} id 收藏ID
+ * @returns {Promise}
+ */
+export function deleteTravelCollections(id) {
+  return request({
+    url: `/api/public/travel-collections/${id}`,
+    method: 'delete'
   })
 }

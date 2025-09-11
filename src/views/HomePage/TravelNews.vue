@@ -49,20 +49,37 @@
                     </div>
                     <div  class="recommend-left_list-news">
                         <!-- 更多 -->
-                        <button @click="moreNews" class="recommend-left_more-button">更多</button>
+                        <button  @click="showNewslist" class="recommend-left_more-button">更多</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <!-- 新闻资讯列表 -->
+    <div v-if="Newslist" class="travel-news-container">
+        <Newsinformationlist @close="closeNewslist" />
+    </div>
 </template>
 <script setup>
 import { ref, onMounted, computed, watch, onUnmounted } from 'vue';
+import Newsinformationlist from '@/views/Mypage/Newsinformationlist.vue';
+
 import { getTravelNews } from '@/api/travel';
 
 const NewsItems = ref([]);
 const currentIndex = ref(0);
+
+const Newslist = ref(false);
+ // 点击更多按钮显示全部数据
+ const showNewslist = () => {
+    Newslist.value = true;
+   // 这里可以跳转到专门的资讯页面或者显示模态框
+   console.log('显示全部资讯数据:', NewsItems.value);
+ };
+// 关闭新闻列表
+const closeNewslist = () => {
+    Newslist.value = false;
+};
 
 // 获取数据
 const fetchData = async () => {
@@ -91,12 +108,6 @@ const currentNewsItem = computed(() => {
  const topNews = computed(() => {
      return NewsItems.value.slice(0, 7);
  });
-
- // 点击更多按钮显示全部数据
- const moreNews = () => {
-   // 这里可以跳转到专门的资讯页面或者显示模态框
-   console.log('显示全部资讯数据:', NewsItems.value);
- };
 
 // 当前显示的图片（取前5张图片轮播）
 const currentImage = computed(() => {

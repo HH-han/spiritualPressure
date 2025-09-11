@@ -174,7 +174,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import Home_2 from '@/components/NavigationComponent/HomeHeader.vue';
-import request from '@/utils/request';
+import { getStrategyDetail } from '@/api/travel';
 
 // 分页相关数据
 const currentPage = ref(1);
@@ -228,7 +228,7 @@ const fetchCards = async () => {
             pageSize: pageSize.value,
             keyword: searchKeyword.value
         };
-        const response = await request.get('/api/public/strategy-groups', { params });
+        const response = await getStrategyDetail(params);
         travelCards.value = response.data.list;
         total.value = response.data.total;
     } catch (error) {

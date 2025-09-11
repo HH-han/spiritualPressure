@@ -711,6 +711,10 @@ svg {
   cursor: pointer;
 }
 
+.recommend-left_more-button:hover{
+  color: #9a9a9a;
+}
+
 /* 模态框遮罩层 */
 .attractions-modal-overlay {
   position: fixed;
