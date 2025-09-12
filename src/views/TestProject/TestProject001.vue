@@ -1,135 +1,182 @@
 <template>
-  <!-- From Uiverse.io by alexruix -->
-
-  <div class="loader">
-    <span class="loader-text">loading</span>
-    <span class="load"></span>
+  <div class="notification">
+    <div class="notiglow"></div>
+    <div class="notiborderglow"></div>
+    <!-- 文字提示内容 -->
+    <div>
+      <div class="noticontent">
+        <div class="notititle">是否确认退出登录？</div>
+        <div class="notibody">退出登录后，您将无法查看收藏的景点、评论、订单等</div>
+      </div>
+      <!-- 按钮 -->
+      <div class="button-container">
+        <button class="btn btn-secondary">取消</button>
+        <button class="btn btn-primary">确定</button>
+      </div>
+    </div>
   </div>
 
 </template>
 
 <script setup>
-import RefreshLoad from '@/components/TransitionalComponents/RefreshLoad.vue';
+
 </script>
 <style scoped>
-/* From Uiverse.io by alexruix */
-.loader {
-  width: 80px;
-  height: 50px;
+.notification {
   position: relative;
+  width: 100%;
+  max-width: 400px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  overflow: hidden;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: scale(1);
+  animation: fadeIn 0.5s ease-out;
 }
 
-.loader-text {
+.notiglow {
   position: absolute;
   top: 0;
-  padding: 0;
-  margin: 0;
-  color: #C8B6FF;
-  animation: text_713 3.5s ease both infinite;
-  font-size: .8rem;
-  letter-spacing: 1px;
-}
-
-.load {
-  background-color: #9A79FF;
-  border-radius: 50px;
-  display: block;
-  height: 16px;
-  width: 16px;
-  bottom: 0;
-  position: absolute;
-  transform: translateX(64px);
-  animation: loading_713 3.5s ease both infinite;
-}
-
-.load::before {
-  position: absolute;
-  content: "";
-  width: 100%;
+  left: 5px;
+  width: 5px;
   height: 100%;
-  background-color: #D1C2FF;
-  border-radius: inherit;
-  animation: loading2_713 3.5s ease both infinite;
+  background-color: rgba(255, 0, 0, 0.5);
+  z-index: -1;
+  opacity: 0.7;
+  border-radius: 16px;
 }
 
-@keyframes text_713 {
+.notiborderglow {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  width: 5px;
+  height: 100%;
+  background-color: rgba(6, 162, 224, 0.5);
+  z-index: -2;
+  border-radius: 18px;
+}
+
+.notititle {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.notibody {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #4285f4, #669df6);
+  color: white;
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 133, 244, 0.6);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(66, 133, 244, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulse {
   0% {
-    letter-spacing: 1px;
-    transform: translateX(0px);
-  }
-
-  40% {
-    letter-spacing: 2px;
-    transform: translateX(26px);
-  }
-
-  80% {
-    letter-spacing: 1px;
-    transform: translateX(32px);
-  }
-
-  90% {
-    letter-spacing: 2px;
-    transform: translateX(0px);
+    opacity: 0.5;
   }
 
   100% {
-    letter-spacing: 1px;
-    transform: translateX(0px);
+    opacity: 0.8;
   }
 }
 
-@keyframes loading_713 {
-  0% {
-    width: 16px;
-    transform: translateX(0px);
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .notification {
+    padding: 20px;
+    max-width: 90%;
   }
 
-  40% {
+  .notititle {
+    font-size: 20px;
+  }
+
+  .notibody {
+    font-size: 14px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
     width: 100%;
-    transform: translateX(0px);
-  }
-
-  80% {
-    width: 16px;
-    transform: translateX(64px);
-  }
-
-  90% {
-    width: 100%;
-    transform: translateX(0px);
-  }
-
-  100% {
-    width: 16px;
-    transform: translateX(0px);
-  }
-}
-
-@keyframes loading2_713 {
-  0% {
-    transform: translateX(0px);
-    width: 16px;
-  }
-
-  40% {
-    transform: translateX(0%);
-    width: 80%;
-  }
-
-  80% {
-    width: 100%;
-    transform: translateX(0px);
-  }
-
-  90% {
-    width: 80%;
-    transform: translateX(15px);
-  }
-
-  100% {
-    transform: translateX(0px);
-    width: 16px;
   }
 }
 </style>

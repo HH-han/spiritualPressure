@@ -138,6 +138,15 @@
   <div>
     <component :is="currentComponent" v-if="currentComponent" />
   </div>
+  
+  <!-- 退出登录确认对话框 -->
+  <div>
+    <Launchlogin 
+      v-if="showLogoutConfirm" 
+      @confirm="confirmLogout" 
+      @cancel="cancelLogout"
+    />
+  </div>
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
@@ -152,6 +161,7 @@ import FoodRecommendation from '@/views/Mypage/FoodRecommendation.vue';
 import MyDestination from '@/views/Mypage/MyDestination.vue';
 import CharacteristicCommodities from '@/views/Mypage/CharacteristicCommodities.vue';
 import StrategyGroup from '@/views/Mypage/StrategyGroup.vue';
+import Launchlogin from '@/components/PromptComponent/Launchlogin.vue';
 // 接口
 import { getUserInfo } from '@/api/user';
 import { useAuthStore } from '@/stores/auth';
@@ -211,6 +221,7 @@ const AdminLayout = () => {
 };
 const isLoggedIn = ref(false);
 const isDropdownVisible = ref(false);
+const showLogoutConfirm = ref(false);
 
 // 初始化检查登录状态
 onMounted(() => {
@@ -249,25 +260,30 @@ const logout = () => {
     return;
   }
 
-  ElMessageBox.confirm('您确定要退出登录吗？', '确认操作', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    // 用户点击“确定”，执行退出逻辑
-    // 清除所有登录相关存储
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('rememberedUsername');
-    localStorage.removeItem('tokenTimestamp');
-    // 更新登录状态
-    isLoggedIn.value = false;
-    // 关闭下拉菜单
-    isDropdownVisible.value = false;
-  }).catch(() => {
-    // 用户点击“取消”，不执行任何操作
-    console.log('退出操作已取消');
-  });
+  // 显示退出确认对话框
+  showLogoutConfirm.value = true;
+};
+
+// 确认退出登录
+const confirmLogout = () => {
+  // 清除所有登录相关存储
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  localStorage.removeItem('rememberedUsername');
+  localStorage.removeItem('tokenTimestamp');
+  // 更新登录状态
+  isLoggedIn.value = false;
+  // 关闭下拉菜单
+  isDropdownVisible.value = false;
+  // 关闭确认对话框
+  showLogoutConfirm.value = false;
+};
+
+// 取消退出登录
+const cancelLogout = () => {
+  // 关闭确认对话框
+  showLogoutConfirm.value = false;
+  console.log('退出操作已取消');
 };
 
 // 用户信息
@@ -277,6 +293,7 @@ const userInfo = ref({
   permissions: '',
   hasInput: false
 });
+
 const loading = ref(false);
 
 // 获取用户信息

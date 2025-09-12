@@ -338,7 +338,8 @@
 <script setup>
 import { getAttractionBlogs, likeAttraction, collectAttraction, getSlideshow } from '@/api/travel'
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
+
 import Home_2 from '@/components/NavigationComponent/HomeHeader.vue'
 import MyNote from '@/components/DisplayBox/MyNote.vue'
 import MoreRecommend from '@/components/DisplayBox/MoreRecommend.vue'
