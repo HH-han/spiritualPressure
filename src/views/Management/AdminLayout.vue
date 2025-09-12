@@ -11,281 +11,49 @@
         </div>
         <transition name="data-slide">
           <div class="data-management__content">
-            <!-- 系统管理分类 -->
-            <div class="menu-category">
-              <div @mouseenter="(e) => handleMouseEnter('system', e)" @mouseleave="handleMouseLeave">
-                <svg t="1748482422335" class="menu-category-icon" viewBox="0 0 1099 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="17122">
-                  <path
-                    d="M1072.810667 428.86637A71.68 71.68 0 0 0 1022.482963 376.225185l-17.370074-3.982222a175.217778 175.217778 0 0 1-119.466667-208.478815l5.12-16.497778a72.248889 72.248889 0 0 0-20.176592-69.973333A493.226667 493.226667 0 0 0 807.708444 37.167407a496.943407 496.943407 0 0 0-66.56-34.133333 71.376593 71.376593 0 0 0-70.542222 17.370074l-12.212148 13.084445a174.345481 174.345481 0 0 1-240.071111 0l-11.681185-12.818963a71.376593 71.376593 0 0 0-70.542222-17.332149C312.926815 12.894815 290.512593 24.196741 268.970667 37.167407a492.657778 492.657778 0 0 0-62.84326 40.694519 71.68 71.68 0 0 0-20.48 69.973333l5.12 16.497778a174.91437 174.91437 0 0 1-119.770074 207.909926l-17.066666 3.982222a71.68 71.68 0 0 0-50.062223 52.641185 491.216593 491.216593 0 0 0-3.678814 75.093334c-0.644741 24.613926 0.606815 49.227852 3.678814 73.652148a71.983407 71.983407 0 0 0 50.062223 54.044444l16.497777 3.716741a175.217778 175.217778 0 0 1 120.338963 209.047704l-5.12 16.497778a71.68 71.68 0 0 0 20.48 69.973333c19.873185 15.17037 40.884148 28.747852 62.84326 40.694518 21.428148 12.591407 43.766519 23.514074 66.863407 32.692149a71.68 71.68 0 0 0 70.542222-17.066667l11.64326-11.377778a174.648889 174.648889 0 0 1 240.64 0l11.681185 12.515556a71.68 71.68 0 0 0 70.542222 17.066666 512 512 0 0 0 66.825481-34.133333c21.997037-11.946667 43.008-25.524148 62.881186-40.656593a71.983407 71.983407 0 0 0 20.48-69.973333l-5.12-17.066667a175.217778 175.217778 0 0 1 120.301037-209.085629l16.497777-3.678815a71.376593 71.376593 0 0 0 50.36563-53.210074c3.451259-24.500148 5.082074-49.227852 4.816593-73.955556 0.18963-25.031111-1.517037-50.062222-5.12-74.789926z m-535.324445 236.92326a173.511111 173.511111 0 1 1 172.942222-173.511111 173.24563 173.24563 0 0 1-172.942222 173.511111z"
-                    fill="#65BBEC" p-id="17123"></path>
-                </svg>
-              </div>
+            <!-- 管理模块菜单 -->
+            <div>
+              <!-- 使用v-for循环渲染所有菜单分类 -->
+              <template v-for="category in menuCategories" :key="category.id">
+                <!-- 菜单分类 -->
+                <div class="menu-category">
+                  <div class="menu-icon-container" @mouseenter="(e) => handleMouseEnter(category.id, e)" @mouseleave="handleMouseLeave">
+                    <span class="menu-icon" v-html="category.icon"></span>
+                  </div>
 
-              <span class="category-title" @click="toggleCategory('system')" v-if="showTooltip">
-                <div>
-                  <span>系统管理</span>
-                  <span class="toggle-icon">{{ systemCollapsed ? '+' : '-' }}</span>
+                  <span class="category-title" @click="toggleCategory(category.id)" v-if="showTooltip">
+                    <div>
+                      <span>{{ category.title }}</span>
+                      <span class="toggle-icon">{{ category.collapsed ? '+' : '-' }}</span>
+                    </div>
+                  </span>
                 </div>
-              </span>
-            </div>
-            <div class="menu-category-button" v-if="showTooltip">
-              <button v-for="item in systemMenus" :key="item.id" class="data-management__btn"
-                :class="{ active: activeMenu === item.id }" @click="changeMenu(item)" v-show="!systemCollapsed">
-                <span class="menu-icon" v-html="item.icon"></span>
-                <span class="menu-text">{{ item.title }}</span>
-              </button>
-            </div>
-            <!-- 气泡按钮 -->
-            <div class="menu-bubble-button" v-if="showBubble && isHovering && currentCategory === 'system'"
-              :style="bubblePosition">
-              <div class="bubble-container">
-                <!-- 气泡标题 -->
-                <div class="bubble-header">
-                  <span class="bubble-title">系统管理</span>
-                </div>
-                <!-- 气泡内容菜单 -->
-                <div class="bubble-menu">
-                  <button v-for="item in systemMenus" :key="item.id" class="data-management__btn"
-                    :class="{ active: activeMenu === item.id }" @click="changeMenu(item)">
+                <div class="menu-category-button" v-if="showTooltip">
+                  <button v-for="item in category.menus" :key="item.id" class="data-management__btn"
+                    :class="{ active: activeMenu === item.id }" @click="changeMenu(item)" v-show="!category.collapsed">
                     <span class="menu-icon" v-html="item.icon"></span>
                     <span class="menu-text">{{ item.title }}</span>
                   </button>
                 </div>
-              </div>
-            </div>
-            <!-- 用户管理分类 -->
-            <div class="menu-category">
-              <div @mouseenter="(e) => handleMouseEnter('user', e)" @mouseleave="handleMouseLeave">
-                <svg t="1748482533879" class="menu-category-icon" viewBox="0 0 1079 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="25994">
-                  <path
-                    d="M922.624 784.384V901.12c0 41.984-33.792 76.8-76.8 76.8H76.8c-41.984 0-76.8-34.816-76.8-76.8V323.584c0-41.984 33.792-76.8 76.8-76.8h769.024c41.984 0 76.8 34.816 76.8 76.8v460.8zM616.448 429.056c-49.152 0-89.088 40.96-89.088 90.112 0 49.152 39.936 90.112 89.088 90.112 49.152 0 89.088-40.96 89.088-90.112 0-49.152-39.936-90.112-89.088-90.112z m2.048 403.456c177.152 0 176.128 0 176.128-22.528 0-83.968-58.368-156.672-141.312-174.08l-18.432 17.408h4.096l17.408 90.112c2.048 12.288-2.048 29.696-11.264 38.912l-27.648 28.672-29.696-28.672c-9.216-8.192-14.336-25.6-12.288-37.888l17.408-90.112h4.096l-17.408-19.456c-80.896 17.408-141.312 89.088-141.312 175.104 0 22.528 3.072 22.528 180.224 22.528zM125.952 662.528c0 15.36 14.336 25.6 29.696 25.6h138.24a27.533 27.533 0 0 0 27.648-27.648 27.533 27.533 0 0 0-27.648-27.648H154.624c-15.36 1.024-28.672 14.336-28.672 29.696z m0-117.76c0 15.36 13.312 27.648 27.648 27.648h318.464c14.336 0 26.624-12.288 26.624-27.648S486.4 517.12 472.064 517.12H153.6c-14.336 0-27.648 11.264-27.648 27.648z m0-113.664c0 15.36 13.312 25.6 28.672 25.6h245.76c15.36 0 27.648-11.264 27.648-26.624s-12.288-26.624-27.648-26.624h-245.76c-15.36 0-28.672 12.288-28.672 27.648z m0 0"
-                    fill="#F08304" p-id="25995"></path>
-                  <path
-                    d="M994.304 46.08h-768c-41.984 0-79.872 55.296-79.872 98.304v57.344h758.784c41.984 0 69.632 40.96 69.632 82.944V824.32h20.48c41.984 0 83.968-59.392 83.968-102.4V144.384c-1.024-43.008-41.984-98.304-84.992-98.304z m0 0"
-                    fill="#F08304" p-id="25996"></path>
-                </svg>
-              </div>
-
-              <span class="category-title" @click="toggleCategory('user')" v-if="showTooltip">
-                <div>
-                  <span>用户管理</span>
-                  <span class="toggle-icon">{{ userCollapsed ? '+' : '-' }}</span>
+                <!-- 气泡按钮 -->
+                <div class="menu-bubble-button" v-if="showBubble && isHovering && currentCategory === category.id"
+                  :style="bubblePosition">
+                  <div class="bubble-container">
+                    <!-- 气泡标题 -->
+                    <div class="bubble-header">
+                      <span class="bubble-title">{{ category.title }}</span>
+                    </div>
+                    <!-- 气泡内容菜单 -->
+                    <div class="bubble-menu">
+                      <button v-for="item in category.menus" :key="item.id" class="data-management__btn"
+                        :class="{ active: activeMenu === item.id }" @click="changeMenu(item)">
+                        <span class="menu-icon" v-html="item.icon"></span>
+                        <span class="menu-text">{{ item.title }}</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </span>
-            </div>
-            <div class="menu-category-button" v-if="showTooltip">
-              <button v-for="item in userMenus" :key="item.id" class="data-management__btn"
-                :class="{ active: activeMenu === item.id }" @click="changeMenu(item)" v-show="!userCollapsed">
-                <span class="menu-icon" v-html="item.icon"></span>
-                <span class="menu-text">{{ item.title }}</span>
-              </button>
-            </div>
-            <!-- 气泡按钮 -->
-            <div class="menu-bubble-button" v-if="showBubble && isHovering && currentCategory === 'user'"
-              :style="bubblePosition">
-              <div class="bubble-container">
-                <!-- 气泡标题 -->
-                <div class="bubble-header">
-                  <span class="bubble-title">用户管理</span>
-                </div>
-                <!-- 气泡内容菜单 -->
-                <div class="bubble-menu">
-                  <button v-for="item in userMenus" :key="item.id" class="data-management__btn"
-                    :class="{ active: activeMenu === item.id }" @click="changeMenu(item)">
-                    <span class="menu-icon" v-html="item.icon"></span>
-                    <span class="menu-text">{{ item.title }}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!-- 内容管理分类 -->
-            <div class="menu-category">
-              <div @mouseenter="(e) => handleMouseEnter('content', e)" @mouseleave="handleMouseLeave">
-                <svg t="1748482638206" class="menu-category-icon" viewBox="0 0 1024 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="32062">
-                  <path
-                    d="M601.6 307.2V32H262.4C192 32 128 89.6 128 166.4v691.2c0 76.8 57.6 134.4 134.4 134.4h492.8c76.8 0 134.4-57.6 134.4-134.4V371.2h-224c-32 0-64-25.6-64-64z m102.4 512H339.2c-25.6 0-51.2-25.6-51.2-51.2s25.6-51.2 51.2-51.2H704c25.6 0 51.2 25.6 51.2 51.2s-19.2 51.2-51.2 51.2z m0-179.2H339.2c-25.6 0-51.2-25.6-51.2-51.2s25.6-51.2 51.2-51.2H704c25.6 0 51.2 25.6 51.2 51.2 0 32-19.2 51.2-51.2 51.2zM633.6 32v230.4c0 44.8 25.6 76.8 64 76.8h192L633.6 32z"
-                    fill="#CD0000" p-id="32063"></path>
-                </svg>
-              </div>
-
-              <span class="category-title" @click="toggleCategory('content')" v-if="showTooltip">
-                <div>
-                  <span>内容管理</span>
-                  <span class="toggle-icon">{{ contentCollapsed ? '+' : '-' }}</span>
-                </div>
-              </span>
-            </div>
-            <div class="menu-category-button" v-if="showTooltip">
-              <button v-for="item in contentMenus" :key="item.id" class="data-management__btn"
-                :class="{ active: activeMenu === item.id }" @click="changeMenu(item)" v-show="!contentCollapsed">
-                <span class="menu-icon" v-html="item.icon"></span>
-                <span class="menu-text">{{ item.title }}</span>
-              </button>
-            </div>
-            <!-- 气泡按钮 -->
-            <div class="menu-bubble-button" v-if="showBubble && isHovering && currentCategory === 'content'"
-              :style="bubblePosition">
-              <div class="bubble-container">
-                <!-- 气泡标题 -->
-                <div class="bubble-header">
-                  <span class="bubble-title">内容管理</span>
-                </div>
-                <!-- 气泡内容菜单 -->
-                <div class="bubble-menu">
-                  <button v-for="item in contentMenus" :key="item.id" class="data-management__btn"
-                    :class="{ active: activeMenu === item.id }" @click="changeMenu(item)">
-                    <span class="menu-icon" v-html="item.icon"></span>
-                    <span class="menu-text">{{ item.title }}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!-- 旅游管理分类 -->
-            <div class="menu-category">
-              <div @mouseenter="(e) => handleMouseEnter('travel', e)" @mouseleave="handleMouseLeave">
-                <svg t="1748482728710" class="menu-category-icon" viewBox="0 0 1024 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="33991">
-                  <path
-                    d="M953.6 262.4h-179.2l-160-137.6s-6.4 0-6.4-6.4v-12.8c0-51.2-44.8-96-96-96s-96 44.8-96 96c0 9.6 0 16 6.4 28.8l-156.8 128h-192c-32 0-60.8 28.8-60.8 60.8v624c0 38.4 28.8 67.2 60.8 67.2h873.6c32 0 60.8-28.8 60.8-60.8V323.2c6.4-35.2-19.2-60.8-54.4-60.8z m-438.4-192c16 0 28.8 16 28.8 28.8 0 22.4-9.6 32-28.8 32-16 0-28.8-9.6-28.8-28.8 0-19.2 9.6-32 28.8-32z m-51.2 112c9.6 6.4 32 16 51.2 16 22.4 0 44.8-9.6 60.8-22.4l105.6 89.6h-310.4l92.8-83.2z m-300.8 268.8h512c16 0 28.8 16 28.8 28.8 0 16-16 28.8-28.8 28.8h-512c-16 6.4-32-9.6-32-28.8 0-19.2 16-28.8 32-28.8z m278.4 182.4H163.2c-16 0-28.8-16-28.8-28.8 0-16 16-28.8 28.8-28.8h278.4c16 0 28.8 16 28.8 28.8 3.2 12.8-12.8 28.8-28.8 28.8z m505.6-6.4l-96 96 32 220.8-32 32-64-188.8-96 96v64l-16 32-48-96-96-48 32-16h64l96-96-188.8-64 32-32 220.8 32 96-96s35.2-28.8 64 0c28.8 28.8 0 64 0 64z"
-                    fill="#53A3FF" p-id="33992"></path>
-                </svg>
-              </div>
-
-              <span class="category-title" @click="toggleCategory('travel')" v-if="showTooltip">
-                <div>
-                  <span>旅游管理</span>
-                  <span class="toggle-icon">{{ travelCollapsed ? '+' : '-' }}</span>
-                </div>
-              </span>
-            </div>
-            <div class="menu-category-button" v-if="showTooltip">
-              <button v-for="item in travelMenus" :key="item.id" class="data-management__btn"
-                :class="{ active: activeMenu === item.id }" @click="changeMenu(item)" v-show="!travelCollapsed">
-                <span class="menu-icon" v-html="item.icon"></span>
-                <span class="menu-text">{{ item.title }}</span>
-              </button>
-            </div>
-            <!-- 气泡按钮 -->
-            <div class="menu-bubble-button" v-if="showBubble && isHovering && currentCategory === 'travel'"
-              :style="bubblePosition">
-              <div class="bubble-container">
-                <!-- 气泡标题 -->
-                <div class="bubble-header">
-                  <span class="bubble-title">旅游管理</span>
-                </div>
-                <!-- 气泡内容菜单 -->
-                <div class="bubble-menu">
-                  <button v-for="item in travelMenus" :key="item.id" class="data-management__btn"
-                    :class="{ active: activeMenu === item.id }" @click="changeMenu(item)">
-                    <span class="menu-icon" v-html="item.icon"></span>
-                    <span class="menu-text">{{ item.title }}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!-- 个人信息中心 -->
-            <div class="menu-category">
-              <div @mouseenter="(e) => handleMouseEnter('management', e)" @mouseleave="handleMouseLeave">
-                <svg t="1751165036207" class="menu-category-icon" viewBox="0 0 1024 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="12882">
-                  <path
-                    d="M946.9952 171.6224h-146.8416c-13.5168 0-24.576 11.0592-24.576 24.576s11.0592 24.576 24.576 24.576h146.8416c8.8064 0 16.384 7.5776 16.384 16.384v573.44c0 8.8064-7.5776 16.384-16.384 16.384h-858.112c-8.8064 0-16.384-7.5776-16.384-16.384v-573.44c0-8.8064 7.5776-16.384 16.384-16.384h73.728c13.5168 0 24.576-11.0592 24.576-24.576s-11.0592-24.576-24.576-24.576h-73.728c-36.0448 0-65.536 29.4912-65.536 65.536v573.44c0 36.0448 29.4912 65.536 65.536 65.536h858.112c36.0448 0 65.536-29.4912 65.536-65.536v-573.44c0-36.2496-29.4912-65.536-65.536-65.536z"
-                    fill="#358FDF" p-id="12883"></path>
-                  <path
-                    d="M272.384 220.7744h414.72c13.5168 0 24.576-11.0592 24.576-24.576s-11.0592-24.576-24.576-24.576H272.384c-13.5168 0-24.576 11.0592-24.576 24.576s11.0592 24.576 24.576 24.576z"
-                    fill="#358FDF" p-id="12884"></path>
-                  <path
-                    d="M456.0896 651.0592c-7.9872-18.0224-18.8416-34.4064-32.1536-48.5376v-26.624c0-13.5168-11.0592-24.576-24.576-24.576h-65.1264c-7.5776-1.6384-15.1552-2.8672-23.1424-3.4816 51.4048-6.9632 91.136-50.9952 91.136-104.2432 0-58.1632-47.104-105.2672-105.2672-105.2672s-105.2672 47.104-105.2672 105.2672c0 53.4528 39.7312 97.4848 91.136 104.2432-7.7824 0.6144-15.5648 1.8432-23.1424 3.4816h-67.584c-13.5168 0-24.576 11.0592-24.576 24.576v29.2864c-12.0832 13.5168-22.1184 28.8768-29.696 45.6704-6.9632 15.9744 4.9152 33.9968 22.3232 33.9968 2.4576 0 4.9152-0.4096 7.3728-1.2288v0.6144c0 13.5168 11.0592 24.576 24.576 24.576H399.36c13.5168 0 24.576-11.0592 24.576-24.576v-1.6384c3.072 1.4336 6.3488 2.2528 10.0352 2.2528 17.2032 0.2048 29.0816-17.8176 22.1184-33.792z"
-                    fill="#FFCD5F" p-id="12885"></path>
-                  <path
-                    d="M774.144 376.0128H561.152c-13.5168 0-24.576-11.0592-24.576-24.576s11.0592-24.576 24.576-24.576h212.992c13.5168 0 24.576 11.0592 24.576 24.576s-11.0592 24.576-24.576 24.576zM774.144 512H561.152c-13.5168 0-24.576-11.0592-24.576-24.576s11.0592-24.576 24.576-24.576h212.992c13.5168 0 24.576 11.0592 24.576 24.576s-11.0592 24.576-24.576 24.576zM864.256 709.2224H561.152c-13.5168 0-24.576-11.0592-24.576-24.576s11.0592-24.576 24.576-24.576h303.104c13.5168 0 24.576 11.0592 24.576 24.576s-11.0592 24.576-24.576 24.576z"
-                    fill="#358FDF" p-id="12886"></path>
-                </svg>
-              </div>
-
-              <span class="category-title" @click="toggleCategory('management')" v-if="showTooltip">
-                <div>
-                  <span>内容管理</span>
-                  <span class="toggle-icon">{{ managementCollapsed ? '+' : '-' }}</span>
-                </div>
-              </span>
-            </div>
-            <div class="menu-category-button" v-if="showTooltip">
-              <button v-for="item in otherMenus" :key="item.id" class="data-management__btn"
-                :class="{ active: activeMenu === item.id }" @click="changeMenu(item)" v-show="!managementCollapsed">
-                <span class="menu-icon" v-html="item.icon"></span>
-                <span class="menu-text">{{ item.title }}</span>
-              </button>
-            </div>
-            <!-- 气泡按钮 -->
-            <div class="menu-bubble-button" v-if="showBubble && isHovering && currentCategory === 'management'"
-              :style="bubblePosition">
-              <div class="bubble-container">
-                <!-- 气泡标题 -->
-                <div class="bubble-header">
-                  <span class="bubble-title">内容管理</span>
-                </div>
-                <!-- 气泡内容菜单 -->
-                <div class="bubble-menu">
-                  <button v-for="item in otherMenus" :key="item.id" class="data-management__btn"
-                    :class="{ active: activeMenu === item.id }" @click="changeMenu(item)">
-                    <span class="menu-icon" v-html="item.icon"></span>
-                    <span class="menu-text">{{ item.title }}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <!-- 系统监测 -->
-            <div class="menu-category">
-              <div class="menu-trigger" @mouseenter="(e) => handleMouseEnter('monitoring', e)"
-                @mouseleave="handleMouseLeave">
-                <svg t="1752252275268" class="menu-category-icon" viewBox="0 0 1408 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="7412" width="256" height="256">
-                  <path
-                    d="M704 1024c388.8 0 704-333.44 704-744.704 0-140.608-315.2 0-704 0s-704 7.68-704 0C0 690.56 315.2 1024 704 1024z"
-                    fill="#02D0B6" p-id="7413"></path>
-                  <path d="M370.304 70.144l346.688 209.088L370.304 488.32a244.16 244.16 0 1 1 0-418.176z" fill="#398BF7"
-                    p-id="7414"></path>
-                  <path d="M1037.696 70.144l-346.688 209.088 346.688 209.088a244.16 244.16 0 1 0 0-418.176z"
-                    fill="#00AF99" p-id="7415"></path>
-                </svg>
-              </div>
-
-
-              <span class="category-title" @click="toggleCategory('monitoring')" v-if="showTooltip">
-                <div>
-                  <span>系统监控</span>
-                  <span class="toggle-icon">{{ systemMonitoring ? '+' : '-' }}</span>
-                </div>
-              </span>
-            </div>
-            <div class="menu-category-button" v-if="showTooltip">
-              <button v-for="item in Monitoring" :key="item.id" class="data-management__btn"
-                :class="{ active: activeMenu === item.id }" @click="changeMenu(item)" v-show="!systemMonitoring">
-                <span class="menu-icon" v-html="item.icon"></span>
-                <span class="menu-text">{{ item.title }}</span>
-              </button>
-            </div>
-            <!-- 气泡按钮 -->
-            <div class="menu-bubble-button" v-if="showBubble && isHovering && currentCategory === 'monitoring'"
-              :style="bubblePosition">
-              <div class="bubble-container">
-                <!-- 气泡标题 -->
-                <div class="bubble-header">
-                  <span class="bubble-title">系统监测</span>
-                </div>
-                <!-- 气泡内容菜单 -->
-                <div class="bubble-menu">
-                  <button v-for="item in Monitoring" :key="item.id" class="data-management__btn"
-                    :class="{ active: activeMenu === item.id }" @click="changeMenu(item)">
-                    <span class="menu-icon" v-html="item.icon"></span>
-                    <span class="menu-text">{{ item.title }}</span>
-                  </button>
-                </div>
-              </div>
+              </template>
             </div>
           </div>
         </transition>
@@ -614,29 +382,20 @@ const openSettings = () => {
 };
 // 菜单分类
 const toggleCategory = (type) => {
-  if (type === 'system') {
-    systemCollapsed.value = !systemCollapsed.value;
-    authStore.systemCollapsed = systemCollapsed.value;
-  }
-  if (type === 'content') {
-    contentCollapsed.value = !contentCollapsed.value;
-    authStore.contentCollapsed = contentCollapsed.value;
-  }
-  if (type === 'travel') {
-    travelCollapsed.value = !travelCollapsed.value;
-    authStore.travelCollapsed = travelCollapsed.value;
-  }
-  if (type === 'user') {
-    userCollapsed.value = !userCollapsed.value;
-    authStore.userCollapsed = userCollapsed.value;
-  }
-  if (type === 'management') {
-    managementCollapsed.value = !managementCollapsed.value;
-    authStore.managementCollapsed = managementCollapsed.value;
-  }
-  if (type === 'monitoring') {
-    systemMonitoring.value = !systemMonitoring.value;
-    authStore.systemMonitoring = systemMonitoring.value;
+  const category = menuCategories.find(cat => cat.id === type);
+  if (category) {
+    // 检查collapsed是否是ref对象
+    if (category.collapsed && typeof category.collapsed === 'object' && 'value' in category.collapsed) {
+      // 如果是ref对象，访问.value属性
+      category.collapsed.value = !category.collapsed.value;
+      // 更新Pinia store中的状态
+      authStore[`${type}Collapsed`] = category.collapsed.value;
+    } else {
+      // 如果是普通布尔值，直接赋值
+      category.collapsed = !category.collapsed;
+      // 更新Pinia store中的状态
+      authStore[`${type}Collapsed`] = category.collapsed;
+    }
   }
 };
 
@@ -691,6 +450,71 @@ const otherMenus = computed(() =>
 const Monitoring = computed(() =>
   menuItems.filter(item => [16, 20, 21].includes(item.id))
 )
+
+// 菜单分类配置对象
+const menuCategories = reactive([
+  {
+    id: 'system',
+    title: '系统管理',
+    icon: `
+      <svg t="1757646914274" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4895" width="32" height="32">
+        <path d="M428 548H296c-99.6 0-180 80.4-180 180s80.4 180 180 180 180-80.4 180-180v-132c0-26.4-21.6-48-48-48z" fill="#3F51B5" p-id="4896"></path><path d="M296 928c-110.4 0-200-89.6-200-200s89.6-200 200-200h132c37.6 0 68 30.4 68 68v132c0 110.4-89.6 200-200 200z m0-360c-88.4 0-160 71.6-160 160s71.6 160 160 160 160-71.6 160-160v-132c0-15.6-12.4-28-28-28H296zM728 548h-132c-26.4 0-48 21.6-48 48v132c0 99.6 80.4 180 180 180s180-80.4 180-180-80.4-180-180-180z" fill="#3F51B5" p-id="4897"></path><path d="M728 928c-110.4 0-200-89.6-200-200v-132c0-37.6 30.4-68 68-68h132c110.4 0 200 89.6 200 200s-89.6 200-200 200z m-132-360c-15.6 0-28 12.4-28 28v132c0 88.4 71.6 160 160 160s160-71.6 160-160-71.6-160-160-160h-132z" fill="#3F51B5" p-id="4898"></path><path d="M596 476h132c99.6 0 180-80.4 180-180s-80.4-180-180-180-180 80.4-180 180v132c0 26.4 21.6 48 48 48z" fill="#3F51B5" p-id="4899"></path><path d="M728 496h-132c-37.6 0-68-30.4-68-68V296c0-110.4 89.6-200 200-200s200 89.6 200 200-89.6 200-200 200z m0-360c-88.4 0-160 71.6-160 160v132c0 15.6 12.4 28 28 28h132c88.4 0 160-71.6 160-160s-71.6-160-160-160z" fill="#3F51B5" p-id="4900"></path><path d="M296 116c-99.6 0-180 80.4-180 180s80.4 180 180 180h132c26.4 0 48-21.6 48-48V296c0-99.6-80.4-180-180-180z" fill="#3F51B5" p-id="4901"></path><path d="M428 496H296c-110.4 0-200-89.6-200-200s89.6-200 200-200 200 89.6 200 200v132c0 37.6-30.4 68-68 68zM296 136c-88.4 0-160 71.6-160 160s71.6 160 160 160h132c15.6 0 28-12.4 28-28V296c0-88.4-71.6-160-160-160z" fill="#3F51B5" p-id="4902"></path>
+      </svg>`,
+    menus: systemMenus,
+    collapsed: systemCollapsed
+  },
+  {
+    id: 'content',
+    title: '内容管理',
+    icon: `
+      <svg t="1757647174122" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6788" width="32" height="32">
+        <path d="M842.606019 706.795948a109.395447 109.395447 0 0 1 84.107028 0l63.425811 27.975953a54.569746 54.569746 0 0 1 0 100.692955l-399.725947 171.567076a191.864359 191.864359 0 0 1-156.977604 0l-399.802734-171.567076c-44.843431-20.502048-44.843431-83.902264 0-100.692955l63.502598-27.975953a109.395447 109.395447 0 0 1 84.107029 0l222.323082 95.087526a267.140918 267.140918 0 0 0 138.216054 20.476452c29.870025-1.79169 57.94836-11.159667 84.132624-22.344929zM97.135171 432.565058a109.395447 109.395447 0 0 1 84.107029 0l222.323082 95.164313a267.140918 267.140918 0 0 0 138.164863 20.476452c29.870025-1.79169 57.94836-11.159667 84.107029-22.344928l216.692058-93.21905a109.395447 109.395447 0 0 1 84.107028 0l63.451407 27.975953a54.569746 54.569746 0 0 1 0 100.692955l-399.674756 171.490289a191.864359 191.864359 0 0 1-156.977604 0l-399.802734-171.567076a54.569746 54.569746 0 0 1 0-100.692955zM433.512094 16.790691a191.864359 191.864359 0 0 1 156.952008 0L990.138858 188.127407a54.569746 54.569746 0 0 1 0 100.769742l-399.725947 171.643862a191.864359 191.864359 0 0 1-156.977604 0l-399.802734-171.643862c-44.843431-18.710358-44.843431-82.110574 0-102.535836z" fill="#95DF64" p-id="6789"></path>
+      </svg>`,
+    menus: contentMenus,
+    collapsed: contentCollapsed
+  },
+  {
+    id: 'travel',
+    title: '旅行管理',
+    icon: `
+      <svg t="1757647270457" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="14196" width="32" height="32">
+        <path d="M882.24 18.688a67.008 67.008 0 0 0-49.28-6.272c-6.144 2.112-10.24 4.16-14.336 6.272-59.52-20.928-123.136-25.088-184.64-8.32a318.912 318.912 0 0 0-188.8 146.368l-8.256 12.544c-2.048 2.112-2.048 4.224-4.096 6.272a44.032 44.032 0 0 0 14.4 56.512c18.432 12.544 43.072 6.272 55.36-12.544l2.112-4.224c4.096-6.272 10.24-10.432 16.384-10.432a33.152 33.152 0 0 1 20.48 2.112c6.208 4.16 12.352 27.2 4.16 48.064a44.16 44.16 0 0 0 18.432 50.24c16.448 10.432 39.04 6.272 51.328-8.32 14.336-16.768 36.928-23.04 43.072-18.88 4.096 2.112 10.24 20.928 6.144 39.68l-215.424 444.8-116.992-271.104v-2.112c-4.096-14.656-2.048-33.472 2.048-37.632 4.096-2.112 22.592 4.16 32.832 16.704a40.192 40.192 0 0 0 51.328 8.32 44.16 44.16 0 0 0 18.432-50.112c-4.096-14.72-2.048-33.472 2.048-37.696 4.16-2.048 20.544 4.224 30.784 16.768 14.4 16.704 36.992 18.816 55.424 6.272a42.944 42.944 0 0 0 12.352-54.4l-10.24-16.768a273.152 273.152 0 0 0-172.416-133.824 281.408 281.408 0 0 0-166.208 6.272c-4.096-2.112-8.192-4.224-12.352-4.224a61.824 61.824 0 0 0-77.952 58.624C-2.176 357.568-30.912 508.16 36.8 629.504l6.144 12.544c2.048 2.112 2.048 4.16 4.096 6.272 8.256 12.544 20.544 20.928 34.88 20.928 6.208 0 14.4-2.112 20.544-4.16 20.48-10.496 26.688-35.584 16.448-56.512l-2.048-4.16c-4.16-10.496 0-23.04 8.192-27.2 4.096-2.112 22.528 4.16 32.832 16.704a40.192 40.192 0 0 0 51.264 8.384 44.16 44.16 0 0 0 18.496-50.176c-4.096-14.72-2.048-33.472 2.048-37.696 4.096-2.048 16.448 2.112 28.736 10.496l106.688 254.336c-102.592 29.312-192.896 92.032-262.656 177.792a42.752 42.752 0 0 0-6.144 43.904c6.144 14.72 20.48 23.04 36.928 23.04h757.184c16.448 0 30.784-8.32 36.992-23.04a42.752 42.752 0 0 0-6.208-43.904c-94.4-117.12-229.76-188.224-375.488-198.72l184.64-390.336s2.112 0 2.112-2.048c14.336-16.768 36.928-23.04 43.072-18.816 6.144 4.16 12.288 27.136 4.096 48.064a44.16 44.16 0 0 0 18.496 50.24c16.384 10.432 38.976 6.272 51.264-8.384 14.4-16.768 36.928-23.04 43.072-18.816 6.208 4.16 10.24 27.2 4.16 46.016a43.136 43.136 0 0 0 22.528 52.288c6.208 2.112 10.24 4.16 16.448 4.16 14.336 0 28.736-8.32 34.88-20.928l10.24-18.816c78.016-138.048 47.232-307.456-65.664-405.76 0-23.04-12.288-43.968-32.832-56.512z" p-id="14197" fill="#1296db"></path>
+      </svg>`,
+    menus: travelMenus,
+    collapsed: travelCollapsed
+  },
+  {
+    id: 'user',
+    title: '用户管理',
+    icon: `
+      <svg t="1757647325059" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="16521" width="32" height="32">
+        <path d="M512 0L955.960133 256v512L512 1024 68.039867 768V256z" fill="#3EBDD3" p-id="16522"></path><path d="M514.864478 0L955.960133 255.523721v511.047442l-441.095655-255.523721z" fill="#1392AD" p-id="16523"></path><path d="M513.024 509.142326L955.960133 765.536957 510.969196 1024 68.039867 766.571163z" fill="#17A3BA" p-id="16524"></path><path d="M399.081037 532.279282c4.017754-0.105462 9.995056 1.394817 13.471893 3.333954 0 0 9.23301 5.259482 17.59511 8.804359 24.548784 10.416904 52.574405 16.322764 82.232983 16.322764 29.869502 0 57.901927-6.014724 82.559575-16.540492 7.504797-3.119628 15.638963-7.664691 17.054193-8.467561l0.217727-0.122472c3.476837-1.823468 9.559601-3.330551 13.468492-3.330552l11.294618 0.108864c10.927203 1.592133 22.034711 5.147216 32.761196 10.24C605.323482 559.631309 557.92691 617.155615 557.92691 685.501661c0 32.172651 10.501953 61.950299 28.338605 86.226924-22.398724 2.446033-47.20606 3.9259-74.428811 3.9259-156.097063 0-232.900465-48.760771-232.900465-48.760771-7.712319-3.973528-13.686219-13.318804-13.580757-20.728345 2.068412-56.711229 16.516678-85.600957 16.516677-85.600957 13.577355-42.746047 60.939907-82.267003 106.023123-88.176266zM512.054432 231.335548c76.041355 0 137.634445 60.899083 137.634445 136.079734 0 75.184053-61.59309 136.079734-137.634445 136.079735S374.423389 442.599336 374.423389 367.415282c0-75.180651 61.589688-136.079734 137.631043-136.079734z" fill="#FFFFFF" p-id="16525"></path><path d="M697.408638 571.534884l94.279442 54.431893v108.863788L697.408638 789.262458l-94.279442-54.431893v-108.863788L697.408638 571.534884z m0 17.009966l-79.548811 45.926911v91.85382L697.408638 772.252492l79.548811-45.926911v-91.85382L697.408638 588.54485z" fill="#FFFFFF" p-id="16526"></path>
+      </svg>`,
+    menus: userMenus,
+    collapsed: userCollapsed
+  },
+  {
+    id: 'other',
+    title: '个人中心',
+    icon: `
+      <svg t="1757647361981" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19369" width="32" height="32">
+        <path d="M514.4576 512.8704m-432.3328 0a432.3328 432.3328 0 1 0 864.6656 0 432.3328 432.3328 0 1 0-864.6656 0Z" fill="#4AEDCD" p-id="19370"></path><path d="M289.4848 418.7136c-85.0432 0-160.4096 41.3696-207.104 105.0624 4.5568 182.7328 122.368 337.3056 285.952 396.032 103.2192-33.28 177.92-130.048 177.92-244.3776-0.0512-141.7216-114.9952-256.7168-256.768-256.7168z" fill="#83FFE1" p-id="19371"></path><path d="M523.3664 352.8704m-140.544 0a140.544 140.544 0 1 0 281.088 0 140.544 140.544 0 1 0-281.088 0Z" fill="#FFFFFF" p-id="19372"></path><path d="M243.3536 732.3648c65.28 73.2672 163.1744 119.9104 272.64 119.9104 118.0672 0 222.6176-54.2208 287.3856-137.6256-32.4608-116.1216-144.5376-201.7792-277.9136-201.7792-139.9808 0-256.6144 94.464-282.112 219.4944z" fill="#D7FFF7" p-id="19373"></path>
+      </svg>`,
+    menus: otherMenus,
+    collapsed: managementCollapsed
+  },
+  {
+    id: 'monitoring',
+    title: '服务监测',
+    icon: `
+      <svg t="1757647434618" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="29977" width="32" height="32">
+        <path d="M73.152 0h877.696A73.152 73.152 0 0 1 1024 73.152v658.272a73.152 73.152 0 0 1-73.152 73.152H73.152A73.152 73.152 0 0 1 0 731.424V73.152A73.152 73.152 0 0 1 73.152 0z m564.704 469.76l-127.04-326.816-138.816 261.12-77.44-79.712-131.04 81.664 36.96 21.312L284.48 375.04l101.344 104.32 117.312-220.704 129.76 333.824 110.624-232.928 45.12 96 49.376-8.32-94.24-200.416-105.92 222.976z m-36.48 299.84v-29.728H428.48v29.76h172.96zM219.424 950.848h585.152V1024H219.424v-73.152z" fill="#5AD8A6" p-id="29978"></path>
+      </svg>`,
+    menus: Monitoring,
+    collapsed: systemMonitoring
+  }
+]);
+
 // 使用shallowRef优化性能
 const activeComponent = shallowRef(null);
 const showContent = ref(true);
@@ -701,7 +525,7 @@ onMounted(() => {
   activeComponent.value = menuItem.component;
   activeMenu.value = menuItem.id;
   updateBreadcrumb(menuItem);
-  
+
   // 初始化时设置首页面包屑的active样式
   const breadcrumbWrappers = document.querySelectorAll('.breadcrumb-main.fixed-element .breadcrumb-wrapper');
   breadcrumbWrappers.forEach(wrapper => {
@@ -710,13 +534,13 @@ onMounted(() => {
       wrapper.classList.add('active');
     }
   });
-  
+
   // 恢复侧边栏折叠状态
   document.documentElement.style.setProperty(
     '--sidebar-width',
     isSidebarCollapsed.value ? '64px' : '180px'
   );
-  
+
   // 恢复内容区域宽度
   document.documentElement.style.setProperty(
     '--main-width',
@@ -841,7 +665,7 @@ const changeMenu = (item) => {
   authStore.currentComponentPath = item.id;
   authStore.breadcrumbList = breadcrumbList.value;
   updateBreadcrumb(item);
-  
+
   // 更新面包屑导航的active样式
   const breadcrumbWrappers = document.querySelectorAll('.breadcrumb-main.fixed-element .breadcrumb-wrapper');
   breadcrumbWrappers.forEach(wrapper => {
@@ -927,7 +751,7 @@ onMounted(() => {
   } else {
     updateBreadcrumb(menuItem);
   }
-  
+
   // 在下一个tick中更新面包屑导航的active样式
   nextTick(() => {
     const breadcrumbWrappers = document.querySelectorAll('.breadcrumb-main.fixed-element .breadcrumb-wrapper');
@@ -973,7 +797,7 @@ const safety = `
   <svg t="1749169742276" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="23180" width="256" height="256"><path d="M1023.910943 511.999898c5.11911 317.794367-194.116663 516.825376-511.91103 511.911029-317.794367 4.914346-516.825376-194.116663-511.91103-511.911029C-4.825463 194.20553 194.205546-4.825478 511.999913 0.088868c317.794367-4.914346 516.825376 194.116663 511.91103 511.91103z" fill="#4ED89D" p-id="23181"></path><path d="M1022.477592 566.671996C1006.915497 340.40732 852.318366 201.16752 614.382119 204.85328c-254.112635-4.095288-413.624112 155.416189-409.528824 409.528824-3.890524 237.936247 135.554041 392.533378 361.613952 408.095473 268.036615-16.381153 439.629192-187.97373 456.010345-455.805581z" fill="#44D39C" p-id="23182"></path><path d="M1015.515602 629.944199C985.824762 491.523456 876.480566 407.160519 716.764325 409.617692c-190.635668-3.071466-310.218084 116.51095-307.146618 307.146618-2.457173 159.716241 81.905765 269.060437 220.121743 298.751277 211.112109-34.400421 351.375731-174.664043 385.776152-385.571388z" fill="#3ACC97" p-id="23183"></path><path d="M997.701098 705.707031C964.734028 646.734881 902.076118 613.153517 819.146531 614.382104c-127.1587-2.047644-206.812056 77.605712-204.764412 204.764412-1.433351 82.929587 32.352777 145.587497 91.120163 178.554567a431.233852 431.233852 0 0 0 292.198816-291.994052z" fill="#30C694" p-id="23184"></path><path d="M604.962956 781.674628l-81.905765 54.467334a20.476441 20.476441 0 0 1-22.728849 0l-81.905765-54.467334a373.285523 373.285523 0 0 1-163.81153-275.20337l-18.428797-193.502369a61.429324 61.429324 0 0 1 44.229113-64.910318l214.797868-61.429324a61.429324 61.429324 0 0 1 33.786128 0l214.797868 61.429324a61.429324 61.429324 0 0 1 44.229113 64.910318l-18.428797 193.502369a373.285523 373.285523 0 0 1-164.630587 275.20337z" fill="#BDEFD1" p-id="23185"></path><path d="M483.128131 593.905662a30.714662 30.714662 0 0 1-21.705028-9.009634l-86.82011-86.82011a30.714662 30.714662 0 0 1 43.410055-43.410056l65.115083 65.115083 122.858647-122.858647a30.714662 30.714662 0 0 1 43.410055 43.410055l-144.563674 145.382733a30.714662 30.714662 0 0 1-21.705028 8.190576z" fill="#FFFFFF" p-id="23186"></path></svg>
 `;
 const mh = `
-  <svg t="1749170009323" class="icon" viewBox="0 0 1037 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="36681" width="256" height="256"><path d="M94.008 132.92h317.574q32.008 0 32.008 32.009v317.573q0 32.008-32.008 32.008H94.008Q62 514.51 62 482.502V164.93q0-32.008 32.008-32.008zM504.113 280.517L714.026 70.604q20.858-20.858 41.717 0l209.913 209.913q20.858 20.859 0 41.717L755.743 532.147q-20.859 20.858-41.717 0L504.113 322.234q-20.858-20.858 0-41.717zM94.008 580.41h317.574q32.008 0 32.008 32.008v317.574q0 32.008-32.008 32.008H94.008Q62 962 62 929.992V612.418q0-32.008 32.008-32.008zM561.582 580.41h317.573q32.008 0 32.008 32.008v317.574q0 32.008-32.008 32.008H561.582q-32.009 0-32.009-32.008V612.418q0-32.008 32.009-32.008z" fill="#4F7CE4" p-id="36682"></path></svg> 
+  <svg t="1757654063875" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="34092" width="32" height="32"><path d="M890.03 123.11H133.85c-33.54 0-60.96 26.22-62.9 59.27v448.59c1.94 33.06 29.35 59.27 62.9 59.27h330.39v98.87c0 5.57 1 11.1 2.94 16.32H308.59c-26.11 0-47.26 21.16-47.26 47.26 0 26.1 21.16 47.26 47.26 47.26h404.43c26.02-0.11 47.07-21.24 47.07-47.26 0-26.03-21.04-47.16-47.07-47.26H555.8c1.96-5.04 2.96-10.59 2.96-16.39v-98.8h331.27c34.81 0 63.02-28.22 63.02-63.02v-441.1c0-34.8-28.21-63.01-63.02-63.01zM685.7 382.81l-0.53 2.36c-0.97 3.19-2.95 6.16-6.05 8.43L390.75 603.65c-14.02 10.22-32.24-5.46-24.23-20.84l78.99-151.83-85.98-19.31c-9.12-2.05-14.28-11-12.49-19.42 0.41-1.94 1.2-3.86 2.39-5.66l135.81-205.06a16.428 16.428 0 0 1 17.29-6.96l144.17 32.38c11.38 2.56 16.54 15.82 9.88 25.39L579.4 343.27l93.65 21.03c9.11 2.05 13.81 10.57 12.65 18.51z" fill="#825FD2" p-id="34093"></path></svg>
 `;
 const trgl = `
   <svg t="1749135882295" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11478" width="256" height="256"><path d="M695.04 938.7008H229.7344c-74.8032 0-135.424-59.5968-135.424-133.12V220.3648c0-73.5232 60.6208-133.12 135.424-133.12h465.3056c74.8032 0 135.424 59.5968 135.424 133.12v585.2672c0 73.472-60.6208 133.0688-135.424 133.0688z" fill="#FFAC3E" p-id="11479"></path><path d="M620.1344 328.9088h-325.12c-22.6304 0-40.96-18.3296-40.96-40.96s18.3296-40.96 40.96-40.96h325.12c22.6304 0 40.96 18.3296 40.96 40.96s-18.3296 40.96-40.96 40.96zM620.1344 491.3152h-325.12c-22.6304 0-40.96-18.3296-40.96-40.96s18.3296-40.96 40.96-40.96h325.12c22.6304 0 40.96 18.3296 40.96 40.96s-18.3296 40.96-40.96 40.96zM450.7136 653.6704h-155.648c-22.6304 0-40.96-18.3296-40.96-40.96s18.3296-40.96 40.96-40.96h155.6992c22.6304 0 40.96 18.3296 40.96 40.96s-18.3808 40.96-41.0112 40.96z" fill="#FFFFFF" p-id="11480"></path><path d="M764.0064 550.656l40.0384 81.1008a32.57856 32.57856 0 0 0 24.5248 17.8176l89.4976 13.0048c26.6752 3.8912 37.376 36.7104 18.0224 55.5008l-64.768 63.1296a32.57344 32.57344 0 0 0-9.3696 28.8256l15.3088 89.1392c4.5568 26.5728-23.3472 46.848-47.2064 34.304l-80.0256-42.0864a32.6912 32.6912 0 0 0-30.3104 0l-80.0256 42.0864c-23.8592 12.544-51.7632-7.7312-47.2064-34.304l15.3088-89.1392c1.792-10.5472-1.6896-21.3504-9.3696-28.8256l-64.768-63.1296c-19.3024-18.8416-8.6528-51.6608 18.0224-55.5008l89.4976-13.0048c10.5984-1.536 19.7632-8.192 24.5248-17.8176l40.0384-81.1008c11.8272-24.1664 46.336-24.1664 58.2656 0z" fill="#FFB357" p-id="11481"></path><path d="M830.464 649.8816l-1.9456-0.256c-10.5984-1.536-19.7632-8.192-24.5248-17.8176l-40.0384-81.1008c-11.9296-24.1664-46.4384-24.1664-58.368 0L665.6 631.7568a32.57856 32.57856 0 0 1-24.5248 17.8176l-89.4976 13.0048c-26.6752 3.8912-37.376 36.7104-18.0224 55.5008l64.768 63.1296a32.57344 32.57344 0 0 1 9.3696 28.8256l-15.3088 89.1392c-4.5568 26.5728 23.3472 46.848 47.2064 34.304l80.0256-42.0864c9.472-4.9664 20.7872-4.9664 30.3104 0l31.5904 16.64c29.8496-24.4224 48.896-61.2352 48.896-102.4v-155.7504z" fill="#FF7C0E" p-id="11482"></path></svg>
