@@ -2,9 +2,17 @@
     <div class="modal">
         <div class="notification">
             <!-- 文字提示内容 -->
-            <div>
+            <div class="notification-content">
                 <div class="noticontent">
-                    <div class="notititle">是否确认退出登录？</div>
+                    <div class="notititle">
+                        <span>是否确认退出登录？</span>
+                        <svg t="1757658764115" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="35948" width="32" height="32">
+                            <path
+                                d="M511.49551 64.648392c-247.341295 0-447.677019 200.335724-447.677019 447.677019s200.335724 447.677019 447.677019 447.677019 447.677019-200.335724 447.677019-447.677019S758.837828 64.648392 511.49551 64.648392zM509.817288 612.492762c-32.456203 0-58.757219-25.741267-58.757219-58.198493L451.060069 281.771455c0-32.456203 26.301016-58.19747 58.757219-58.19747 31.896454 0 58.19747 25.741267 58.19747 58.19747l0 272.522814C568.014758 586.751494 541.713742 612.492762 509.817288 612.492762zM511.49551 665.654542c37.492916 0 67.711148 30.218232 67.711148 67.711148 0 37.492916-30.218232 67.711148-67.711148 67.711148-37.492916 0-67.711148-30.218232-67.711148-67.711148C443.785386 695.872774 474.003618 665.654542 511.49551 665.654542z"
+                                fill="#F77207" p-id="35949"></path>
+                        </svg>
+                    </div>
                     <div class="notibody">退出登录后，您将无法查看收藏的景点、评论、订单等</div>
                 </div>
                 <!-- 按钮 -->
@@ -48,7 +56,7 @@ const handleCancel = () => {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 16px;
     padding: 30px;
@@ -73,19 +81,36 @@ const handleCancel = () => {
     z-index: -1;
 }
 
+.notification-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.noticontent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
 .notititle {
+    width: 100%;
     font-size: 22px;
     font-weight: 600;
-    margin-bottom: 15px;
     color: #ffffff;
     text-align: center;
     letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
 }
 
 .notibody {
     font-size: 16px;
     line-height: 1.6;
-    margin-bottom: 25px;
     color: rgba(255, 255, 255, 0.8);
     text-align: center;
 }
@@ -94,7 +119,6 @@ const handleCancel = () => {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-top: 20px;
 }
 
 .btn {
