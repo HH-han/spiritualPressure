@@ -30,6 +30,7 @@
                 </td>
                 <td>{{ hotel.id }}</td>
                 <td>{{ hotel.hotelName }}</td>
+                <td>{{ hotel.hotelPhone }}</td>
                 <td>
                   <img :src="hotel.hotelImage" alt="酒店图片" style="width: 35px; height: 35px;"
                     @click="triggerFileInput(hotel)" />
@@ -42,6 +43,9 @@
                 <td>{{ hotel.hotelType }}</td>
                 <td>{{ hotel.evaluation }}</td>
                 <td>{{ hotel.sales }}</td>
+                <td>{{ hotel.hotelFacility }}</td>
+                <td>{{ hotel.hotelService }}</td>
+                <td>{{ hotel.hotelTraffic }}</td>
                 <td>{{ formatDate(hotel.created_at) }}</td>
                 <td>{{ formatDate(hotel.updated_at) }}</td>
                 <td class="table-btn-display">
@@ -67,60 +71,60 @@
         <div class="dialog" @click.stop>
           <h2>{{ isEditing ? '编辑酒店' : '新增酒店' }}</h2>
           <form @submit.prevent="submitForm" class="form-container">
-            <div class="form-row">
-              <div class="form-group">
-                <div class="image-upload-container">
-                  <div class="upload-header">
-                    <h3>上传图片</h3>
-                    <p>支持 JPG, PNG 格式，最大 5MB</p>
-                  </div>
+            <div class="form-group">
+              <div class="image-upload-container">
+                <div class="upload-header">
+                  <h3>上传图片</h3>
+                  <p>支持 JPG, PNG 格式，最大 5MB</p>
+                </div>
 
-                  <div class="upload-area" @click="triggerFileInput" @dragover.prevent="dragOver = true"
-                    @dragleave="dragOver = false" @drop.prevent="handleDrop" :class="{ 'drag-active': dragOver }">
-                    <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" class="file-input" />
+                <div class="upload-area" @click="triggerFileInput" @dragover.prevent="dragOver = true"
+                  @dragleave="dragOver = false" @drop.prevent="handleDrop" :class="{ 'drag-active': dragOver }">
+                  <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" class="file-input" />
 
-                    <div class="upload-content">
-                      <div class="upload-icon">
-                        <svg viewBox="0 0 24 24">
-                          <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                        </svg>
-                      </div>
-                      <p class="upload-text">点击或拖拽文件到此处</p>
-                      <p class="upload-hint">推荐尺寸：1200×800px</p>
+                  <div class="upload-content">
+                    <div class="upload-icon">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                      </svg>
                     </div>
+                    <p class="upload-text">点击或拖拽文件到此处</p>
+                    <p class="upload-hint">推荐尺寸：1200×800px</p>
                   </div>
+                </div>
 
-                  <!-- 图片预览区域 -->
-                  <div class="preview-container" v-if="previewImage">
-                    <div class="preview-card">
-                      <img :src="previewImage" alt="预览图片" class="preview-image" />
-                      <div class="preview-actions">
-                        <button class="action-btn-image edit-btn-image" @click="triggerFileInput">
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
-                          </svg>
-                        </button>
-                        <button class="action-btn-image delete-btn-image" @click="removeImage">
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                          </svg>
-                        </button>
+                <!-- 图片预览区域 -->
+                <div class="preview-container" v-if="previewImage">
+                  <div class="preview-card">
+                    <img :src="previewImage" alt="预览图片" class="preview-image" />
+                    <div class="preview-actions">
+                      <button class="action-btn-image edit-btn-image" @click="triggerFileInput">
+                        <svg viewBox="0 0 24 24">
+                          <path
+                            d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+                        </svg>
+                      </button>
+                      <button class="action-btn-image delete-btn-image" @click="removeImage">
+                        <svg viewBox="0 0 24 24">
+                          <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="preview-footer">
+                      <div class="file-info">
+                        <span class="file-name">{{ fileName }}</span>
+                        <span class="file-size">{{ fileSize }}</span>
                       </div>
-                      <div class="preview-footer">
-                        <div class="file-info">
-                          <span class="file-name">{{ fileName }}</span>
-                          <span class="file-size">{{ fileSize }}</span>
-                        </div>
-                        <div class="upload-progress" v-if="uploading">
-                          <div class="progress-bar" :style="{ width: progress + '%' }"></div>
-                        </div>
+                      <div class="upload-progress" v-if="uploading">
+                        <div class="progress-bar" :style="{ width: progress + '%' }"></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="form-row">
+
               <div class="form-group">
                 <label>酒店名称:</label>
                 <input v-model="formData.hotelName" required />
@@ -140,6 +144,34 @@
               <div class="form-group" v-if="isEditing">
                 <label>酒店评分:</label>
                 <input v-model="formData.sales" required />
+              </div>
+              <div class="form-group">
+                <label>酒店地址:</label>
+                <input v-model="formData.hotelAddress" required />
+              </div>
+              <div class="form-group">
+                <label>酒店星级:</label>
+                <input v-model="formData.hotelStar" required />
+              </div>
+              <div class="form-group">
+                <label>酒店状态:</label>
+                <input v-model="formData.hotelStatus" required />
+              </div>
+              <div class="form-group">
+                <label>酒店类型:</label>
+                <input v-model="formData.hotelType" required />
+              </div>
+              <div class="form-group">
+                <label>酒店设施:</label>
+                <input v-model="formData.hotelFacility" required />
+              </div>
+              <div class="form-group">
+                <label>酒店服务:</label>
+                <input v-model="formData.hotelService" required />
+              </div>
+              <div class="form-group">
+                <label>酒店交通:</label>
+                <input v-model="formData.hotelTraffic" required />
               </div>
             </div>
             <!-- 表单提交按钮 -->
@@ -170,6 +202,7 @@ const columns = [
   { key: 'checked', title: '多选' },
   { key: 'id', title: '酒店ID' },
   { key: 'hotelName', title: '酒店名称' },
+  { key: 'hotelPhone', title: '酒店电话' },
   { key: 'hotelDescription', title: '酒店描述' },
   { key: 'hotelImage', title: '酒店图片' },
   { key: 'hotelPrice', title: '酒店价格' },
@@ -179,6 +212,9 @@ const columns = [
   { key: 'hotelType', title: '酒店类型' },
   { key: 'sales', title: '酒店销量' },
   { key: 'evaluation', title: '酒店评分' },
+  { key: 'hotelFacility', title: '酒店设施' },
+  { key: 'hotelService', title: '酒店服务' },
+  { key: 'hotelTraffic', title: '酒店交通' },
   { key: 'createdAt', title: '创建时间' },
   { key: 'updatedAt', title: '更新时间' },
 ];

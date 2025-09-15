@@ -641,6 +641,12 @@
 }
 
 /* 分类标题样式 */
+.menu-icon-container{
+  display: flex;
+  width: 24px;
+  height: 24px;
+}
+
 .menu-category {
   width: 100%;
   border-bottom: 2px solid #eee;

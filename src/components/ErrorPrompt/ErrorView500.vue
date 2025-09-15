@@ -69,7 +69,7 @@ const reloadPage = () => {
 }
 
 const goHome = () => {
-    router.push('/systemhomeView')
+   router.push({ name: 'systemhomeView' });
 }
 const goLogin = () => {
     router.push('/login')

@@ -1,8 +1,4 @@
 <template>
-    <!-- 顶部导航栏 -->
-    <header>
-        <Home_2 />
-    </header>
     <div class="raiders-app-container">
         <div class="raiders-header">
             <p>探索世界，分享旅程，与志同道合的旅行者一起出发</p>
@@ -178,7 +174,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import Home_2 from '@/components/NavigationComponent/HomeHeader.vue';
-import request from '@/utils/request';
+import { getStrategyDetail } from '@/api/travel';
 
 // 分页相关数据
 const currentPage = ref(1);
@@ -232,7 +228,7 @@ const fetchCards = async () => {
             pageSize: pageSize.value,
             keyword: searchKeyword.value
         };
-        const response = await request.get('/api/public/strategy-groups', { params });
+        const response = await getStrategyDetail(params);
         travelCards.value = response.data.list;
         total.value = response.data.total;
     } catch (error) {
@@ -302,7 +298,6 @@ onMounted(
 .raiders-app-container {
     font-family: 'Noto Sans SC', sans-serif;
     min-height: 100vh;
-    padding: 20px;
     color: #333;
     margin: 0 auto;
 }
@@ -334,7 +329,6 @@ onMounted(
     position: relative;
     width: 100%;
     height: 500px;
-    border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     margin-bottom: 40px;
@@ -536,6 +530,7 @@ onMounted(
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 30px;
     margin-bottom: 60px;
+    padding: 20px;
 }
 
 .raiders-travel-card {

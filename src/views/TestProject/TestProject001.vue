@@ -1,163 +1,182 @@
-<template> 
-<div>
-  <TestPage/>
-  <h1>Test Project 001</h1>
-  <!--列表  -->
-   <div>
-     <table>
-       <thead>
-         <tr>
-           <th>列1</th>
-           <th>列2</th>
-         </tr>
-       </thead>
-       <tbody>
-         <tr v-for="(item, index) in tableData" :key="index">
-           <td>{{ item.col1 }}</td>
-           <td>{{ item.col2 }}</td>
-         </tr>
-       </tbody>
-     </table>
-   </div>
-   <!-- 笔记 -->
-   <div>
-     <div class="note-container">  
-     <h2>编写你的笔记</h2>  
-     <textarea placeholder="在这里输入你的笔记..."></textarea><br>  
-     <button class="TestProject_button_bj">保存笔记</button>  
-     </div>
-   </div>
-   <!-- 下拉框 -->
-   <div class="zhankai">
-     <button @click="toggleDropdown_test">展开</button>
-     <div v-show="isDropdownVisible_test">
-       <div v-if="isDropdownVisible_test">
-         <div v-for="(item, index) in tableData" :key="index">
-           <div>
-             <h3>{{ item.col1 }}</h3>
-             <p>{{ item.col2 }}</p>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
-   <!-- 固定显示 -->
-   <div class="fixed-element">我会固定在右上角！</div> 
-    <!--图片循环展示  -->
-</div>
- </template>  
- 
-<script>
-export default {  
-  name: 'TestProject',
-  components: {
-  },
-  // 引入子组件
-  data() {  
-    return { 
-      isDropdownVisible_test: false,
-      isDropdownVisible_Test001: false,
-      tableData: [  
-        { col1: '数据1', col2: '数据2' },  
-        { col1: '数据3', col2: '数据4' },  
-        // 可以继续添加更多数据  
-      ],
-      
-    }
-      
-  },  
-  methods: {  
-    // 在这里定义你的方法 
-    toggleDropdown_test() {
-      this.isDropdownVisible_test = !this.isDropdownVisible_test;
-    }, 
-} 
+<template>
+  <div class="notification">
+    <div class="notiglow"></div>
+    <div class="notiborderglow"></div>
+    <!-- 文字提示内容 -->
+    <div>
+      <div class="noticontent">
+        <div class="notititle">是否确认退出登录？</div>
+        <div class="notibody">退出登录后，您将无法查看收藏的景点、评论、订单等</div>
+      </div>
+      <!-- 按钮 -->
+      <div class="button-container">
+        <button class="btn btn-secondary">取消</button>
+        <button class="btn btn-primary">确定</button>
+      </div>
+    </div>
+  </div>
 
-}
+</template>
+
+<script setup>
+
 </script>
 <style scoped>
+.notification {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  overflow: hidden;
+  z-index: 1;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: scale(1);
+  animation: fadeIn 0.5s ease-out;
+}
 
-.TestProject_button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
+.notiglow {
+  position: absolute;
+  top: 0;
+  left: 5px;
+  width: 5px;
+  height: 100%;
+  background-color: rgba(255, 0, 0, 0.5);
+  z-index: -1;
+  opacity: 0.7;
+  border-radius: 16px;
+}
+
+.notiborderglow {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  width: 5px;
+  height: 100%;
+  background-color: rgba(6, 162, 224, 0.5);
+  z-index: -2;
+  border-radius: 18px;
+}
+
+.notititle {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #ffffff;
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+.notibody {
   font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  height: 50px;
-  border-radius: 15px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
 }
-.TestProject_button:hover {
-  background-color: #c9e549;
-  color: rgb(0, 0, 0);
-  text-decoration: none;
-  cursor: pointer;
-}
-.note-container {  
-  background-color: #fff;  
-  border-radius: 5px;  
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
-  padding: 20px;  
-        }  
-textarea {  
-  width: 100%;  
-  height: 200px;  
-  padding: 10px;  
-  border: 1px solid #ccc;  
-  border-radius: 5px;  
-  resize: none; /* 禁用用户调整大小 */  
-}  
-.TestProject_button_bj {  
-  margin-top: 10px;  
-  padding: 10px 15px;  
-  background-color: #28a745;  
-  color: white;  
-  border: none;  
-  border-radius: 5px;  
-  cursor: pointer;  
-}  
-.TestProject_button_bj:hover {  
-  background-color: #218838;  
-} 
-.zhankai {
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
   margin-top: 20px;
-  text-align: center;
 }
-.zhankai button {
-  background-color: #4c95af;
+
+.btn {
+  padding: 12px 28px;
   border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+  border-radius: 50px;
   font-size: 16px;
-  margin: 4px 2px;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 15px;
+  transition: all 0.3s ease;
+  outline: none;
+  position: relative;
+  overflow: hidden;
 }
-.zhankai button:hover {
-  background-color: #4caf86;
+
+.btn-primary {
+  background: linear-gradient(45deg, #4285f4, #669df6);
   color: white;
-  text-decoration: none;
-  cursor: pointer;
-
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
 }
-.fixed-element {  
-  /* position: fixed; */
-  /* 固定定位 */
-  /* top: 20px;   
-  right: 10px;    */
-  width: 150px; /* 固定宽度 */  
-  height: 100px; /* 固定高度 */
-  border-radius: 15px;  
-  text-align: center;
-  background-color: rgba(255, 0, 0, 0.7); /* 半透明背景 */  
-  } 
-</style>
 
- 
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 133, 244, 0.6);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(66, 133, 244, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .notification {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .notititle {
+    font-size: 20px;
+  }
+
+  .notibody {
+    font-size: 14px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+</style>

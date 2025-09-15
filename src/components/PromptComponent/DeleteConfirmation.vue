@@ -27,20 +27,15 @@
 <script setup>
 import { ref } from 'vue';
 
-const props = defineProps({
-  isDeletePromptVisible: {
-    type: Boolean,
-    default: false
-  }
-});
-
 const emit = defineEmits(['close', 'confirm']);
 
 const closeDeletePrompt = () => {
+  console.log('关闭删除提示框');
   emit('close');
 };
 
 const confirmDelete = () => {
+  console.log('确认删除');
   emit('confirm');
 };
 </script>

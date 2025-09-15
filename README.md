@@ -1,47 +1,77 @@
-```markdown
-# SpiritualPressure
+# SpiritualPressure - 大学生毕业项目管理系统
 
 ## 项目简介
-SpiritualPressure 是一个专注于 [解决大学生毕业项目设计] 的项目。它旨在通过 [开源]，为用户提供 [毕业项目来源]。
+SpiritualPressure 是一个为大学生毕业设计提供完整解决方案的项目管理系统，包含前后端分离架构，提供从项目构思到实现的完整流程支持。
 
-## 功能特点
-- **核心功能 1**：[用户权限验证]
-- **核心功能 2**：[后台管理系统]
-- **核心功能 3**：[前台商品展示]
-- [更多功能……]
-
-## 项目展示
-- **演示效果图**：
-![演示效果图](assets/videos/index.png)
-
-
+## 核心功能
+- **用户权限管理**：基于角色的权限控制系统
+- **后台管理系统**：完整的数据管理和业务处理功能
+- **前台展示系统**：商品/服务展示与交互界面
+- **数据可视化**：丰富的图表和报表功能
 
 ## 技术栈
-- **前端**：[前端技术，Vue3+vite]
-- **后端**：[出后端技术，java-springboot]
-- **数据库**：[数据库技术，MySQL]
-- **其他**：[其他相关技术，redis]
+### 前端技术
+- Vue 3 + Vite
+- Element Plus UI组件库
+- ECharts 数据可视化
+- Axios HTTP客户端
+- Pinia 状态管理
 
-## 安装与运行
+### 后端技术
+- Java Spring Boot
+- MySQL 数据库
+- Redis 缓存
+- JWT 认证
+
+## 项目结构
+spiritualPressure-ui/
+├── src/
+│   ├── api/            # API接口定义
+│   ├── assets/         # 静态资源
+│   ├── components/     # 公共组件
+│   ├── router/         # 路由配置
+│   ├── stores/         # 状态管理
+│   ├── utils/          # 工具函数
+│   └── views/          # 页面视图
+├── public/             # 公共资源
+└── vite.config.js      # Vite配置
+
+## 快速开始
 ### 环境要求
-- [运行项目所需的最低环境要求，如操作系统Windows、软件版本IDEA-2024.jdk版本21.数据库MySQL 8...]
+- Node.js 16+
+- npm/pnpm
+- Java 17+
+- MySQL 8.0+
 
-## 许可证
-本项目采用 [许可证名称] 许可证，详情请参阅 [LICENSE](LICENSE) 文件。
+### 安装步骤
+1. 克隆仓库
+   ```bash
+   git clone https://github.com/HH-han/spiritualPressure-ui.git
+2. 安装依赖
+    ```bash
+    cd spiritualPressure-ui
+    pnpm install
+    ```
+3. 配置环境变量
+   - 复制 `.env.example` 为 `.env`
+   - 填写数据库连接信息和其他配置
+4. 启动项目
+   - 前端：`npm run dev`
+   - 后端：`mvn spring-boot:run`
+### 项目截图
+![项目截图](screenshot.png)
+### 许可证
+MIT License
 
 ## 联系方式
-- **作者**：[bolan]
-- **邮箱**：[25601773654@qq.com]
-- **GitHub**：[]
+- 作者：bolan
+- 邮箱： 25601773654@qq.com
+- GitHub： https://github.com/HH-han
+## 相关项目
+- 后端项目： springboot-server
+- 前端项目： spiritualPressure-ui
+- 数据库项目： spiritualPressure-db
 
-感谢您对 SpiritualPressure 的支持！
-```
-## 后端Github地址:
-[https://github.com/HH-han/springboot-server]
 
-### 说明
-- 你可以根据项目的实际情况，调整功能特点、技术栈等内容。
-- 如果项目有详细的文档或教程，可以在“使用指南”部分添加链接。
-- 如果项目有其他特殊要求或注意事项，可以在“注意事项”部分补充说明。
-
-希望这个项目对你有帮助！
+### 许可证
+MIT License

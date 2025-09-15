@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="button-container">
-            <button @click="navigation('/systemhomeView')" @mouseenter="activeTooltip = '系统首页'" @mouseleave="activeTooltip = ''">
+            <button @click="navigation('/')" @mouseenter="activeTooltip = '系统首页'" @mouseleave="activeTooltip = ''">
             <svg t="1754486914478" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                 p-id="8282" width="16" height="16">
                 <path

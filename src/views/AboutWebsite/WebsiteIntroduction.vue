@@ -57,7 +57,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 // 返回
 const back = () => {
-    router.push('/systemhomeView');
+    router.push({ name: 'systemhomeView' });
 };
 
 // 数据

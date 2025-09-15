@@ -679,6 +679,7 @@ input[type="range"]::-webkit-slider-thumb {
 
   .nav-items {
     display: flex;
+    flex-direction: column;
     overflow-x: auto;
     gap: 5px;
     padding-bottom: 5px;

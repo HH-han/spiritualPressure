@@ -135,7 +135,7 @@ const handleSubmit = async () => {
 
             ElMessage.success('登录成功！');
             // 跳转
-            router.push('/systemhomeView');
+            router.push({ name: 'systemhomeView' });
         } else {
             ElMessage.error('登录失败/使用账号密码登录');
             setTimeout(() => {

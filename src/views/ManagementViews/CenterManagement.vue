@@ -147,10 +147,12 @@ onMounted(() => {
     background-color: #f4f6f8;
     border-radius: 15px;
 }
-.color-primary{
+
+.color-primary {
     color: #0080ff;
     font-weight: bold;
 }
+
 header {
     text-align: center;
     margin-bottom: 10px;

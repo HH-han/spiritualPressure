@@ -337,7 +337,7 @@ onMounted(() => {
 
 // 方法
 const handleBack = () => {
-  router.push('/systemhomeView');
+  router.push({ name: 'systemhomeView' });
 };
 
 const handleSearch = async () => {

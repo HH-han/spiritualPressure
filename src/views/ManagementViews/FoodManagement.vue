@@ -31,6 +31,7 @@
                   <input type="checkbox" :checked="food.checked" @change="handleCheck(food)" class="ui-checkbox" />
                 </td>
                 <td>{{ food.id }}</td>
+                <td>{{ food.phone }}</td>
                 <td>{{ food.name }}</td>
                 <td>
                   <img :src="food.image" alt="美食图片" style="width: 35px; height: 35px;"
@@ -43,8 +44,8 @@
                 <td>￥{{ food.price }}</td>
                 <td>{{ food.sales }}</td>
                 <td>{{ food.rating }}</td>
-                <td>{{ formatDate(food.createdAt) }}</td>
-                <td>{{ formatDate(food.updatedAt) }}</td>
+                <td>{{ formatDate(food.created_at) }}</td>
+                <td>{{ formatDate(food.updated_at) }}</td>
                 <td class="table-btn-display">
                   <button class="btn details-btn" @click="showEditDialog(card)">详情</button>
                   <button class="btn edit-btn" @click="showEditDialog(food)">编辑</button>
@@ -67,60 +68,60 @@
         <div class="dialog" @click.stop>
           <h2>{{ isEditing ? '编辑美食' : '新增美食' }}</h2>
           <form @submit.prevent="submitForm" class="form-container">
-            <div class="form-row">
-              <div class="form-group">
-                <div class="image-upload-container">
-                  <div class="upload-header">
-                    <h3>上传图片</h3>
-                    <p>支持 JPG, PNG 格式，最大 5MB</p>
-                  </div>
+            <div class="form-group">
+              <div class="image-upload-container">
+                <div class="upload-header">
+                  <h3>上传图片</h3>
+                  <p>支持 JPG, PNG 格式，最大 5MB</p>
+                </div>
 
-                  <div class="upload-area" @click="triggerFileInput" @dragover.prevent="dragOver = true"
-                    @dragleave="dragOver = false" @drop.prevent="handleDrop" :class="{ 'drag-active': dragOver }">
-                    <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" class="file-input" />
+                <div class="upload-area" @click="triggerFileInput" @dragover.prevent="dragOver = true"
+                  @dragleave="dragOver = false" @drop.prevent="handleDrop" :class="{ 'drag-active': dragOver }">
+                  <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" class="file-input" />
 
-                    <div class="upload-content">
-                      <div class="upload-icon">
-                        <svg viewBox="0 0 24 24">
-                          <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
-                        </svg>
-                      </div>
-                      <p class="upload-text">点击或拖拽文件到此处</p>
-                      <p class="upload-hint">推荐尺寸：1200×800px</p>
+                  <div class="upload-content">
+                    <div class="upload-icon">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                      </svg>
                     </div>
+                    <p class="upload-text">点击或拖拽文件到此处</p>
+                    <p class="upload-hint">推荐尺寸：1200×800px</p>
                   </div>
+                </div>
 
-                  <!-- 图片预览区域 -->
-                  <div class="preview-container" v-if="previewImage">
-                    <div class="preview-card">
-                      <img :src="previewImage" alt="预览图片" class="preview-image" />
-                      <div class="preview-actions">
-                        <button class="action-btn-image edit-btn-image" @click="triggerFileInput">
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
-                          </svg>
-                        </button>
-                        <button class="action-btn-image delete-btn-image" @click="removeImage">
-                          <svg viewBox="0 0 24 24">
-                            <path
-                              d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
-                          </svg>
-                        </button>
+                <!-- 图片预览区域 -->
+                <div class="preview-container" v-if="previewImage">
+                  <div class="preview-card">
+                    <img :src="previewImage" alt="预览图片" class="preview-image" />
+                    <div class="preview-actions">
+                      <button class="action-btn-image edit-btn-image" @click="triggerFileInput">
+                        <svg viewBox="0 0 24 24">
+                          <path
+                            d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+                        </svg>
+                      </button>
+                      <button class="action-btn-image delete-btn-image" @click="removeImage">
+                        <svg viewBox="0 0 24 24">
+                          <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="preview-footer">
+                      <div class="file-info">
+                        <span class="file-name">{{ fileName }}</span>
+                        <span class="file-size">{{ fileSize }}</span>
                       </div>
-                      <div class="preview-footer">
-                        <div class="file-info">
-                          <span class="file-name">{{ fileName }}</span>
-                          <span class="file-size">{{ fileSize }}</span>
-                        </div>
-                        <div class="upload-progress" v-if="uploading">
-                          <div class="progress-bar" :style="{ width: progress + '%' }"></div>
-                        </div>
+                      <div class="upload-progress" v-if="uploading">
+                        <div class="progress-bar" :style="{ width: progress + '%' }"></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="form-row">
+
               <div class="form-group">
                 <label>美食名称:</label>
                 <input v-model="formData.name" required />
@@ -169,6 +170,7 @@ import ToastType from '@/components/PromptComponent/ToastType.vue';
 const columns = [
   { key: 'checked', title: '多选' },
   { key: 'id', title: '美食ID' },
+  { key: 'phone', title: '美食电话' },
   { key: 'name', title: '美食名称' },
   { key: 'image', title: '美食图片' },
   { key: 'description', title: '美食描述' },
@@ -178,8 +180,8 @@ const columns = [
   { key: 'price', title: '美食价格' },
   { key: 'sales', title: '销量' },
   { key: 'rating', title: '评分' },
-  { key: 'createdAt', title: '创建时间' },
-  { key: 'updatedAt', title: '更新时间' },
+  { key: 'created_at', title: '创建时间' },
+  { key: 'updated_at', title: '更新时间' },
 ];
 const showToast = ref(false);
 const toastMessage = ref('');

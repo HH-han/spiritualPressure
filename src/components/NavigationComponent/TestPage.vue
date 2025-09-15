@@ -43,6 +43,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.js'
 // 导入页面
 import TestProjecthome from '@/views/TestProject/TestProjecthome.vue'
 import TestProject001 from '@/views/TestProject/TestProject001.vue'
@@ -62,6 +63,7 @@ import CloseButton from '@/components/PromptComponent/CloseButton.vue'
 
 const router = useRouter()
 const route = useRoute()
+const authStore = useAuthStore()
 // 页面配置
 const pages = [
   { name: '项目主页', component: TestProjecthome, icon: 'fas fa-home' },
@@ -87,7 +89,7 @@ const currentPage = ref(TestProjecthome)
 // 获取当前页面名称
 const currentPageName = computed(() => {
   const page = pages.find(p => {
-    return p.component.__name === currentPage.value.__name;
+    return p.component === currentPage.value;
   });
   if (!page) return '未知页面';
   return page.name;
@@ -105,23 +107,22 @@ const fetchUserInfo = async () => {
   userInfo.value = { ...localUser };
 };
 
-// 在onMounted中添加从路由或本地存储恢复当前页面的逻辑
+// 在onMounted中添加从路由或Pinia store恢复当前页面的逻辑
 onMounted(() => {
   fetchUserInfo();
   
   // 从路由参数获取当前页面
   if (route.query.page) {
-    const targetPage = pages.find(p => p.component.__name === route.query.page);
+    const targetPage = pages.find(p => p.name === route.query.page);
     if (targetPage) {
       currentPage.value = targetPage.component;
       return;
     }
   }
   
-  // 从本地存储获取上次访问的页面
-  const lastPage = localStorage.getItem('lastPage');
-  if (lastPage) {
-    const targetPage = pages.find(p => p.component.__name === lastPage);
+  // 从Pinia store获取上次访问的页面
+  if (authStore.currentComponentPath) {
+    const targetPage = pages.find(p => p.name === authStore.currentComponentPath);
     if (targetPage) {
       currentPage.value = targetPage.component;
     }
@@ -131,13 +132,17 @@ onMounted(() => {
 // 保留已修改的switchPage函数
 const switchPage = (component) => {
   currentPage.value = component;
-  // 保存到本地存储
-  localStorage.setItem('lastPage', component.name);
-  // 更新路由参数
-  router.replace({ 
-    path: route.path, 
-    query: { ...route.query, page: component.name }
-  });
+  // 找到对应的页面配置
+  const pageConfig = pages.find(p => p.component === component);
+  if (pageConfig) {
+    // 保存页面名称到Pinia store
+    authStore.currentComponentPath = pageConfig.name;
+    // 更新路由参数
+    router.replace({ 
+      path: route.path, 
+      query: { ...route.query, page: pageConfig.name }
+    });
+  }
 };
 </script>
 

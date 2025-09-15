@@ -1,7 +1,4 @@
 <template>
-  <div>
-    <Home_2 />
-  </div>
   <div class="mydestination-all">
     <header class="main-section">
       <!-- 主视觉区 -->

@@ -1,11 +1,7 @@
 <template>
-    <div>
-        <!-- 顶部导航 -->
-        <Home_2 />
-    </div>
     <div class="cc-container-all">
+        <!-- 搜索区域 -->
         <div>
-            <!-- 搜索区域 -->
             <div class="search_background">
                 <div>
                     <img src="@/assets/pagebackground/北京天坛.jpg" alt="">
@@ -15,7 +11,6 @@
                         @input="handleSearch">
                 </div>
             </div>
-
         </div>
         <!-- 纪念品推荐 -->
         <div>
@@ -202,5 +197,6 @@ onMounted(() => {
 </script>
 <style scoped>
 @import '@/css/Mypage/CharacteristicCommodities.css';
+@import "@/css/Mypage/BrowseHotel.css";
 @import "@/css/Btn/btn.css";
 </style>

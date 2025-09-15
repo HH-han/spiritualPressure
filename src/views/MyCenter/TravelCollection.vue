@@ -12,7 +12,7 @@
             </div>
             <!-- 卡片展示 -->
             <div v-else class="collection-cards-container">
-                <div v-for="item in collections" :key="item.id" class="collection-glass-card"  @click="details(item.id)">
+                <div v-for="item in collections" :key="item.id" class="collection-glass-card" @click="details(item.id)">
                     <div class="collection-classification">{{ item.classification }}</div>
                     <img :src="item.image" :alt="item.collectionname" class="collection-card-image">
                     <h2 class="collection-card-title">{{ item.collectionname }}</h2>
@@ -56,9 +56,15 @@
                 <h2 class="collection-details-title">收藏详情</h2>
                 <div class="collection-details-content">
                     <p>这里是收藏的详细信息...</p>
+                    <p>{{selectedItem.profile}}</p>
+                    <p>名称: {{selectedItem.collectionname}}</p>
+                    <p>地点:{{selectedItem.location}}</p>
+                    <p>分类: {{selectedItem.classification}}</p>
+                    <p>收藏: {{selectedItem.collection}}</p>
+                    <p>销量: {{selectedItem.sales}}</p>
                 </div>
                 <div class="collection-details-delete">
-                    <button @click="deleteCollection(selectedItem)">删除</button>
+                    <button class="delete-btn" onclick="showConfirmDialog()">删除收藏</button>
                 </div>
             </div>
         </main>
@@ -74,7 +80,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import request from '@/utils/request';
+import { getTravelCollections, deleteTravelCollections } from '@/api/travel';
 import { ElMessage } from 'element-plus';
 import DeletePrompt from '@/components/PromptComponent/DeletePrompt.vue'
 
@@ -85,7 +91,11 @@ const error = ref(null);
 const selectedItem = ref(false);
 const showDeleteConfirm = ref(false);
 const postToDelete = ref(null);
-
+// 分页
+const currentPage = ref(1);
+const pageSize = ref(20);
+const searchKeyword = ref('');
+const total = ref(0);
 // 点击事件
 const details = (id) => {
     selectedItem.value = collections.value.find(item => item.id === id);
@@ -100,12 +110,17 @@ const closeDeleteModal = () => {
 // 获取数据
 const fetchCollections = async () => {
     try {
+        const params = {
+            page: currentPage.value,
+            pageSize: pageSize.value,
+            keyword: searchKeyword.value
+        };
         loading.value = true;
         error.value = null;
-        const response = await request.get('/api/public/travel-collections');
+        const response = await getTravelCollections(params);
 
         if (response.code === "0") {
-            console.log(response.data,"获取收藏数据成功");
+            console.log(response.data, "获取收藏数据成功");
             collections.value = response.data;
         } else {
             console.error('获取收藏数据失败:', response.msg);
@@ -127,8 +142,8 @@ const deleteCollection = (item) => {
 const confirmDelete = async () => {
     if (postToDelete.value) {
         try {
-            console.log(postToDelete.value,"待删除的收藏ID");
-            await request.delete(`/api/public/travel-collections/${postToDelete.value}`);
+            console.log(postToDelete.value, "待删除的收藏ID");
+            await deleteTravelCollections(postToDelete.value);
             await fetchCollections();
             closeDeleteModal();
             closeDetails();
@@ -181,7 +196,7 @@ onMounted(() => {
 }
 
 .collection-glass-card {
-    max-height: 550px;
+    max-height: 500px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -342,11 +357,13 @@ onMounted(() => {
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
 }
+
 .collection-details-close {
     width: 100%;
     display: flex;
     justify-content: flex-end;
 }
+
 .collection-details-close button {
     background: none;
     border: none;
@@ -354,12 +371,70 @@ onMounted(() => {
     font-size: 1rem;
     cursor: pointer;
 }
+
 .collection-details-container {
     width: 650px;
-    height: 400px;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.collection-details-title {
+    color: white;
+    padding: 0px 0px 25px 0px;
+    font-size: 24px;
+    font-weight: 600;
+    position: relative;
+}
+
+.collection-details-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+}
+
+.collection-details-content {
+    padding: 30px;
+    line-height: 1.6;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    min-height: 200px;
+}
+
+.collection-details-content p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.collection-details-delete {
+    padding: 25px 0px 0px 0px;
+    text-align: right;
+}
+
+.delete-btn {
+    background-color: rgba(255, 75, 43, 0.85);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3);
+}
+
+.delete-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 75, 43, 0.4);
+}
+
+.delete-btn:active {
+    transform: translateY(0);
 }
 </style>

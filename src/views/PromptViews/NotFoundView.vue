@@ -11,15 +11,17 @@
     <div class="container_404_text">
         <h1>404</h1>
         <p>页面未找到...</p>
-        <router-link to="/Home_5">
-            <button>返回首页</button>
-        </router-link>
+        <button @click="goHome">返回首页</button>
     </div>
 </template>
-<script>
-export default {
-    name: 'NotFoundView'
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const goHome = () => {
+    router.push({ name: 'systemhomeView' })
 }
+
 </script>
 <style scoped>
 .container_404_text {

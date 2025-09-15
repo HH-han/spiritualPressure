@@ -88,7 +88,7 @@ const changeMenu = (item) => {
     localStorage.setItem('activeMenu', item.id);
 
     if (item.ishome) {
-        router.push({ path: 'systemhomeView' });
+        router.push({ name: 'systemhomeView' });
         return;
     }
 
