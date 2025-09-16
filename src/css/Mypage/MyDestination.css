@@ -684,6 +684,11 @@
   }
 }
 
+.destination-detail-image-container{
+  width: 450px;
+  height: 550px;
+}
+
 .destination-detail-image {
   width: 100%;
   height: 100%;

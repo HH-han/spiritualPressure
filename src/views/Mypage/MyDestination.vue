@@ -151,13 +151,13 @@
             <button class="destination-detail-close" @click="closeDetail">×</button>
           </div>
           <div class="destination-detail-info-container">
-            <div>
+            <div class="destination-detail-image-container">
               <img :src="selectedDestination.image || defaultImage" :alt="selectedDestination.name"
                 class="destination-detail-image" />
             </div>
             <div class="destination-detail-info-background">
               <h2 class="destination-detail-name">{{ selectedDestination.name }}</h2>
-              <p class="destination-detail-description">描述:{{ selectedDestination.description }}</p>
+              <p class="destination-detail-description">描述:{{ selectedDestination.description  ? selectedDestination.description.substring(0, 145) + '...' : '' }}</p>
               <p class="destination-detail-price">价格: {{ selectedDestination.price }}￥</p>
               <p class="destination-detail-s">评价: {{ selectedDestination.s }}</p>
               <p class="destination-detail-ww">销量: {{ selectedDestination.ww }}</p>

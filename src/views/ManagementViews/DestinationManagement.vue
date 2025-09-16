@@ -146,6 +146,10 @@
                   <label>价格:</label>
                   <input v-model="formData.price" type="number" required />
                 </div>
+                <div class="form-group">
+                  <label>描述:</label>
+                  <textarea v-model="formData.description" placeholder="最多 255 字" maxlength="255"></textarea>
+                </div>
               </div>
               <!-- 提交按钮 -->
               <div class="dialog-buttons">
@@ -205,6 +209,7 @@ const formData = ref({
   cities: '',
   image: '',
   created_at: '',
+  description: '',
   price: 0,
 
 });
@@ -276,6 +281,7 @@ const showAddDialog = () => {
     name: '',
     category: '',
     cities: '',
+    description: '',
     image: '',
     price: 0,
   };
