@@ -53,8 +53,12 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Login_background from '@/components/LoginComponent/Login_background.vue';
 import request from '@/utils/request';
+import { useAuthStore } from '@/stores/auth.js'
 
 const router = useRouter();
+
+// auth store
+const authStore = useAuthStore();
 
 // 图片引入
 const defaultAvatar = require('@/assets/defaultimage/mrtx.png');
@@ -106,9 +110,10 @@ const handleLogin = async () => {
   }
 
   try {
-    const response = await request.post('/api/public/user/login', {
+    // 使用auth store的login方法进行登录
+    const response = await authStore.login({
       username: loginForm.value.username,
-      password: loginForm.value.password,
+      password: loginForm.value.password
     });
 
     console.log('登录响应:', response);
@@ -119,10 +124,10 @@ const handleLogin = async () => {
         throw new Error('响应数据不完整');
       }
 
-      const { user, token } = response.data;
+      const { user } = response.data;
 
       // 验证必要字段
-      if (!token || !user?.username) {
+      if (!user?.username) {
         throw new Error('无效的用户数据');
       }
 
@@ -133,15 +138,6 @@ const handleLogin = async () => {
           ? user.image
           : `http://localhost:2025${user.image.startsWith('/') ? '' : '/'}${user.image}`;
       }
-
-      // 存储用户数据
-      const userData = {
-        ...user,
-        image: fullImageUrl
-      };
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(userData));
 
       // 更新界面显示
       loginForm.value.image = fullImageUrl;

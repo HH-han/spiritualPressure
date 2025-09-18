@@ -91,6 +91,9 @@ import TravelWorld from '@/views/TravelServiceoptions/TravelWorld.vue'
 import TravelTeam from '@/views/TravelServiceoptions/TravelTeam.vue'
 import TravelCruise from '@/views/TravelServiceoptions/TravelCruise.vue'
 
+// 即时通讯页面路由
+import InstantMessaging from '@/views/instantMessaging/index.vue'
+import IMTestPage from '@/views/instantMessaging/TestPage.vue'
 
 // 定义路由数组，每个对象代表一个路由
 const routes = [
@@ -164,6 +167,9 @@ const routes = [
   {path: '/travelteam',name: 'travelteam',component: TravelTeam,title: "团队旅游"},
   {path: '/travelcruise',name: 'travelcruise',component: TravelCruise,title: "邮轮旅游"},
 
+  // 即时通讯页面路由
+  {path: '/im',name: 'instantMessaging',component: InstantMessaging,title: "即时通讯"},
+  {path: '/im/test',name: 'imTest',component: IMTestPage,title: "即时通讯测试"},
 
 ]
 // 创建路由实例

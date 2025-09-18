@@ -202,6 +202,7 @@ import LoginSucceeded from '@/components/PromptComponent/LoginSucceeded.vue';
 import ErrorMessage from '@/components/PromptComponent/ErrorMessage.vue';
 import { loginname } from '@/api/user.js';
 import QRcodeLogin from '@/views/LoginViews/QRcodeLogin.vue'
+import { useAuthStore } from '@/stores/auth.js'
 
 // 登录-注册切换
 const isSignUpActive = ref(false)
@@ -250,6 +251,9 @@ const loginForm = ref({
 // 记住用户名功能
 const rememberMe = ref(false);
 
+// auth store
+const authStore = useAuthStore();
+
 // 用户名输入处理（简化版，不再尝试预加载头像）
 const handleUsernameInput = () => {
   loginForm.value.hasInput = loginForm.value.username.trim() !== '';
@@ -280,7 +284,8 @@ const handleLogin = async () => {
   }
 
   try {
-    const response = await loginname({
+    // 使用auth store的login方法进行登录
+    const response = await authStore.login({
       username: loginForm.value.username,
       password: loginForm.value.password
     });
@@ -307,15 +312,6 @@ const handleLogin = async () => {
           ? user.image
           : `http://localhost:2025${user.image.startsWith('/') ? '' : '/'}${user.image}`;
       }
-
-      // 存储用户数据
-      const userData = {
-        ...user,
-        image: fullImageUrl
-      };
-
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(userData));
 
       // 更新界面显示
       loginForm.value.image = fullImageUrl;

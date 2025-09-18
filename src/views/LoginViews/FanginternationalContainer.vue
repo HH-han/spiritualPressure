@@ -67,6 +67,7 @@ import Login_background from '@/components/LoginComponent/Login_background.vue';
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import request from '@/utils/request';
+import { useAuthStore } from '@/stores/auth.js'
 
 const router = useRouter();
 const phoneNumber = ref("");
@@ -74,6 +75,9 @@ const verificationCode = ref("");
 const isCodeButtonDisabled = ref(false);
 const isLoginButtonDisabled = ref(true);
 const countdown = ref(0);
+
+// auth store
+const authStore = useAuthStore();
 
 // 发送验证码
 const sendVerificationCode = async () => {
@@ -112,15 +116,18 @@ const sendVerificationCode = async () => {
 // 手机号+验证码登录
 const handleLogin = async () => {
   try {
-    const response = await request.post('/api/public/user/phone-login', {
+    // 清除旧的token和用户数据
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    // 使用auth store的phoneLogin方法进行手机登录
+    const response = await authStore.phoneLogin({
       phone: phoneNumber.value,
       code: verificationCode.value
     });
 
     if (response.success) {
       ElMessage.success("登录成功");
-      // 存储token
-      localStorage.setItem('token', response.data.token);
       router.push({ name: "Home_5" });
     } else {
       ElMessage.error(response.message || "登录失败");

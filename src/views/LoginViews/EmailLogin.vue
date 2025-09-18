@@ -34,8 +34,9 @@ import { ref, computed, onUnmounted } from 'vue';
 import Login_background from '@/components/LoginComponent/Login_background.vue';
 import Captcha from '@/components/PromptComponent/CaptchamodalBox.vue';
 import { ElMessage } from 'element-plus';
-import { Emaillogin, EmailCaptcha } from '@/api/user';
+import { EmailCaptcha } from '@/api/user';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth.js'
 
 // 定义响应式数据
 const email = ref('');
@@ -47,6 +48,9 @@ const showCaptcha = ref(false);
 
 // 路由实例
 const router = useRouter();
+
+// auth store
+const authStore = useAuthStore();
 
 // 计算属性：发送按钮的文本
 const sendBtnText = computed(() => {
@@ -109,7 +113,8 @@ const handleSubmit = async () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
 
-        const response = await Emaillogin({
+        // 使用auth store的emailLogin方法进行邮箱登录
+        const response = await authStore.emailLogin({
             email: email.value.trim(),
             code: code.value
         });
@@ -128,10 +133,6 @@ const handleSubmit = async () => {
             if (!token || !user?.email) {
                 throw new Error('无效的用户数据');
             }
-
-            // 存储用户数据
-            localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user));
 
             ElMessage.success('登录成功！');
             // 跳转

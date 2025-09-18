@@ -314,7 +314,7 @@ const activeCategory = ref('全部');
 // 当前页码
 const currentPage = ref(1);
 // 每页大小
-const pageSize = ref(10);
+const pageSize = ref(12);
 // 目的地数据
 const destinations = ref([]);
 // 总页数

@@ -148,4 +148,5 @@ function handleUnauthorized() {
   localStorage.removeItem("user");
 }
 
+// 导出默认请求实例
 export default request;

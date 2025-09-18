@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>即时通讯接口文档 - 旅游社交平台</title>
+    <!-- Bootstrap 5.0.0-beta1 CSS -->
+    <link href="/bootstrap-5.0.0-beta1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 图标 -->
+    <link rel="stylesheet" href="/bootstrap-5.0.0-beta1-dist/font/bootstrap-icons.css">
+    <style>
+        .api-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+            border-left: 4px solid #0d6efd;
+        }
+        .method-badge {
+            font-size: 0.8rem;
+            padding: 0.35rem 0.65rem;
+        }
+        .endpoint-code {
+            background-color: #e9ecef;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 1rem;
+        }
+        .param-table {
+            font-size: 0.9rem;
+        }
+        .param-table th {
+            background-color: #f1f3f5;
+        }
+        .example-response {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .nav-tabs .nav-link {
+            color: #495057;
+            font-weight: 500;
+        }
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <!-- 页面头部 -->
+        <header class="text-center mb-5">
+            <h1 class="display-4 text-primary">
+                <i class="bi bi-chat-dots-fill me-3"></i>
+                即时通讯接口文档
+            </h1>
+            <p class="lead text-muted">旅游社交平台即时通讯功能完整接口说明</p>
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                基础URL: <code>http://localhost:2025/api/public</code>
+            </div>
+        </header>
+
+        <!-- 导航标签 -->
+        <ul class="nav nav-tabs mb-4" id="apiTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="im-tab" data-bs-toggle="tab" data-bs-target="#im" type="button" role="tab">即时通讯</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="group-tab" data-bs-toggle="tab" data-bs-target="#group" type="button" role="tab">群组管理</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="apiTabContent">
+            <!-- 即时通讯接口 -->
+            <div class="tab-pane fade show active" id="im" role="tabpanel">
+                <h2 class="h4 mb-4 text-primary">
+                    <i class="bi bi-chat-text me-2"></i>
+                    即时通讯接口
+                </h2>
+
+                <!-- 接口数据 -->
+                <div id="im-api-container">
+                    <!-- 接口将通过JavaScript动态渲染 -->
+                </div>
+            </div>
+
+            <!-- 群组管理接口 -->
+            <div class="tab-pane fade" id="group" role="tabpanel">
+                <h2 class="h4 mb-4 text-primary">
+                    <i class="bi bi-people-fill me-2"></i>
+                    群组管理接口
+                </h2>
+
+                <!-- 接口数据 -->
+                <div id="group-api-container">
+                    <!-- 接口将通过JavaScript动态渲染 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用说明 -->
+        <section class="mt-5">
+            <h3 class="h5 mb-3">
+                <i class="bi bi-book me-2"></i>
+                接口调用说明
+            </h3>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">JavaScript调用示例</h5>
+                    <pre><code>// 发送单聊消息示例
+async function sendSingleMessage() {
+    try {
+        const response = await fetch('/api/public/im/single/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                senderId: 1,
+                receiverId: 2,
+                content: '你好，这是一条测试消息',
+                messageType: 'text'
+            })
+        });
+        
+        const result = await response.json();
+        if (result.code === 0) {
+            console.log('消息发送成功', result.data);
+        } else {
+            console.error('消息发送失败', result.message);
+        }
+    } catch (error) {
+        console.error('请求失败', error);
+    }
+}
+
+// 获取好友列表示例
+async function getFriendList(userId) {
+    try {
+        const response = await fetch(`/api/public/im/friend/list?userId=${userId}`);
+        const result = await response.json();
+        if (result.code === 0) {
+            return result.data;
+        }
+        return [];
+    } catch (error) {
+        console.error('获取好友列表失败', error);
+        return [];
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">通用响应格式</h5>
+                    <pre><code>{
+    "code": 0,           // 状态码：0成功，其他为错误
+    "message": "成功",     // 提示信息
+    "data": { ... }       // 返回数据
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">错误处理</h5>
+                    <ul class="list-unstyled">
+                        <li><span class="text-danger">400</span> - 请求参数错误</li>
+                        <li><span class="text-danger">401</span> - 未授权访问</li>
+                        <li><span class="text-danger">404</span> - 资源不存在</li>
+                        <li><span class="text-danger">500</span> - 服务器内部错误</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="/bootstrap-5.0.0-beta1-dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 即时通讯接口数据
+        const imApis = [
+            {
+                name: '发送单聊消息（参数方式）',
+                method: 'POST',
+                endpoint: '/im/single/send/param',
+                description: '通过参数方式发送单聊消息',
+                params: [
+                    { name: 'senderId', type: 'Long', required: true, description: '发送者ID' },
+                    { name: 'receiverId', type: 'Long', required: true, description: '接收者ID' },
+                    { name: 'content', type: 'String', required: true, description: '消息内容' },
+                    { name: 'messageType', type: 'String', required: false, description: '消息类型，默认text' }
+                ],
+                example: {
+                    request: '{\n  "senderId": 1,\n  "receiverId": 2,\n  "content": "你好！",\n  "messageType": "text"\n}',
+                    response: '{\n  "code": 0,\n  "message": "消息发送成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '发送单聊消息（实体方式）',
+                method: 'POST',
+                endpoint: '/im/single/send',
+                description: '通过实体对象方式发送单聊消息',
+                params: [
+                    { name: 'SingleChatMessage', type: 'Object', required: true, description: '单聊消息实体' }
+                ],
+                example: {
+                    request: '{\n  "senderId": 1,\n  "receiverId": 2,\n  "content": "你好！",\n  "messageType": "text"\n}',
+                    response: '{\\n  "code": 0,\n  "message": "消息发送成功",\n  "data": { ...message对象... }\n}'
+                }
+            },
+            {
+                name: '发送群聊消息（参数方式）',
+                method: 'POST',
+                endpoint: '/im/group/send/param',
+                description: '通过参数方式发送群聊消息',
+                params: [
+                    { name: 'groupId', type: 'Long', required: true, description: '群组ID' },
+                    { name: 'senderId', type: 'Long', required: true, description: '发送者ID' },
+                    { name: 'content', type: 'String', required: true, description: '消息内容' },
+                    { name: 'messageType', type: 'String', required: false, description: '消息类型，默认text' }
+                ],
+                example: {
+                    request: '{\n  "groupId": 1,\n  "senderId": 1,\n  "content": "大家好！",\n  "messageType": "text"\n}',
+                    response: '{\n  "code": 0,\n  "message": "消息发送成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '发送群聊消息（实体方式）',
+                method: 'POST',
+                endpoint: '/im/group/send',
+                description: '通过实体对象方式发送群聊消息',
+                params: [
+                    { name: 'GroupChatMessage', type: 'Object', required: true, description: '群聊消息实体' }
+                ],
+                example: {
+                    request: '{\n  "groupId": 1,\n  "senderId": 1,\n  "content": "大家好！",\n  "messageType": "text"\n}',
+                    response: '{\n  "code": 0,\n  "message": "消息发送成功",\n  "data": { ...message对象... }\n}'
+                }
+            },
+            {
+                name: '获取单聊历史消息',
+                method: 'GET',
+                endpoint: '/im/single/history',
+                description: '获取两个用户之间的单聊历史消息',
+                params: [
+                    { name: 'userId1', type: 'Long', required: true, description: '用户1ID' },
+                    { name: 'userId2', type: 'Long', required: true, description: '用户2ID' },
+                    { name: 'limit', type: 'int', required: false, description: '返回条数，默认50' }
+                ],
+                example: {
+                    request: 'GET /im/single/history?userId1=1&userId2=2&limit=20',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": [ ...消息列表... ]\n}'
+                }
+            },
+            {
+                name: '获取群聊历史消息',
+                method: 'GET',
+                endpoint: '/im/group/history',
+                description: '获取群组的聊天历史消息',
+                params: [
+                    { name: 'groupId', type: 'Long', required: true, description: '群组ID' },
+                    { name: 'limit', type: 'int', required: false, description: '返回条数，默认50' }
+                ],
+                example: {
+                    request: 'GET /im/group/history?groupId=1&limit=30',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": [ ...消息列表... ]\n}'
+                }
+            },
+            {
+                name: '发送好友申请（参数方式）',
+                method: 'POST',
+                endpoint: '/im/friend/request/param',
+                description: '通过参数方式发送好友申请',
+                params: [
+                    { name: 'senderId', type: 'Long', required: true, description: '发送者ID' },
+                    { name: 'receiverId', type: 'Long', required: true, description: '接收者ID' },
+                    { name: 'message', type: 'String', required: false, description: '申请消息' }
+                ],
+                example: {
+                    request: '{\n  "senderId": 1,\n  "receiverId": 2,\n  "message": "你好，我想加你为好友"\n}',
+                    response: '{\n  "code": 0,\n  "message": "好友申请发送成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '发送好友申请（实体方式）',
+                method: 'POST',
+                endpoint: '/im/friend/request',
+                description: '通过实体对象方式发送好友申请',
+                params: [
+                    { name: 'FriendRequest', type: 'Object', required: true, description: '好友申请实体' }
+                ],
+                example: {
+                    request: '{\n  "senderId": 1,\n  "receiverId": 2,\n  "message": "你好，我想加你为好友"\n}',
+                    response: '{\n  "code": 0,\n  "message": "好友申请发送成功",\n  "data": { ...申请对象... }\n}'
+                }
+            },
+            {
+                name: '处理好友申请',
+                method: 'PUT',
+                endpoint: '/im/friend/request/handle',
+                description: '处理好友申请（接受或拒绝）',
+                params: [
+                    { name: 'requestId', type: 'Long', required: true, description: '好友申请ID' },
+                    { name: 'status', type: 'Integer', required: true, description: '处理状态：1-接受，2-拒绝' }
+                ],
+                example: {
+                    request: '{\n  "requestId": 123,\n  "status": 1\n}',
+                    response: '{\n  "code": 0,\n  "message": "处理成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '接受好友申请',
+                method: 'PUT',
+                endpoint: '/im/friend/request/accept',
+                description: '接受好友申请',
+                params: [
+                    { name: 'requestId', type: 'Long', required: true, description: '好友申请ID' }
+                ],
+                example: {
+                    request: '{\n  "requestId": 123\n}',
+                    response: '{\n  "code": 0,\n  "message": "好友申请已接受",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '拒绝好友申请',
+                method: 'PUT',
+                endpoint: '/im/friend/request/reject',
+                description: '拒绝好友申请',
+                params: [
+                    { name: 'requestId', type: 'Long', required: true, description: '好友申请ID' }
+                ],
+                example: {
+                    request: '{\n  "requestId": 123\n}',
+                    response: '{\n  "code": 0,\n  "message": "好友申请已拒绝",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '获取好友列表',
+                method: 'GET',
+                endpoint: '/im/friend/list',
+                description: '获取用户的好友列表',
+                params: [
+                    { name: 'userId', type: 'Long', required: true, description: '用户ID' }
+                ],
+                example: {
+                    request: 'GET /im/friend/list?userId=1',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": [ ...好友列表... ]\n}'
+                }
+            },
+            {
+                name: '删除好友',
+                method: 'DELETE',
+                endpoint: '/im/friend/delete',
+                description: '删除好友关系',
+                params: [
+                    { name: 'userId', type: 'Long', required: true, description: '用户ID' },
+                    { name: 'friendId', type: 'Long', required: true, description: '好友ID' }
+                ],
+                example: {
+                    request: 'DELETE /im/friend/delete?userId=1&friendId=2',
+                    response: '{\n  "code": 0,\n  "message": "好友删除成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '获取待处理好友申请',
+                method: 'GET',
+                endpoint: '/im/friend/request/pending',
+                description: '获取用户待处理的好友申请',
+                params: [
+                    { name: 'userId', type: 'Long', required: true, description: '用户ID' }
+                ],
+                example: {
+                    request: 'GET /im/friend/request/pending?userId=1',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": [ ...申请列表... ]\n}'
+                }
+            },
+            {
+                name: '标记消息为已读',
+                method: 'POST',
+                endpoint: '/im/message/read',
+                description: '标记单聊或群聊消息为已读状态',
+                params: [
+                    { name: 'messageId', type: 'Long', required: true, description: '消息ID' },
+                    { name: 'userId', type: 'Long', required: true, description: '用户ID' },
+                    { name: 'groupId', type: 'Long', required: false, description: '群组ID（如果是群聊消息）' }
+                ],
+                example: {
+                    request: '{\n  "messageId": 456,\n  "userId": 1,\n  "groupId": null\n}',
+                    response: '{\n  "code": 0,\n  "message": "消息已读",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '获取未读消息数量',
+                method: 'GET',
+                endpoint: '/im/message/unread/count',
+                description: '获取用户的未读消息数量',
+                params: [
+                    { name: 'userId', type: 'Long', required: true, description: '用户ID' },
+                    { name: 'groupId', type: 'Long', required: false, description: '群组ID（可选）' }
+                ],
+                example: {
+                    request: 'GET /im/message/unread/count?userId=1&groupId=1',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": 5\n}'
+                }
+            }
+        ];
+
+        // 群组管理接口数据
+        const groupApis = [
+            {
+                name: '根据ID查询群组',
+                method: 'GET',
+                endpoint: '/chat-group/{id}',
+                description: '根据群组ID查询群组详细信息',
+                params: [
+                    { name: 'id', type: 'Long', required: true, description: '群组ID' }
+                ],
+                example: {
+                    request: 'GET /chat-group/1',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": { ...群组信息... }\n}'
+                }
+            },
+            {
+                name: '根据创建者ID查询群组',
+                method: 'GET',
+                endpoint: '/chat-group/creator/{creatorId}',
+                description: '查询用户创建的所有群组',
+                params: [
+                    { name: 'creatorId', type: 'Long', required: true, description: '创建者用户ID' }
+                ],
+                example: {
+                    request: 'GET /chat-group/creator/1',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": [ ...群组列表... ]\n}'
+                }
+            },
+            {
+                name: '根据名称搜索群组',
+                method: 'GET',
+                endpoint: '/chat-group/search',
+                description: '根据群组名称模糊搜索群组',
+                params: [
+                    { name: 'name', type: 'String', required: true, description: '群组名称关键词' }
+                ],
+                example: {
+                    request: 'GET /chat-group/search?name=旅游',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": [ ...群组列表... ]\n}'
+                }
+            },
+            {
+                name: '创建群组',
+                method: 'POST',
+                endpoint: '/chat-group',
+                description: '创建新的聊天群组',
+                params: [
+                    { name: 'ChatGroup', type: 'Object', required: true, description: '群组信息实体' }
+                ],
+                example: {
+                    request: '{\n  "name": "旅游爱好者",\n  "description": "旅游交流群",\n  "creatorId": 1,\n  "maxMembers": 200\n}',
+                    response: '{\n  "code": 0,\n  "message": "群组创建成功",\n  "data": { ...创建的群组信息... }\n}'
+                }
+            },
+            {
+                name: '更新群组信息',
+                method: 'PUT',
+                endpoint: '/chat-group',
+                description: '更新群组信息',
+                params: [
+                    { name: 'ChatGroup', type: 'Object', required: true, description: '群组信息实体' }
+                ],
+                example: {
+                    request: '{\n  "id": 1,\n  "name": "旅游爱好者(更新)",\n  "description": "更新后的群描述"\n}',
+                    response: '{\n  "code": 0,\n  "message": "群组更新成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '删除群组',
+                method: 'DELETE',
+                endpoint: '/chat-group/{id}',
+                description: '删除指定的群组',
+                params: [
+                    { name: 'id', type: 'Long', required: true, description: '群组ID' }
+                ],
+                example: {
+                    request: 'DELETE /chat-group/1',
+                    response: '{\n  "code": 0,\n  "message": "群组删除成功",\n  "data": null\n}'
+                }
+            }
+        ];
+
+        // 渲染API卡片函数
+        function renderApiCard(api) {
+            const methodClass = {
+                'GET': 'bg-success',
+                'POST': 'bg-primary',
+                'PUT': 'bg-warning',
+                'DELETE': 'bg-danger'
+            };
+
+            return `
+                <div class="api-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">${api.name}</h5>
+                        <span class="badge ${methodClass[api.method] || 'bg-secondary'} method-badge">${api.method}</span>
+                    </div>
+                    
+                    <p class="text-muted mb-3">${api.description}</p>
+                    
+                    <div class="endpoint-code">
+                        <strong>接口端点:</strong> ${api.endpoint}
+                    </div>
+                    
+                    <h6 class="mb-2">请求参数:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm param-table">
+                            <thead>
+                                <tr>
+                                    <th>参数名</th>
+                                    <th>类型</th>
+                                    <th>是否必需</th>
+                                    <th>描述</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${api.params.map(param => `
+                                    <tr>
+                                        <td><code>${param.name}</code></td>
+                                        <td>${param.type}</td>
+                                        <td>${param.required ? '是' : '否'}</td>
+                                        <td>${param.description}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h6 class="mb-2">请求示例:</h6>
+                    <pre class="example-response">${api.example.request}</pre>
+                    
+                    <h6 class="mb-2">响应示例:</h6>
+                    <pre class="example-response">${api.example.response}</pre>
+                </div>
+            `;
+        }
+
+        // 渲染所有API
+        function renderAllApis() {
+            const imContainer = document.getElementById('im-api-container');
+            const groupContainer = document.getElementById('group-api-container');
+            
+            imContainer.innerHTML = imApis.map(api => renderApiCard(api)).join('');
+            groupContainer.innerHTML = groupApis.map(api => renderApiCard(api)).join('');
+        }
+
+        // 页面加载完成后渲染
+        document.addEventListener('DOMContentLoaded', renderAllApis);
+    </script>
+</body>
+</html>

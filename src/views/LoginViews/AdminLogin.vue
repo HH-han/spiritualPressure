@@ -53,8 +53,12 @@ import { useRouter } from 'vue-router';
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus';
 import DynamicParticle from '@/components/ThemeComponents/DynamicParticle.vue';
+import { useAuthStore } from '@/stores/auth.js'
 
 const router = useRouter();
+
+// auth store
+const authStore = useAuthStore();
 
 // 状态管理
 const showError = ref(false);
@@ -86,9 +90,10 @@ const handleLogin = async () => {
   }
 
   try {
-    const response = await request.post('/api/public/user/adminlogin', {
+    // 使用auth store的adminLogin方法进行管理员登录
+    const response = await authStore.adminLogin({
       username: loginForm.value.username,
-      password: loginForm.value.password,
+      password: loginForm.value.password
     });
 
     console.log('登录响应:', response);
@@ -99,10 +104,10 @@ const handleLogin = async () => {
         throw new Error('响应数据不完整');
       }
 
-      const { user, token } = response.data;
+      const { user } = response.data;
 
       // 验证必要字段
-      if (!token || !user?.username) {
+      if (!user?.username) {
         throw new Error('无效的用户数据');
       }
       // 记住用户名处理
@@ -111,9 +116,6 @@ const handleLogin = async () => {
       } else {
         localStorage.removeItem('rememberedUsername');
       }
-      // 保存token和用户信息到本地存储
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
       // 如果是admin账号，跳转到指定页面
       if (user.permissions === 1) {
         router.push('/AdminLayout');
