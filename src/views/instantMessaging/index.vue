@@ -80,11 +80,7 @@ import FriendList from './components/FriendList.vue'
 import GroupList from './components/GroupList.vue'
 import FriendRequestList from './components/FriendRequestList.vue'
 import ChatWindow from './components/ChatWindow.vue'
-import { 
-  getFriendList, 
-  getPendingFriendRequests,
-  getChatGroupsByCreator
-} from '@/api/im.js'
+import { getFriendList, getPendingFriendRequests, getChatGroupsByCreator } from '@/api/im.js'
 import { getUserInfo } from '@/api/user.js'
 
 const searchKeyword = ref('')

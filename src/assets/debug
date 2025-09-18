@@ -1,0 +1,12 @@
+websocket.js:6 WebSocket connection to 'ws://localhost:2025/voice/970/pkchwpjr/websocket' failed: Error during WebSocket handshake: Unexpected response code: 200
+eventsource:1 
+ GET http://localhost:2025/voice/970/k4pehtgu/eventsource 500 (Internal Server Error)
+iframe.js:101 
+ GET http://localhost:2025/voice/iframe.html net::ERR_BLOCKED_BY_RESPONSE 404 (Not Found)
+chrome-error://chromewebdata/:1 Refused to display 'http://localhost:2025/' in a frame because it set 'X-Frame-Options' to 'deny'.
+iframe.js:101 
+ GET http://localhost:2025/voice/iframe.html net::ERR_BLOCKED_BY_RESPONSE 404 (Not Found)
+chrome-error://chromewebdata/:1 Refused to display 'http://localhost:2025/' in a frame because it set 'X-Frame-Options' to 'deny'.
+jsonp.js:177 
+ GET http://localhost:2025/voice/970/zffggiw0/jsonp?c=_jp.am100tm net::ERR_ABORTED 404 (Not Found)
+im:1 Refused to execute script from 'http://localhost:2025/voice/970/zffggiw0/jsonp?c=_jp.am100tm' because its MIME type ('') is not executable, and strict MIME type checking is enabled.

@@ -73,6 +73,9 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="group-tab" data-bs-toggle="tab" data-bs-target="#group" type="button" role="tab">群组管理</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="voice-tab" data-bs-toggle="tab" data-bs-target="#voice" type="button" role="tab">语音通话</button>
+            </li>
         </ul>
 
         <div class="tab-content" id="apiTabContent">
@@ -98,6 +101,19 @@
 
                 <!-- 接口数据 -->
                 <div id="group-api-container">
+                    <!-- 接口将通过JavaScript动态渲染 -->
+                </div>
+            </div>
+
+            <!-- 语音通话接口 -->
+            <div class="tab-pane fade" id="voice" role="tabpanel">
+                <h2 class="h4 mb-4 text-primary">
+                    <i class="bi bi-telephone-fill me-2"></i>
+                    语音通话接口
+                </h2>
+
+                <!-- 接口数据 -->
+                <div id="voice-api-container">
                     <!-- 接口将通过JavaScript动态渲染 -->
                 </div>
             </div>
@@ -278,14 +294,15 @@ async function getFriendList(userId) {
                 name: '发送好友申请（参数方式）',
                 method: 'POST',
                 endpoint: '/im/friend/request/param',
-                description: '通过参数方式发送好友申请',
+                description: '通过参数方式发送好友申请，支持通过手机号查找接收者',
                 params: [
                     { name: 'senderId', type: 'Long', required: true, description: '发送者ID' },
-                    { name: 'receiverId', type: 'Long', required: true, description: '接收者ID' },
+                    { name: 'receiverId', type: 'Long', required: false, description: '接收者ID（与receiverPhone二选一）' },
+                    { name: 'receiverPhone', type: 'String', required: false, description: '接收者手机号（与receiverId二选一）' },
                     { name: 'message', type: 'String', required: false, description: '申请消息' }
                 ],
                 example: {
-                    request: '{\n  "senderId": 1,\n  "receiverId": 2,\n  "message": "你好，我想加你为好友"\n}',
+                    request: '{\n  "senderId": 1,\n  "receiverPhone": "13800138000",\n  "message": "你好，我想加你为好友"\n}',
                     response: '{\n  "code": 0,\n  "message": "好友申请发送成功",\n  "data": null\n}'
                 }
             },
@@ -293,12 +310,12 @@ async function getFriendList(userId) {
                 name: '发送好友申请（实体方式）',
                 method: 'POST',
                 endpoint: '/im/friend/request',
-                description: '通过实体对象方式发送好友申请',
+                description: '通过实体对象方式发送好友申请，支持通过手机号查找接收者',
                 params: [
-                    { name: 'FriendRequest', type: 'Object', required: true, description: '好友申请实体' }
+                    { name: 'FriendRequestWithPhoneDTO', type: 'Object', required: true, description: '好友申请DTO（包含手机号支持）' }
                 ],
                 example: {
-                    request: '{\n  "senderId": 1,\n  "receiverId": 2,\n  "message": "你好，我想加你为好友"\n}',
+                    request: '{\n  "senderId": 1,\n  "receiverPhone": "13800138000",\n  "message": "你好，我想加你为好友"\n}',
                     response: '{\n  "code": 0,\n  "message": "好友申请发送成功",\n  "data": { ...申请对象... }\n}'
                 }
             },
@@ -495,6 +512,135 @@ async function getFriendList(userId) {
             }
         ];
 
+        // 语音通话接口数据
+        const voiceApis = [
+            {
+                name: '发起语音通话',
+                method: 'POST',
+                endpoint: '/voice/call/initiate',
+                description: '发起一个新的语音通话请求',
+                params: [
+                    { name: 'callerId', type: 'Long', required: true, description: '呼叫者用户ID' },
+                    { name: 'receiverId', type: 'Long', required: true, description: '接收者用户ID' }
+                ],
+                example: {
+                    request: '{\n  "callerId": 1,\n  "receiverId": 2\n}',
+                    response: '{\n  "code": 0,\n  "message": "通话请求发送成功",\n  "data": {\n    "callId": "1234567890",\n    "status": "initiated"\n  }\n}'
+                }
+            },
+            {
+                name: '接受语音通话',
+                method: 'POST',
+                endpoint: '/voice/call/accept',
+                description: '接受语音通话请求',
+                params: [
+                    { name: 'callId', type: 'String', required: true, description: '通话会话ID' },
+                    { name: 'userId', type: 'Long', required: true, description: '接受通话的用户ID' }
+                ],
+                example: {
+                    request: '{\n  "callId": "1234567890",\n  "userId": 2\n}',
+                    response: '{\n  "code": 0,\n  "message": "通话已接受",\n  "data": {\n    "callId": "1234567890",\n    "status": "accepted"\n  }\n}'
+                }
+            },
+            {
+                name: '拒绝语音通话',
+                method: 'POST',
+                endpoint: '/voice/call/reject',
+                description: '拒绝语音通话请求',
+                params: [
+                    { name: 'callId', type: 'String', required: true, description: '通话会话ID' },
+                    { name: 'userId', type: 'Long', required: true, description: '拒绝通话的用户ID' }
+                ],
+                example: {
+                    request: '{\n  "callId": "1234567890",\n  "userId": 2\n}',
+                    response: '{\n  "code": 0,\n  "message": "通话已拒绝",\n  "data": {\n    "callId": "1234567890",\n    "status": "rejected"\n  }\n}'
+                }
+            },
+            {
+                name: '结束语音通话',
+                method: 'POST',
+                endpoint: '/voice/call/end',
+                description: '结束进行中的语音通话',
+                params: [
+                    { name: 'callId', type: 'String', required: true, description: '通话会话ID' },
+                    { name: 'userId', type: 'Long', required: true, description: '结束通话的用户ID' }
+                ],
+                example: {
+                    request: '{\n  "callId": "1234567890",\n  "userId": 1\n}',
+                    response: '{\n  "code": 0,\n  "message": "通话已结束",\n  "data": {\n    "callId": "1234567890",\n    "status": "ended"\n  }\n}'
+                }
+            },
+            {
+                name: '发送SDP Offer',
+                method: 'POST',
+                endpoint: '/voice/call/sdp-offer',
+                description: '发送WebRTC SDP Offer信令',
+                params: [
+                    { name: 'callId', type: 'String', required: true, description: '通话会话ID' },
+                    { name: 'sdp', type: 'String', required: true, description: 'SDP Offer内容' }
+                ],
+                example: {
+                    request: '{\n  "callId": "1234567890",\n  "sdp": "v=0\\no=- 1234567890 2 IN IP4 127.0.0.1\\ns=-\\nt=0 0\\na=group:BUNDLE 0\\na=extmap-allow-mixed\\na=msid-semantic: WMS\\nm=audio 9 UDP/TLS/RTP/SAVPF 111 103 104 9 0 8 106 105 13 110 112 113 126\\n..."\n}',
+                    response: '{\n  "code": 0,\n  "message": "SDP Offer发送成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '发送SDP Answer',
+                method: 'POST',
+                endpoint: '/voice/call/sdp-answer',
+                description: '发送WebRTC SDP Answer信令',
+                params: [
+                    { name: 'callId', type: 'String', required: true, description: '通话会话ID' },
+                    { name: 'sdp', type: 'String', required: true, description: 'SDP Answer内容' }
+                ],
+                example: {
+                    request: '{\n  "callId": "1234567890",\n  "sdp": "v=0\\no=- 9876543210 2 IN IP4 127.0.0.1\\ns=-\\nt=0 0\\na=group:BUNDLE 0\\na=extmap-allow-mixed\\na=msid-semantic: WMS\\nm=audio 9 UDP/TLS/RTP/SAVPF 111 103 104 9 0 8 106 105 13 110 112 113 126\\n..."\n}',
+                    response: '{\n  "code": 0,\n  "message": "SDP Answer发送成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '发送ICE Candidate',
+                method: 'POST',
+                endpoint: '/voice/call/ice-candidate',
+                description: '发送WebRTC ICE Candidate信令',
+                params: [
+                    { name: 'callId', type: 'String', required: true, description: '通话会话ID' },
+                    { name: 'candidate', type: 'String', required: true, description: 'ICE Candidate内容' }
+                ],
+                example: {
+                    request: '{\n  "callId": "1234567890",\n  "candidate": "candidate:842163049 1 udp 1677729535 192.168.1.100 58123 typ srflx raddr 192.168.1.100 rport 58123 generation 0 ufrag abc123 network-cost 999"\n}',
+                    response: '{\n  "code": 0,\n  "message": "ICE Candidate发送成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '发送音频数据',
+                method: 'POST',
+                endpoint: '/voice/call/audio-data',
+                description: '发送实时音频数据',
+                params: [
+                    { name: 'callId', type: 'String', required: true, description: '通话会话ID' },
+                    { name: 'audioData', type: 'String', required: true, description: 'Base64编码的音频数据' }
+                ],
+                example: {
+                    request: '{\n  "callId": "1234567890",\n  "audioData": "UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA="\n}',
+                    response: '{\n  "code": 0,\n  "message": "音频数据发送成功",\n  "data": null\n}'
+                }
+            },
+            {
+                name: '获取通话状态',
+                method: 'GET',
+                endpoint: '/voice/call/status',
+                description: '获取指定通话的当前状态',
+                params: [
+                    { name: 'callId', type: 'String', required: true, description: '通话会话ID' }
+                ],
+                example: {
+                    request: 'GET /voice/call/status?callId=1234567890',
+                    response: '{\n  "code": 0,\n  "message": "成功",\n  "data": {\n    "callId": "1234567890",\n    "status": "active",\n    "callerId": 1,\n    "receiverId": 2,\n    "startTime": "2024-01-15T10:30:00Z",\n    "duration": 120\n  }\n}'
+                }
+            }
+        ];
+
         // 渲染API卡片函数
         function renderApiCard(api) {
             const methodClass = {
@@ -554,9 +700,11 @@ async function getFriendList(userId) {
         function renderAllApis() {
             const imContainer = document.getElementById('im-api-container');
             const groupContainer = document.getElementById('group-api-container');
+            const voiceContainer = document.getElementById('voice-api-container');
             
             imContainer.innerHTML = imApis.map(api => renderApiCard(api)).join('');
             groupContainer.innerHTML = groupApis.map(api => renderApiCard(api)).join('');
+            voiceContainer.innerHTML = voiceApis.map(api => renderApiCard(api)).join('');
         }
 
         // 页面加载完成后渲染

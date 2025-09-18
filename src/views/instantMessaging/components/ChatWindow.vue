@@ -1,5 +1,11 @@
 <template>
   <div class="wechat-chat-window">
+    <!-- 语音通话控制组件 -->
+    <div class="voice-call-container" :style="{ display: isVoiceCallActive ? 'block' : 'none' }">
+      <VoiceCallControl ref="voiceCallControl" :current-chat="chat" @callStarted="handleCallStarted"
+        @callEnded="handleCallEnded" />
+    </div>
+
     <!-- 聊天头部 -->
     <div class="chat-header">
       <div class="header-left">
@@ -13,17 +19,30 @@
           </div>
         </div>
       </div>
-
+      <!-- 头部操作项 -->
       <div class="header-right">
-        <el-tooltip content="语音通话" placement="bottom">
-          <el-icon class="header-action"><Microphone /></el-icon>
-        </el-tooltip>
-        <el-tooltip content="视频通话" placement="bottom">
-          <el-icon class="header-action"><VideoCamera /></el-icon>
-        </el-tooltip>
-        <el-tooltip content="更多操作" placement="bottom">
-          <el-icon class="header-action"><MoreFilled /></el-icon>
-        </el-tooltip>
+        <button @click="initiateVoiceCall">
+          <el-tooltip content="语音通话" placement="bottom">
+            <el-icon class="header-action">
+              <Microphone />
+            </el-icon>
+          </el-tooltip>
+        </button>
+        <button>
+          <el-tooltip content="视频通话" placement="bottom">
+            <el-icon class="header-action">
+              <VideoCamera />
+            </el-icon>
+          </el-tooltip>
+        </button>
+        <button>
+          <el-tooltip content="更多操作" placement="bottom">
+            <el-icon class="header-action">
+              <MoreFilled />
+            </el-icon>
+          </el-tooltip>
+        </button>
+
       </div>
     </div>
 
@@ -37,7 +56,7 @@
         <div class="message-content">
           <div class="message-bubble" :class="{ 'bubble-self': message.isSelf }">
             <div v-if="message.messageType === 'IMAGE'" class="message-image">
-              <img :src="message.contentImage" alt="图片消息" class="image-content" />
+              <img :src="message.contentImage" alt="图片消息" class="image-content" @click="showImagePreview(message.contentImage)" />
             </div>
             <div v-else class="message-text">{{ message.content }}</div>
           </div>
@@ -117,11 +136,25 @@
           </template>
         </el-dialog>
       </div>
+      <!-- 消息图片预览模态框 -->
+      <div>
+        <el-dialog v-model="showMessageImagePreview" title="查看图片" width="600px" :close-on-click-modal="true">
+          <div class="message-image-preview-container">
+            <img v-if="messageImagePreviewUrl" :src="messageImagePreviewUrl" alt="消息图片预览" class="message-preview-image" />
+          </div>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="showMessageImagePreview = false" type="danger" round>关闭</el-button>
+            </span>
+          </template>
+        </el-dialog>
+      </div>
+      <!-- 信息输入框  -->
       <div class="input-main">
         <el-input v-model="inputMessage" type="textarea" :rows="3" placeholder="输入消息..." resize="none"
           @keydown.enter="handleSendMessage" class="message-input" />
       </div>
-
+      <!-- 发送按钮 -->
       <div class="input-actions">
         <el-button type="primary" @click="handleSendMessage" :disabled="!inputMessage.trim()" class="send-button">
           发送
@@ -132,10 +165,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue'
+import { ref, onMounted, nextTick, watch, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { sendSingleMessage, sendGroupMessageByParam, getSingleChatHistory, getGroupChatHistory } from '@/api/im.js'
 import { useAuthStore } from '@/stores/auth.js'
+import VoiceCallControl from './VoiceCallControl.vue'
+import { voiceWebSocket } from '@/utils/voice-websocket'
 
 const props = defineProps({
   chat: {
@@ -146,6 +181,10 @@ const props = defineProps({
 
 const emit = defineEmits(['send-message'])
 
+// 语音通话相关
+const voiceCallControl = ref(null)
+const isVoiceCallActive = ref(false)
+
 const inputMessage = ref('')
 const messageListRef = ref(null)
 const messages = ref([])
@@ -155,6 +194,8 @@ const showEmojiPicker = ref(false) // 控制表情选择器显示
 const showImagePicker = ref(false) // 控制图片选择器显示
 const selectedImage = ref(null) // 选中的图片Base64数据
 const imagePreview = ref(null) // 图片预览URL
+const showMessageImagePreview = ref(false) // 控制消息图片预览显示
+const messageImagePreviewUrl = ref('') // 消息图片预览URL
 
 // 常用表情符号列表
 const emojiList = [
@@ -278,6 +319,12 @@ const cancelImageSend = () => {
   showImagePicker.value = false
 }
 
+// 显示消息图片预览
+const showImagePreview = (imageUrl) => {
+  messageImagePreviewUrl.value = imageUrl
+  showMessageImagePreview.value = true
+}
+
 // 选择表情
 const selectEmoji = (emoji) => {
   const textarea = document.querySelector('.message-input textarea')
@@ -351,7 +398,7 @@ const loadChatHistory = async () => {
           timestamp: msg.sendTime,
           isSelf: msg.senderId === currentUserId.value,
           contentImage: msg.image,
-          image:msg.senderAvatar || '/default-avatar.png', // 使用图片数据或发送者头像
+          image: msg.senderAvatar || '/default-avatar.png', // 使用图片数据或发送者头像
           messageType: msg.messageType // 添加messageType字段
         }))
         .sort((a, b) => a.id - b.id) // 按消息ID升序排序
@@ -437,7 +484,43 @@ onMounted(() => {
   ensureUserInfoLoaded().then(() => {
     loadChatHistory()
     scrollToBottom()
+    // 初始化语音WebSocket连接
+    initVoiceWebSocket()
   })
+})
+
+// 语音通话相关方法
+const initVoiceWebSocket = () => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    voiceWebSocket.connect(token, () => {
+      console.log('语音WebSocket连接成功')
+    }, (error) => {
+      console.error('语音WebSocket连接失败:', error)
+      ElMessage.error('语音通话功能初始化失败')
+    })
+  }
+}
+
+const initiateVoiceCall = () => {
+  if (voiceCallControl.value) {
+    voiceCallControl.value.initiateCall()
+  }
+}
+
+const handleCallStarted = () => {
+  isVoiceCallActive.value = true
+  ElMessage.success('通话已开始')
+}
+
+const handleCallEnded = () => {
+  isVoiceCallActive.value = false
+  ElMessage.info('通话已结束')
+}
+
+// 组件卸载时断开WebSocket连接
+onUnmounted(() => {
+  voiceWebSocket.disconnect()
 })
 </script>
 
@@ -447,6 +530,19 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   background: #f5f5f5;
+}
+
+.voice-call-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .chat-header {
@@ -497,6 +593,13 @@ onMounted(() => {
 .header-right {
   display: flex;
   gap: 16px;
+}
+
+.header-right button{
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
 
 .header-action {
@@ -859,6 +962,23 @@ onMounted(() => {
 .no-image p {
   font-size: 14px;
   margin: 0;
+}
+
+/* 消息图片预览样式 */
+.message-image-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.message-preview-image {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 .dialog-footer {
