@@ -91,14 +91,6 @@
               </transition>
             </div>
           </div>
-
-          <!-- 错误消息 -->
-          <transition name="slide-fade">
-            <div v-if="errorMessage" class="loginpage-error-message">
-              {{ errorMessage }}
-            </div>
-          </transition>
-
           <!-- 用户名输入框 -->
           <div class="userlogin-input-centainer">
             <div class="userlogin-inputContainer">
