@@ -21,22 +21,22 @@
             <div class="dropdown">
               <button class="action-btn dropdown-toggle">更多</button>
               <div class="dropdown-menu_Home_2">
-                <button class="dropdown-item_action-btn2" style="border-radius: 0 0 10px 10px"
+                <button class="dropdown-item_action-btn" style="border-radius: 0 0 10px 10px"
                   @click="navigateTo('/SettingsFocus')">设置中心</button>
-                <button class="dropdown-item_action-btn2" @click="navigateTo('/WebsiteIntroduction')">关于我们</button>
-                <button class="dropdown-item_action-btn2" v-if="userInfo.permissions === 1"
+                <button class="dropdown-item_action-btn" @click="navigateTo('/WebsiteIntroduction')">关于我们</button>
+                <button class="dropdown-item_action-btn" v-if="userInfo.permissions === 1"
                   @click="navigateTo('/testpage')">测试页面</button>
-                <button class="dropdown-item_action-btn2" style="border-radius: 10px 10px 0 0"
+                <button class="dropdown-item_action-btn" style="border-radius: 10px 10px 0 0"
                   @click="navigateTo('aboutweb')">网站介绍</button>
-                <button class="dropdown-item_action-btn2" @click="navigateTo('/travelstrategy')">社区</button>
+                <button class="dropdown-item_action-btn" @click="navigateTo('/travelstrategy')">社区</button>
               </div>
             </div>
         </div>
         <div class="actions">
           <ThemeSwitching />
           <!-- 微信 -->
-          <button class="action-btn2">
-            <svg t="1737552806004" class="action-btn2-icon" viewBox="0 0 1024 1024" version="1.1"
+          <button class="action-btn-iocn">
+            <svg t="1737552806004" class="action-btn-iocn-size" viewBox="0 0 1024 1024" version="1.1"
               xmlns="http://www.w3.org/2000/svg" p-id="6242">
               <path
                 d="M337.387283 341.82659c-17.757225 0-35.514451 11.83815-35.514451 29.595375s17.757225 29.595376 35.514451 29.595376 29.595376-11.83815 29.595376-29.595376c0-18.49711-11.83815-29.595376-29.595376-29.595375zM577.849711 513.479769c-11.83815 0-22.936416 12.578035-22.936416 23.6763 0 12.578035 11.83815 23.676301 22.936416 23.676301 17.757225 0 29.595376-11.83815 29.595376-23.676301s-11.83815-23.676301-29.595376-23.6763zM501.641618 401.017341c17.757225 0 29.595376-12.578035 29.595376-29.595376 0-17.757225-11.83815-29.595376-29.595376-29.595375s-35.514451 11.83815-35.51445 29.595375 17.757225 29.595376 35.51445 29.595376zM706.589595 513.479769c-11.83815 0-22.936416 12.578035-22.936416 23.6763 0 12.578035 11.83815 23.676301 22.936416 23.676301 17.757225 0 29.595376-11.83815 29.595376-23.676301s-11.83815-23.676301-29.595376-23.6763z"
@@ -47,8 +47,8 @@
             </svg>
           </button>
           <!-- QQ -->
-          <button class="action-btn2">
-            <svg t="1737552871738" class="action-btn2-icon" viewBox="0 0 1024 1024" version="1.1"
+          <button class="action-btn-iocn">
+            <svg t="1737552871738" class="action-btn-iocn-size" viewBox="0 0 1024 1024" version="1.1"
               xmlns="http://www.w3.org/2000/svg" p-id="7246">
               <path
                 d="M512 0C229.003636 0 0 229.003636 0 512s229.003636 512 512 512 512-229.003636 512-512S794.996364 0 512 0z m210.385455 641.396364c-7.447273 9.309091-26.996364-1.861818-41.89091-32.581819-3.723636 13.963636-13.032727 36.305455-34.443636 64.232728 35.374545 8.378182 44.683636 42.821818 33.512727 61.44-8.378182 13.032727-26.996364 24.203636-59.578181 24.203636-58.647273 0-83.781818-15.825455-95.883637-26.996364-1.861818-2.792727-5.585455-3.723636-10.24-3.723636-4.654545 0-7.447273 0.930909-10.24 3.723636-11.170909 11.170909-37.236364 26.996364-95.883636 26.996364-32.581818 0-52.130909-11.170909-59.578182-24.203636-12.101818-18.618182-1.861818-53.061818 33.512727-61.44-20.48-27.927273-29.789091-50.269091-34.443636-64.232728-13.963636 30.72-34.443636 42.821818-41.890909 32.581819-5.585455-8.378182-8.378182-26.065455-7.447273-38.167273 3.723636-46.545455 34.443636-85.643636 53.061818-106.123636-2.792727-5.585455-8.378182-40.029091 14.894546-63.301819v-1.861818c0-92.16 65.163636-158.254545 148.014545-158.254545 81.92 0 148.014545 66.094545 148.014546 158.254545v1.861818c23.272727 23.272727 17.687273 57.716364 14.894545 63.301819 17.687273 20.48 49.338182 59.578182 53.061818 106.123636 0.930909 12.101818-0.930909 29.789091-7.447272 38.167273z"
@@ -56,8 +56,8 @@
             </svg>
           </button>
           <!--微博  -->
-          <button class="action-btn2">
-            <svg t="1737552907646" class="action-btn2-icon" viewBox="0 0 1024 1024" version="1.1"
+          <button class="action-btn-iocn">
+            <svg t="1737552907646" class="action-btn-iocn-size" viewBox="0 0 1024 1024" version="1.1"
               xmlns="http://www.w3.org/2000/svg" p-id="8263">
               <path
                 d="M448.698182 482.210909c-96.814545 4.654545-175.010909 56.785455-175.010909 121.949091s78.196364 114.501818 175.010909 109.847273S623.709091 647.912727 623.709091 582.749091c-0.930909-64.232727-79.127273-105.192727-175.010909-100.538182z m65.163636 164.770909c-29.789091 39.098182-88.436364 57.716364-145.221818 26.065455-26.996364-14.894545-26.065455-43.752727-26.065455-43.752728s-11.170909-92.16 85.643637-103.330909c97.745455-12.101818 115.432727 81.92 85.643636 121.018182z"
@@ -72,7 +72,7 @@
           </button>
           <!-- 登录和注册按钮（未登录时显示） -->
           <template v-if="!isLoggedIn">
-            <button class="action-btn1" @click="LoginName">
+            <button class="action-btn" @click="LoginName">
               <svg t="1741965110034" class="icon" viewBox="0 0 1024 1024" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" p-id="10018" width="20" height="20" style="vertical-align: middle;">
                 <path
@@ -99,7 +99,7 @@
               </svg>
               <span style="vertical-align: middle;">登录</span>
             </button>
-            <button class="action-btn1" @click="EnrolFirst">
+            <button class="action-btn" @click="EnrolFirst">
               <svg t="1741965357577" class="icon" viewBox="0 0 1024 1024" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" p-id="15726" width="20" height="20" style="vertical-align: middle;">
                 <path

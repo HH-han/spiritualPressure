@@ -1,1209 +1,819 @@
-@media (min-width: 768px) {
-    .auth-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        font-family: 'Montserrat', sans-serif;
-        height: 100vh;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-    }
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
 
-    .welcome-title {
-        font-size: 35px;
-        font-weight: 700;
-        color: #ffffff;
-        margin-bottom: 20px;
-    }
+.welcome-title {
+    font-size: 35px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
 
-    .container-wrapper {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
-            0 10px 10px rgba(0, 0, 0, 0.22);
-        position: relative;
-        overflow: hidden;
-        width: 1000px;
-        max-width: 100%;
-        min-height: 550px;
-    }
+.container-wrapper {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+        0 10px 10px rgba(0, 0, 0, 0.22);
+    position: relative;
+    overflow: hidden;
+    width: 1000px;
+    max-width: 100%;
+    min-height: 550px;
+}
 
-    .form-container {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        transition: all 0.6s ease-in-out;
-    }
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+}
 
-    .sign-in-container {
-        left: 0;
-        width: 50%;
-        z-index: 2;
-    }
+.sign-in-container {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+}
 
-    .container-wrapper.right-panel-active .sign-in-container {
-        transform: translateX(100%);
-    }
+.container-wrapper.right-panel-active .sign-in-container {
+    transform: translateX(100%);
+}
 
-    .sign-up-container {
-        left: 0;
-        width: 50%;
+.sign-up-container {
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container-wrapper.right-panel-active .sign-up-container {
+    transform: translateX(100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+
+    0%,
+    49.99% {
         opacity: 0;
         z-index: 1;
     }
 
-    .container-wrapper.right-panel-active .sign-up-container {
-        transform: translateX(100%);
+    50%,
+    100% {
         opacity: 1;
         z-index: 5;
-        animation: show 0.6s;
-    }
-
-    @keyframes show {
-
-        0%,
-        49.99% {
-            opacity: 0;
-            z-index: 1;
-        }
-
-        50%,
-        100% {
-            opacity: 1;
-            z-index: 5;
-        }
-    }
-
-    .overlay-container {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 50%;
-        height: 100%;
-        overflow: hidden;
-        transition: transform 0.6s ease-in-out;
-        z-index: 100;
-    }
-
-    .container-wrapper.right-panel-active .overlay-container {
-        transform: translateX(-100%);
-    }
-
-    .overlay {
-        background-color: rgb(255, 97, 97);
-        background: -webkit-linear-gradient(to right, #4facfe, #00f2fe);
-        background: linear-gradient(to right, #ff4b2bc8, #FF416C);
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: 0 0;
-        color: #FFFFFF;
-        position: relative;
-        left: -100%;
-        height: 100%;
-        width: 200%;
-        transform: translateX(0);
-        transition: transform 0.6s ease-in-out;
-    }
-
-    .container-wrapper.right-panel-active .overlay {
-        transform: translateX(50%);
-    }
-
-    .overlay-panel {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        padding: 0 40px;
-        text-align: center;
-        top: 0;
-        height: 100%;
-        width: 50%;
-        transform: translateX(0);
-        transition: transform 0.6s ease-in-out;
-    }
-
-    .overlay-left {
-        transform: translateX(-20%);
-    }
-
-    .container-wrapper.right-panel-active .overlay-left {
-        transform: translateX(0);
-    }
-
-    .overlay-right {
-        right: 0;
-        transform: translateX(0);
-    }
-
-    .container-wrapper.right-panel-active .overlay-right {
-        transform: translateX(20%);
-    }
-
-    .social-container {
-        margin: 20px 0;
-    }
-
-    .ghost {
-        border-radius: 20px;
-        border: 2px solid #FF4B2B;
-        background-color: #FF4B2B;
-        color: #FFFFFF;
-        font-size: 12px;
-        font-weight: bold;
-        padding: 12px 45px;
-        margin-top: 20px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        transition: transform 80ms ease-in;
-    }
-
-    .ghost:active {
-        transform: scale(0.95);
-    }
-
-    .ghost:focus {
-        outline: none;
-    }
-
-    .ghost {
-        background-color: transparent;
-        border-color: #FFFFFF;
-    }
-
-    footer[data-v-ac6433ee] {
-        background-color: #222;
-        color: #fff;
-        font-size: 14px;
-        bottom: 0;
-        position: fixed;
-        width: 100vw;
-        text-align: center;
-        z-index: 999;
-    }
-
-    footer p {
-        margin: 10px 0;
-    }
-
-    footer i {
-        color: red;
-    }
-
-    footer a {
-        color: #3c97bf;
-        text-decoration: none;
-    }
-
-    /* 登录表单样式 */
-    .loginName {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-    }
-
-    .loginpage-container {
-        width: 100%;
-        min-width: 1000px;
-        padding: 20px;
-    }
-
-    .loginpage-card {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        display: flex;
-        height: 100%;
-    }
-
-    .loginpage-inner-card {
-        display: flex;
-        width: 100%;
-        height: 100%;
-    }
-
-    /* 左侧装饰部分 */
-    .loginpage-form-SignUp {
-        flex: 1;
-        height: 100%;
-        background: #fff;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-    }
-
-    .loginpage-decoration {
-        background-color: rgb(255, 255, 255);
-        padding: 0px 10px 0px 10px;
-        display: flex;
-        position: relative;
-        overflow: hidden;
-        height: 100%;
-    }
-
-    @keyframes rotate {
-        from {
-            transform: rotate(0deg);
-        }
-
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    .loginpage-decoration-imbtn {
-        position: relative;
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-        overflow: hidden;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-    }
-
-    .loginpage-decoration-imbtn:hover {
-        box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.35);
-    }
-
-    .loginpage-background {
-        position: relative;
-        height: 300px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        overflow: hidden;
-    }
-
-    .loginpage-background::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('@/assets/loging/31d494f83e7fef6eed32f2ac1d746e79dd387cd7bc439-5C2vFY_fw1200webp.webp') center/cover;
-        opacity: 0.7;
-        z-index: 1;
-    }
-
-    .loginpage-background::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
-        z-index: 2;
-    }
-
-    .loginpage-background h1 {
-        position: relative;
-        z-index: 3;
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        animation: fadeInDown 0.8s ease-out;
-    }
-
-    .loginpage-background img {
-        position: relative;
-        z-index: 3;
-        max-height: 150px;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        opacity: 0.9;
-        transform: perspective(1000px) rotateX(10deg);
-        transition: all 0.5s ease;
-        animation: float 6s ease-in-out infinite;
-    }
-
-    .loginpage-decoration-links {
-        display: flex;
-        justify-content: center;
-        padding: 30px;
-        background: #fff;
-        gap: 20px;
-        flex-wrap: wrap;
-    }
-
-    .loginpage-decoration-btn {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 15px 30px;
-        border: none;
-        border-radius: 50px;
-        font-size: 1rem;
-        font-weight: 600;
-        color: white;
-        cursor: pointer;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        z-index: 1;
-    }
-
-    .loginpage-decoration-btn span {
-        position: relative;
-        z-index: 3;
-        transition: all 0.3s ease;
-    }
-
-    .loginpage-decoration-btn:hover span {
-        transform: translateX(5px);
-    }
-
-    .svg-wrapper-1 {
-        position: relative;
-        width: 24px;
-        height: 24px;
-        margin-right: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 3;
-    }
-
-    .svg-wrapper {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-
-    .loginpage-decoration-btn:hover .svg-wrapper {
-        transform: rotate(10deg) scale(1.1);
-    }
-
-    .loginpage-decoration-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
-        z-index: 1;
-        transition: all 0.3s ease;
-        opacity: 0;
-    }
-
-    .loginpage-decoration-btn:hover::before {
-        opacity: 1;
-    }
-
-    .loginpage-new-user {
-        background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
-    }
-
-    .loginpage-phone-login {
-        background: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%);
-    }
-
-    .loginpage-email-login {
-        background: linear-gradient(45deg, #a1c4fd 0%, #c2e9fb 100%);
-    }
-
-    .loginpage-decoration-btn::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: inherit;
-        z-index: 2;
-        transition: all 0.3s ease;
-    }
-
-    .loginpage-decoration-btn:hover::after {
-        opacity: 0;
-    }
-
-    @keyframes float {
-        0% {
-            transform: perspective(1000px) rotateX(10deg) translateY(0);
-        }
-
-        50% {
-            transform: perspective(1000px) rotateX(10deg) translateY(-10px);
-        }
-
-        100% {
-            transform: perspective(1000px) rotateX(10deg) translateY(0);
-        }
-    }
-
-    @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .loginpage-decoration-links {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .loginpage-decoration-btn {
-            width: 220px;
-        }
-
-        .loginpage-background h1 {
-            font-size: 2rem;
-        }
-    }
-
-    /* 右侧表单部分 */
-    .loginpage-form {
-        flex: 1;
-        height: 100%;
-        padding: 50px;
-        background: #fff;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-        gap: 20px;
-    }
-
-    .loginpage-qr-link {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #6e8efb;
-        background: rgba(110, 142, 251, 0.1);
-        border-radius: 50%;
-        transition: all 0.3s ease;
-    }
-
-    .loginpage-qr-link:hover {
-        background: rgba(110, 142, 251, 0.2);
-        transform: scale(1.1);
-    }
-
-    .loginpage-qr-icon svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    /* 头像样式 */
-    .loginpage-avatar-container {
-        display: flex;
-        justify-content: center;
-    }
-
-    .loginpage-avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #6e8efb, #a777e3);
-        padding: 3px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .loginpage-avatar-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 3px solid white;
-    }
-
-    /* 错误消息 */
-    .loginpage-error-message {
-        background: #ffebee;
-        color: #c62828;
-        padding: 12px 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 14px;
-        text-align: center;
-    }
-
-    /* 二维码 */
-    .loginpage-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        -webkit-backdrop-filter: blur(5px);
-        backdrop-filter: blur(5px);
-    }
-
-    /* 输入框样式 */
-    .userlogin-input-centainer {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .userlogin-inputContainer {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-
-
-    .userlogin-userIcon {
-        position: absolute;
-        fill: rgb(78, 193, 255);
-        width: 16px;
-        height: 16px;
-        top: -23px;
-        left: -15px;
-        opacity: 0;
-        transition: .2s linear;
-    }
-
-    .userlogin-usernameLabel {
-        position: absolute;
-        top: -25px;
-        left: 5px;
-        color: rgb(83, 83, 83);
-        font-size: 14px;
-        font-weight: 500;
-        font-family: Whitney, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-        overflow: hidden;
-        transition: .2s linear;
-        opacity: 0;
-    }
-
-    /* 账号密码输入框样式 */
-    #userlogin-passwordField,
-    #userlogin-usernameField {
-        width: 100%;
-        border: 2px solid rgb(186, 186, 186);
-        background-color: transparent;
-        border-radius: 15px;
-        padding: 10px 15px;
-        color: rgb(96, 96, 96);
-        font-weight: 500;
-        outline: none;
-        caret-color: rgb(78, 164, 255);
-        transition-duration: .3s;
-        font-family: Whitney, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    /* 密码 */
-    #userlogin-passwordField:focus~.userlogin-usernameLabel,
-    #userlogin-passwordField:valid~.userlogin-usernameLabel {
-        transform: translateX(20px);
-        opacity: 1;
-    }
-
-    #userlogin-passwordField:focus~.userlogin-userIcon,
-    #userlogin-passwordField:valid~.userlogin-userIcon {
-        transform: translateX(20px);
-        opacity: 1;
-    }
-
-    #userlogin-passwordField:focus,
-    #userlogin-passwordField:valid {
-        background-color: #f7f7f7;
-        transition-duration: .3s;
-    }
-
-    /* 账号 */
-    #userlogin-usernameField:focus~.userlogin-usernameLabel,
-    #userlogin-usernameField:valid~.userlogin-usernameLabel {
-        transform: translateX(20px);
-        opacity: 1;
-    }
-
-    #userlogin-usernameField:focus~.userlogin-userIcon,
-    #userlogin-usernameField:valid~.userlogin-userIcon {
-        transform: translateX(20px);
-        opacity: 1;
-    }
-
-    #userlogin-usernameField:focus,
-    #userlogin-usernameField:valid {
-        background-color: #f7f7f7;
-        transition-duration: .3s;
-    }
-
-    /* 登录按钮 */
-    .loginpage-submit-btn {
-        padding: 15px;
-        background: linear-gradient(135deg, #6e8efb, #a777e3);
-        color: white;
-        border: none;
-        border-radius: 15px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 50px;
-    }
-
-    .loginpage-submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(110, 142, 251, 0.4);
-    }
-
-    .loginpage-submit-btn:active {
-        transform: translateY(0);
-    }
-
-    .loginpage-btn-text {
-        transition: all 0.3s ease;
-    }
-
-    .loginpage-btn-loader {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        opacity: 0;
-        transition: all 0.3s ease;
-        animation: rotate 1s linear infinite;
-    }
-
-    .loginpage-btn-loader svg {
-        width: 100%;
-        height: 100%;
-        fill: white;
-    }
-
-    .loginpage-submit-btn.loading .loginpage-btn-text {
-        transform: translateX(-15px);
-        opacity: 0;
-    }
-
-    .loginpage-submit-btn.loading .loginpage-btn-loader {
-        opacity: 1;
-    }
-
-    /* 底部选项 */
-    .loginpage-options {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 14px;
-    }
-
-    .loginpage-new-user-phone{
-        display: none;
-    }
-    .loginpage-remember {
-        display: flex;
-        align-items: center;
-    }
-
-    .loginpage-checkbox {
-        position: absolute;
-        opacity: 0;
-    }
-
-    .loginpage-checkbox-custom {
-        width: 16px;
-        height: 16px;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        margin-right: 8px;
-        display: inline-block;
-        position: relative;
-        transition: all 0.3s ease;
-    }
-
-    .loginpage-checkbox:checked+.loginpage-remember-label .loginpage-checkbox-custom {
-        background: #6e8efb;
-        border-color: #6e8efb;
-    }
-
-    .loginpage-checkbox:checked+.loginpage-remember-label .loginpage-checkbox-custom::after {
-        content: '';
-        position: absolute;
-        left: 5px;
-        top: 1px;
-        width: 4px;
-        height: 9px;
-        border: solid white;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-    }
-
-    .loginpage-remember-label {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        color: #7f8c8d;
-        transition: all 0.3s ease;
-    }
-
-    .loginpage-remember-label:hover {
-        color: #6e8efb;
-    }
-
-    .loginpage-forgot-link {
-        color: #7f8c8d;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .loginpage-forgot-link:hover {
-        color: #6e8efb;
-        text-decoration: underline;
-    }
-
-    /* 动画效果 */
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: opacity 0.5s ease;
-    }
-
-    .fade-enter-from,
-    .fade-leave-to {
-        opacity: 0;
-    }
-
-    .slide-fade-enter-active {
-        transition: all 0.3s ease-out;
-    }
-
-    .slide-fade-leave-active {
-        transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-    }
-
-    .slide-fade-enter-from,
-    .slide-fade-leave-to {
-        transform: translateY(-10px);
-        opacity: 0;
     }
 }
 
-/* 响应式设计移动端 */
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+}
+
+.container-wrapper.right-panel-active .overlay-container {
+    transform: translateX(-100%);
+}
+
+.overlay {
+    background-color: rgb(255, 97, 97);
+    background: -webkit-linear-gradient(to right, #4facfe, #00f2fe);
+    background: linear-gradient(to right, #ff4b2bc8, #FF416C);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0 0;
+    color: #FFFFFF;
+    position: relative;
+    left: -100%;
+    height: 100%;
+    width: 200%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.container-wrapper.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0 40px;
+    text-align: center;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    transform: translateX(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-left {
+    transform: translateX(-20%);
+}
+
+.container-wrapper.right-panel-active .overlay-left {
+    transform: translateX(0);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0);
+}
+
+.container-wrapper.right-panel-active .overlay-right {
+    transform: translateX(20%);
+}
+
+.social-container {
+    margin: 20px 0;
+}
+
+.ghost {
+    border-radius: 20px;
+    border: 2px solid #FF4B2B;
+    background-color: #FF4B2B;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    margin-top: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
+
+.ghost:active {
+    transform: scale(0.95);
+}
+
+.ghost:focus {
+    outline: none;
+}
+
+.ghost {
+    background-color: transparent;
+    border-color: #FFFFFF;
+}
+
+footer[data-v-ac6433ee] {
+    background-color: #222;
+    color: #fff;
+    font-size: 14px;
+    bottom: 0;
+    position: fixed;
+    width: 100vw;
+    text-align: center;
+    z-index: 999;
+}
+
+footer p {
+    margin: 10px 0;
+}
+
+footer i {
+    color: red;
+}
+
+footer a {
+    color: #3c97bf;
+    text-decoration: none;
+}
+
+/* 登录表单样式 */
+.loginName {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.loginpage-container {
+    width: 100%;
+    min-width: 1000px;
+    padding: 20px;
+}
+
+.loginpage-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    height: 100%;
+}
+
+.loginpage-inner-card {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* 左侧装饰部分 */
+.loginpage-form-SignUp {
+    flex: 1;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.loginpage-decoration {
+    background-color: rgb(255, 255, 255);
+    padding: 0px 10px 0px 10px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loginpage-decoration-imbtn {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+.loginpage-decoration-imbtn:hover {
+    box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.35);
+}
+
+.loginpage-background {
+    position: relative;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+}
+
+.loginpage-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('@/assets/loging/31d494f83e7fef6eed32f2ac1d746e79dd387cd7bc439-5C2vFY_fw1200webp.webp') center/cover;
+    opacity: 0.7;
+    z-index: 1;
+}
+
+.loginpage-background::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+    z-index: 2;
+}
+
+.loginpage-background h1 {
+    position: relative;
+    z-index: 3;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.loginpage-background img {
+    position: relative;
+    z-index: 3;
+    max-height: 150px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
+    transform: perspective(1000px) rotateX(10deg);
+    transition: all 0.5s ease;
+    animation: float 6s ease-in-out infinite;
+}
+
+.loginpage-decoration-links {
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+    background: #fff;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.loginpage-decoration-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    z-index: 1;
+}
+
+.loginpage-decoration-btn span {
+    position: relative;
+    z-index: 3;
+    transition: all 0.3s ease;
+}
+
+.loginpage-decoration-btn:hover span {
+    transform: translateX(5px);
+}
+
+.svg-wrapper-1 {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+}
+
+.svg-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.loginpage-decoration-btn:hover .svg-wrapper {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.loginpage-decoration-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+    z-index: 1;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.loginpage-decoration-btn:hover::before {
+    opacity: 1;
+}
+
+.loginpage-new-user {
+    background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+}
+
+.loginpage-phone-login {
+    background: linear-gradient(45deg, #a18cd1 0%, #fbc2eb 100%);
+}
+
+.loginpage-email-login {
+    background: linear-gradient(45deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+
+.loginpage-decoration-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.loginpage-decoration-btn:hover::after {
+    opacity: 0;
+}
+
+@keyframes float {
+    0% {
+        transform: perspective(1000px) rotateX(10deg) translateY(0);
+    }
+
+    50% {
+        transform: perspective(1000px) rotateX(10deg) translateY(-10px);
+    }
+
+    100% {
+        transform: perspective(1000px) rotateX(10deg) translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .loginName {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-    }
-
-    .loginpage-container {
-        width: 100%;
-        min-width: 400px;
-        padding: 20px;
-    }
-
-    .loginpage-card {
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-    }
-
-    .loginpage-inner-card {
-        padding: 30px 20px;
-    }
-
-    /* 隐藏桌面端的装饰部分 */
-    .loginpage-decoration {
-        display: none;
-    }
-
-    .loginpage-form {
-        display: flex;
+    .loginpage-decoration-links {
         flex-direction: column;
-        position: fixed;
-        background-color: #fff;
-        width: 400px;
-        border-radius: 15px;
-        padding: 10px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .loginpage-qr-link {
-        align-self: flex-end;
-        margin-bottom: 10px;
-
-    }
-
-    .loginpage-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: #ffffff;
-        display: flex;
-        justify-content: center;
         align-items: center;
-        z-index: 1000;
-        -webkit-backdrop-filter: blur(5px);
-        backdrop-filter: blur(5px);
-    }
-
-    .loginpage-qr-icon {
-        width: 24px;
-        height: 24px;
-        color: #999;
-    }
-
-    .loginpage-title {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #333;
-    }
-
-    .loginpage-subtitle {
-        font-size: 14px;
-        color: #999;
-        margin-bottom: 30px;
-    }
-
-    .loginpage-avatar-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 30px;
-    }
-
-    .loginpage-avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        background-color: #f0f2f5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        border: 2px solid #e6e8eb;
-    }
-
-    .loginpage-avatar-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .loginpage-error-message {
-        background-color: #fff0f0;
-        color: #f56c6c;
-        padding: 10px 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        font-size: 14px;
-        border: 1px solid #ffd0d0;
-    }
-
-    /* 输入框样式 */
-    .userlogin-input-centainer {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-        align-items: center;
-        margin: 15px 0px 20px 0px;
-    }
-
-    .userlogin-inputContainer {
-        position: relative;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .userlogin-userIcon {
-        position: absolute;
-        fill: rgb(78, 193, 255);
-        width: 16px;
-        height: 16px;
-        top: -23px;
-        left: -15px;
-        opacity: 0;
-        transition: .2s linear;
-    }
-
-    .userlogin-usernameLabel {
-        position: absolute;
-        top: -25px;
-        left: 5px;
-        color: rgb(83, 83, 83);
-        font-size: 14px;
-        font-weight: 500;
-        font-family: Whitney, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-        overflow: hidden;
-        transition: .2s linear;
-        opacity: 0;
-    }
-
-    /* 账号密码输入框 */
-    #userlogin-passwordField,
-    #userlogin-usernameField {
-        width: 100%;
-        border: 2px solid rgb(186, 186, 186);
-        background-color: transparent;
-        border-radius: 15px;
-        padding: 10px 15px;
-        color: rgb(96, 96, 96);
-        font-weight: 500;
-        outline: none;
-        caret-color: rgb(78, 164, 255);
-        transition-duration: .3s;
-        font-family: Whitney, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    /* 密码 */
-    #userlogin-passwordField:focus~.userlogin-usernameLabel,
-    #userlogin-passwordField:valid~.userlogin-usernameLabel {
-        transform: translateX(20px);
-        opacity: 1;
-    }
-
-    #userlogin-passwordField:focus~.userlogin-userIcon,
-    #userlogin-passwordField:valid~.userlogin-userIcon {
-        transform: translateX(20px);
-        opacity: 1;
-    }
-
-    #userlogin-passwordField:focus,
-    #userlogin-passwordField:valid {
-        background-color: #f7f7f7;
-        transition-duration: .3s;
-    }
-
-    /* 账号 */
-    #userlogin-usernameField:focus~.userlogin-usernameLabel,
-    #userlogin-usernameField:valid~.userlogin-usernameLabel {
-        transform: translateX(20px);
-        opacity: 1;
-    }
-
-    #userlogin-usernameField:focus~.userlogin-userIcon,
-    #userlogin-usernameField:valid~.userlogin-userIcon {
-        transform: translateX(20px);
-        opacity: 1;
-    }
-
-    #userlogin-usernameField:focus,
-    #userlogin-usernameField:valid {
-        background-color: #f7f7f7;
-        transition-duration: .3s;
-    }
-
-    .loginpage-submit-btn {
-        height: 50px;
-        background-color: #409eff;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        margin-bottom: 20px;
-    }
-
-    .loginpage-submit-btn:hover {
-        background-color: #66b1ff;
-    }
-
-    .loginpage-btn-text {
-        display: block;
-    }
-
-    .loginpage-btn-loader {
-        display: none;
-        width: 20px;
-        height: 20px;
-        margin-left: 10px;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    .loginpage-options {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 14px;
-    }
-
-    .loginpage-remember {
-        display: flex;
-        align-items: center;
-    }
-
-    .loginpage-checkbox {
-        display: none;
-    }
-
-    .loginpage-checkbox-custom {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        border: 1px solid #dcdfe6;
-        border-radius: 4px;
-        margin-right: 8px;
-        position: relative;
-        vertical-align: middle;
-    }
-
-    .loginpage-checkbox:checked+.loginpage-remember-label .loginpage-checkbox-custom {
-        background-color: #409eff;
-        border-color: #409eff;
-    }
-
-    .loginpage-checkbox:checked+.loginpage-remember-label .loginpage-checkbox-custom::after {
-        content: "";
-        position: absolute;
-        left: 5px;
-        top: 2px;
-        width: 4px;
-        height: 8px;
-        border: solid white;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-    }
-
-    .loginpage-remember-label {
-        display: flex;
-        align-items: center;
-        color: #666;
-        cursor: pointer;
-    }
-
-    .loginpage-forgot-link {
-        color: #999;
-        text-decoration: none;
-    }
-
-    .loginpage-forgot-link:hover {
-        color: #409eff;
-    }
-
-    /* 移动端底部注册和手机登录按钮 */
-    .loginpage-mobile-actions {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
     }
 
     .loginpage-decoration-btn {
-        height: 44px;
-        background: none;
-        border: none;
-        color: #409eff;
-        border-radius: 8px;
-        font-size: 14px;
-        margin: 0 5px;
-        cursor: pointer;
-        transition: all 0.3s;
+        width: 220px;
     }
 
-    .loginpage-decoration-btn:hover {
-        background-color: #ecf5ff;
+    .loginpage-background h1 {
+        font-size: 2rem;
     }
+}
 
-    .loginpage-new-user {
-        background-color: #409eff;
-        color: white;
-    }
+/* 右侧表单部分 */
+.loginpage-form {
+    flex: 1;
+    height: 100%;
+    padding: 50px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    gap: 20px;
+}
 
-    .loginpage-new-user:hover {
-        background-color: #66b1ff;
-    }
+.loginpage-qr-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6e8efb;
+    background: rgba(110, 142, 251, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
 
-    /* 动画效果 */
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: opacity 0.3s;
-    }
+.loginpage-qr-link:hover {
+    background: rgba(110, 142, 251, 0.2);
+    transform: scale(1.1);
+}
 
-    .fade-enter,
-    .fade-leave-to {
-        opacity: 0;
-    }
+.loginpage-qr-icon svg {
+    width: 20px;
+    height: 20px;
+}
 
-    .slide-fade-enter-active {
-        transition: all 0.3s ease;
-    }
+/* 头像样式 */
+.loginpage-avatar-container {
+    display: flex;
+    justify-content: center;
+}
 
-    .slide-fade-leave-active {
-        transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-    }
+.loginpage-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    padding: 3px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
 
-    .slide-fade-enter,
-    .slide-fade-leave-to {
-        transform: translateY(-10px);
-        opacity: 0;
-    }
+.loginpage-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+}
 
-    @media (min-width: 768px) {
-        .loginpage-mobile-actions {
-            display: none;
-        }
-    }
+/* 错误消息 */
+.loginpage-error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+}
 
-    .overlay-container,
-    .welcome-title,
-    footer {
-        display: none;
-    }
+/* 二维码 */
+.loginpage-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+}
+
+/* 输入框样式 */
+.userlogin-input-centainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.userlogin-inputContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+
+.userlogin-userIcon {
+    position: absolute;
+    fill: rgb(78, 193, 255);
+    width: 16px;
+    height: 16px;
+    top: -23px;
+    left: -15px;
+    opacity: 0;
+    transition: .2s linear;
+}
+
+.userlogin-usernameLabel {
+    position: absolute;
+    top: -25px;
+    left: 5px;
+    color: rgb(83, 83, 83);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: Whitney, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    transition: .2s linear;
+    opacity: 0;
+}
+
+/* 账号密码输入框样式 */
+#userlogin-passwordField,
+#userlogin-usernameField {
+    width: 100%;
+    border: 2px solid rgb(186, 186, 186);
+    background-color: transparent;
+    border-radius: 15px;
+    padding: 10px 15px;
+    color: rgb(96, 96, 96);
+    font-weight: 500;
+    outline: none;
+    caret-color: rgb(78, 164, 255);
+    transition-duration: .3s;
+    font-family: Whitney, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 密码 */
+#userlogin-passwordField:focus~.userlogin-usernameLabel,
+#userlogin-passwordField:valid~.userlogin-usernameLabel {
+    transform: translateX(20px);
+    opacity: 1;
+}
+
+#userlogin-passwordField:focus~.userlogin-userIcon,
+#userlogin-passwordField:valid~.userlogin-userIcon {
+    transform: translateX(20px);
+    opacity: 1;
+}
+
+#userlogin-passwordField:focus,
+#userlogin-passwordField:valid {
+    background-color: #f7f7f7;
+    transition-duration: .3s;
+}
+
+/* 账号 */
+#userlogin-usernameField:focus~.userlogin-usernameLabel,
+#userlogin-usernameField:valid~.userlogin-usernameLabel {
+    transform: translateX(20px);
+    opacity: 1;
+}
+
+#userlogin-usernameField:focus~.userlogin-userIcon,
+#userlogin-usernameField:valid~.userlogin-userIcon {
+    transform: translateX(20px);
+    opacity: 1;
+}
+
+#userlogin-usernameField:focus,
+#userlogin-usernameField:valid {
+    background-color: #f7f7f7;
+    transition-duration: .3s;
+}
+
+/* 登录按钮 */
+.loginpage-submit-btn {
+    padding: 15px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}
+
+.loginpage-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(110, 142, 251, 0.4);
+}
+
+.loginpage-submit-btn:active {
+    transform: translateY(0);
+}
+
+.loginpage-btn-text {
+    transition: all 0.3s ease;
+}
+
+.loginpage-btn-loader {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    animation: rotate 1s linear infinite;
+}
+
+.loginpage-btn-loader svg {
+    width: 100%;
+    height: 100%;
+    fill: white;
+}
+
+.loginpage-submit-btn.loading .loginpage-btn-text {
+    transform: translateX(-15px);
+    opacity: 0;
+}
+
+.loginpage-submit-btn.loading .loginpage-btn-loader {
+    opacity: 1;
+}
+
+/* 底部选项 */
+.loginpage-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.loginpage-new-user-phone {
+    display: none;
+}
+
+.loginpage-remember {
+    display: flex;
+    align-items: center;
+}
+
+.loginpage-checkbox {
+    position: absolute;
+    opacity: 0;
+}
+
+.loginpage-checkbox-custom {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    margin-right: 8px;
+    display: inline-block;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.loginpage-checkbox:checked+.loginpage-remember-label .loginpage-checkbox-custom {
+    background: #6e8efb;
+    border-color: #6e8efb;
+}
+
+.loginpage-checkbox:checked+.loginpage-remember-label .loginpage-checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.loginpage-remember-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #7f8c8d;
+    transition: all 0.3s ease;
+}
+
+.loginpage-remember-label:hover {
+    color: #6e8efb;
+}
+
+.loginpage-forgot-link {
+    color: #7f8c8d;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.loginpage-forgot-link:hover {
+    color: #6e8efb;
+    text-decoration: underline;
+}
+
+/* 动画效果 */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.slide-fade-enter-active {
+    transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    transform: translateY(-10px);
+    opacity: 0;
 }

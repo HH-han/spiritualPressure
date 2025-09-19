@@ -330,10 +330,6 @@
       <BottomPage />
     </footer>
   </div>
-  <!-- 移动端适配 -->
-  <div class="navbar_move">
-    <NavigationBar />
-  </div>
 </template>
 <script setup>
 import { getAttractionBlogs, likeAttraction, collectAttraction, getSlideshow } from '@/api/travel'
@@ -347,7 +343,6 @@ import BottomPage from '@/components/DisplayBox/BottomPage.vue'
 import CollectionTips from '@/components/PromptComponent/CollectionTips.vue'
 import AttractionsDisplay from '@/views/HomePage/AttractionsDisplay.vue'
 import SeamlessCarousel from '@/views/HomePage/SeamlessCarousel.vue'
-import NavigationBar from '@/components/ResponseComponent/NavigationBar.vue';
 import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue';
 import TravelNews from '@/views/HomePage/TravelNews.vue';
 

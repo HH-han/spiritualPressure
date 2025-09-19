@@ -72,12 +72,7 @@ import NetworkAnomaly from '@/components/ErrorPrompt/NetworkAnomaly.vue'
 import OrderDetails from '@/views/MyCenter/OrderDetails.vue'
 import ItemPurchase from '@/views/MyCenter/ItemPurchase.vue'
 import AccountSettings from '@/views/MyCenter/AccountSettings.vue'
-// 响应页面
-import ViewMore from '@/views/ResponseView/ViewMore.vue'
-import ViewOrder from '@/views/ResponseView/ViewOrder.vue'
-import ViewDiscover from '@/views/ResponseView/ViewDiscover.vue'
-import ViewProfile from '@/views/ResponseView/ViewProfile.vue'
-import ViewOrderlist from '@/views/ResponseView/ViewOrderlist.vue'
+
 // 我的页
 import PersonalData from '@/views/ResponseMy/PersonalData.vue'
 import HelpCenter from '@/views/ResponseMy/HelpCenter.vue'
@@ -148,12 +143,6 @@ const routes = [
   {path: '/itempurchase',name: 'itempurchase',component: ItemPurchase,title: "商品购买"},
   // 账户管理
   {path: '/accountsettings',name: 'accountsettings',component: AccountSettings,title: "账户设置"},
-  // 响应页面
-  {path: '/viewmore',name: 'viewmore',component: ViewMore,title: "查看更多"},
-  {path: '/vieworder',name: 'vieworder',component: ViewOrder,title: "查看订单"},
-  {path: '/viewdiscover',name: 'viewdiscover',component: ViewDiscover,title: "发现页面"},
-  {path: '/viewprofile',name: 'viewprofile',component: ViewProfile,title: "个人资料"},
-  {path: '/vieworderlist',name: 'viewmorderlist',component: ViewOrderlist,title: "订单列表"},
   // 我的
   {path: '/helpcenter',name: 'helpcenter',component: HelpCenter,title: "帮助中心"},
   {path: '/messagecenter',name: 'messagecenter',component: MessageCenter,title: "消息中心"},

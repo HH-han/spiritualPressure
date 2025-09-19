@@ -12,12 +12,17 @@
   <!-- <div>
     <FluidSimulation />
   </div> -->
+  <!-- 设备检测 -->
+  <div>
+    <DeviceDetects />
+  </div>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
 import RefreshLoad from '@/components/TransitionalComponents/RefreshLoad.vue';
 import FloatingButton from '@/components/ComponentButton/FloatingButton.vue';
 import FluidSimulation from '@/components/DisplayBox/FluidSimulation.vue';
+import DeviceDetects from '@/components/ResponseComponents/DeviceDetects.vue';
 
 const isLoading = ref(true)
 onMounted(() => {

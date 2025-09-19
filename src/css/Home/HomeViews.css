@@ -1093,7 +1093,6 @@ svg {
   min-width: 1250px;
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 20px;
@@ -1154,6 +1153,7 @@ svg {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: 0 4px 12px rgba(0, 162, 255, 0.3);
   overflow: hidden;
+  white-space: nowrap;
   z-index: 1;
 }
 
@@ -1230,17 +1230,7 @@ svg {
   box-shadow: none;
 }
 
-.action-btn1 {
-  padding: 8px 15px;
-  border: none;
-  border-radius: 4px;
-  background-color: #00a2ff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.action-btn2 {
+.action-btn-iocn {
   width: 50px;
   height: 50px;
   padding: 8px 12px;
@@ -1252,16 +1242,12 @@ svg {
   transition: transform 0.3s ease;
 }
 
-.action-btn1:hover {
-  background-color: #6462ee;
-}
-
-.action-btn2:hover {
+.action-btn-iocn:hover {
   transform: scale(1.2);
 
 }
 
-.action-btn2-icon {
+.action-btn-iocn-size {
   width: 100%;
   height: 100%;
 }
@@ -1302,7 +1288,7 @@ svg {
 }
 
 /* 下拉菜单项按钮 */
-.dropdown-item_action-btn2 {
+.dropdown-item_action-btn {
   padding: 12px 20px;
   border: none;
   background-color: transparent;
@@ -1319,14 +1305,14 @@ svg {
 }
 
 /* 按钮悬停效果 */
-.dropdown-item_action-btn2:hover {
+.dropdown-item_action-btn:hover {
   background-color: #f8f8f8;
   color: #000;
   padding-left: 25px;
 }
 
 /* 按钮悬停时的指示条 */
-.dropdown-item_action-btn2:hover::before {
+.dropdown-item_action-btn:hover::before {
   content: '';
   position: absolute;
   left: 0;
@@ -1337,17 +1323,17 @@ svg {
 }
 
 /* 第一个按钮的圆角 */
-.dropdown-item_action-btn2[style*="border-radius: 10px 10px 0 0"] {
+.dropdown-item_action-btn[style*="border-radius: 10px 10px 0 0"] {
   border-radius: 12px 12px 0 0 !important;
 }
 
 /* 最后一个按钮的圆角 */
-.dropdown-item_action-btn2[style*="border-radius: 0 0 10px 10px"] {
+.dropdown-item_action-btn[style*="border-radius: 0 0 10px 10px"] {
   border-radius: 0 0 12px 12px !important;
 }
 
 /* 菜单项分隔线 */
-.dropdown-item_action-btn2:not(:last-child) {
+.dropdown-item_action-btn:not(:last-child) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -1359,11 +1345,11 @@ svg {
 }
 
 /* 管理员专属按钮样式 */
-.dropdown-item_action-btn2[to="/TestProject001"] {
+.dropdown-item_action-btn[to="/TestProject001"] {
   position: relative;
 }
 
-.dropdown-item_action-btn2[to="/TestProject001"]::after {
+.dropdown-item_action-btn[to="/TestProject001"]::after {
   content: "ADMIN";
   position: absolute;
   right: 15px;
@@ -1490,156 +1476,3 @@ svg {
   box-shadow: 0 0 0 2px white, 0 0 0 5px #4894f8;
 }
 
-@media (max-width: 768px) {
-  /* 顶部栏 */
-  .navbar-background-1{
-    display: none;
-  }
-  /* 轮播图 */
-  .banner {
-    width: 100%;
-    height: 300px;
-    display: none;
-  }
-
-  /* 景点展示 */
-  .backgroundgradient {
-    display: none;
-  }
-
-  /* 底部栏 */
-  .bottom {
-    display: none;
-  }
-
-  .card_alignment {
-    display: flex;
-    flex-direction: column;
-    background-color: #ffffff;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-    overflow: hidden;
-    height: 100%;
-  }
-
-  .card {
-    width: 80%;
-    margin-bottom: 20px;
-  }
-
-  .card__content {
-    padding: 10px;
-  }
-
-  .card__title {
-    font-size: 16px;
-  }
-
-  .card__description {
-    font-size: 14px;
-  }
-
-  .card__link {
-    font-size: 14px;
-  }
-
-  .blog-post {
-    gap: 15px;
-    min-width: 250px;
-    height: auto;
-    margin: 20px;
-  }
-
-  .blog-post-image {
-    flex: none;
-    height: 200px;
-  }
-
-  .blog-post_buy {
-    margin-left: 0;
-    flex-direction: row;
-  }
-
-  .blog-post_math {
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-
-  .blog-post_mb {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .flex-align_right {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  /* 在手机屏幕上调整样式 */
-  .recommend-left_tj {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .recommend-left_tj button {
-    margin-left: 0;
-    margin-top: 10px;
-  }
-
-  .recommend-left_js h3,
-  .recommend-left_zx h3 {
-    font-size: 14px;
-  }
-
-  .recommend-left_js p,
-  .recommend-left_zx p {
-    font-size: 12px;
-  }
-
-  .recommend-left_zx button {
-    padding: 3px 8px;
-    font-size: 12px;
-  }
-
-  .content_5 {
-    flex-direction: column;
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-  }
-
-  .search_input {
-    display: none;
-  }
-
-  .modal-content {
-    width: 90%;
-    padding: 20px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  p {
-    font-size: 14px;
-  }
-
-  .navbar_move {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .navbar-home-2 {
-    display: none;
-
-  }
-  .navbar {
-    display: none;
-  }
-}
