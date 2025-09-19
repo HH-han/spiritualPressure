@@ -8,29 +8,25 @@
           <span>博览旅行</span>
         </div>
         <div class="nav-items">
-            <div class="center-items">
-              <button 
-                v-for="navItem in navItems" 
-                :key="navItem.path"
-                class="action-btn" 
-                @click="handleClick(navItem.path)"
-              >
-                {{ navItem.label }}
-              </button>
+          <div class="center-items">
+            <button v-for="navItem in navItems" :key="navItem.path" class="action-btn"
+              @click="handleClick(navItem.path)">
+              {{ navItem.label }}
+            </button>
+          </div>
+          <div class="dropdown">
+            <button class="action-btn dropdown-toggle">更多</button>
+            <div class="dropdown-menu_Home_2">
+              <button class="dropdown-item_action-btn" style="border-radius: 0 0 10px 10px"
+                @click="navigateTo('/SettingsFocus')">设置中心</button>
+              <button class="dropdown-item_action-btn" @click="navigateTo('/WebsiteIntroduction')">关于我们</button>
+              <button class="dropdown-item_action-btn" v-if="userInfo.permissions === 1"
+                @click="navigateTo('/testpage')">测试页面</button>
+              <button class="dropdown-item_action-btn" style="border-radius: 10px 10px 0 0"
+                @click="navigateTo('aboutweb')">网站介绍</button>
+              <button class="dropdown-item_action-btn" @click="navigateTo('/travelstrategy')">社区</button>
             </div>
-            <div class="dropdown">
-              <button class="action-btn dropdown-toggle">更多</button>
-              <div class="dropdown-menu_Home_2">
-                <button class="dropdown-item_action-btn" style="border-radius: 0 0 10px 10px"
-                  @click="navigateTo('/SettingsFocus')">设置中心</button>
-                <button class="dropdown-item_action-btn" @click="navigateTo('/WebsiteIntroduction')">关于我们</button>
-                <button class="dropdown-item_action-btn" v-if="userInfo.permissions === 1"
-                  @click="navigateTo('/testpage')">测试页面</button>
-                <button class="dropdown-item_action-btn" style="border-radius: 10px 10px 0 0"
-                  @click="navigateTo('aboutweb')">网站介绍</button>
-                <button class="dropdown-item_action-btn" @click="navigateTo('/travelstrategy')">社区</button>
-              </div>
-            </div>
+          </div>
         </div>
         <div class="actions">
           <ThemeSwitching />
@@ -124,9 +120,10 @@
               </button>
               <div class="profilepicture-inner" v-show="isDropdownVisible">
                 <button style="border-radius: 10px 10px 0 0;" @click="navigateTo('/functionswitching')">个人中心</button>
-                <button v-if="userInfo.permissions === 1" @click="AdminLayout">管理页面</button>
-                <button @click="logout">退出登录</button>
+                <button v-if="userInfo.permissions === 1" @click="AdminLayout" class="admin-button">管理页面</button>
                 <button style="border-radius: 0 0 10px 10px;" @click="navigateTo('/accountsettings')">账户设置</button>
+                <button @click="navigateTo('/im')">好友聊天</button>
+                <button @click="logout" class="logout-button">退出登录</button>
               </div>
             </div>
           </div>
@@ -138,14 +135,10 @@
   <div>
     <component :is="currentComponent" v-if="currentComponent" />
   </div>
-  
+
   <!-- 退出登录确认对话框 -->
   <div>
-    <Launchlogin 
-      v-if="showLogoutConfirm" 
-      @confirm="confirmLogout" 
-      @cancel="cancelLogout"
-    />
+    <Launchlogin v-if="showLogoutConfirm" @confirm="confirmLogout" @cancel="cancelLogout" />
   </div>
 </template>
 <script setup>
@@ -237,7 +230,7 @@ onMounted(() => {
     'StrategyGroup': StrategyGroup
   };
   currentComponent.value = savedPath ? componentMap[savedPath] : HomeView;
-  
+
   isLoggedIn.value = !!localStorage.getItem('token');
 });
 

@@ -69,6 +69,10 @@
       </div>
     </div>
   </div>
+  <!-- 背景样式 -->
+  <div>
+    <DynamicParticle />
+  </div>
 </template>
 
 <script setup>
@@ -80,6 +84,7 @@ import FriendList from './components/FriendList.vue'
 import GroupList from './components/GroupList.vue'
 import FriendRequestList from './components/FriendRequestList.vue'
 import ChatWindow from './components/ChatWindow.vue'
+import DynamicParticle from '@/components/ThemeComponents/DynamicParticle.vue';
 import { getFriendList, getPendingFriendRequests, getChatGroupsByCreator } from '@/api/im.js'
 import { getUserInfo } from '@/api/user.js'
 
@@ -237,11 +242,16 @@ onMounted(() => {
 <style scoped>
 .wechat-container {
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 1200px;
   padding: 20px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
 }
 
 .wechat-layout {
