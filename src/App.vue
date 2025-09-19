@@ -1,20 +1,24 @@
 <template>
-  <!-- loading 加载中效果-->
-  <div id="app">
-    <RefreshLoad v-if="isLoading" />
-    <router-view v-else />
-  </div>
-  <!-- 悬浮按钮 -->
-  <div>
-    <FloatingButton />
-  </div>
-  <!-- 流体仿真效果 -->
-  <!-- <div>
-    <FluidSimulation />
-  </div> -->
-  <!-- 设备检测 -->
-  <div>
+  <!-- 设备检测组件（始终渲染但隐藏） -->
+  <DeviceDetects ref="deviceDetectsRef" style="display: none;" />
+  <div v-if="isMobile">
     <DeviceDetects />
+  </div>
+  <!-- PC设备正常显示 -->
+  <div v-else>
+    <!-- loading 加载中效果-->
+    <div id="app">
+      <RefreshLoad v-if="isLoading" />
+      <router-view v-else />
+    </div>
+    <!-- 悬浮按钮 -->
+    <div>
+      <FloatingButton />
+    </div>
+    <!-- 流体仿真效果 -->
+    <!-- <div>
+      <FluidSimulation />
+    </div> -->
   </div>
 </template>
 <script setup>
@@ -25,10 +29,18 @@ import FluidSimulation from '@/components/DisplayBox/FluidSimulation.vue';
 import DeviceDetects from '@/components/ResponseComponents/DeviceDetects.vue';
 
 const isLoading = ref(true)
+const deviceDetectsRef = ref()
+const isMobile = ref(false)
+
 onMounted(() => {
   // 模拟加载过程
   setTimeout(() => {
     isLoading.value = false
+    
+    // 获取DeviceDetects组件中的isMobile状态
+    if (deviceDetectsRef.value) {
+      isMobile.value = deviceDetectsRef.value.isMobile
+    }
   }, 1000)
 })
 </script>

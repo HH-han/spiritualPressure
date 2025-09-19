@@ -131,7 +131,7 @@ onMounted(() => {
   width: 450px;
   position: relative;
   transition: left 0.3s linear;
-  background: url('@/assets/scenery/16k_earth_daymap.jpg');
+  background: url('@/assets/scenery/earthtexturemap.jpg');
   background-size: cover;
   background-position: left;
   bottom: 0px;
