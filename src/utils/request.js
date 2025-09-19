@@ -1,68 +1,23 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import router from "@/router";
+import { getValidToken, clearAuthData } from "./tokenValidator";
 // 创建axios实例
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:2025",
   timeout: 5000,
 });
 
-/**
- * 获取token方法
- * 添加了token有效性检查
- */
-function getValidToken() {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    return null;
-  }
-
-  // 检查token是否过期
-  try {
-    const tokenParts = token.split(".");
-    if (tokenParts.length !== 3) {
-      ElMessage.warning("无效的token格式");
-      return null;
-    }
-    // 解码 tokenPayload
-    const base64Url = tokenParts[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const rawPayload = atob(base64);
-    const payload = JSON.parse(
-      decodeURIComponent(
-        Array.from(rawPayload).map(c => 
-          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-        ).join('')
-      )
-    );
-    
-    if (payload.exp && payload.exp < Date.now() / 1000) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      ElMessage.warning("登录已过期，请重新登录");
-      return null;
-    }
-  } catch (e) {
-    console.error("Token解析失败:", e);
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    ElMessage.warning("无效的token，请重新登录");
-    return null;
-  }
-
-  return token;
-}
-
 // 请求拦截器
 request.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // 设置Content-Type
     if (!(config.data instanceof FormData)) {
       config.headers["Content-Type"] = "application/json;charset=utf-8";
     }
 
     // 添加认证token
-    const token = getValidToken();
+    const token = await getValidToken();
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -144,8 +99,7 @@ request.interceptors.response.use(
  */
 function handleUnauthorized() {
   ElMessage.warning("登录已过期，请重新登录");
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
+  clearAuthData();
 }
 
 // 导出默认请求实例
