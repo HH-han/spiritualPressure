@@ -34,25 +34,11 @@
 
             <!-- 内容区 -->
             <main class="content-area">
-                <!-- 个人信息 -->
-                <section v-if="activeTab === 'personal'" class="tab-content active">
-                    <h2 class="section-title">个人信息</h2>
+                <section v-for="item in navItems" :key="item.tab" v-show="activeTab === item.tab" class="tab-content"
+                    :class="{ active: activeTab === item.tab }">
+                    <h2 class="section-title">{{ item.label }}</h2>
                     <div class="personal-info-grid">
-                        <PersonalCenter />
-                    </div>
-                </section>
-
-                <!-- 修改密码 -->
-                <section v-if="activeTab === 'password'" class="tab-content active">
-                    <h2 class="section-title">修改密码</h2>
-                    <div class="personal-info-grid">
-                        <ChangePassword />
-                    </div>
-                </section>
-                <section v-if="activeTab === 'notification'" class="tab-content active">
-                    <h2 class="section-title">通知设置</h2>
-                    <div class="personal-info-grid">
-                        <MessageNotification />
+                        <component :is="componentMap[item.tab]" v-if="componentMap[item.tab]" />
                     </div>
                 </section>
             </main>
@@ -64,7 +50,17 @@
 import { ref, reactive, onMounted } from 'vue'
 import PersonalCenter from '@/views/MyCenter/PersonalCenter.vue';
 import ChangePassword from '@/views/MyCenter/ChangePassword.vue';
-import MessageNotification from '@/views/MyCenter/MessageNotification.vue'
+import MessageNotification from '@/views/MyCenter/MessageNotification.vue';
+import LoginStatus from '@/views/MyCenter/LoginStatus.vue';
+
+// 组件映射对象
+const componentMap = {
+    personal: PersonalCenter,
+    password: ChangePassword,
+    notification: MessageNotification,
+    loginstatus: LoginStatus
+};
+
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus';
 
@@ -127,7 +123,8 @@ const navItems = [
     { tab: 'password', label: '修改密码', icon: 'fas fa-lock' },
     { tab: 'notification', label: '通知设置', icon: 'fas fa-bell' },
     { tab: 'payment', label: '支付信息', icon: 'fas fa-credit-card' },
-    { tab: 'settings', label: '账户设置', icon: 'fas fa-cog' }
+    { tab: 'settings', label: '账户设置', icon: 'fas fa-cog' },
+    { tab: 'loginstatus', label: '登录状态', icon: 'fas fa-shield-alt' }
 ]
 const activeTab = ref('personal')
 
