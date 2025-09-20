@@ -31,6 +31,9 @@
 import { createApp, ref, onMounted } from 'vue';
 
 const isMobile = ref(false);
+const isDesktop = ref(false);
+const lastReloadTime = ref(0);
+
 const userAgent = ref(navigator.userAgent);
 const screenWidth = ref(window.innerWidth);
 const screenHeight = ref(window.innerHeight);
@@ -57,6 +60,7 @@ const checkDevice = () => {
     // 检查屏幕尺寸和触摸支持
     const hasTouchPoint = navigator.maxTouchPoints > 0;
     const isSmallScreen = window.innerWidth < 768;
+    const isDesktopVisible = window.innerWidth >= 768;
 
     // 保存旧的屏幕尺寸用于比较
     const oldWidth = screenWidth.value;
@@ -68,10 +72,23 @@ const checkDevice = () => {
 
     // 综合判断是否为移动设备
     isMobile.value = isMobileAgent || (hasTouchPoint && isSmallScreen);
-
-    // 检测到屏幕尺寸发生显著变化时刷新页面
-    if (Math.abs(oldWidth - screenWidth.value) > 50 || Math.abs(oldHeight - screenHeight.value) > 50) {
-        window.location.reload();
+    //判断是否为桌面端设备
+    isDesktop.value = !isMobile.value;
+    // 检测到屏幕尺寸发生显著变化且当前为小屏幕时刷新页面
+    if ((Math.abs(oldWidth - screenWidth.value) > 50 || Math.abs(oldHeight - screenHeight.value) > 50) && isSmallScreen) {
+        // 防止过于频繁的刷新，至少间隔2秒
+        if (Date.now() - lastReloadTime.value > 2000) {
+            lastReloadTime.value = Date.now();
+            window.location.reload();
+        }
+    }
+    // 检测到桌面端可见时刷新页面（从移动端切换到桌面端时）
+    if (isDesktopVisible && !isSmallScreen && oldWidth < 768) {
+        // 防止过于频繁的刷新，至少间隔2秒
+        if (Date.now() - lastReloadTime.value > 2000) {
+            lastReloadTime.value = Date.now();
+            window.location.reload();
+        }
     }
 };
 
