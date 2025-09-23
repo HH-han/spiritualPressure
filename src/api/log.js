@@ -57,7 +57,7 @@ export function getLoginLogDetail(params) {
  */
 export function getLoginLogs(params) {
   return request({
-    url: `api/public/system/log/operation/list/`,
+    url: `/api/public/user/logininfo`,
     method: 'get',
     params
   })

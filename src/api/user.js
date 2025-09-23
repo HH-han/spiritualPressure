@@ -1,5 +1,4 @@
-import request from '@/utils/request'
-
+import request from "@/utils/request";
 
 /**
  * 邮箱验证码
@@ -8,10 +7,10 @@ import request from '@/utils/request'
  */
 export function EmailCaptcha(data) {
   return request({
-    url: '/api/auth/send-code',
-    method: 'post',
-    data
-  })
+    url: "/api/auth/send-code",
+    method: "post",
+    data,
+  });
 }
 
 /**
@@ -21,10 +20,10 @@ export function EmailCaptcha(data) {
  */
 export function Emaillogin(data) {
   return request({
-    url: '/api/auth/Emaillogin',
-    method: 'post',
-    data
-  })
+    url: "/api/auth/Emaillogin",
+    method: "post",
+    data,
+  });
 }
 
 /**
@@ -34,10 +33,10 @@ export function Emaillogin(data) {
  */
 export function loginname(data) {
   return request({
-    url: '/api/public/user/login',
-    method: 'post',
-    data
-  })
+    url: "/api/public/user/login",
+    method: "post",
+    data,
+  });
 }
 /**
  * 获取用户信息
@@ -45,9 +44,9 @@ export function loginname(data) {
  */
 export function getUserInfo() {
   return request({
-    url: '/api/public/user/info',
-    method: 'get'
-  })
+    url: "/api/public/user/info",
+    method: "get",
+  });
 }
 
 /**
@@ -57,10 +56,10 @@ export function getUserInfo() {
  */
 export function getUserList(data) {
   return request({
-    url: '/api/public/user',
-    method: 'get',
-    params: data
-  })
+    url: "/api/public/user",
+    method: "get",
+    params: data,
+  });
 }
 
 /**
@@ -70,10 +69,10 @@ export function getUserList(data) {
  */
 export function updateUserInfo(data) {
   return request({
-    url: '/api/public/user/update',
-    method: 'put',
-    data
-  })
+    url: "/api/public/user/update",
+    method: "put",
+    data,
+  });
 }
 
 /**
@@ -84,9 +83,9 @@ export function updateUserInfo(data) {
 export function uploadAvatar(username, data) {
   return request({
     url: `/api/public/user/avatar/${username}`,
-    method: 'put',
-    data
-  })
+    method: "put",
+    data,
+  });
 }
 /**
  * 修改密码
@@ -95,8 +94,40 @@ export function uploadAvatar(username, data) {
  */
 export function changePassword(data) {
   return request({
-    url: '/api/public/user/update',
-    method: 'put',
-    data
-  })
+    url: "/api/public/user/update",
+    method: "put",
+    data,
+  });
+}
+/**
+ * 用户退出
+ * @returns {Promise}
+ */
+export function logout(userId) {
+  return request({
+    url: `/api/public/user/logout/${userId}`,
+    method: "post",
+  });
+}
+/**
+ * 获取用户登录日志
+ * @returns {Promise}
+ */
+export function getLoginLog(data) {
+  return request({
+    url: `/api/public/user/logininfo`,
+    method: "get",
+    params: data,
+  });
+}
+/**
+ * 删除用户登录信息
+ * @param {Number} id 登录日志ID
+ * @returns {Promise}
+ */
+export function deleteLoginLog(id) {
+  return request({
+    url: `/api/public/user/logininfo/${id}`,
+    method: "delete",
+  });
 }

@@ -74,6 +74,7 @@
         <thead>
           <tr>
             <th>ID</th>
+            <th>用户ID</th>
             <th>用户名</th>
             <th>登录状态</th>
             <th>登录IP</th>
@@ -86,22 +87,23 @@
         <tbody>
           <tr v-for="item in logData" :key="item.id">
             <td>{{ item.id }}</td>
+            <td >{{ item.userId }}</td>
             <td>{{ item.username }}</td>
             <td>
-              <span class="status-tag" :class="item.status === 1 ? 'success' : 'danger'">
-                {{ item.status === 1 ? '成功' : '失败' }}
+              <span class="status-tag" :class="item.status === '1' ? 'success' : 'danger'">
+                {{ item.status === '1' ? '成功' : '失败' }}
               </span>
-              <span v-if="item.status === 0" class="error-msg">({{ item.errorMsg }})</span>
+              <span v-if="item.status === '0'" class="error-msg">({{ item.msg }})</span>
             </td>
-            <td>{{ item.ipAddress }}</td>
+            <td>{{ item.ipaddr }}</td>
             <td>{{ item.loginLocation || '未知' }}</td>
             <td>{{ formatDateTime(item.loginTime) }}</td>
-            <td>{{ item.deviceInfo }}</td>
+            <td>{{ getDeviceInfo(item) }}</td>
             <td>
               <button class="detail-btn" @click="showDetail(item)">
                 详情
               </button>
-              <button class="block-btn" @click="handleBlock(item.ipAddress)" v-if="item.status === 0">
+              <button class="block-btn" @click="handleBlock(item.ipaddr)" v-if="item.status === '0'">
                 封禁IP
               </button>
             </td>
@@ -172,6 +174,10 @@
             <span class="detail-label">日志ID:</span>
             <span class="detail-value">{{ currentLog.id }}</span>
           </div>
+          <div class="detail-row"> 
+            <span class="detail-label">用户ID:</span>
+            <span class="detail-value">{{ currentLog.userId }}</span>
+          </div>
           <div class="detail-row">
             <span class="detail-label">用户名:</span>
             <span class="detail-value">{{ currentLog.username }}</span>
@@ -179,18 +185,18 @@
           <div class="detail-row">
             <span class="detail-label">登录状态:</span>
             <span class="detail-value">
-              <span class="status-tag" :class="currentLog.status === 1 ? 'success' : 'danger'">
-                {{ currentLog.status === 1 ? '成功' : '失败' }}
+              <span class="status-tag" :class="currentLog.status === '1' ? 'success' : 'danger'">
+                {{ currentLog.status === '1' ? '成功' : '失败' }}
               </span>
             </span>
           </div>
-          <div class="detail-row" v-if="currentLog.status === 0">
+          <div class="detail-row" v-if="currentLog.status === '0'">
             <span class="detail-label">错误信息:</span>
-            <span class="detail-value error-msg">{{ currentLog.errorMsg }}</span>
+            <span class="detail-value error-msg">{{ currentLog.msg }}</span>
           </div>
           <div class="detail-row">
             <span class="detail-label">IP地址:</span>
-            <span class="detail-value">{{ currentLog.ipAddress }}</span>
+            <span class="detail-value">{{ currentLog.ipaddr }}</span>
           </div>
           <div class="detail-row">
             <span class="detail-label">登录地点:</span>
@@ -201,24 +207,20 @@
             <span class="detail-value">{{ formatDateTime(currentLog.loginTime) }}</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">设备信息:</span>
-            <span class="detail-value">{{ currentLog.deviceInfo }}</span>
-          </div>
-          <div class="detail-row">
             <span class="detail-label">浏览器:</span>
-            <span class="detail-value">{{ currentLog.browser }}</span>
+            <span class="detail-value">{{ currentLog.browser || '未知' }}</span>
           </div>
           <div class="detail-row">
             <span class="detail-label">操作系统:</span>
-            <span class="detail-value">{{ currentLog.os }}</span>
+            <span class="detail-value">{{ currentLog.os || '未知' }}</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">登录方式:</span>
-            <span class="detail-value">{{ getLoginType(currentLog.loginType) }}</span>
+            <span class="detail-label">登录消息:</span>
+            <span class="detail-value">{{ currentLog.msg || '无' }}</span>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="modal-btn danger" @click="handleBlock(currentLog.ipAddress)" v-if="currentLog.status === 0">
+          <button class="modal-btn danger" @click="handleBlock(currentLog.ipaddr)" v-if="currentLog.status === '0'">
             封禁此IP
           </button>
           <button class="modal-btn" @click="detailDialogVisible = false">关闭</button>
@@ -349,6 +351,14 @@ const getLoginType = (type) => {
     '4': 'LDAP'
   }
   return typeMap[type] || '未知'
+}
+
+// 获取设备信息
+const getDeviceInfo = (item) => {
+  const parts = []
+  if (item.browser) parts.push(item.browser)
+  if (item.os) parts.push(item.os)
+  return parts.length > 0 ? parts.join(' / ') : '未知'
 }
 
 // 获取日志列表

@@ -21,19 +21,15 @@ class VoiceWebSocket {
   // 连接到语音WebSocket
   connect(token, onConnect, onError) {
     if (this.client && this.isConnected) {
+      console.log('WebSocket已连接，无需重复连接')
       return
     }
 
-    const voiceBaseUrl = import.meta.env.VITE_VOICE_BASE_URL || 'http://localhost:2025'
-    // 尝试不同的WebSocket端点配置
-    const endpoints = [
-      `${voiceBaseUrl}/voice`,
-    ]
-    
-    // 使用第一个可用的端点
-    const socketUrl = endpoints[0]
+    // 使用正确的WebSocket端点
+    const baseUrl = import.meta.env.VITE_API_BASE_URL
+    const socketUrl = `${baseUrl}/voice`
     console.log('尝试连接到语音WebSocket:', socketUrl)
-    console.log('链接端点:', endpoints.slice(1))
+    console.log('使用token:', token ? '已提供' : '未提供')
     
     try {
       const socket = new SockJS(socketUrl)
@@ -45,10 +41,12 @@ class VoiceWebSocket {
       
       socket.onclose = (event) => {
         console.error('SockJS连接关闭:', event.code, event.reason)
+        this.isConnected = false
       }
       
       socket.onerror = (error) => {
         console.error('SockJS连接错误:', error)
+        this.isConnected = false
       }
       
       this.client = new Client({
@@ -71,6 +69,7 @@ class VoiceWebSocket {
 
     this.client.onConnect = (frame) => {
       console.log('语音WebSocket连接成功')
+      console.log('连接帧信息:', frame)
       this.isConnected = true
       
       // 订阅用户专属队列
@@ -81,6 +80,7 @@ class VoiceWebSocket {
 
     this.client.onStompError = (frame) => {
       console.error('STOMP错误:', frame.headers['message'])
+      console.error('STOMP错误帧:', frame)
       this.isConnected = false
       if (onError) onError(frame)
     }
@@ -101,47 +101,76 @@ class VoiceWebSocket {
 
   // 订阅用户专属队列
   subscribeToUserQueues() {
-    if (!this.client || !this.isConnected) return
+    if (!this.client || !this.isConnected) {
+      console.error('无法订阅队列：client未连接或连接状态异常')
+      return
+    }
 
-    // 订阅语音通话请求队列
-    this.client.subscribe('/user/queue/voice/call', (message) => {
+    const userId = this.getCurrentUserId()
+    if (!userId) {
+      console.error('无法获取用户ID，无法订阅语音队列')
+      return
+    }
+
+    console.log(`开始为用户 ${userId} 订阅语音队列...`)
+
+    // 订阅语音通话请求队列（使用正确的用户专属路径）
+    // 注意：Spring WebSocket会自动将/user/{userId}/queue/voice/call路由到正确的用户
+    const callSubscription = this.client.subscribe(`/user/queue/voice/call`, (message) => {
+      console.log('收到通话消息:', message.body)
       this.handleCallMessage(JSON.parse(message.body))
     })
+    console.log('已订阅通话队列，订阅ID:', callSubscription.id)
 
-    // 订阅音频数据队列
-    this.client.subscribe('/user/queue/voice/audio', (message) => {
+    // 订阅音频数据队列（使用正确的用户专属路径）
+    const audioSubscription = this.client.subscribe(`/user/queue/voice/audio`, (message) => {
+      console.log('收到音频消息:', message.body)
       this.handleAudioMessage(JSON.parse(message.body))
     })
+    console.log('已订阅音频队列，订阅ID:', audioSubscription.id)
 
-    // 订阅ICE候选队列
-    this.client.subscribe('/user/queue/voice/ice', (message) => {
+    // 订阅ICE候选队列（使用正确的用户专属路径）
+    const iceSubscription = this.client.subscribe(`/user/queue/voice/ice`, (message) => {
+      console.log('收到ICE候选消息:', message.body)
       this.handleIceMessage(JSON.parse(message.body))
     })
+    console.log('已订阅ICE候选队列，订阅ID:', iceSubscription.id)
 
-    // 订阅SDP信令队列
-    this.client.subscribe('/user/queue/voice/sdp', (message) => {
+    // 订阅SDP信令队列（使用正确的用户专属路径）
+    const sdpSubscription = this.client.subscribe(`/user/queue/voice/sdp`, (message) => {
+      console.log('收到SDP消息:', message.body)
       this.handleSdpMessage(JSON.parse(message.body))
     })
+    console.log('已订阅SDP队列，订阅ID:', sdpSubscription.id)
+
+    console.log(`已为用户 ${userId} 订阅所有语音队列`)
   }
 
   // 处理通话消息
   handleCallMessage(message) {
-    switch (message.status) {
-      case 'INITIATED':
-        this.triggerCallbacks('onCallInitiated', message)
-        break
-      case 'RINGING':
-        this.triggerCallbacks('onCallRequest', message)
-        break
-      case 'IN_PROGRESS':
-        this.triggerCallbacks('onCallAccepted', message) // 后端返回IN_PROGRESS，对应前端的onCallAccepted
-        break
-      case 'REJECTED':
-        this.triggerCallbacks('onCallRejected', message)
-        break
-      case 'ENDED':
-        this.triggerCallbacks('onCallEnded', message)
-        break
+    console.log('收到通话消息:', message)
+    
+    // 根据消息类型和状态进行处理
+    if (message.type === 'CALL_REQUEST' && message.status === 'RINGING') {
+      this.triggerCallbacks('onCallRequest', message)
+    } else if (message.type === 'CALL_REQUEST' && message.status === 'REJECTED') {
+      this.triggerCallbacks('onCallRejected', message)
+    } else if (message.type === 'CALL_ACCEPT' && message.status === 'IN_PROGRESS') {
+      this.triggerCallbacks('onCallAccepted', message)
+    } else if (message.type === 'CALL_REJECT' && message.status === 'REJECTED') {
+      this.triggerCallbacks('onCallRejected', message)
+    } else if (message.type === 'CALL_END' && message.status === 'ENDED') {
+      this.triggerCallbacks('onCallEnded', message)
+    } else if (message.status === 'INITIATED') {
+      this.triggerCallbacks('onCallInitiated', message)
+    } else if (message.status === 'RINGING') {
+      this.triggerCallbacks('onCallRequest', message)
+    } else if (message.status === 'IN_PROGRESS') {
+      this.triggerCallbacks('onCallAccepted', message)
+    } else if (message.status === 'REJECTED') {
+      this.triggerCallbacks('onCallRejected', message)
+    } else if (message.status === 'ENDED') {
+      this.triggerCallbacks('onCallEnded', message)
     }
   }
 
@@ -185,10 +214,49 @@ class VoiceWebSocket {
 
   // 发起语音通话
   requestCall(receiverId) {
-    return this.send('/app/voice/call/request', {
-      receiver: receiverId,
+    if (!this.client || !this.isConnected) {
+      console.error('WebSocket未连接，无法发送通话请求')
+      return false
+    }
+
+    // 验证用户标识
+    console.log('=== 发送通话请求前验证 ===')
+    this.validateUserIdentity()
+
+    const currentUserId = this.getCurrentUserId()
+    if (!currentUserId) {
+      console.error('无法获取当前用户ID')
+      return false
+    }
+
+    console.log(`用户 ${currentUserId} 准备发送通话请求给 ${receiverId}`)
+
+    // 检查订阅状态
+    console.log('当前订阅状态:')
+    if (this.client && this.client.subscriptions) {
+      Object.keys(this.client.subscriptions).forEach(id => {
+        const sub = this.client.subscriptions[id]
+        console.log(`- ${sub.destination} (ID: ${id})`)
+      })
+    }
+
+    // 确保receiver是字符串类型，与后端期望一致
+    const message = {
+      receiver: String(receiverId),
       timestamp: Date.now()
-    })
+    }
+
+    console.log('发送通话请求消息体JSON:', JSON.stringify(message))
+    
+    const result = this.send('/app/voice/call/request', message)
+    
+    if (result) {
+      console.log(`已发送通话请求: ${currentUserId} -> ${receiverId}`)
+    } else {
+      console.error('发送通话请求失败')
+    }
+    
+    return result
   }
 
   // 接受语音通话
@@ -309,7 +377,10 @@ class VoiceWebSocket {
         const payload = token.split('.')[1]
         if (payload) {
           const decoded = JSON.parse(atob(payload))
-          return decoded.userId || decoded.sub || decoded.id || null
+          const userId = decoded.userId || decoded.sub || decoded.id || null
+          console.log('从token解析的用户ID:', userId)
+          console.log('完整token payload:', decoded)
+          return userId
         }
       }
       
@@ -318,6 +389,50 @@ class VoiceWebSocket {
     } catch (error) {
       console.error('获取用户ID失败:', error)
       return null
+    }
+  }
+
+  // 调试连接状态
+  debugConnectionStatus() {
+    console.log('=== WebSocket连接状态调试 ===')
+    console.log('连接状态:', this.isConnected)
+    console.log('客户端实例:', this.client ? '已创建' : '未创建')
+    console.log('当前用户ID:', this.getCurrentUserId())
+    
+    if (this.client) {
+      console.log('客户端状态:', this.client.connected ? '已连接' : '未连接')
+      console.log('活跃订阅数:', this.client.subscriptions ? Object.keys(this.client.subscriptions).length : 0)
+      
+      // 检查订阅详情
+      if (this.client.subscriptions) {
+        Object.keys(this.client.subscriptions).forEach(id => {
+          console.log(`订阅 ${id}:`, this.client.subscriptions[id].destination)
+        })
+      }
+    }
+    
+    console.log('=== 结束调试 ===')
+  }
+
+  // 验证用户标识
+  validateUserIdentity() {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      console.error('未找到token')
+      return false
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      console.log('Token解析成功:')
+      console.log('- 用户名:', payload.sub || payload.username)
+      console.log('- 用户ID:', payload.userId || payload.id)
+      console.log('- 过期时间:', new Date(payload.exp * 1000))
+      console.log('- 完整payload:', payload)
+      return true
+    } catch (error) {
+      console.error('Token解析失败:', error)
+      return false
     }
   }
 }

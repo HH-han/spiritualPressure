@@ -123,7 +123,7 @@
                 <button v-if="userInfo.permissions === 1" @click="AdminLayout" class="admin-button">管理页面</button>
                 <button style="border-radius: 0 0 10px 10px;" @click="navigateTo('/accountsettings')">账户设置</button>
                 <button @click="navigateTo('/im')" class="im-button">好友聊天</button>
-                <button @click="logout" class="logout-button">退出登录</button>
+                <button @click="localLogout" class="logout-button">退出登录</button>
               </div>
             </div>
           </div>
@@ -156,7 +156,7 @@ import CharacteristicCommodities from '@/views/Mypage/CharacteristicCommodities.
 import StrategyGroup from '@/views/Mypage/StrategyGroup.vue';
 import Launchlogin from '@/components/PromptComponent/Launchlogin.vue';
 // 接口
-import { getUserInfo } from '@/api/user';
+import { getUserInfo, logout } from '@/api/user';
 import { useAuthStore } from '@/stores/auth';
 
 const defaultAvatar = new URL('@/assets/defaultimage/mrtx.png', import.meta.url).href
@@ -237,7 +237,7 @@ onMounted(() => {
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value;
 };
-const logout = () => {
+const localLogout = () => {
   // 检查是否有token，没有则直接退出登录状态
   const token = localStorage.getItem('token');
   const tokenTimestamp = localStorage.getItem('tokenTimestamp');
@@ -258,18 +258,43 @@ const logout = () => {
 };
 
 // 确认退出登录
-const confirmLogout = () => {
-  // 清除所有登录相关存储
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-  localStorage.removeItem('rememberedUsername');
-  localStorage.removeItem('tokenTimestamp');
-  // 更新登录状态
-  isLoggedIn.value = false;
-  // 关闭下拉菜单
-  isDropdownVisible.value = false;
-  // 关闭确认对话框
-  showLogoutConfirm.value = false;
+const confirmLogout = async () => {
+  try {
+    // 获取用户ID
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const userId = userData.id;
+    
+    // 调用API退出登录
+    if (userId) {
+      await logout(userId);
+    }
+    
+    // 清除所有登录相关存储
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('rememberedUsername');
+    localStorage.removeItem('tokenTimestamp');
+    
+    // 更新登录状态
+    isLoggedIn.value = false;
+    // 关闭下拉菜单
+    isDropdownVisible.value = false;
+    // 关闭确认对话框
+    showLogoutConfirm.value = false;
+    
+    ElMessage.success('退出登录成功');
+  } catch (error) {
+    console.error('退出登录失败:', error);
+    // 即使API调用失败，也清除本地存储
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('rememberedUsername');
+    localStorage.removeItem('tokenTimestamp');
+    isLoggedIn.value = false;
+    isDropdownVisible.value = false;
+    showLogoutConfirm.value = false;
+    ElMessage.success('已退出登录');
+  }
 };
 
 // 取消退出登录

@@ -264,10 +264,12 @@ import { ref, reactive, shallowRef, onMounted, computed, watchEffect, nextTick }
 import { useRouter } from 'vue-router';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useAuthStore } from '@/stores/auth';
+import { logout as userLogout } from '@/api/user';
 // 用户管理组件
 import User from '@/views/ManagementViews/UserManagement.vue';
 import OrderManagement from '@/views/ManagementViews/OrderManagement.vue';
 import CollectionManagement from '@/views/ManagementViews/CollectionManagement.vue';
+import logininformationManagement from '@/views/ManagementViews/logininformationManagement.vue';
 // 内容管理组件
 import Goods from '@/views/ManagementViews/GoodsManagement.vue';
 import SafetyTipsManagement from '@/views/ManagementViews/SafetyTipsManagement.vue';
@@ -429,6 +431,7 @@ const menuItems = reactive([
   { id: 24, title: '世界之旅', icon: dwmIcon, component: DestinationworldManagement },
   { id: 25, title: '收藏管理', icon: comIcon, component: CollectionManagement },
   { id: 26, title: '旅行新闻', icon: trnIcon, component: TravelNewsManagement },
+  { id: 27, title: '登录信息', icon: liIcon, component: logininformationManagement },
 ]);
 // 计算属性分类
 const systemMenus = computed(() =>
@@ -443,7 +446,7 @@ const travelMenus = computed(() =>
   menuItems.filter(item => [5, 6, 8, 9, 11, 7, 17, 22, 23, 24, 26].includes(item.id))
 )
 const userMenus = computed(() =>
-  menuItems.filter(item => [3, 12, 25].includes(item.id))
+  menuItems.filter(item => [3, 12, 25, 27].includes(item.id))
 )
 const otherMenus = computed(() =>
   menuItems.filter(item => [14].includes(item.id))
@@ -567,22 +570,44 @@ const hideDropdown = () => {
   }, 200)
 }
 
+// 退出登录
 const logout = () => {
   ElMessageBox.confirm('您确定要退出登录吗？', '确认操作', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
-  }).then(() => {
-    // 用户点击“确定”，执行退出逻辑
-    // 清除所有登录相关存储
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('rememberedUsername');
-    // 关闭下拉菜单
-    isDropdownVisible.value = false;
-    router.push('/AdminLogin');
+  }).then(async () => {
+    try {
+      // 获取当前用户ID
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const userId = user.id || user.userId;
+      
+      // 调用后端退出API
+      if (userId) {
+        await userLogout(userId);
+      }
+      
+      // 清除所有登录相关存储
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('rememberedUsername');
+      // 关闭下拉菜单
+      isDropdownVisible.value = false;
+      router.push('/AdminLogin');
+      
+      ElMessage.success('退出登录成功');
+    } catch (error) {
+      console.error('退出登录失败:', error);
+      // 即使API调用失败，也执行本地退出逻辑
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('rememberedUsername');
+      isDropdownVisible.value = false;
+      router.push('/AdminLogin');
+      ElMessage.success('已退出登录');
+    }
   }).catch(() => {
-    // 用户点击“取消”，不执行任何操作
+    // 用户点击"取消"，不执行任何操作
     console.log('退出操作已取消');
   });
 };
@@ -730,7 +755,7 @@ const currentCategories = computed(() => {
   if ([1, 2, 18, 19].includes(menuId)) categories.push('系统管理');
   if ([4, 10, 12, 13, 15].includes(menuId)) categories.push('内容管理');
   if ([5, 6, 7, 8, 9, 11, 22, 23, 24, 26].includes(menuId)) categories.push('旅行管理');
-  if ([3, 12, 25].includes(menuId)) categories.push('用户管理');
+  if ([3, 12, 25, 27].includes(menuId)) categories.push('用户管理');
   if ([14].includes(menuId)) categories.push('个人中心');
   if ([16, 20, 21].includes(menuId)) categories.push('服务监测');
 
@@ -849,6 +874,10 @@ const comIcon = `
 const trnIcon = `
   <svg t="1757246576348" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7980" width="32" height="32"><path d="M445.952 428.032c-0.512 52.736 0 105.472-0.512 158.208-27.136-51.712-55.296-102.4-82.944-153.088-14.336 1.024-29.184 1.536-44.032 2.56 0.512 72.192 0.512 144.896 0 217.088 12.8 1.024 26.112 1.536 38.912 2.56 0-52.736 0.512-105.472-0.512-158.208 27.648 54.784 57.856 108.032 86.528 162.816 15.36 1.024 30.72 1.536 46.08 2.56v-235.52c-14.848 0-29.184 0.512-43.52 1.024zM721.92 603.136v91.648c7.168-0.512 14.848-1.024 22.016-1.536 1.024-29.696 1.024-59.392 0-89.088-7.168 0-14.848-0.512-22.016-1.024z" fill="#77BC53" p-id="7981"></path><path d="M743.936 388.608c-12.8-0.512-26.112-1.024-39.424-1.024v-22.528H557.056v39.936h108.032v22.528h-108.032v28.672h108.032v22.528h-108.032v28.672h108.032v22.528h-107.52v28.672H665.6v22.528h-108.032v28.672H665.6v22.528h-108.032v28.672H665.6v22.528h-108.032v45.568H705.024V479.232c12.8 0 26.112-0.512 38.912-0.512 1.024-30.208 1.024-59.904 0-90.112z" fill="#77BC53" p-id="7982"></path><path d="M512 0C229.376 0 0 229.376 0 512s229.376 512 512 512 512-229.376 512-512S794.624 0 512 0z m247.808 693.76c-2.56 17.408-23.552 16.384-36.864 18.944-2.048 9.216-1.536 19.456-6.656 27.648-10.24 6.144-23.04 4.608-34.304 5.12-19.968 0-39.936-0.512-59.904-0.512h-64.512v45.568H522.24c-86.528-15.872-259.584-45.568-259.584-45.568V348.16s174.08-30.208 261.12-45.568h33.792V348.16c8.192 0.512 16.896 0.512 25.088 0.512 23.04 0 46.08-1.024 69.12-1.024 22.016 0 43.52 1.024 65.536 4.096 2.048 6.144 4.096 11.776 6.144 17.92 13.312 2.56 34.816 0.512 36.864 18.944 4.096 33.28 1.536 67.072-0.512 100.352 3.072 35.328 5.12 71.168-1.024 106.496 4.096 32.256 4.096 66.048 1.024 98.304z" fill="#77BC53" p-id="7983"></path><path d="M721.92 495.616v91.648c7.168-0.512 14.336-0.512 22.016-1.024 1.536-29.696 1.024-59.392 0-89.6-7.168-0.512-14.848-0.512-22.016-1.024z" fill="#77BC53" p-id="7984"></path></svg>
 `;
+const liIcon = `
+  <svg t="1758463339868" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5621" width="32" height="32"><path d="M170.666667 706.389333V274.944c0-16.341333 7.210667-32 20.010666-43.52C203.477333 219.776 220.842667 213.333333 238.933333 213.333333h546.133334c18.090667 0 35.456 6.485333 48.256 18.048 12.8 11.562667 20.010667 27.221333 20.010666 43.562667v431.445333c0 16.341333-7.210667 32-20.010666 43.52-12.8 11.605333-30.165333 18.090667-48.256 18.090667H238.933333c-18.090667 0-35.456-6.485333-48.256-18.048-12.8-11.562667-20.010667-27.221333-20.010666-43.562667z" fill="#71D896" p-id="5622"></path><path d="M533.333333 437.333333a21.333333 21.333333 0 0 1 21.333334-21.333333h170.666666a21.333333 21.333333 0 0 1 0 42.666667h-170.666666a21.333333 21.333333 0 0 1-21.333334-21.333334zM533.333333 544a21.333333 21.333333 0 0 1 21.333334-21.333333h85.333333a21.333333 21.333333 0 0 1 0 42.666666h-85.333333a21.333333 21.333333 0 0 1-21.333334-21.333333z" fill="#FFFFFF" p-id="5623"></path><path d="M363.776 481.024a59.178667 59.178667 0 1 0 0-118.357333 59.178667 59.178667 0 0 0 0 118.357333z" fill="#FFFFFF" p-id="5624"></path><path d="M363.776 618.666667C311.850667 618.666667 256 619.008 256 588.330667a107.776 107.776 0 0 1 99.712-107.477334l14.421333-0.085333a107.818667 107.818667 0 0 1 101.418667 107.52c0 30.72-55.893333 30.378667-107.776 30.378667z" fill="#FFFFFF" p-id="5625"></path></svg>
+`;
+
 </script>
 
 <style scoped>

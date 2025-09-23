@@ -171,6 +171,11 @@ import { sendSingleMessage, sendGroupMessageByParam, getSingleChatHistory, getGr
 import { useAuthStore } from '@/stores/auth.js'
 import VoiceCallControl from './VoiceCallControl.vue'
 import { voiceWebSocket } from '@/utils/voice-websocket'
+import { 
+  initMessageWebSocket, 
+  sendMessageViaWebSocket, 
+  handleWebSocketMessage 
+} from '../Imjs/im.js'
 
 const props = defineProps({
   chat: {
@@ -190,12 +195,15 @@ const messageListRef = ref(null)
 const messages = ref([])
 const authStore = useAuthStore()
 const currentUserId = ref(authStore.user?.id || 0)
-const showEmojiPicker = ref(false) // 控制表情选择器显示
-const showImagePicker = ref(false) // 控制图片选择器显示
-const selectedImage = ref(null) // 选中的图片Base64数据
-const imagePreview = ref(null) // 图片预览URL
-const showMessageImagePreview = ref(false) // 控制消息图片预览显示
-const messageImagePreviewUrl = ref('') // 消息图片预览URL
+const showEmojiPicker = ref(false)
+const showImagePicker = ref(false)
+const selectedImage = ref(null)
+const imagePreview = ref(null)
+const showMessageImagePreview = ref(false)
+const messageImagePreviewUrl = ref('')
+
+// WebSocket连接状态
+const isMessageWebSocketConnected = ref(false)
 
 // 常用表情符号列表
 const emojiList = [
@@ -231,9 +239,9 @@ const handleImageSelect = (event) => {
 
     const reader = new FileReader()
     reader.onload = (e) => {
-      selectedImage.value = e.target.result // Base64数据
-      imagePreview.value = e.target.result // 预览URL
-      showImagePicker.value = true // 显示预览模态框
+      selectedImage.value = e.target.result
+      imagePreview.value = e.target.result
+      showImagePicker.value = true
     }
     reader.onerror = () => {
       ElMessage.error('图片读取失败')
@@ -258,54 +266,72 @@ const sendImageMessage = async () => {
   await ensureUserInfoLoaded()
 
   try {
-    let response
     const imageData = {
       image: selectedImage.value,
       timestamp: Date.now(),
-      fileName: `image_${Date.now()}.jpg`
+      fileName: `image_${Date.now()}.jpg`,
+      messageType: 'IMAGE'
     }
 
-    if (props.chat.type === 'friend') {
-      response = await sendSingleMessage({
-        senderId: currentUserId.value,
-        receiverId: props.chat.id,
-        content: '[图片]',
-        image: selectedImage.value,
-        messageType: 'IMAGE'
-      })
-    } else if (props.chat.type === 'group') {
-      response = await sendGroupMessageByParam({
-        senderId: currentUserId.value,
-        groupId: props.chat.id,
-        content: '[图片]',
-        image: selectedImage.value,
-        messageType: 'IMAGE'
-      })
-    }
+    // 优先尝试通过WebSocket发送
+    const webSocketSuccess = await sendMessageViaWebSocketWrapper({
+      content: '[图片]',
+      image: selectedImage.value,
+      messageType: 'IMAGE'
+    })
+    
+    if (!webSocketSuccess) {
+      // WebSocket发送失败，回退到HTTP API
+      let response
+      
+      if (props.chat.type === 'friend') {
+        response = await sendSingleMessage({
+          senderId: currentUserId.value,
+          receiverId: props.chat.id,
+          content: '[图片]',
+          image: selectedImage.value,
+          messageType: 'IMAGE'
+        })
+      } else if (props.chat.type === 'group') {
+        response = await sendGroupMessageByParam({
+          senderId: currentUserId.value,
+          groupId: props.chat.id,
+          content: '[图片]',
+          image: selectedImage.value,
+          messageType: 'IMAGE'
+        })
+      }
 
-    if (response.code === 0 || response.code === '0') {
-      // 发送成功后重新加载聊天历史
-      await loadChatHistory()
-
-      // 发送消息事件
-      emit('send-message', {
-        type: props.chat.type,
-        targetId: props.chat.id,
-        content: '[图片]',
-        image: selectedImage.value,
-        timestamp: Date.now(),
-        isImage: true
-      })
-
-      // 重置状态
-      selectedImage.value = null
-      imagePreview.value = null
-      showImagePicker.value = false
-
-      ElMessage.success('图片发送成功')
+      if (response.code === '0') {
+        // 发送成功后重新加载聊天历史
+        await loadChatHistory()
+        
+        ElMessage.success('图片发送成功')
+      } else {
+        ElMessage.error(response.msg || '图片发送失败')
+        return
+      }
     } else {
-      ElMessage.error(response.msg || '图片发送失败')
+      // WebSocket发送成功，也需要重新加载聊天历史以确保图片消息显示
+      await loadChatHistory()
+      ElMessage.success('图片发送成功')
     }
+
+    // 发送消息事件（无论通过哪种方式发送成功）
+    emit('send-message', {
+      type: props.chat.type,
+      targetId: props.chat.id,
+      content: '[图片]',
+      image: selectedImage.value,
+      timestamp: Date.now(),
+      isImage: true
+    })
+
+    // 重置状态
+    selectedImage.value = null
+    imagePreview.value = null
+    showImagePicker.value = false
+    
   } catch (error) {
     console.error('图片发送失败:', error)
     ElMessage.error('图片发送失败')
@@ -346,6 +372,31 @@ const selectEmoji = (emoji) => {
     inputMessage.value += emoji
   }
   showEmojiPicker.value = false
+}
+
+// 消息WebSocket实例
+let messageWebSocketInstance = null
+
+// 初始化消息WebSocket连接
+const setupMessageWebSocket = () => {
+  messageWebSocketInstance = initMessageWebSocket(
+    (message) => handleWebSocketMessage(message, props.chat, currentUserId.value, messages, scrollToBottom, playMessageSound),
+    isMessageWebSocketConnected
+  )
+  messageWebSocketInstance.connect()
+}
+
+
+
+// 播放消息提示音
+const playMessageSound = () => {
+  // 这里可以添加消息提示音效
+  console.log('播放消息提示音')
+}
+
+// 通过WebSocket发送消息
+const sendMessageViaWebSocketWrapper = async (messageData) => {
+  return await sendMessageViaWebSocket(messageData, props.chat, currentUserId.value)
 }
 
 // 格式化时间
@@ -389,7 +440,7 @@ const loadChatHistory = async () => {
       })
     }
 
-    if (response.code === 0 || response.code === '0') {
+    if (response.code === '0') {
       // 按消息ID从小到大排序
       messages.value = response.data
         .map(msg => ({
@@ -398,10 +449,10 @@ const loadChatHistory = async () => {
           timestamp: msg.sendTime,
           isSelf: msg.senderId === currentUserId.value,
           contentImage: msg.image,
-          image: msg.senderAvatar || '/default-avatar.png', // 使用图片数据或发送者头像
-          messageType: msg.messageType // 添加messageType字段
+          image: msg.senderAvatar || msg.avatar ,
+          messageType: msg.messageType
         }))
-        .sort((a, b) => a.id - b.id) // 按消息ID升序排序
+        .sort((a, b) => a.id - b.id)
       scrollToBottom()
     }
   } catch (error) {
@@ -417,45 +468,60 @@ const handleSendMessage = async () => {
   await ensureUserInfoLoaded()
 
   try {
-    let response
     const messageData = {
       content: inputMessage.value.trim(),
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      messageType: 'TEXT'
     }
 
-    if (props.chat.type === 'friend') {
-      response = await sendSingleMessage({
-        senderId: currentUserId.value, // 使用当前用户真实ID
-        receiverId: props.chat.id,
-        content: inputMessage.value.trim(),
-        messageType: 'TEXT'
-      })
-    } else if (props.chat.type === 'group') {
-      response = await sendGroupMessageByParam({
-        senderId: currentUserId.value, // 使用当前用户真实ID
-        groupId: props.chat.id,
-        content: inputMessage.value.trim(),
-        messageType: 'TEXT'
-      })
-    }
+    // 优先尝试通过WebSocket发送
+    const webSocketSuccess = await sendMessageViaWebSocketWrapper(messageData)
+    
+    if (!webSocketSuccess) {
+      // WebSocket发送失败，回退到HTTP API
+      let response
+      
+      if (props.chat.type === 'friend') {
+        response = await sendSingleMessage({
+          senderId: currentUserId.value,
+          receiverId: props.chat.id,
+          content: inputMessage.value.trim(),
+          messageType: 'TEXT'
+        })
+      } else if (props.chat.type === 'group') {
+        response = await sendGroupMessageByParam({
+          senderId: currentUserId.value,
+          groupId: props.chat.id,
+          content: inputMessage.value.trim(),
+          messageType: 'TEXT'
+        })
+      }
 
-    if (response.code === 0 || response.code === '0') {
-      // 发送成功后立即重新加载聊天历史，确保获取最新的消息数据（包括头像信息）
-      await loadChatHistory()
-
-      // 发送消息事件
-      emit('send-message', {
-        type: props.chat.type,
-        targetId: props.chat.id,
-        content: inputMessage.value.trim(),
-        timestamp: Date.now()
-      })
-
-      inputMessage.value = ''
-      ElMessage.success('消息发送成功')
+      if (response.code === 0 || response.code === '0') {
+        // 发送成功后立即重新加载聊天历史，确保获取最新的消息数据（包括头像信息）
+        await loadChatHistory()
+        
+        ElMessage.success('消息发送成功')
+      } else {
+        ElMessage.error(response.msg || '消息发送失败')
+        return
+      }
     } else {
-      ElMessage.error(response.msg || '消息发送失败')
+      // WebSocket发送成功，也需要重新加载聊天历史以确保消息显示
+      await loadChatHistory()
+      ElMessage.success('消息发送成功')
     }
+
+    // 发送消息事件（无论通过哪种方式发送成功）
+    emit('send-message', {
+      type: props.chat.type,
+      targetId: props.chat.id,
+      content: inputMessage.value.trim(),
+      timestamp: Date.now()
+    })
+
+    inputMessage.value = ''
+    
   } catch (error) {
     console.error('消息发送失败:', error)
     ElMessage.error('消息发送失败')
@@ -474,8 +540,8 @@ const scrollToBottom = () => {
 // 监听chat prop变化，切换好友时重新加载聊天历史
 watch(() => props.chat, (newChat, oldChat) => {
   if (newChat.id !== oldChat?.id || newChat.type !== oldChat?.type) {
-    messages.value = [] // 清空当前消息
-    loadChatHistory() // 重新加载聊天历史
+    messages.value = []
+    loadChatHistory()
   }
 })
 
@@ -486,6 +552,8 @@ onMounted(() => {
     scrollToBottom()
     // 初始化语音WebSocket连接
     initVoiceWebSocket()
+    // 初始化消息WebSocket连接
+    setupMessageWebSocket()
   })
 })
 
@@ -521,6 +589,10 @@ const handleCallEnded = () => {
 // 组件卸载时断开WebSocket连接
 onUnmounted(() => {
   voiceWebSocket.disconnect()
+  // 断开消息WebSocket连接
+  if (messageWebSocketInstance) {
+    messageWebSocketInstance.disconnect()
+  }
 })
 </script>
 
