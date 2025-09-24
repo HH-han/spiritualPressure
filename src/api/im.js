@@ -169,3 +169,27 @@ export const setSpecialFriend = (data) => {
     data
   })
 }
+
+// 发送单聊图片消息（文件上传）
+export const sendSingleImageMessage = (formData) => {
+  return request({
+    url: `api/public/im/single/send/image`,
+    method: 'POST',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+// 发送群聊图片消息（文件上传）
+export const sendGroupImageMessage = (formData) => {
+  return request({
+    url: `api/public/im/group/send/image`,
+    method: 'POST',
+    data: formData,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

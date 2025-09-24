@@ -96,6 +96,33 @@ export const sendMessageViaWebSocket = async (messageData, chat, currentUserId) 
     timestamp: Date.now()
   }
   
+  // 如果是图片消息，使用专门的图片消息发送方法
+  if (messageData.messageType === 'IMAGE') {
+    try {
+      let success = false
+      
+      if (chat.type === 'friend') {
+        success = messageWebSocket.sendImageMessage({
+          ...baseMessage,
+          receiverId: chat.id
+        })
+      } else if (chat.type === 'group') {
+        success = messageWebSocket.sendImageMessage({
+          ...baseMessage,
+          groupId: chat.id
+        })
+      }
+      
+      if (success) {
+        console.log('图片消息已通过WebSocket发送')
+        return true
+      }
+    } catch (error) {
+      console.error('WebSocket发送图片消息错误:', error)
+      return false
+    }
+  }
+  
   try {
     let success = false
     

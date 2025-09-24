@@ -1,0 +1,162 @@
+.voice-call-control {
+    position: fixed;
+    z-index: 1000;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    min-width: 300px;
+    transition: all 0.3s ease;
+}
+
+.voice-call-control.active {
+    background: linear-gradient(180deg, #656565 0%, #fdfcff 100%);
+    color: white;
+}
+
+.call-active {
+    text-align: center;
+}
+
+.call-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.caller-avatar {
+    margin-right: 15px;
+}
+
+.call-details {
+    text-align: left;
+}
+
+.caller-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.call-status {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.call-duration {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.call-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.call-actions .el-button {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+}
+
+.audio-indicators {
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.volume-indicator {
+    background: #52c41a;
+    width: 100%;
+    transition: height 0.1s ease;
+    border-radius: 10px;
+}
+
+.incoming-call {
+    text-align: center;
+    position: relative;
+}
+
+.caller-info {
+    margin-bottom: 25px;
+}
+
+.caller-info .el-avatar {
+    margin-bottom: 10px;
+}
+
+.caller-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.call-type {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.incoming-actions {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.incoming-actions .el-button {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+}
+
+.ringing-animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.ring {
+    position: absolute;
+    border: 2px solid #1890ff;
+    border-radius: 50%;
+    opacity: 0;
+    animation: ripple 2s linear infinite;
+}
+
+.ring-1 {
+    width: 100px;
+    height: 100px;
+    animation-delay: 0s;
+}
+
+.ring-2 {
+    width: 140px;
+    height: 140px;
+    animation-delay: 0.66s;
+}
+
+.ring-3 {
+    width: 180px;
+    height: 180px;
+    animation-delay: 1.32s;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,250 @@
+.wechat-friend-list {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-header {
+    padding: 16px 20px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.add-button {
+    background: #07c160;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 12px;
+}
+
+.add-button:hover {
+    background: #06ae56;
+}
+
+/* 搜索框样式 */
+.search-container {
+    padding: 12px 20px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.search-container :deep(.el-input__wrapper) {
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-container :deep(.el-input__prefix) {
+    color: #999;
+    margin-right: 8px;
+}
+
+.friend-items {
+    flex: 1;
+    overflow-y: auto;
+    background: #fff;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f8f8f8;
+}
+
+.friend-item:hover {
+    background: #f8f8f8;
+}
+
+.friend-item.active {
+    background: #e8f4ff;
+}
+
+.friend-info {
+    flex: 1;
+    margin-left: 12px;
+    min-width: 0;
+}
+
+.friend-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.friend-status {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #999;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-dot.online {
+    background: #07c160;
+}
+
+.status-dot.offline {
+    background: #ccc;
+}
+
+.friend-actions {
+    color: #999;
+    padding: 8px;
+    border-radius: 4px;
+    transition: ease-in-out 0.2s;
+    cursor: pointer;
+}
+
+.friend-actions:hover {
+    text-transform: scale(1.05);
+    color: #666;
+}
+
+.friend-actions button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.empty-state {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 好友详情样式 */
+.friend-detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.friend-basic-info {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.friend-main-info {
+    margin-left: 16px;
+}
+
+.friend-main-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.friend-id {
+    margin: 0 0 8px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.friend-status-text {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: #07c160;
+    font-size: 14px;
+}
+
+/* 详细信息样式 */
+.friend-detail-info {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.friend-detail-info h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.info-label {
+    min-width: 60px;
+    color: #666;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.info-value {
+    flex: 1;
+    color: #333;
+    word-break: break-all;
+}
+
+.friend-relationship {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.friend-relationship h4 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.friend-relationship .el-checkbox {
+    display: block;
+    margin-bottom: 12px;
+}
+
+.friend-operations {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.friend-operations .el-button {
+    width: 100%;
+}
+
+:deep(.el-dialog) {
+    border-radius: 12px;
+}
+
+:deep(.el-dialog__header) {
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0;
+    padding: 16px 20px;
+}
+
+:deep(.el-dialog__body) {
+    padding: 20px;
+}
+
+:deep(.el-dialog__footer) {
+    border-top: 1px solid #f0f0f0;
+}

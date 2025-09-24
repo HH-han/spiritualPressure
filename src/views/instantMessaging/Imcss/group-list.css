@@ -1,0 +1,142 @@
+.wechat-group-list {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.list-header {
+    padding: 16px 20px;
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.create-button {
+    background: #07c160;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 12px;
+}
+
+.create-button:hover {
+    background: #06ae56;
+}
+
+.group-items {
+    flex: 1;
+    overflow-y: auto;
+    background: #fff;
+}
+
+.group-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #f8f8f8;
+    position: relative;
+}
+
+.group-item:hover {
+    background: #f8f8f8;
+}
+
+.group-item.active {
+    background: #e8f4ff;
+}
+
+.group-info {
+    flex: 1;
+    margin-left: 12px;
+    min-width: 0;
+}
+
+.group-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.group-members {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #999;
+}
+
+.member-count {
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 10px;
+    color: #666;
+}
+
+.last-message {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.group-badge {
+    background: #ff3b30;
+    color: white;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0 4px;
+}
+
+.empty-state {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:deep(.el-dialog) {
+    border-radius: 12px;
+}
+
+:deep(.el-dialog__header) {
+    border-bottom: 1px solid #f0f0f0;
+    margin: 0;
+    padding: 16px 20px;
+}
+
+:deep(.el-dialog__body) {
+    padding: 20px;
+}
+
+:deep(.el-dialog__footer) {
+    border-top: 1px solid #f0f0f0;
+    padding: 16px 20px;
+}
+
+:deep(.el-select) {
+    width: 100%;
+}
+
+:deep(.el-select__tags) {
+    max-width: 100%;
+}

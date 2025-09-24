@@ -164,6 +164,11 @@ class MessageWebSocket {
     return this.send('/app/chat/group', message)
   }
 
+  // 发送图片消息
+  sendImageMessage(message) {
+    return this.send('/app/chat/image', message)
+  }
+
   // 注册回调函数
   on(event, callback) {
     if (this.callbacks[event]) {

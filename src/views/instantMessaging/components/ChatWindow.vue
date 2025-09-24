@@ -84,12 +84,20 @@
             </el-icon>
           </el-tooltip>
         </button>
-        <button @click="triggerImageSelect">
-          <el-tooltip content="图片" placement="top">
-            <el-icon class="toolbar-icon">
-              <Picture />
-            </el-icon>
-          </el-tooltip>
+        <button>
+          <ImageUploader 
+            ref="imageUploaderRef"
+            :chat="chat" 
+            @image-sent="handleImageSent"
+            @upload-start="handleUploadStart"
+            @upload-complete="handleUploadComplete"
+          >
+            <el-tooltip content="图片" placement="top">
+              <el-icon class="toolbar-icon">
+                <Picture />
+              </el-icon>
+            </el-tooltip>
+          </ImageUploader>
         </button>
         <button>
           <el-tooltip content="文件" placement="top">
@@ -114,41 +122,6 @@
           </div>
         </div>
       </div>
-      <!-- 图片预览模态框 -->
-      <div>
-        <el-dialog v-model="showImagePicker" title="图片预览" width="500px" :close-on-click-modal="false">
-          <div class="image-preview-container">
-            <img v-if="imagePreview" :src="imagePreview" alt="图片预览" class="preview-image" />
-            <div v-else class="no-image">
-              <el-icon>
-                <Picture />
-              </el-icon>
-              <p>请选择图片</p>
-            </div>
-          </div>
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="cancelImageSend">取消</el-button>
-              <el-button type="primary" @click="sendImageMessage" :disabled="!selectedImage">
-                发送
-              </el-button>
-            </span>
-          </template>
-        </el-dialog>
-      </div>
-      <!-- 消息图片预览模态框 -->
-      <div>
-        <el-dialog v-model="showMessageImagePreview" title="查看图片" width="600px" :close-on-click-modal="true">
-          <div class="message-image-preview-container">
-            <img v-if="messageImagePreviewUrl" :src="messageImagePreviewUrl" alt="消息图片预览" class="message-preview-image" />
-          </div>
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="showMessageImagePreview = false" type="danger" round>关闭</el-button>
-            </span>
-          </template>
-        </el-dialog>
-      </div>
       <!-- 信息输入框  -->
       <div class="input-main">
         <el-input v-model="inputMessage" type="textarea" :rows="3" placeholder="输入消息..." resize="none"
@@ -170,12 +143,9 @@ import { ElMessage } from 'element-plus'
 import { sendSingleMessage, sendGroupMessageByParam, getSingleChatHistory, getGroupChatHistory } from '@/api/im.js'
 import { useAuthStore } from '@/stores/auth.js'
 import VoiceCallControl from './VoiceCallControl.vue'
+import ImageUploader from './ImageUploader.vue'
 import { voiceWebSocket } from '@/utils/voice-websocket'
-import { 
-  initMessageWebSocket, 
-  sendMessageViaWebSocket, 
-  handleWebSocketMessage 
-} from '../Imjs/im.js'
+import { initMessageWebSocket, sendMessageViaWebSocket, handleWebSocketMessage } from '../Imjs/im.js'
 
 const props = defineProps({
   chat: {
@@ -189,6 +159,7 @@ const emit = defineEmits(['send-message'])
 // 语音通话相关
 const voiceCallControl = ref(null)
 const isVoiceCallActive = ref(false)
+const imageUploaderRef = ref(null)
 
 const inputMessage = ref('')
 const messageListRef = ref(null)
@@ -196,11 +167,6 @@ const messages = ref([])
 const authStore = useAuthStore()
 const currentUserId = ref(authStore.user?.id || 0)
 const showEmojiPicker = ref(false)
-const showImagePicker = ref(false)
-const selectedImage = ref(null)
-const imagePreview = ref(null)
-const showMessageImagePreview = ref(false)
-const messageImagePreviewUrl = ref('')
 
 // WebSocket连接状态
 const isMessageWebSocketConnected = ref(false)
@@ -221,134 +187,34 @@ const emojiList = [
   '😹', '😻', '😼', '😽', '🙀', '😿', '😾'
 ]
 
-// 选择图片
-const handleImageSelect = (event) => {
-  const file = event.target.files[0]
-  if (file) {
-    // 检查文件类型
-    if (!file.type.startsWith('image/')) {
-      ElMessage.error('请选择图片文件')
-      return
-    }
+// 处理图片发送成功事件
+const handleImageSent = async (imageData) => {
+  // 重新加载聊天历史以显示新发送的图片
+  await loadChatHistory()
+  
+  // 发送消息事件给父组件
+  emit('send-message', imageData)
+}
 
-    // 检查文件大小（限制5MB）
-    if (file.size > 5 * 1024 * 1024) {
-      ElMessage.error('图片大小不能超过5MB')
-      return
-    }
+// 处理图片上传开始事件
+const handleUploadStart = () => {
+  // 可以在这里添加上传开始时的处理逻辑
+  console.log('图片上传开始')
+}
 
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      selectedImage.value = e.target.result
-      imagePreview.value = e.target.result
-      showImagePicker.value = true
-    }
-    reader.onerror = () => {
-      ElMessage.error('图片读取失败')
-    }
-    reader.readAsDataURL(file)
+// 处理图片上传完成事件
+const handleUploadComplete = (result) => {
+  // 可以在这里添加上传完成时的处理逻辑
+  if (!result.success) {
+    console.error('图片上传失败:', result.error)
   }
 }
 
-// 触发图片选择
-const triggerImageSelect = () => {
-  const input = document.createElement('input')
-  input.type = 'file'
-  input.accept = 'image/*'
-  input.onchange = handleImageSelect
-  input.click()
-}
-
-// 发送图片消息
-const sendImageMessage = async () => {
-  if (!selectedImage.value) return
-
-  await ensureUserInfoLoaded()
-
-  try {
-    const imageData = {
-      image: selectedImage.value,
-      timestamp: Date.now(),
-      fileName: `image_${Date.now()}.jpg`,
-      messageType: 'IMAGE'
-    }
-
-    // 优先尝试通过WebSocket发送
-    const webSocketSuccess = await sendMessageViaWebSocketWrapper({
-      content: '[图片]',
-      image: selectedImage.value,
-      messageType: 'IMAGE'
-    })
-    
-    if (!webSocketSuccess) {
-      // WebSocket发送失败，回退到HTTP API
-      let response
-      
-      if (props.chat.type === 'friend') {
-        response = await sendSingleMessage({
-          senderId: currentUserId.value,
-          receiverId: props.chat.id,
-          content: '[图片]',
-          image: selectedImage.value,
-          messageType: 'IMAGE'
-        })
-      } else if (props.chat.type === 'group') {
-        response = await sendGroupMessageByParam({
-          senderId: currentUserId.value,
-          groupId: props.chat.id,
-          content: '[图片]',
-          image: selectedImage.value,
-          messageType: 'IMAGE'
-        })
-      }
-
-      if (response.code === '0') {
-        // 发送成功后重新加载聊天历史
-        await loadChatHistory()
-        
-        ElMessage.success('图片发送成功')
-      } else {
-        ElMessage.error(response.msg || '图片发送失败')
-        return
-      }
-    } else {
-      // WebSocket发送成功，也需要重新加载聊天历史以确保图片消息显示
-      await loadChatHistory()
-      ElMessage.success('图片发送成功')
-    }
-
-    // 发送消息事件（无论通过哪种方式发送成功）
-    emit('send-message', {
-      type: props.chat.type,
-      targetId: props.chat.id,
-      content: '[图片]',
-      image: selectedImage.value,
-      timestamp: Date.now(),
-      isImage: true
-    })
-
-    // 重置状态
-    selectedImage.value = null
-    imagePreview.value = null
-    showImagePicker.value = false
-    
-  } catch (error) {
-    console.error('图片发送失败:', error)
-    ElMessage.error('图片发送失败')
-  }
-}
-
-// 取消图片发送
-const cancelImageSend = () => {
-  selectedImage.value = null
-  imagePreview.value = null
-  showImagePicker.value = false
-}
-
-// 显示消息图片预览
+// 显示消息图片预览（通过ImageUploader组件）
 const showImagePreview = (imageUrl) => {
-  messageImagePreviewUrl.value = imageUrl
-  showMessageImagePreview.value = true
+  if (imageUploaderRef.value) {
+    imageUploaderRef.value.showImagePreview(imageUrl)
+  }
 }
 
 // 选择表情
@@ -597,477 +463,5 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.wechat-chat-window {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: #f5f5f5;
-}
-
-.voice-call-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.chat-header {
-  padding: 16px 20px;
-  background: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
-
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.chat-info {
-  min-width: 0;
-}
-
-.chat-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 2px;
-}
-
-.chat-status {
-  display: flex;
-  align-items: center;
-  font-size: 12px;
-  color: #666;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-.status-dot.online {
-  background: #07c160;
-}
-
-.header-right {
-  display: flex;
-  gap: 16px;
-}
-
-.header-right button{
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-}
-
-.header-action {
-  color: #666;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.header-action:hover {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.message-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-  background: #f5f5f5;
-}
-
-.message-item {
-  display: flex;
-  margin-bottom: 16px;
-  animation: fadeIn 0.3s ease-in;
-}
-
-.message-self {
-  flex-direction: row-reverse;
-}
-
-.message-avatar {
-  margin: 0 8px;
-}
-
-.message-content {
-  max-width: 60%;
-}
-
-.message-bubble {
-  background: #fff;
-  border-radius: 18px;
-  padding: 12px 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  position: relative;
-}
-
-.bubble-self {
-  background: #95ec69;
-  border-bottom-right-radius: 4px;
-}
-
-.message-text {
-  font-size: 14px;
-  color: #333;
-  line-height: 1.4;
-  word-break: break-word;
-}
-
-.message-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.message-image:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.image-content {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* 自己发送的图片消息样式 */
-.bubble-self .message-image {
-  background: linear-gradient(135deg, #95ec69, #7ad853);
-}
-
-/* 对方发送的图片消息样式 */
-.message-bubble:not(.bubble-self) .message-image {
-  background: #f0f0f0;
-}
-
-/* 图片加载失败时的样式 */
-.message-image img[src=""],
-.message-image img:not([src]) {
-  display: none;
-}
-
-.message-image::before {
-  content: "图片加载失败";
-  display: none;
-  font-size: 12px;
-  color: #999;
-  text-align: center;
-  padding: 20px;
-}
-
-.message-image img[src=""]::before,
-.message-image img:not([src])::before {
-  display: block;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .message-image {
-    max-width: 150px;
-    max-height: 150px;
-  }
-}
-
-@media (max-width: 480px) {
-  .message-image {
-    max-width: 120px;
-    max-height: 120px;
-  }
-}
-
-.bubble-self .message-text {
-  color: #000;
-}
-
-.message-time {
-  font-size: 11px;
-  color: #999;
-  margin-top: 4px;
-  text-align: center;
-}
-
-.bubble-self .message-time {
-  color: rgba(0, 0, 0, 0.6);
-}
-
-.empty-messages {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.empty-content {
-  text-align: center;
-  color: #999;
-}
-
-.empty-content .el-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
-}
-
-.empty-content p {
-  font-size: 14px;
-  margin: 0;
-}
-
-.message-input-area {
-  background: #fff;
-  border-top: 1px solid #e0e0e0;
-  padding: 16px 20px;
-}
-
-.input-toolbar {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.input-toolbar button {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-}
-
-.toolbar-icon {
-  color: #666;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-}
-
-.toolbar-icon:hover {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.input-main {
-  margin-bottom: 12px;
-}
-
-.message-input :deep(.el-textarea__inner) {
-  border: none;
-  border-radius: 8px;
-  background: #f8f8f8;
-  box-shadow: none;
-  padding: 12px 16px;
-  font-size: 14px;
-}
-
-.message-input :deep(.el-textarea__inner):focus {
-  background: #fff;
-  box-shadow: 0 0 0 1px #07c160;
-}
-
-.input-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.send-button {
-  background: #07c160;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 24px;
-  font-weight: 500;
-}
-
-.send-button:hover {
-  background: #06ae56;
-}
-
-.send-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* 表情选择器样式 */
-.emoji-picker {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
-  margin-bottom: 8px;
-}
-
-.emoji-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  background: #fafafa;
-  border-radius: 8px 8px 0 0;
-}
-
-.emoji-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-.emoji-close {
-  color: #999;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-}
-
-.emoji-close:hover {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.emoji-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 4px;
-  padding: 12px;
-  max-height: 200px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: auto;
-  -ms-overflow-style: auto;
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-
-.emoji-grid::-webkit-scrollbar {
-  height: 12px;
-}
-
-.emoji-grid::-webkit-scrollbar:vertical {
-  width: 0;
-}
-
-.emoji-grid::-webkit-scrollbar:horizontal {
-  height: 8px;
-}
-
-.emoji-grid::-webkit-scrollbar-thumb:horizontal {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-}
-
-.emoji-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-  user-select: none;
-}
-
-.emoji-item:hover {
-  background: #f0f8ff;
-  transform: scale(1.1);
-}
-
-/* 图片预览模态框样式 */
-.image-preview-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
-  background: #f8f8f8;
-  border-radius: 8px;
-  border: 2px dashed #e0e0e0;
-}
-
-.preview-image {
-  max-width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-  border-radius: 4px;
-}
-
-.no-image {
-  text-align: center;
-  color: #999;
-}
-
-.no-image .el-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
-}
-
-.no-image p {
-  font-size: 14px;
-  margin: 0;
-}
-
-/* 消息图片预览样式 */
-.message-image-preview-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-  background: #f8f8f8;
-  border-radius: 8px;
-}
-
-.message-preview-image {
-  max-width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 4px;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+@import '../Imcss/chat-window.css';
 </style>
