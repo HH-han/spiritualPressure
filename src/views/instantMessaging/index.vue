@@ -3,64 +3,50 @@
     <div class="wechat-layout">
       <!-- 左侧联系人列表 -->
       <div class="wechat-sidebar">
-        <div class="sidebar-header">
-          <div class="header-title">
-            <el-avatar :size="36" :src="userInfo.image || '/default-avatar.png'" />
-            <span class="title-text">{{ userInfo.nickname }}</span>
+        <div class="header-container">
+          <!-- 头部 -->
+          <div class="sidebar-header">
+            <div class="header-title">
+              <el-avatar :size="36" :src="userInfo.image || '/default-avatar.png'" />
+            </div>
           </div>
-          <div class="header-actions">
-            <el-icon><Search /></el-icon>
-            <el-icon><Plus /></el-icon>
-          </div>
+          <!-- 其他 -->
+        <div class="header-actions">
+          <ThesidebarLeft @tab-change="handleTabChange" />
         </div>
-        
-        <div class="search-box">
-          <el-input
-            v-model="searchKeyword"
-            placeholder="搜索"
-            size="large"
-            :prefix-icon="Search"
-            class="wechat-search"
+      </div>
+      <!-- 中间内容 -->
+      <div class="content-area">
+        <!-- 聊天内容 -->
+        <div v-if="activeTab === 'chats'" class="tab-content">
+          <friend-list :friends="filteredFriends" @select-friend="handleSelectFriend"
+            @refresh-friends="loadFriends" />
+        </div>
+
+        <!-- 联系人内容 -->
+        <div v-else-if="activeTab === 'contacts'" class="tab-content">
+          <contacts 
+            @select-friend="handleSelectFriend" 
+            @select-group="handleSelectGroup" 
           />
         </div>
-        
-        <el-tabs v-model="activeTab" class="wechat-tabs">
-          <el-tab-pane label="聊天" name="chats">
-            <friend-list 
-              :friends="filteredFriends" 
-              @select-friend="handleSelectFriend"
-              @refresh-friends="loadFriends"
-            />
-          </el-tab-pane>
-          
-          <el-tab-pane label="联系人" name="contacts">
-            <group-list 
-              :groups="filteredGroups" 
-              @select-group="handleSelectGroup"
-            />
-          </el-tab-pane>
-          
-          <el-tab-pane label="发现" name="discover">
-            <friend-request-list 
-              :requests="pendingRequests" 
-              @update-requests="handleUpdateRequests"
-            />
-          </el-tab-pane>
-        </el-tabs>
+
+        <!-- 发现内容 -->
+        <div v-else-if="activeTab === 'discover'" class="tab-content">
+          <friend-request-list :requests="pendingRequests" @update-requests="handleUpdateRequests" />
+        </div>
+      </div>
       </div>
 
       <!-- 右侧聊天区域 -->
       <div class="wechat-main">
-        <chat-window 
-          v-if="currentChat.type"
-          :chat="currentChat"
-          @send-message="handleSendMessage"
-        />
-        
+        <chat-window v-if="currentChat.type" :chat="currentChat" @send-message="handleSendMessage" />
         <div v-else class="welcome-screen">
           <div class="welcome-content">
             <div class="welcome-icon">
-              <el-icon><ChatDotRound /></el-icon>
+              <el-icon>
+                <ChatDotRound />
+              </el-icon>
             </div>
             <h3>欢迎使用博览即时通讯</h3>
             <p>选择一个聊天开始对话</p>
@@ -82,9 +68,12 @@ import { Search, Plus, ChatDotRound } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth'
 import FriendList from './components/FriendList.vue'
 import GroupList from './components/GroupList.vue'
-import FriendRequestList from './components/FriendRequestList.vue'
 import ChatWindow from './components/ChatWindow.vue'
+import Contacts from './components/Contacts.vue'
 import DynamicParticle from '@/components/ThemeComponents/DynamicParticle.vue';
+import ThesidebarLeft from './components/ThesidebarLeft.vue';
+
+
 import { getFriendList, getPendingFriendRequests, getChatGroupsByCreator } from '@/api/im.js'
 import { getUserInfo } from '@/api/user.js'
 
@@ -112,7 +101,7 @@ const ensureUserInfoLoaded = async () => {
 // 过滤后的好友列表
 const filteredFriends = computed(() => {
   if (!searchKeyword.value) return friends.value
-  return friends.value.filter(friend => 
+  return friends.value.filter(friend =>
     friend.name.toLowerCase().includes(searchKeyword.value.toLowerCase())
   )
 })
@@ -120,7 +109,7 @@ const filteredFriends = computed(() => {
 // 过滤后的群组列表
 const filteredGroups = computed(() => {
   if (!searchKeyword.value) return groups.value
-  return groups.value.filter(group => 
+  return groups.value.filter(group =>
     group.name.toLowerCase().includes(searchKeyword.value.toLowerCase())
   )
 })
@@ -209,11 +198,22 @@ const handleUpdateRequests = (updatedRequests) => {
   pendingRequests.value = updatedRequests
 }
 
+// 处理标签切换
+const handleTabChange = (eventData) => {
+  // 支持两种调用方式：直接传递tabName或传递事件对象
+  if (typeof eventData === 'string') {
+    activeTab.value = eventData;
+  } else if (eventData && eventData.tabName) {
+    activeTab.value = eventData.tabName;
+    console.log('切换到:', eventData.tabName, '菜单项:', eventData.menuItem?.name);
+  }
+}
+
 // 发送消息
 const handleSendMessage = async (messageData) => {
   try {
     console.log('发送消息:', messageData)
-    
+
     // 根据消息类型重新加载相应数据
     if (messageData.type === 'friend') {
       // 对于好友消息，重新加载好友列表以更新最后消息时间
@@ -222,7 +222,7 @@ const handleSendMessage = async (messageData) => {
       // 对于群组消息，重新加载群组列表以更新最后消息时间
       await loadGroups()
     }
-    
+
     ElMessage.success('消息发送成功')
   } catch (error) {
     ElMessage.error('消息发送失败')
@@ -271,16 +271,22 @@ onMounted(() => {
   background: #f5f5f5;
   border-right: 1px solid #e0e0e0;
   display: flex;
+  flex-direction: row;
+}
+
+.header-container {
+  display: flex;
   flex-direction: column;
 }
 
 .sidebar-header {
-  padding: 16px 20px;
+  padding: 16px 16px;
   background: #ededed;
   border-bottom: 1px solid #e0e0e0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
 }
 
 .header-title {
@@ -297,6 +303,8 @@ onMounted(() => {
 
 .header-actions {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 16px;
   color: #666;
   cursor: pointer;
@@ -313,38 +321,15 @@ onMounted(() => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.wechat-tabs {
+.content-area {
   flex: 1;
   overflow: hidden;
-}
-
-.wechat-tabs :deep(.el-tabs__header) {
-  margin: 0;
-  background: #f5f5f5;
-}
-
-.wechat-tabs :deep(.el-tabs__nav-wrap) {
-  padding: 0 20px;
-}
-
-.wechat-tabs :deep(.el-tabs__item) {
-  font-size: 14px;
-  font-weight: 500;
-  color: #666;
-}
-
-.wechat-tabs :deep(.el-tabs__item.is-active) {
-  color: #07c160;
-}
-
-.wechat-tabs :deep(.el-tabs__active-bar) {
-  background-color: #07c160;
-}
-
-.wechat-tabs :deep(.el-tabs__content) {
-  height: calc(100% - 55px);
-  overflow: auto;
   background: #fff;
+}
+
+.tab-content {
+  height: 100%;
+  overflow: auto;
 }
 
 .wechat-main {

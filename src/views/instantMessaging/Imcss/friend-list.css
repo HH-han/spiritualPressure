@@ -20,15 +20,15 @@
 }
 
 .add-button {
-    background: #07c160;
+    background: #e1e1e1;
     border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
+    border-radius: 4px;
+    padding: 8px;
     font-size: 12px;
 }
 
 .add-button:hover {
-    background: #06ae56;
+    background: #bcbcbc;
 }
 
 /* 搜索框样式 */

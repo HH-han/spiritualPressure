@@ -173,7 +173,7 @@ export const setSpecialFriend = (data) => {
 // 发送单聊图片消息（文件上传）
 export const sendSingleImageMessage = (formData) => {
   return request({
-    url: `api/public/im/single/send/image`,
+    url: `api/public/im/single/upload/image`,
     method: 'POST',
     data: formData,
     headers: {
@@ -185,11 +185,19 @@ export const sendSingleImageMessage = (formData) => {
 // 发送群聊图片消息（文件上传）
 export const sendGroupImageMessage = (formData) => {
   return request({
-    url: `api/public/im/group/send/image`,
+    url: `api/public/im/group/upload/image`,
     method: 'POST',
     data: formData,
     headers: {
       'Content-Type': 'multipart/form-data'
     }
+  })
+}
+// Emoji表情
+export const getEmojiList = (params) => {
+  return request({
+    url: `api/public/im/emoji/all`,
+    method: 'GET',
+    params
   })
 }

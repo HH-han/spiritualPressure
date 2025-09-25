@@ -21,20 +21,6 @@
       </div>
       <!-- 头部操作项 -->
       <div class="header-right">
-        <button @click="initiateVoiceCall">
-          <el-tooltip content="语音通话" placement="bottom">
-            <el-icon class="header-action">
-              <Microphone />
-            </el-icon>
-          </el-tooltip>
-        </button>
-        <button>
-          <el-tooltip content="视频通话" placement="bottom">
-            <el-icon class="header-action">
-              <VideoCamera />
-            </el-icon>
-          </el-tooltip>
-        </button>
         <button>
           <el-tooltip content="更多操作" placement="bottom">
             <el-icon class="header-action">
@@ -56,7 +42,8 @@
         <div class="message-content">
           <div class="message-bubble" :class="{ 'bubble-self': message.isSelf }">
             <div v-if="message.messageType === 'IMAGE'" class="message-image">
-              <img :src="message.contentImage" alt="图片消息" class="image-content" @click="showImagePreview(message.contentImage)" />
+              <img :src="message.contentImage" alt="图片消息" class="image-content"
+                @click="showImagePreview(message.contentImage)" />
             </div>
             <div v-else class="message-text">{{ message.content }}</div>
           </div>
@@ -77,51 +64,54 @@
     <!-- 消息输入区域 -->
     <div class="message-input-area">
       <div class="input-toolbar">
-        <button @click="showEmojiPicker = !showEmojiPicker">
-          <el-tooltip content="表情" placement="top">
-            <el-icon class="toolbar-icon">
-              <Comment />
-            </el-icon>
-          </el-tooltip>
-        </button>
-        <button>
-          <ImageUploader 
-            ref="imageUploaderRef"
-            :chat="chat" 
-            @image-sent="handleImageSent"
-            @upload-start="handleUploadStart"
-            @upload-complete="handleUploadComplete"
-          >
-            <el-tooltip content="图片" placement="top">
+        <div class="toolbar-container">
+          <button @click="showEmojiPicker = !showEmojiPicker">
+            <el-tooltip content="表情" placement="top">
               <el-icon class="toolbar-icon">
-                <Picture />
+                <Comment />
               </el-icon>
             </el-tooltip>
-          </ImageUploader>
-        </button>
-        <button>
-          <el-tooltip content="文件" placement="top">
-            <el-icon class="toolbar-icon">
-              <Document />
-            </el-icon>
-          </el-tooltip>
-        </button>
+          </button>
+          <button>
+            <ImageUploader ref="imageUploaderRef" :chat="chat" @image-sent="handleImageSent"
+              @upload-start="handleUploadStart" @upload-complete="handleUploadComplete">
+              <el-tooltip content="图片" placement="top">
+                <el-icon class="toolbar-icon">
+                  <Picture />
+                </el-icon>
+              </el-tooltip>
+            </ImageUploader>
+          </button>
+          <button>
+            <el-tooltip content="文件" placement="top">
+              <el-icon class="toolbar-icon">
+                <Document />
+              </el-icon>
+            </el-tooltip>
+          </button>
+        </div>
+        <div class="toolbar-container">
+          <button @click="initiateVoiceCall">
+            <el-tooltip content="语音通话" placement="bottom">
+              <el-icon class="header-action">
+                <Microphone />
+              </el-icon>
+            </el-tooltip>
+          </button>
+          <button>
+            <el-tooltip content="视频通话" placement="bottom">
+              <el-icon class="header-action">
+                <VideoCamera />
+              </el-icon>
+            </el-tooltip>
+          </button>
+        </div>
+
       </div>
 
-      <!-- 表情选择器 -->
-      <div v-if="showEmojiPicker" class="emoji-picker">
-        <div class="emoji-header">
-          <span class="emoji-title">表情</span>
-          <el-icon class="emoji-close" @click="showEmojiPicker = false">
-            <Close />
-          </el-icon>
-        </div>
-        <div class="emoji-grid">
-          <div v-for="(emoji, index) in emojiList" :key="index" class="emoji-item" @click="selectEmoji(emoji)">
-            {{ emoji }}
-          </div>
-        </div>
-      </div>
+      <!-- 表情选择器组件 -->
+      <EmojiList :show-emoji-picker="showEmojiPicker" @select-emoji="selectEmoji"
+        @close-picker="showEmojiPicker = false" />
       <!-- 信息输入框  -->
       <div class="input-main">
         <el-input v-model="inputMessage" type="textarea" :rows="3" placeholder="输入消息..." resize="none"
@@ -144,6 +134,7 @@ import { sendSingleMessage, sendGroupMessageByParam, getSingleChatHistory, getGr
 import { useAuthStore } from '@/stores/auth.js'
 import VoiceCallControl from './VoiceCallControl.vue'
 import ImageUploader from './ImageUploader.vue'
+import EmojiList from './EmojiList.vue'
 import { voiceWebSocket } from '@/utils/voice-websocket'
 import { initMessageWebSocket, sendMessageViaWebSocket, handleWebSocketMessage } from '../Imjs/im.js'
 
@@ -171,27 +162,13 @@ const showEmojiPicker = ref(false)
 // WebSocket连接状态
 const isMessageWebSocketConnected = ref(false)
 
-// 常用表情符号列表
-const emojiList = [
-  '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇',
-  '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚',
-  '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩',
-  '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣',
-  '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬',
-  '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🫣',
-  '🤗', '🫡', '🤔', '🫢', '🤭', '🤫', '🤥', '😶', '🫠', '😐',
-  '🫤', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱',
-  '😴', '🤤', '😪', '😵', '🫥', '🤐', '🥴', '🤢', '🤮', '🤧',
-  '😷', '🤒', '🤕', '🤑', '🤠', '😈', '👿', '👹', '👺', '🤡',
-  '💩', '👻', '💀', '☠️', '👽', '👾', '🤖', '🎃', '😺', '😸',
-  '😹', '😻', '😼', '😽', '🙀', '😿', '😾'
-]
+
 
 // 处理图片发送成功事件
 const handleImageSent = async (imageData) => {
   // 重新加载聊天历史以显示新发送的图片
   await loadChatHistory()
-  
+
   // 发送消息事件给父组件
   emit('send-message', imageData)
 }
@@ -315,7 +292,7 @@ const loadChatHistory = async () => {
           timestamp: msg.sendTime,
           isSelf: msg.senderId === currentUserId.value,
           contentImage: msg.image,
-          image: msg.senderAvatar || msg.avatar ,
+          image: msg.senderAvatar || msg.avatar,
           messageType: msg.messageType
         }))
         .sort((a, b) => a.id - b.id)
@@ -342,11 +319,11 @@ const handleSendMessage = async () => {
 
     // 优先尝试通过WebSocket发送
     const webSocketSuccess = await sendMessageViaWebSocketWrapper(messageData)
-    
+
     if (!webSocketSuccess) {
       // WebSocket发送失败，回退到HTTP API
       let response
-      
+
       if (props.chat.type === 'friend') {
         response = await sendSingleMessage({
           senderId: currentUserId.value,
@@ -366,8 +343,6 @@ const handleSendMessage = async () => {
       if (response.code === 0 || response.code === '0') {
         // 发送成功后立即重新加载聊天历史，确保获取最新的消息数据（包括头像信息）
         await loadChatHistory()
-        
-        ElMessage.success('消息发送成功')
       } else {
         ElMessage.error(response.msg || '消息发送失败')
         return
@@ -375,7 +350,6 @@ const handleSendMessage = async () => {
     } else {
       // WebSocket发送成功，也需要重新加载聊天历史以确保消息显示
       await loadChatHistory()
-      ElMessage.success('消息发送成功')
     }
 
     // 发送消息事件（无论通过哪种方式发送成功）
@@ -387,7 +361,7 @@ const handleSendMessage = async () => {
     })
 
     inputMessage.value = ''
-    
+
   } catch (error) {
     console.error('消息发送失败:', error)
     ElMessage.error('消息发送失败')

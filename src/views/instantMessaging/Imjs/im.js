@@ -40,7 +40,7 @@ export const initMessageWebSocket = (onMessageReceived, isConnectedRef) => {
             isConnectedRef.value = status.connected
           }
           if (!status.connected) {
-            ElMessage.warning('消息推送连接已断开，正在尝试重连...')
+            console.warn('消息WebSocket连接已断开，尝试重新连接...')
           }
         })
       }, 

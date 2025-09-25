@@ -370,7 +370,7 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 /* 样式htg */
 @import "@/css/TravelServiceoptions/HometravelGuides.css";
 </style>

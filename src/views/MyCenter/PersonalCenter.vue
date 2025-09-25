@@ -206,6 +206,7 @@ const saveChanges = async () => {
 
     // 构造更新数据 - 与后端User实体完全匹配
     const updateData = {
+      username: userInfo.value.username,
       nickname: userInfo.value.nickname?.trim(),
       phone: userInfo.value.phone,
       email: userInfo.value.email,

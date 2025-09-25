@@ -49,7 +49,7 @@ class MessageWebSocket {
         debug: (str) => {
           console.log('消息STOMP Debug:', str)
         },
-        reconnectDelay: 5000,
+        reconnectDelay: 500,
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000
       })

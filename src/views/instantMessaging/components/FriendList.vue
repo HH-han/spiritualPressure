@@ -2,15 +2,16 @@
   <div class="wechat-friend-list">
     <!-- 好友列表头部 -->
     <div class="list-header">
-      <span class="header-title">好友</span>
+      <span class="header-title">联系人</span>
       <el-button 
         type="primary" 
         size="small" 
         @click="showAddFriendDialog = true"
         class="add-button"
       >
-        <el-icon><Plus /></el-icon>
-        添加好友
+        <el-icon>
+          <Plus />
+        </el-icon>
       </el-button>
     </div>
     
@@ -18,7 +19,7 @@
     <div class="search-container">
       <el-input
         v-model="searchKeyword"
-        placeholder="搜索好友用户名"
+        placeholder="搜索用户名"
         size="large"
         clearable
         @input="handleSearch"
@@ -40,7 +41,7 @@
       >
         <el-avatar :size="48" :src="friend.image || '/default-avatar.png'" />
         <div class="friend-info">
-          <div class="friend-name">{{ friend.username }}</div>
+          <div class="friend-name">{{ friend.nickname }}</div>
           <div class="friend-status">
             <span class="status-dot online"></span>
             在线

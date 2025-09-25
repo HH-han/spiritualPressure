@@ -6,6 +6,15 @@
         <el-button type="primary" :icon="Picture">选择图片</el-button>
       </slot>
     </div>
+    
+    <!-- 隐藏的文件输入框 -->
+    <input
+      ref="fileInput"
+      type="file"
+      accept="image/*"
+      style="display: none"
+      @change="handleFileSelect"
+    />
 
     <!-- 图片预览模态框 -->
     <el-dialog 
@@ -25,7 +34,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="cancelImageSend">取消</el-button>
-          <el-button type="primary" @click="sendImageMessage" :disabled="!selectedImage || uploading">
+          <el-button type="primary" @click="uploadImageMessage" :disabled="!selectedImage || uploading">
             {{ uploading ? '上传中...' : '发送' }}
           </el-button>
         </span>
@@ -57,7 +66,7 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Picture } from '@element-plus/icons-vue'
 import { useAuthStore } from '@/stores/auth.js'
-import { sendMessageViaWebSocket } from '../Imjs/im.js'
+import { sendSingleMessage, sendGroupImageMessage } from '@/api/im.js'
 
 const props = defineProps({
   chat: {
@@ -129,32 +138,35 @@ const triggerImageSelect = () => {
 }
 
 // 发送图片消息（Base64格式）
-const sendImageMessage = async () => {
-  if (!selectedImage.value) return
+const uploadImageMessage = async () => {
+  if (!selectedImage.value || !imagePreview.value) return
 
   uploading.value = true
   emit('upload-start')
 
   try {
-    // 创建图片消息数据
+    let result
+    
+    // 构建Base64图片消息数据
     const messageData = {
       senderId: getCurrentUserId(),
       content: '[图片]',
       messageType: 'IMAGE',
-      image: imagePreview.value, // 使用Base64格式的图片数据
+      image: imagePreview.value,
       timestamp: Date.now()
     }
     
     if (props.chat.type === 'friend') {
+      // 单聊图片消息
       messageData.receiverId = props.chat.id
+      result = await sendSingleMessage(messageData)
     } else if (props.chat.type === 'group') {
+      // 群聊图片消息
       messageData.groupId = props.chat.id
+      result = await sendGroupImageMessage(messageData)
     }
 
-    // 通过WebSocket发送消息
-    const response = await sendMessageViaWebSocket(messageData, props.chat, getCurrentUserId())
-
-    if (response) {
+    if (result && result.code === "0") {
       ElMessage.success('图片发送成功')
       
       // 发送成功事件
@@ -165,21 +177,21 @@ const sendImageMessage = async () => {
         image: imagePreview.value, // 使用Base64图片数据
         timestamp: Date.now(),
         isImage: true,
-        response: response
+        response: result
       })
 
       // 执行回调函数
       if (props.onImageSent) {
-        props.onImageSent(response)
+        props.onImageSent(result)
       }
 
       // 重置状态
       resetUploadState()
       
     } else {
-      ElMessage.error('图片发送失败')
+      ElMessage.error(result?.msg || '图片发送失败')
       uploading.value = false
-      emit('upload-complete', { success: false, error: '图片发送失败' })
+      emit('upload-complete', { success: false, error: result?.msg || '图片发送失败' })
     }
     
   } catch (error) {
@@ -236,5 +248,56 @@ defineExpose({
 </script>
 
 <style scoped>
-@import '../Imcss/image-uploader.css';
+.image-uploader {
+  display: inline-block;
+}
+
+.upload-trigger {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.image-preview-container {
+  text-align: center;
+  padding: 20px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-image {
+  color: #999;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.message-image-preview-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.message-preview-image {
+  max-width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
 </style>
