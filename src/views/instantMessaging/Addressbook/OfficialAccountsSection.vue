@@ -23,8 +23,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { Document, ArrowDown } from '@element-plus/icons-vue'
-
 const props = defineProps({
   officialAccounts: {
     type: Array,

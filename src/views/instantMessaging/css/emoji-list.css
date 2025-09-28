@@ -1,0 +1,140 @@
+/* 表情选择器样式 */
+.emoji-picker {
+    width: 350px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.emoji-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafafa;
+}
+
+.emoji-title {
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+}
+
+.emoji-close {
+    cursor: pointer;
+    color: #999;
+    font-size: 18px;
+    transition: color 0.2s;
+}
+
+.emoji-close:hover {
+    color: #666;
+}
+
+/* 表情分类标签样式 */
+.emoji-switching {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.emoji-switching>div {
+    display: flex;
+    align-items: center;
+}
+
+.emoji-categories {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 5px 0;
+    flex: 1;
+    scrollbar-width: none;
+    gap: 8px;
+}
+
+.emoji-categories::-webkit-scrollbar {
+    display: none;
+}
+
+.category-tab {
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    color: #666;
+}
+
+.category-tab:hover {
+    border-color: #07c160;
+    color: #07c160;
+}
+
+.category-tab.active {
+    background: #07c160;
+    border-color: #07c160;
+    color: #fff;
+}
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    padding: 16px;
+    max-height: 250px;
+    overflow-y: auto;
+    background: #fff;
+}
+
+.emoji-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    background: transparent;
+}
+
+.emoji-item:hover {
+    background: #f0f0f0;
+    transform: scale(1.1);
+}
+
+/* 滚动条样式 */
+.emoji-grid::-webkit-scrollbar {
+    width: 2px;
+}
+
+.emoji-grid::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.emoji-grid::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.emoji-grid::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

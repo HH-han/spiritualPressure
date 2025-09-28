@@ -163,7 +163,7 @@ import ImageUploader from './ImageUploader.vue'
 import EmojiList from './EmojiList.vue'
 import MoreOptionsDialog from '../Moreoptions/MoreOptionsDialog.vue'
 import { voiceWebSocket } from '@/utils/voice-websocket'
-import { initMessageWebSocket, sendMessageViaWebSocket, handleWebSocketMessage } from '../Imjs/im.js'
+import { initMessageWebSocket, sendMessageViaWebSocket, handleWebSocketMessage } from './im.js'
 
 const props = defineProps({
   chat: {
@@ -569,5 +569,5 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-@import '../Imcss/chat-window.css';
+@import '../css/chat-window.css';
 </style>

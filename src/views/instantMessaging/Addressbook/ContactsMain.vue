@@ -49,11 +49,7 @@ import GroupsSection from './GroupsSection.vue'
 import TagsSection from './TagsSection.vue'
 import OfficialAccountsSection from './OfficialAccountsSection.vue'
 import FriendsSection from './FriendsSection.vue'
-import { 
-  getPendingFriendRequests, 
-  getFriendList, 
-  getChatGroupsByCreator 
-} from '@/api/im.js'
+import { getPendingFriendRequests, getFriendList, getChatGroupsByCreator } from '@/api/im.js'
 import { useAuthStore } from '@/stores/auth.js'
 
 const emit = defineEmits(['select-friend', 'select-group'])

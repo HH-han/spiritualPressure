@@ -7,21 +7,36 @@
                 <Close />
             </el-icon>
         </div>
-
-        <!-- 表情分类标签 -->
-        <div class="emoji-categories">
-            <div v-for="category in categories" :key="category.type"
-                :class="['category-tab', { active: activeCategory === category.type }]"
-                @click="activeCategory = category.type">
-                {{ category.name }}
-            </div>
-        </div>
-
         <!-- 表情网格 -->
         <div class="emoji-grid">
             <div v-for="(emoji, index) in filteredEmojis" :key="index" class="emoji-item" @click="selectEmoji(emoji)"
                 :title="emoji.description">
                 {{ emoji.emojiChar }}
+            </div>
+        </div>
+
+        <!-- 表情分类标签 -->
+        <div class="emoji-switching">
+            <div>
+                <el-button type="text" size="small" @click="scrollCategories(-1)">
+                    <el-icon>
+                        <ArrowLeft />
+                    </el-icon>
+                </el-button>
+            </div>
+            <div class="emoji-categories">
+                <div v-for="category in categories" :key="category.type"
+                    :class="['category-tab', { active: activeCategory === category.type }]"
+                    @click="activeCategory = category.type">
+                    {{ category.name }}
+                </div>
+            </div>
+            <div>
+                <el-button type="text" size="small" @click="scrollCategories(1)">
+                    <el-icon>
+                        <ArrowRight />
+                    </el-icon>
+                </el-button>
             </div>
         </div>
     </div>
@@ -30,8 +45,8 @@
 <script setup>
 import { ref, onMounted, defineEmits, defineProps, computed } from 'vue'
 import { getEmojiList } from '@/api/im.js'
-import { ElIcon } from 'element-plus'
-import { Close } from '@element-plus/icons-vue'
+import { ElIcon, ElButton } from 'element-plus'
+import { Close, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 
 const props = defineProps({
     showEmojiPicker: {
@@ -117,6 +132,21 @@ const selectEmoji = (emoji) => {
     emit('select-emoji', emoji.emojiChar)
 }
 
+// 滚动分类标签
+const scrollCategories = (direction) => {
+    const currentIndex = categories.findIndex(cat => cat.type === activeCategory.value)
+    let newIndex = currentIndex + direction
+
+    // 边界检查
+    if (newIndex < 0) {
+        newIndex = categories.length - 1
+    } else if (newIndex >= categories.length) {
+        newIndex = 0
+    }
+
+    activeCategory.value = categories[newIndex].type
+}
+
 // 关闭表情选择器
 const closeEmojiPicker = () => {
     emit('close-picker')
@@ -128,129 +158,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 表情选择器样式 */
-.emoji-picker {
-    width: 350px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    overflow: hidden;
-}
-
-.emoji-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    border-bottom: 1px solid #f0f0f0;
-    background: #fafafa;
-}
-
-.emoji-title {
-    font-weight: 600;
-    color: #333;
-    font-size: 16px;
-}
-
-.emoji-close {
-    cursor: pointer;
-    color: #999;
-    font-size: 18px;
-    transition: color 0.2s;
-}
-
-.emoji-close:hover {
-    color: #666;
-}
-
-/* 表情分类标签样式 */
-.emoji-categories {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-    background: #f8f8f8;
-}
-
-
-
-
-
-.category-tab {
-    flex-shrink: 0;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    color: #666;
-}
-
-.category-tab:hover {
-    border-color: #07c160;
-    color: #07c160;
-}
-
-.category-tab.active {
-    background: #07c160;
-    border-color: #07c160;
-    color: #fff;
-}
-
-.emoji-grid {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 6px;
-    padding: 16px;
-    max-height: 250px;
-    overflow-y: auto;
-    background: #fff;
-}
-
-.emoji-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 6px;
-    transition: all 0.2s;
-    background: transparent;
-}
-
-.emoji-item:hover {
-    background: #f0f0f0;
-    transform: scale(1.1);
-}
-
-/* 滚动条样式 */
-.emoji-grid::-webkit-scrollbar {
-    width: 2px;
-}
-
-.emoji-grid::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-}
-
-.emoji-grid::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 3px;
-}
-
-.emoji-grid::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
-}
+@import '../css/emoji-list.css';
 </style>
