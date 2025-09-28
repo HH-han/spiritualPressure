@@ -48,11 +48,13 @@
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    gap: 8px;
 }
 
 .emoji-switching>div {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .emoji-categories {
@@ -63,6 +65,8 @@
     flex: 1;
     scrollbar-width: none;
     gap: 8px;
+    max-width: 250px;
+    min-width: 0;
 }
 
 .emoji-categories::-webkit-scrollbar {

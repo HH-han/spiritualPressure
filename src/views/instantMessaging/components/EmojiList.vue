@@ -17,6 +17,7 @@
 
         <!-- 表情分类标签 -->
         <div class="emoji-switching">
+            <!-- 左侧按钮 -->
             <div>
                 <el-button type="text" size="small" @click="scrollCategories(-1)">
                     <el-icon>
@@ -24,6 +25,7 @@
                     </el-icon>
                 </el-button>
             </div>
+            <!-- 分类标签 -->
             <div class="emoji-categories">
                 <div v-for="category in categories" :key="category.type"
                     :class="['category-tab', { active: activeCategory === category.type }]"
@@ -31,6 +33,7 @@
                     {{ category.name }}
                 </div>
             </div>
+            <!-- 右侧按钮 -->
             <div>
                 <el-button type="text" size="small" @click="scrollCategories(1)">
                     <el-icon>
@@ -43,7 +46,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineEmits, defineProps, computed } from 'vue'
+import { ref, onMounted, defineEmits, defineProps, computed, nextTick } from 'vue'
 import { getEmojiList } from '@/api/im.js'
 import { ElIcon, ElButton } from 'element-plus'
 import { Close, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
@@ -136,15 +139,35 @@ const selectEmoji = (emoji) => {
 const scrollCategories = (direction) => {
     const currentIndex = categories.findIndex(cat => cat.type === activeCategory.value)
     let newIndex = currentIndex + direction
-
+    
     // 边界检查
     if (newIndex < 0) {
         newIndex = categories.length - 1
     } else if (newIndex >= categories.length) {
         newIndex = 0
     }
-
+    
     activeCategory.value = categories[newIndex].type
+    
+    // 确保选中的分类标签在视窗范围内
+    nextTick(() => {
+        const categoriesContainer = document.querySelector('.emoji-categories')
+        const activeTab = document.querySelector('.category-tab.active')
+        
+        if (categoriesContainer && activeTab) {
+            const containerRect = categoriesContainer.getBoundingClientRect()
+            const tabRect = activeTab.getBoundingClientRect()
+            
+            // 检查标签是否在容器视窗内
+            if (tabRect.left < containerRect.left) {
+                // 标签在左侧不可见，向左滚动
+                activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+            } else if (tabRect.right > containerRect.right) {
+                // 标签在右侧不可见，向右滚动
+                activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'end' })
+            }
+        }
+    })
 }
 
 // 关闭表情选择器
@@ -158,5 +181,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import '../css/emoji-list.css';
+@import './css/emoji-list.css';
 </style>

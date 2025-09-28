@@ -90,8 +90,6 @@ export const rejectFriendRequest = (data) => {
   })
 }
 
-// 群组管理API
-
 // 根据ID查询群组
 export const getChatGroupById = (id) => {
   return request({
@@ -193,7 +191,7 @@ export const sendGroupImageMessage = (formData) => {
     }
   })
 }
-// Emoji表情
+// 获取Emoji表情
 export const getEmojiList = (params) => {
   return request({
     url: `api/public/im/emoji/all`,
@@ -201,7 +199,7 @@ export const getEmojiList = (params) => {
     params
   })
 }
-// Emoji_image表情
+// 获取Emoji_image表情
 export const getEmojiImageList = (params) => {
   return request({
     url: `api/public/im/emoji_image/all`,

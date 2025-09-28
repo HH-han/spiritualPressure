@@ -89,6 +89,7 @@ import TravelCruise from '@/views/TravelServiceoptions/TravelCruise.vue'
 // 即时通讯页面路由
 import InstantMessaging from '@/views/instantMessaging/index.vue'
 import IMTestPage from '@/views/instantMessaging/TestPage.vue'
+import CommunicationManagement from '@/views/instantMessaging/communicationManagement/CommunicationManagement.vue'
 
 // 定义路由数组，每个对象代表一个路由
 const routes = [
@@ -159,6 +160,7 @@ const routes = [
   // 即时通讯页面路由
   {path: '/im',name: 'instantMessaging',component: InstantMessaging,title: "即时通讯"},
   {path: '/im/test',name: 'imTest',component: IMTestPage,title: "即时通讯测试"},
+  {path: '/communication',name: 'communicationManagement',component: CommunicationManagement,title: "即时通讯管理"},
 
 ]
 // 创建路由实例

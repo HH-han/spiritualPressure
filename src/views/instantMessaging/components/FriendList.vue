@@ -363,5 +363,5 @@ const handleCloseDialog = () => {
 </script>
 
 <style scoped>
-@import '../css/friend-list.css';
+@import './css/friend-list.css';
 </style>

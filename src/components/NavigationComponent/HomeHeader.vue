@@ -120,7 +120,8 @@
               </button>
               <div class="profilepicture-inner" v-show="isDropdownVisible">
                 <button style="border-radius: 10px 10px 0 0;" @click="navigateTo('/functionswitching')">个人中心</button>
-                <button v-if="userInfo.permissions === 1" @click="AdminLayout" class="admin-button">管理页面</button>
+                <button v-if="userInfo.permissions === 1" @click="AdminLayout" class="admin-button">博览旅行管理后台</button>
+                <button v-if="userInfo.permissions === 1" @click="navigateTo('/communication')">即时通讯管理后台</button>
                 <button style="border-radius: 0 0 10px 10px;" @click="navigateTo('/accountsettings')">账户设置</button>
                 <button @click="navigateTo('/im')" class="im-button">好友聊天</button>
                 <button @click="localLogout" class="logout-button">退出登录</button>

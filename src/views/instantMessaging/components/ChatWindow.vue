@@ -569,5 +569,5 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-@import '../css/chat-window.css';
+@import './css/chat-window.css';
 </style>

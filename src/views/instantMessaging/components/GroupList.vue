@@ -174,5 +174,5 @@ const handleCloseDialog = () => {
 </script>
 
 <style scoped>
-@import '../css/group-list.css';
+@import './css/group-list.css';
 </style>

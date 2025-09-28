@@ -185,5 +185,5 @@ const handleReject = async (request) => {
 </script>
 
 <style scoped>
-@import '../css/friend-requestList.css';
+@import './css/friend-requestList.css';
 </style>

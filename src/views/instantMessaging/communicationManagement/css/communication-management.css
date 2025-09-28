@@ -1,0 +1,251 @@
+/* 即时通讯管理后台样式 */
+.communication-management {
+  padding: 24px;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+/* 页面头部 */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #303133;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* 统计卡片 */
+.stats-cards {
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.stat-content {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  font-size: 24px;
+  color: #fff;
+}
+
+.user-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.group-icon {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.message-icon {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.online-icon {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #303133;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #909399;
+  font-weight: 500;
+}
+
+/* 主要内容区域 */
+.main-content {
+  margin-top: 24px;
+}
+
+.content-card {
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.content-card:last-child {
+  margin-bottom: 0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+/* 消息监控特殊样式 */
+.message-monitor {
+  margin-top: 20px;
+}
+
+.monitor-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .communication-management {
+    padding: 16px;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-cards .el-col {
+    margin-bottom: 16px;
+  }
+  
+  .stats-cards .el-col:last-child {
+    margin-bottom: 0;
+  }
+  
+  .main-content .el-col {
+    margin-bottom: 20px;
+  }
+  
+  .main-content .el-col:last-child {
+    margin-bottom: 0;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .monitor-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-card,
+.content-card {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* 滚动条样式优化 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 加载状态 */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: #909399;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #909399;
+}
+
+.empty-state .el-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #c0c4cc;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}

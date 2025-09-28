@@ -483,5 +483,5 @@ defineExpose({
 </script>
 
 <style scoped>
-@import '../css/voice-call-control.css';
+@import './css/voice-call-control.css';
 </style>
