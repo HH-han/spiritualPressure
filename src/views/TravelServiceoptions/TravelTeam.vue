@@ -238,7 +238,7 @@ const totalPages = computed(() => {
 })
 </script>
 
-<style>
+<style  scoped>
 /* 样式tt */
 @import "@/css/TravelServiceoptions/TravelTeam.css";
 </style>

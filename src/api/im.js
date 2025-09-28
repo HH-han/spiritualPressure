@@ -201,3 +201,19 @@ export const getEmojiList = (params) => {
     params
   })
 }
+// Emoji_image表情
+export const getEmojiImageList = (params) => {
+  return request({
+    url: `api/public/im/emoji_image/all`,
+    method: 'GET',
+    params
+  })
+}
+// 新增Emoji_image表情
+export const addEmojiImage = (data) => {
+  return request({
+    url: `api/public/im/emoji_image/add`,
+    method: 'POST',
+    data
+  })
+}

@@ -357,7 +357,7 @@ const handleDragStart = (event, index) => {
     event.dataTransfer.setData('text/plain', index);
 };
 </script>
-<style>
+<style scoped>
 /* 引入样式文件travel-world.css */
 @import "@/css/TravelServiceoptions/TravelWorld.css";
 </style>

@@ -5,9 +5,11 @@
                 <!-- 消息图标 - 带未读消息气泡 -->
                 <div class="menu-item" :class="{ active: activeIndex === '1' }" @click="setActive('1')">
                     <div class="menu-icon">
-                        <el-icon><Message /></el-icon>
+                        <el-icon>
+                            <Message />
+                        </el-icon>
                         <span v-if="unreadCount > 0" class="message-badge">{{ unreadCount > 99 ? '99+' : unreadCount
-                            }}</span>
+                        }}</span>
                     </div>
                     <div class="menu-tooltip">消息</div>
                 </div>
@@ -15,7 +17,9 @@
                 <!-- 通讯录 -->
                 <div class="menu-item" :class="{ active: activeIndex === '2' }" @click="setActive('2')">
                     <div class="menu-icon">
-                        <el-icon><Phone /></el-icon>
+                        <el-icon>
+                            <Phone />
+                        </el-icon>
                     </div>
                     <div class="menu-tooltip">通讯录</div>
                 </div>
@@ -23,7 +27,9 @@
                 <!-- 发现 -->
                 <div class="menu-item" :class="{ active: activeIndex === '3' }" @click="setActive('3')">
                     <div class="menu-icon">
-                        <el-icon><View /></el-icon>
+                        <el-icon>
+                            <View />
+                        </el-icon>
                         <span v-if="hasNewDiscover" class="discover-dot"></span>
                     </div>
                     <div class="menu-tooltip">发现</div>
@@ -32,7 +38,9 @@
                 <!-- 朋友圈 -->
                 <div class="menu-item" :class="{ active: activeIndex === '4' }" @click="setActive('4')">
                     <div class="menu-icon">
-                        <el-icon><HelpFilled /></el-icon>
+                        <el-icon>
+                            <HelpFilled />
+                        </el-icon>
                     </div>
                     <div class="menu-tooltip">朋友圈</div>
                 </div>
@@ -40,7 +48,9 @@
                 <!-- 收藏 -->
                 <div class="menu-item" :class="{ active: activeIndex === '5' }" @click="setActive('6')">
                     <div class="menu-icon">
-                        <el-icon><StarFilled /></el-icon>
+                        <el-icon>
+                            <Star />
+                        </el-icon>
                     </div>
                     <div class="menu-tooltip">收藏</div>
                 </div>
@@ -48,7 +58,9 @@
                 <!-- 相册 -->
                 <div class="menu-item" :class="{ active: activeIndex === '6' }" @click="setActive('7')">
                     <div class="menu-icon">
-                        <el-icon><Picture /></el-icon>
+                        <el-icon>
+                            <Picture />
+                        </el-icon>
                     </div>
                     <div class="menu-tooltip">相册</div>
                 </div>
@@ -57,7 +69,9 @@
                 <!-- 设置 -->
                 <div class="menu-item" :class="{ active: activeIndex === '7' }" @click="setActive('8')">
                     <div class="menu-icon">
-                        <el-icon><Tools /></el-icon>
+                        <el-icon>
+                            <Tools />
+                        </el-icon>
                     </div>
                     <div class="menu-tooltip">设置</div>
                 </div>
@@ -78,46 +92,46 @@ const hasNewDiscover = ref(true); // 模拟发现页面有新内容
 
 // 菜单项配置映射
 const menuConfig = {
-  '1': { tabName: 'chats', clearEffect: () => unreadCount.value = 0 },
-  '2': { tabName: 'contacts', clearEffect: null },
-  '3': { tabName: 'discover', clearEffect: () => hasNewDiscover.value = false },
-  '4': { tabName: 'moments', clearEffect: null },
-  '5': { tabName: 'favorites', clearEffect: null },
-  '6': { tabName: 'albums', clearEffect: null },
-  '7': { tabName: 'settings', clearEffect: null }
+    '1': { tabName: 'chats', clearEffect: () => unreadCount.value = 0 },
+    '2': { tabName: 'contacts', clearEffect: null },
+    '3': { tabName: 'discover', clearEffect: () => hasNewDiscover.value = false },
+    '4': { tabName: 'moments', clearEffect: null },
+    '5': { tabName: 'favorites', clearEffect: null },
+    '6': { tabName: 'albums', clearEffect: null },
+    '7': { tabName: 'settings', clearEffect: null }
 };
 
 const setActive = (index) => {
     activeIndex.value = index;
-    
+
     // 获取菜单配置
     const config = menuConfig[index] || { tabName: 'chats', clearEffect: null };
-    
+
     // 向父组件发送切换事件，包含索引和标签名
     emit('tab-change', {
-      index: index,
-      tabName: config.tabName,
-      menuItem: getMenuItemByIndex(index)
+        index: index,
+        tabName: config.tabName,
+        menuItem: getMenuItemByIndex(index)
     });
 
     // 执行清除效果（如果有）
     if (config.clearEffect) {
-      config.clearEffect();
+        config.clearEffect();
     }
 }
 
 // 根据索引获取菜单项信息
 const getMenuItemByIndex = (index) => {
-  const menuItems = {
-    '1': { name: '消息', icon: 'el-icon-message' },
-    '2': { name: '通讯录', icon: 'el-icon-s-home' },
-    '3': { name: '发现', icon: 'el-icon-s-unfold' },
-    '4': { name: '朋友圈', icon: 'el-icon-link' },
-    '5': { name: '收藏', icon: 'el-icon-s-goods' },
-    '6': { name: '相册', icon: 'el-icon-picture' },
-    '7': { name: '设置', icon: 'el-icon-menu' }
-  };
-  return menuItems[index] || { name: '未知', icon: '' };
+    const menuItems = {
+        '1': { name: '消息', icon: 'el-icon-message' },
+        '2': { name: '通讯录', icon: 'el-icon-s-home' },
+        '3': { name: '发现', icon: 'el-icon-s-unfold' },
+        '4': { name: '朋友圈', icon: 'el-icon-link' },
+        '5': { name: '收藏', icon: 'el-icon-s-goods' },
+        '6': { name: '相册', icon: 'el-icon-picture' },
+        '7': { name: '设置', icon: 'el-icon-menu' }
+    };
+    return menuItems[index] || { name: '未知', icon: '' };
 }
 </script>
 
@@ -185,7 +199,7 @@ const getMenuItemByIndex = (index) => {
     white-space: nowrap;
 }
 
-.menu-item:hover .menu-tooltip .menu-icon{
+.menu-item:hover .menu-tooltip .menu-icon {
     opacity: 1;
     transform: translateY(0);
 }

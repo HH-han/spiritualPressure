@@ -143,7 +143,7 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style  scoped>
 /* 样式tf */
 @import "@/css/TravelServiceoptions/TravelFreely.css";
 </style>

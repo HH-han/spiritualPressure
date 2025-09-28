@@ -20,7 +20,7 @@
 }
 
 .add-button {
-    background: #e1e1e1;
+    background: #ffffff;
     border: none;
     border-radius: 4px;
     padding: 8px;
@@ -28,7 +28,12 @@
 }
 
 .add-button:hover {
-    background: #bcbcbc;
+    background-color: #e3e3e3;
+}
+
+.add-icon{
+    color: #b1b1b1;
+    font-size: 16px;
 }
 
 /* 搜索框样式 */

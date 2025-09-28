@@ -157,6 +157,13 @@
     border-radius: 8px;
 }
 
+.emoji-image-content {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
 /* 自己发送的图片消息样式 */
 .bubble-self .message-image {
     background: linear-gradient(135deg, #95ec69, #7ad853);

@@ -40,11 +40,19 @@
         </div>
 
         <div class="message-content">
+          <!-- 消息气泡 -->
           <div class="message-bubble" :class="{ 'bubble-self': message.isSelf }">
-            <div v-if="message.messageType === 'IMAGE'" class="message-image">
+            <!-- 普通图片消息 -->
+            <div v-if="message.messageType === 'IMAGE' && (!message.content || !message.content.includes('表情图片'))" class="message-image">
               <img :src="message.contentImage" alt="图片消息" class="image-content"
                 @click="showImagePreview(message.contentImage)" />
             </div>
+            <!-- 表情图片消息 -->
+            <div v-else-if="message.messageType === 'IMAGE' && message.content && message.content.includes('表情图片')" class="message-image">
+              <img :src="message.contentImage" alt="表情消息" class="emoji-image-content"
+                />
+            </div>
+            <!-- 文本消息 -->
             <div v-else class="message-text">{{ message.content }}</div>
           </div>
           <div class="message-time">{{ formatTime(message.timestamp) }}</div>
@@ -65,13 +73,27 @@
     <div class="message-input-area">
       <div class="input-toolbar">
         <div class="toolbar-container">
+          <!-- 表情 -->
           <button @click="showEmojiPicker = !showEmojiPicker">
             <el-tooltip content="表情" placement="top">
               <el-icon class="toolbar-icon">
-                <Comment />
+                <svg t="1758851059675" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                  xmlns="http://www.w3.org/2000/svg" p-id="7117" width="32" height="32">
+                  <path
+                    d="M512 0a512 512 0 1 0 512 512A512 512 0 0 0 512 0z m406.016 512A406.016 406.016 0 1 1 512 106.24 406.272 406.272 0 0 1 918.016 512z"
+                    fill="#707070" p-id="7118"></path>
+                  <path
+                    d="M742.4 581.12a51.2 51.2 0 0 0-38.656-4.352 51.2 51.2 0 0 0-30.208 24.32 185.088 185.088 0 0 1-324.096 0 51.2 51.2 0 0 0-93.184 10.496 51.2 51.2 0 0 0 4.352 38.656 286.208 286.208 0 0 0 501.504 0 51.2 51.2 0 0 0 5.888-38.656 51.2 51.2 0 0 0-25.6-30.464z"
+                    fill="#707070" p-id="7119"></path>
+                  <path d="M327.68 403.968m-64.768 0a64.768 64.768 0 1 0 129.536 0 64.768 64.768 0 1 0-129.536 0Z"
+                    fill="#707070" p-id="7120"></path>
+                  <path d="M664.064 460.8a65.024 65.024 0 0 0 65.024 0 64.768 64.768 0 1 0-65.024 0z" fill="#707070"
+                    p-id="7121"></path>
+                </svg>
               </el-icon>
             </el-tooltip>
           </button>
+          <!-- 图片 -->
           <button>
             <ImageUploader ref="imageUploaderRef" :chat="chat" @image-sent="handleImageSent"
               @upload-start="handleUploadStart" @upload-complete="handleUploadComplete">
@@ -82,24 +104,25 @@
               </el-tooltip>
             </ImageUploader>
           </button>
-          <button>
-            <el-tooltip content="文件" placement="top">
+          <!-- 更多 -->
+          <button @click="showMoreOptions = true">
+            <el-tooltip content="更多" placement="top">
               <el-icon class="toolbar-icon">
-                <Document />
+                <More />
               </el-icon>
             </el-tooltip>
           </button>
         </div>
         <div class="toolbar-container">
           <button @click="initiateVoiceCall">
-            <el-tooltip content="语音通话" placement="bottom">
+            <el-tooltip content="语音通话" placement="top">
               <el-icon class="header-action">
                 <Microphone />
               </el-icon>
             </el-tooltip>
           </button>
           <button>
-            <el-tooltip content="视频通话" placement="bottom">
+            <el-tooltip content="视频通话" placement="top">
               <el-icon class="header-action">
                 <VideoCamera />
               </el-icon>
@@ -124,6 +147,9 @@
         </el-button>
       </div>
     </div>
+
+    <!-- 更多选项弹窗 -->
+    <MoreOptionsDialog v-model:visible="showMoreOptions" @select-option="handleOptionSelect" />
   </div>
 </template>
 
@@ -135,6 +161,7 @@ import { useAuthStore } from '@/stores/auth.js'
 import VoiceCallControl from './VoiceCallControl.vue'
 import ImageUploader from './ImageUploader.vue'
 import EmojiList from './EmojiList.vue'
+import MoreOptionsDialog from '../Moreoptions/MoreOptionsDialog.vue'
 import { voiceWebSocket } from '@/utils/voice-websocket'
 import { initMessageWebSocket, sendMessageViaWebSocket, handleWebSocketMessage } from '../Imjs/im.js'
 
@@ -158,6 +185,7 @@ const messages = ref([])
 const authStore = useAuthStore()
 const currentUserId = ref(authStore.user?.id || 0)
 const showEmojiPicker = ref(false)
+const showMoreOptions = ref(false)
 
 // WebSocket连接状态
 const isMessageWebSocketConnected = ref(false)
@@ -184,6 +212,43 @@ const handleUploadComplete = (result) => {
   // 可以在这里添加上传完成时的处理逻辑
   if (!result.success) {
     console.error('图片上传失败:', result.error)
+  }
+}
+
+// 处理更多选项选择
+const handleOptionSelect = (option, data) => {
+  console.log('选择了选项:', option, '数据:', data)
+  // 根据不同的选项执行相应的功能
+  switch (option) {
+    case 'emoji':
+      // 处理表情图片发送
+      if (data && data.image) {
+        sendEmojiImage(data)
+      }
+      console.log('发送表情图片:', data.image)
+      break
+    case 'album':
+      // 相册功能
+      ElMessage.info('相册功能开发中')
+      break
+    case 'music':
+      // 音乐功能
+      ElMessage.info('音乐功能开发中')
+      break
+    case 'file':
+      // 文件功能
+      ElMessage.info('文件功能开发中')
+      break
+    case 'location':
+      // 位置功能
+      ElMessage.info('位置功能开发中')
+      break
+    case 'card':
+      // 名片功能
+      ElMessage.info('名片功能开发中')
+      break
+    default:
+      console.log('未知选项:', option)
   }
 }
 
@@ -301,6 +366,73 @@ const loadChatHistory = async () => {
   } catch (error) {
     console.error('加载聊天历史失败:', error)
     ElMessage.error('加载聊天历史失败')
+  }
+}
+
+// 发送表情图片消息
+const sendEmojiImage = async (emojiData) => {
+  await ensureUserInfoLoaded()
+
+  try {
+    const messageData = {
+      content: `[表情图片: ${emojiData.name}]`,
+      timestamp: Date.now(),
+      messageType: 'IMAGE',
+      image: emojiData.image
+    }
+
+    // 优先尝试通过WebSocket发送
+    const webSocketSuccess = await sendMessageViaWebSocketWrapper(messageData)
+
+    if (!webSocketSuccess) {
+      // WebSocket发送失败，回退到HTTP API
+      let response
+
+      if (props.chat.type === 'friend') {
+        response = await sendSingleMessage({
+          senderId: currentUserId.value,
+          receiverId: props.chat.id,
+          content: `[表情图片: ${emojiData.name}]`,
+          messageType: 'IMAGE',
+          image: emojiData.image
+        })
+      } else if (props.chat.type === 'group') {
+        response = await sendGroupMessageByParam({
+          senderId: currentUserId.value,
+          groupId: props.chat.id,
+          content: `[表情图片: ${emojiData.name}]`,
+          messageType: 'IMAGE',
+          image: emojiData.image
+        })
+      }
+
+      if (response.code === 0 || response.code === '0') {
+        // 发送成功后立即重新加载聊天历史，确保获取最新的消息数据（包括头像信息）
+        await loadChatHistory()
+      } else {
+        ElMessage.error(response.msg || '表情发送失败')
+        return
+      }
+    } else {
+      // WebSocket发送成功，也需要重新加载聊天历史以确保消息显示
+      await loadChatHistory()
+    }
+
+    // 发送消息事件（无论通过哪种方式发送成功）
+    emit('send-message', {
+      type: props.chat.type,
+      targetId: props.chat.id,
+      content: `[表情图片: ${emojiData.name}]`,
+      timestamp: Date.now(),
+      messageType: 'IMAGE',
+      image: emojiData.image
+    })
+
+    ElMessage.success(`表情"${emojiData.name}"发送成功`)
+
+  } catch (error) {
+    console.error('表情发送失败:', error)
+    ElMessage.error('表情发送失败')
   }
 }
 

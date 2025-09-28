@@ -3,42 +3,28 @@
     <!-- 好友列表头部 -->
     <div class="list-header">
       <span class="header-title">联系人</span>
-      <el-button 
-        type="primary" 
-        size="small" 
-        @click="showAddFriendDialog = true"
-        class="add-button"
-      >
-        <el-icon>
-          <Plus />
+      <el-button type="primary" size="small" @click="showAddFriendDialog = true" class="add-button">
+        <el-icon class="add-icon">
+          <Connection />
         </el-icon>
       </el-button>
     </div>
-    
+
     <!-- 搜索框 -->
     <div class="search-container">
-      <el-input
-        v-model="searchKeyword"
-        placeholder="搜索用户名"
-        size="large"
-        clearable
-        @input="handleSearch"
-      >
+      <el-input v-model="searchKeyword" placeholder="搜索用户名" size="large" clearable @input="handleSearch">
         <template #prefix>
-          <el-icon><Search /></el-icon>
+          <el-icon>
+            <Search />
+          </el-icon>
         </template>
       </el-input>
     </div>
-    
+
     <!-- 好友列表 -->
     <div class="friend-items">
-      <div 
-        v-for="friend in filteredFriends" 
-        :key="friend.id"
-        class="friend-item"
-        :class="{ active: selectedFriendId === friend.id }"
-        @click="handleSelectFriend(friend)"
-      >
+      <div v-for="friend in filteredFriends" :key="friend.id" class="friend-item"
+        :class="{ active: selectedFriendId === friend.id }" @click="handleSelectFriend(friend)">
         <el-avatar :size="48" :src="friend.image || '/default-avatar.png'" />
         <div class="friend-info">
           <div class="friend-name">{{ friend.nickname }}</div>
@@ -50,43 +36,30 @@
         <!-- 好友操作按钮 -->
         <div class="friend-actions" @click.stop="showFriendDetail(friend)">
           <button>
-            <el-icon><More /></el-icon>
+            <el-icon>
+              <More />
+            </el-icon>
           </button>
         </div>
       </div>
-      
+
       <div v-if="filteredFriends.length === 0" class="empty-state">
         <el-empty :description="searchKeyword ? '未找到匹配的好友' : '暂无好友'" />
       </div>
     </div>
-    
+
     <!-- 添加好友对话框 -->
-    <el-dialog
-      v-model="showAddFriendDialog"
-      title="添加好友"
-      width="400px"
-      :before-close="handleCloseDialog"
-    >
+    <el-dialog v-model="showAddFriendDialog" title="添加好友" width="400px" :before-close="handleCloseDialog">
       <el-form :model="friendForm" label-width="80px">
         <el-form-item label="手机号">
-          <el-input 
-            v-model="friendForm.phone" 
-            placeholder="请输入好友手机号"
-            size="large"
-          />
+          <el-input v-model="friendForm.phone" placeholder="请输入好友手机号" size="large" />
         </el-form-item>
         <el-form-item label="验证信息">
-          <el-input
-            v-model="friendForm.message"
-            type="textarea"
-            :rows="3"
-            placeholder="请输入验证信息"
-            maxlength="50"
-            show-word-limit
-          />
+          <el-input v-model="friendForm.message" type="textarea" :rows="3" placeholder="请输入验证信息" maxlength="50"
+            show-word-limit />
         </el-form-item>
       </el-form>
-      
+
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="showAddFriendDialog = false">取消</el-button>
@@ -98,11 +71,8 @@
     </el-dialog>
 
     <!-- 好友详情模态框 -->
-    <el-dialog
-      v-model="showFriendDetailDialog"
-      :title="selectedFriend ? selectedFriend.username + '的详细信息' : '好友详情'"
-      width="500px"
-    >
+    <el-dialog v-model="showFriendDetailDialog" :title="selectedFriend ? selectedFriend.username + '的详细信息' : '好友详情'"
+      width="500px">
       <div v-if="selectedFriend" class="friend-detail-content">
         <!-- 好友基本信息 -->
         <div class="friend-basic-info">
@@ -170,7 +140,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Plus, More, Search } from '@element-plus/icons-vue'
 import { sendFriendRequest, deleteFriend, blockFriend, setSpecialFriend } from '@/api/im.js'
 import { useAuthStore } from '@/stores/auth.js'
 
@@ -201,9 +170,9 @@ const filteredFriends = computed(() => {
   if (!searchKeyword.value.trim()) {
     return props.friends
   }
-  
+
   const keyword = searchKeyword.value.toLowerCase().trim()
-  return props.friends.filter(friend => 
+  return props.friends.filter(friend =>
     friend.username?.toLowerCase().includes(keyword)
   )
 })
@@ -237,7 +206,7 @@ const handleSetSpecialFriend = async () => {
       friendId: selectedFriend.value.id,
       isSpecial: isSpecialFriend.value
     })
-    
+
     if (response.code === 0 || response.code === '0') {
       ElMessage.success(isSpecialFriend.value ? '已设为特别关心' : '已取消特别关心')
     } else {
@@ -281,13 +250,13 @@ const handleBlockFriend = async () => {
         type: 'warning'
       }
     )
-    
+
     await ensureUserInfoLoaded()
     const response = await blockFriend({
       userId: authStore.user?.id,
       blockedUserId: selectedFriend.value.id
     })
-    
+
     if (response.code === 0 || response.code === '0') {
       ElMessage.success('已加入黑名单')
       showFriendDetailDialog.value = false
@@ -315,13 +284,13 @@ const handleDeleteFriend = async () => {
         type: 'error'
       }
     )
-    
+
     await ensureUserInfoLoaded()
     const response = await deleteFriend({
       userId: authStore.user?.id,
       friendId: selectedFriend.value.id
     })
-    
+
     if (response.code === 0 || response.code === '0') {
       ElMessage.success('好友删除成功')
       showFriendDetailDialog.value = false
@@ -356,22 +325,22 @@ const handleAddFriend = async () => {
       ElMessage.warning('请输入好友手机号')
       return
     }
-    
+
     // 验证手机号格式
     const phoneRegex = /^1[3-9]\d{9}$/
     if (!phoneRegex.test(friendForm.value.phone)) {
       ElMessage.warning('请输入正确的手机号格式')
       return
     }
-    
+
     await ensureUserInfoLoaded()
-    
+
     const requestData = {
       senderId: authStore.user?.id || 0, // 使用当前用户真实ID
       receiverPhone: friendForm.value.phone,
       message: friendForm.value.message
     }
-    
+
     const response = await sendFriendRequest(requestData)
     if (response.code === 0 || response.code === '0') {
       ElMessage.success('好友申请发送成功')
