@@ -149,7 +149,6 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
-import { Delete, Document, ChatLineRound } from '@element-plus/icons-vue'
 
 // 模拟实时消息数据
 const mockMessages = [

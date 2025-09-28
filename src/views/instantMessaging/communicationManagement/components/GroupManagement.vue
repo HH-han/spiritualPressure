@@ -139,7 +139,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { Search, Plus } from '@element-plus/icons-vue'
 import GroupDetail from './GroupDetail.vue'
 import GroupForm from './GroupForm.vue'
 import GroupMembers from './GroupMembers.vue'

@@ -64,7 +64,6 @@
 
 <script setup>
 import { ref, reactive, watch, onMounted } from 'vue'
-import { Plus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 
 const props = defineProps({

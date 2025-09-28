@@ -120,7 +120,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { Search, Plus } from '@element-plus/icons-vue'
 import UserDetail from './UserDetail.vue'
 import UserForm from './UserForm.vue'
 
