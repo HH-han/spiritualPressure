@@ -200,6 +200,7 @@ onMounted(() => {
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(10px);
+  margin-top: 1rem;
 }
 
 :deep(.el-form) {
