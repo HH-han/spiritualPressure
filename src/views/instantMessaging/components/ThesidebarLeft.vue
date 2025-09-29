@@ -46,7 +46,7 @@
                 </div>
 
                 <!-- 收藏 -->
-                <div class="menu-item" :class="{ active: activeIndex === '5' }" @click="setActive('6')">
+                <div class="menu-item" :class="{ active: activeIndex === '5' }" @click="setActive('5')">
                     <div class="menu-icon">
                         <el-icon>
                             <Star />
@@ -56,7 +56,7 @@
                 </div>
 
                 <!-- 相册 -->
-                <div class="menu-item" :class="{ active: activeIndex === '6' }" @click="setActive('7')">
+                <div class="menu-item" :class="{ active: activeIndex === '6' }" @click="setActive('6')">
                     <div class="menu-icon">
                         <el-icon>
                             <Picture />
@@ -67,7 +67,7 @@
             </div>
             <div class="bottom-menu">
                 <!-- 设置 -->
-                <div class="menu-item" :class="{ active: activeIndex === '7' }" @click="setActive('8')">
+                <div class="menu-item" :class="{ active: activeIndex === '7' }" @click="setActive('7')">
                     <div class="menu-icon">
                         <el-icon>
                             <Tools />
