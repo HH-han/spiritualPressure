@@ -1,199 +1,280 @@
-// 引入Vue路由库和创建路由历史的方法
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
-//Element Plus
-import { ElMessage} from 'element-plus';
-// 引入各个组件
-import Load_1 from '@/components/TransitionalComponents/LoadOne.vue'
-import Load_2 from '@/components/TransitionalComponents/LoadTow.vue'
-import Home_2 from '@/components/NavigationComponent/HomeHeader.vue'
-import ClearingHouse from '@/components/NavigationComponent/ClearingHouse.vue'
-import CommunityCenter from '@/views/Mypage/CommunityCenter.vue'
-import FavoritePage from '@/views/Mypage/FavoritePage.vue'
-import UserManagement_1 from '@/components/NavigationComponent/UserManagement_1.vue'
+// Vue Router 配置
+import { createRouter, createWebHistory } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
-//页面路由
-import SystemHome from '@/views/HomePage/SystemHome.vue'
-import HomeHeader from '@/components/NavigationComponent/HomeHeader.vue'
-import ForgotPassword from '@/views/LoginViews/ForgotPassword.vue'
+// ==================== 路由模块导入 ====================
 
-// 个人中心页面路由
-import FunctionSwitching from '@/components/PersonalCenter/FunctionSwitching.vue'
-
-// 我的页面路由
-import PayViews from '@/views/Mypage/PayViews.vue'
-import ShopCartViews from '@/views/Mypage/ShopCartViews.vue'
-import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
-
-// 测试项目页面路由
-import TestPage from '@/components/NavigationComponent/TestPage.vue';
-
-// 提示页面
-import NotFoundView from '@/views/PromptViews/NotFoundView.vue'
-import RecommendAtion from '@/views/TipViews/RecommendAtion.vue'
-import SafetyTips from '@/views/TipViews/SafetyTips.vue'
-
-// 登录
+// 认证模块
 import LoginName from '@/views/LoginViews/LoginName.vue'
 import QRcodeLogin from '@/views/LoginViews/QRcodeLogin.vue'
 import Fanginter from '@/views/LoginViews/FanginternationalContainer.vue'
 import AdminLogin from '@/views/LoginViews/AdminLogin.vue'
 import EmailLogin from '@/views/LoginViews/EmailLogin.vue'
-
-// 注册
 import EnrolFirst from '@/views/LoginViews/EnrolFirst.vue'
+import ForgotPassword from '@/views/LoginViews/ForgotPassword.vue'
 
-// 设置中心
-import SettingsFocus from '@/views/SetFocus/SettingsFocus.vue'
+// 首页模块
+import SystemHome from '@/views/HomePage/SystemHome.vue'
+import HomeHeader from '@/components/NavigationComponent/HomeHeader.vue'
 
-//网站介绍
-import WebsiteIntroduction from '@/views/AboutWebsite/WebsiteIntroduction.vue'
-import AboutWeb from '@/views/AboutWebsite/AboutWeb.vue'
-
-//地图
-import SearchView from '@/views/MapViews/SearchView.vue'
-import GaodeMap from '@/views/MapViews/GaodeMap.vue'
-import MapComponent from '@/views/MapViews/MapComponent.vue'
-import MapLoading from '@/views/mapViews/MapLoading.vue'
-
-//管理页面路由
-import UserGoodsmanagement from '@/views/Management/UserGoodsmanagement.vue'
-import AdminLayout from '@/views/Management/AdminLayout.vue'
-
-//旅游攻略
-import TravelSidebar from '@/views/TourismCommunity/TravelSidebar.vue'
-
-//404/500
-import ErrorView404 from '@/components/ErrorPrompt/ErrorView404.vue'
-import NotFindView404 from '@/components/ErrorPrompt/NotFindView404.vue'
-import ErrorView500 from '@/components/ErrorPrompt/ErrorView500.vue'
-import NetworkAnomaly from '@/components/ErrorPrompt/NetworkAnomaly.vue'
-
-//订单管理
-import OrderDetails from '@/views/MyCenter/OrderDetails.vue'
-import ItemPurchase from '@/views/MyCenter/ItemPurchase.vue'
-import AccountSettings from '@/views/MyCenter/AccountSettings.vue'
-
-// 我的页
+// 个人中心模块
+import FunctionSwitching from '@/components/PersonalCenter/FunctionSwitching.vue'
 import PersonalData from '@/views/ResponseMy/PersonalData.vue'
 import HelpCenter from '@/views/ResponseMy/HelpCenter.vue'
 import MessageCenter from '@/views/ResponseMy/MessageCenter.vue'
 import SettingView from '@/views/ResponseMy/SettingView.vue'
 
-// 旅游服务选项
+// 订单管理模块
+import OrderDetails from '@/views/MyCenter/OrderDetails.vue'
+import ItemPurchase from '@/views/MyCenter/ItemPurchase.vue'
+import AccountSettings from '@/views/MyCenter/AccountSettings.vue'
+
+// 购物模块
+import PayViews from '@/views/Mypage/PayViews.vue'
+import ShopCartViews from '@/views/Mypage/ShopCartViews.vue'
+import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
+
+// 地图模块
+import SearchView from '@/views/MapViews/SearchView.vue'
+import GaodeMap from '@/views/MapViews/GaodeMap.vue'
+import MapComponent from '@/views/MapViews/MapComponent.vue'
+import MapLoading from '@/views/MapViews/MapLoading.vue'
+
+// 管理模块
+import UserGoodsmanagement from '@/views/Management/UserGoodsmanagement.vue'
+import AdminLayout from '@/views/Management/AdminLayout.vue'
+
+// 旅游模块
+import TravelSidebar from '@/views/TourismCommunity/TravelSidebar.vue'
 import TravelFreely from '@/views/TravelServiceoptions/TravelFreely.vue'
 import HometravelGuides from '@/views/TravelServiceoptions/HometravelGuides.vue'
 import TravelWorld from '@/views/TravelServiceoptions/TravelWorld.vue'
 import TravelTeam from '@/views/TravelServiceoptions/TravelTeam.vue'
 import TravelCruise from '@/views/TravelServiceoptions/TravelCruise.vue'
 
-// 即时通讯页面路由
+// 网站信息模块
+import WebsiteIntroduction from '@/views/AboutWebsite/WebsiteIntroduction.vue'
+import AboutWeb from '@/views/AboutWebsite/AboutWeb.vue'
+import SettingsFocus from '@/views/SetFocus/SettingsFocus.vue'
+
+// 提示与错误模块
+import NotFoundView from '@/views/PromptViews/NotFoundView.vue'
+import RecommendAtion from '@/views/TipViews/RecommendAtion.vue'
+import SafetyTips from '@/views/TipViews/SafetyTips.vue'
+import ErrorView404 from '@/components/ErrorPrompt/ErrorView404.vue'
+import NotFindView404 from '@/components/ErrorPrompt/NotFindView404.vue'
+import ErrorView500 from '@/components/ErrorPrompt/ErrorView500.vue'
+import NetworkAnomaly from '@/components/ErrorPrompt/NetworkAnomaly.vue'
+
+// 测试模块
+import TestPage from '@/components/NavigationComponent/TestPage.vue'
+
+// 即时通讯模块
 import InstantMessaging from '@/views/instantMessaging/index.vue'
 import IMTestPage from '@/views/instantMessaging/TestPage.vue'
 import CommunicationManagement from '@/views/instantMessaging/communicationManagement/CommunicationManagement.vue'
 
-// 定义路由数组，每个对象代表一个路由
+// ==================== 路由配置 ====================
 const routes = [
-  // 登录/加载/注册页面路由
-  {path: '/login',name: 'login',component: LoginName,title: "用户登录"},
-  {path: '/enrolfirst',name: 'enrolfirst',component: EnrolFirst,title: "用户注册"},
-  {path: '/QRcodeLogin',name: 'QRcodeLogin',component: QRcodeLogin,title: "二维码登录"},
-  {path: '/Fanginter',name: 'Fanginter',component: Fanginter,title: "国际版登录"},
-  {path: '/adminlogin',name: '极速赛车开奖直播历史记录adminlogin',component: AdminLogin,title: "管理员登录"},
-  {path: '/emaillogin',name: 'emaillogin',component: EmailLogin,title: "邮箱登录"},
-  // 主页路由
-  {path: '/systemhome',name: 'systemhome',component: SystemHome,title: "系统首页"},
-  {path: '/',name: 'systemhomeView',component: HomeHeader,title: '首页导航'},
-  // 用户页面路由
-  {path: '/tavoritebtn',name: 'tavoritebtn',component: TavoriteBtn,title: "收藏按钮"},
-  // 忘记密码页面路由
-  {path: '/forgotpassword',name: 'forgotpassword',component: ForgotPassword,title: "忘记密码"},
-  // 支付页面路由
-  {path: '/payviews',name: 'payviews',component: PayViews,title: "支付页面"},
-  // 测试项目页面路由
-  {path: '/testpage',name: 'testpage',component: TestPage, props: (route) => ({ query: route.query }),title: "测试页面"},
-  // 个人中心页面路由
-  {path: '/functionswitching',name: 'functionswitching',component: FunctionSwitching,title: "功能切换"},
-  // 修改个人信息页面路由
-  {path: '/shopcartviews',name: 'shopcartviews',component: ShopCartViews,title: "购物车"},
-  // 提示
-  {path: '/notfoundview',name: 'notfoundview',component: NotFoundView,title: "页面未找到"},
-  {path: '/recommendation',name: 'recommendation',component: RecommendAtion,title: "推荐页面"},
-  {path: '/safetytips',name: 'safetytips',component: SafetyTips,title: "安全提示"},
-  //设置中心
-  {path: '/settingsfocus',name: 'settingsfocus',component: SettingsFocus,title: "设置中心"},
-  // 网站介绍
-  {path: '/websiteintroduction',name: 'websiteintroduction',component: WebsiteIntroduction,title: "网站介绍"},
-  {path: '/aboutweb',name: 'aboutweb',component: AboutWeb,title: "关于网站"},
-  //地图页面路由
-  {path: '/searchview',name: 'searchview',component: SearchView,title: "搜索页面"},
-  {path: '/gaodemap',name: 'gaodemap',component: GaodeMap,title: "高德地图"},
-  {path: '/mapcomponent',name: 'mapcomponent',component: MapComponent,title: "地图组件"},
-  {path: '/maploading',name: 'maploading',component: MapLoading,title: "地图加载"},
-  //管理页面路由
-  {path: '/usergoodsmanagement',name: 'usergoodsmanagement',component: UserGoodsmanagement,title: "用户商品管理"},
-  {path: '/AdminLayout', name: 'AdminLayout',component: AdminLayout,title: "管理员布局"},
-  //旅游攻略页面路由
-  {path: '/travelstrategy',name: 'travelstrategy',component: TravelSidebar,title: "旅游攻略"},
-  //404页面路由
-  {path: '/404',name: '极速赛车开奖直播历史记录404',component: ErrorView404,title: "404错误"},
-  {path: '/404-view',name: '/404-view',component: NotFindView404,title: "404页面"},
-  {path: '/500',name: '500',component: ErrorView500,title: "500错误"},
-  {path: '/networkanomaly',name: 'networkanomaly',component: NetworkAnomaly,title: "网络异常"},
-  // 订单页面路由
-  {path: '/orderdetails',name: 'orderdetails',component: OrderDetails,title: "订单详情"},
-  {path: '/itempurchase',name: 'itempurchase',component: ItemPurchase,title: "商品购买"},
-  // 账户管理
-  {path: '/accountsettings',name: 'accountsettings',component: AccountSettings,title: "账户设置"},
-  // 我的
-  {path: '/helpcenter',name: 'helpcenter',component: HelpCenter,title: "帮助中心"},
-  {path: '/messagecenter',name: 'messagecenter',component: MessageCenter,title: "消息中心"},
-  {path: '/setting',name: 'setting',component: SettingView,title: "设置页面"},
-  {path: '/personaldata',name: 'personaldata',component: PersonalData,title: "个人资料"},
+  // ==================== 认证路由 ====================
+  { path: '/login', name: 'login', component: LoginName, title: "用户登录" },
+  { path: '/enrolfirst', name: 'enrolfirst', component: EnrolFirst, title: "用户注册" },
+  { path: '/QRcodeLogin', name: 'QRcodeLogin', component: QRcodeLogin, title: "二维码登录" },
+  { path: '/Fanginter', name: 'Fanginter', component: Fanginter, title: "国际版登录" },
+  { path: '/adminlogin', name: 'adminlogin', component: AdminLogin, title: "管理员登录" },
+  { path: '/emaillogin', name: 'emaillogin', component: EmailLogin, title: "邮箱登录" },
+  { path: '/forgotpassword', name: 'forgotpassword', component: ForgotPassword, title: "忘记密码" },
 
-  // 旅游选项页面路由
-  {path: '/travelfreely',name: 'travelfreely',component: TravelFreely,title: "自由行"},
-  {path: '/hometravelguides',name: 'hometravelguides',component: HometravelGuides,title: "家庭旅游指南"},
-  {path: '/travelworld',name: 'travelworld',component: TravelWorld,title: "世界旅游"},
-  {path: '/travelteam',name: 'travelteam',component: TravelTeam,title: "团队旅游"},
-  {path: '/travelcruise',name: 'travelcruise',component: TravelCruise,title: "邮轮旅游"},
+  // ==================== 首页路由 ====================
+  { path: '/', name: 'systemhomeView', component: HomeHeader, title: "首页导航" },
+  { path: '/systemhome', name: 'systemhome', component: SystemHome, title: "系统首页" },
 
-  // 即时通讯页面路由
-  {path: '/im',name: 'instantMessaging',component: InstantMessaging,title: "即时通讯"},
-  {path: '/im/test',name: 'imTest',component: IMTestPage,title: "即时通讯测试"},
-  {path: '/communication',name: 'communicationManagement',component: CommunicationManagement,title: "即时通讯管理"},
+  // ==================== 个人中心路由 ====================
+  { path: '/personaldata', name: 'personaldata', component: PersonalData, title: "个人资料" },
+  { path: '/helpcenter', name: 'helpcenter', component: HelpCenter, title: "帮助中心" },
+  { path: '/messagecenter', name: 'messagecenter', component: MessageCenter, title: "消息中心" },
+  { path: '/setting', name: 'setting', component: SettingView, title: "设置页面" },
+  { path: '/functionswitching', name: 'functionswitching', component: FunctionSwitching, title: "功能切换" },
 
+  // ==================== 订单管理路由 ====================
+  { path: '/orderdetails', name: 'orderdetails', component: OrderDetails, title: "订单详情" },
+  { path: '/itempurchase', name: 'itempurchase', component: ItemPurchase, title: "商品购买" },
+  { path: '/accountsettings', name: 'accountsettings', component: AccountSettings, title: "账户设置" },
+
+  // ==================== 购物路由 ====================
+  { path: '/payviews', name: 'payviews', component: PayViews, title: "支付页面" },
+  { path: '/shopcartviews', name: 'shopcartviews', component: ShopCartViews, title: "购物车" },
+  { path: '/tavoritebtn', name: 'tavoritebtn', component: TavoriteBtn, title: "收藏按钮" },
+
+  // ==================== 地图路由 ====================
+  { path: '/searchview', name: 'searchview', component: SearchView, title: "搜索页面" },
+  { path: '/gaodemap', name: 'gaodemap', component: GaodeMap, title: "高德地图" },
+  { path: '/mapcomponent', name: 'mapcomponent', component: MapComponent, title: "地图组件" },
+  { path: '/maploading', name: 'maploading', component: MapLoading, title: "地图加载" },
+
+  // ==================== 管理路由 ====================
+  { path: '/usergoodsmanagement', name: 'usergoodsmanagement', component: UserGoodsmanagement, title: "用户商品管理" },
+  { path: '/AdminLayout', name: 'AdminLayout', component: AdminLayout, title: "管理员布局" },
+
+  // ==================== 旅游路由 ====================
+  { path: '/travelstrategy', name: 'travelstrategy', component: TravelSidebar, title: "旅游攻略" },
+  { path: '/travelfreely', name: 'travelfreely', component: TravelFreely, title: "自由行" },
+  { path: '/hometravelguides', name: 'hometravelguides', component: HometravelGuides, title: "家庭旅游指南" },
+  { path: '/travelworld', name: 'travelworld', component: TravelWorld, title: "世界旅游" },
+  { path: '/travelteam', name: 'travelteam', component: TravelTeam, title: "团队旅游" },
+  { path: '/travelcruise', name: 'travelcruise', component: TravelCruise, title: "邮轮旅游" },
+
+  // ==================== 网站信息路由 ====================
+  { path: '/websiteintroduction', name: 'websiteintroduction', component: WebsiteIntroduction, title: "网站介绍" },
+  { path: '/aboutweb', name: 'aboutweb', component: AboutWeb, title: "关于网站" },
+  { path: '/settingsfocus', name: 'settingsfocus', component: SettingsFocus, title: "设置中心" },
+
+  // ==================== 提示与错误路由 ====================
+  { path: '/notfoundview', name: 'notfoundview', component: NotFoundView, title: "页面未找到" },
+  { path: '/recommendation', name: 'recommendation', component: RecommendAtion, title: "推荐页面" },
+  { path: '/safetytips', name: 'safetytips', component: SafetyTips, title: "安全提示" },
+  { path: '/404', name: 'error404', component: ErrorView404, title: "404错误" },
+  { path: '/404-view', name: 'notFound404', component: NotFindView404, title: "404页面" },
+  { path: '/500', name: 'error500', component: ErrorView500, title: "500错误" },
+  { path: '/networkanomaly', name: 'networkanomaly', component: NetworkAnomaly, title: "网络异常" },
+
+  // ==================== 测试路由 ====================
+  { path: '/testpage', name: 'testpage', component: TestPage, props: (route) => ({ query: route.query }), title: "测试页面" },
+
+  // ==================== 即时通讯路由 ====================
+  { path: '/im', name: 'instantMessaging', component: InstantMessaging, title: "即时通讯" },
+  { path: '/im/test', name: 'imTest', component: IMTestPage, title: "即时通讯测试" },
+  { path: '/communication', name: 'communicationManagement', component: CommunicationManagement, title: "即时通讯管理" },
 ]
 // 创建路由实例
 // 使用 createWebHistory 创建基于 HTML5 History 模式的路由
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
+  // 路由配置优化
+  scrollBehavior(to, from, savedPosition) {
+    // 返回顶部或保存的位置
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
-// 需要管理员权限的路由列表
-const adminRoutes = [
-  'AdminLayout',
-];
 
-router.beforeEach((to) => {
-  // 如果路由不存在，跳转到 404 页面
-  if (!router.hasRoute(to.name)) {
-    ElMessage.error('该页面正在开发中，请稍后再试');
-    return { path: '/404-view' };
+// 路由守卫 - 全局前置守卫
+router.beforeEach((to, from, next) => {
+  // 设置页面标题
+  if (to.meta && to.meta.title) {
+    document.title = to.meta.title
+  } else if (to.title) {
+    document.title = to.title
   }
   
+  next()
+})
+
+// 路由守卫 - 全局后置守卫
+router.afterEach((to, from) => {
+  // 可以在这里添加页面访问统计等
+  console.log(`路由跳转: ${from.path} -> ${to.path}`)
+})
+// ==================== 路由权限配置 ====================
+
+// 需要管理员权限的路由列表
+const ADMIN_ROUTES = [
+  '/adminlogin',
+  '/usergoodsmanagement', 
+  '/AdminLayout',
+  '/communication'
+]
+
+// 需要登录权限的路由列表
+const AUTH_REQUIRED_ROUTES = [
+  '/personaldata',
+  '/accountsettings',
+  '/orderdetails',
+  '/itempurchase',
+  '/payviews',
+  '/shopcartviews'
+]
+
+// 权限检查函数
+const checkPermission = {
+  // 检查管理员权限
+  isAdmin: () => {
+    // 这里应该根据实际业务逻辑检查用户权限
+    // 暂时返回true，表示所有用户都有权限访问
+    return true
+  },
+  
+  // 检查登录状态
+  isLoggedIn: () => {
+    // 这里应该检查用户是否已登录
+    // 暂时返回true，表示用户已登录
+    return true
+  }
+}
+
+// 路由权限检查 - 全局前置守卫
+router.beforeEach((to, from, next) => {
   // 检查是否需要管理员权限
-  if (adminRoutes.includes(to.name)) {
-    const userInfo = JSON.parse(localStorage.getItem('user'));
-    if (!userInfo || userInfo.permissions !== 1) {
-      // 非管理员用户重定向到登录页面
-      ElMessage.error('您没有管理员权限，无法访问，请先登录');
-      return { path: '/adminlogin' };
+  if (ADMIN_ROUTES.includes(to.path)) {
+    if (!checkPermission.isAdmin()) {
+      // 如果没有管理员权限，跳转到权限不足页面
+      next('/404')
+      return
     }
   }
   
-  return true;
-});
+  // 检查是否需要登录权限
+  if (AUTH_REQUIRED_ROUTES.includes(to.path)) {
+    if (!checkPermission.isLoggedIn()) {
+      // 如果未登录，跳转到登录页面
+      next('/login')
+      return
+    }
+  }
+  
+  next()
+})
 
-// 导出路由实例
+// ==================== 路由工具函数 ====================
+
+/**
+ * 获取路由名称映射表
+ */
+export const getRouteNames = () => {
+  return routes.reduce((acc, route) => {
+    if (route.name) {
+      acc[route.name] = route.path
+    }
+    return acc
+  }, {})
+}
+
+/**
+ * 根据路径获取路由信息
+ */
+export const getRouteByPath = (path) => {
+  return routes.find(route => route.path === path)
+}
+
+/**
+ * 获取所有路由路径
+ */
+export const getAllRoutes = () => {
+  return routes.map(route => route.path)
+}
+
+// ==================== 路由实例导出 ====================
+
 export default router
+
+// 导出路由配置常量供其他模块使用
+export {
+  ADMIN_ROUTES,
+  AUTH_REQUIRED_ROUTES,
+  checkPermission
+}
 

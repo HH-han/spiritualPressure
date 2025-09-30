@@ -610,7 +610,7 @@ onMounted(() => {
 }
 
 .tag {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background-color: rgba(0, 0, 0, 0.3);
   color: white;
   padding: 0.4rem 1rem;
   border-radius: 20px;
@@ -1096,7 +1096,6 @@ onMounted(() => {
 .purchase-btn {
   font-size: 1.2rem;
   padding: .5rem;
-  margin-bottom: 1.5rem;
   background: linear-gradient(135deg, #64ff9a, #dfff50);
   box-shadow: 0 8px 25px rgba(100, 255, 154, 0.4);
 }

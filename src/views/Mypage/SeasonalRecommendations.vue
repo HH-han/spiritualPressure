@@ -8,79 +8,133 @@
                 <span class="tab-underline"></span>
             </button>
         </div>
-        <div class="recommendation-grid">
-            <div v-for="destination in getRecommendationsForMonth(currentMonth)" :key="destination.name"
+        
+        <!-- 加载状态 -->
+        <div v-if="loading" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>正在加载推荐数据...</p>
+        </div>
+        
+        <!-- 错误状态 -->
+        <div v-else-if="error" class="error-state">
+            <div class="error-icon">⚠️</div>
+            <p>加载失败，请稍后重试</p>
+            <button @click="retryFetch" class="retry-button">重试</button>
+        </div>
+        
+        <!-- 数据展示 -->
+        <div v-else class="recommendation-grid">
+            <div v-for="destination in getRecommendationsForMonth(currentMonth)" :key="destination.id"
                 class="destination-card">
                 <div class="image-wrapper">
-                    <img :src="destination.image" :alt="destination.name + '图片'" class="destination-image" />
+                    <img :src="destination.imageUrl" :alt="destination.name + '图片'" class="destination-image" />
                     <div class="image-overlay"></div>
                 </div>
                 <div class="destination-info">
                     <h3 class="destination-name">{{ destination.name }}</h3>
                     <p class="destination-desc">{{ destination.description }}</p>
                     <div class="destination-tags">
-                        <span v-for="tag in destination.tags" :key="tag" class="tag">{{ tag }}</span>
+                        <span v-for="tag in destination.parsedTags" :key="tag" class="tag">{{ tag }}</span>
                     </div>
                 </div>
+            </div>
+            
+            <!-- 空状态 -->
+            <div v-if="getRecommendationsForMonth(currentMonth).length === 0" class="empty-state">
+                <p>暂无该月份的推荐数据</p>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { getRecommendByMonth } from '@/api/destination'
 
 const currentMonth = ref('一月')
+const loading = ref(false)
+const error = ref(null)
 
 const months = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 
-const recommendations = {
-    '一月': [
-        {
-            name: '哈尔滨冰雪大世界',
-            image: 'https://images.unsplash.com/photo-1558029062-a37889b87526?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: '体验世界最大的冰雪艺术景观',
-            tags: ['冰雪', '节庆', '东北']
-        },
-        {
-            name: '三亚亚龙湾',
-            image: 'https://images.unsplash.com/photo-1508057198894-247b23fe5ade?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            description: '冬日避寒的绝佳选择',
-            tags: ['海滩', '温暖', '海岛']
-        }
-    ],
-    '二月': [
-        {
-            name: '丽江古城',
-            image: 'https://example.com/lijiang.jpg',
-            description: '春节期间的古城年味十足',
-            tags: ['古城', '春节', '云南']
-        },
-        {
-            name: '厦门鼓浪屿',
-            image: 'https://example.com/gulangyu.jpg',
-            description: '温暖的南方小岛，春节度假好去处',
-            tags: ['海岛', '文艺', '福建']
-        }
-    ],
-    // 其他月份数据...
-    '三月': [
-        {
-            name: '婺源油菜花',
-            image: 'https://example.com/wuyuan.jpg',
-            description: '金色花海与徽派建筑的完美结合',
-            tags: ['赏花', '摄影', '江西']
-        }
-    ]
+// 使用响应式对象存储推荐数据
+const recommendations = ref({})
+
+// 默认数据作为API调用失败的fallback
+const defaultRecommendations = {}
+
+// 处理tags字段（后端返回的是JSON字符串）
+const parseTags = (tagsString) => {
+    try {
+        return JSON.parse(tagsString) || []
+    } catch {
+        return []
+    }
 }
 
+// 获取当前月份的推荐数据
 const getRecommendationsForMonth = (month) => {
-    return recommendations[month] || []
+    const monthData = recommendations.value[month] || []
+    
+    // 为每个目的地添加解析后的tags字段
+    return monthData.map(destination => ({
+        ...destination,
+        parsedTags: parseTags(destination.tags)
+    }))
 }
 
 const handleMonthChange = (month) => {
     currentMonth.value = month
 }
+
+// 获取推荐数据
+const fetchRecommendations = async (month) => {
+    loading.value = true
+    error.value = null
+    
+    try {
+        const response = await getRecommendByMonth({ month })
+        
+        // 根据后端数据格式处理响应
+        if (response.code === '0' && response.data) {
+            return response.data
+        } else {
+            throw new Error(response.msg || '获取数据失败')
+        }
+    } catch (err) {
+        console.error('获取推荐数据失败:', err)
+        error.value = err.message || '网络错误'
+        // API调用失败时使用默认数据
+        return defaultRecommendations[month] || []
+    } finally {
+        loading.value = false
+    }
+}
+
+// 重试获取数据
+const retryFetch = () => {
+    error.value = null
+    fetchRecommendations(currentMonth.value).then((data) => {
+        recommendations.value[currentMonth.value] = data
+    })
+}
+
+// 初始化时获取当前月份的推荐
+onMounted(() => {
+    fetchRecommendations(currentMonth.value).then((data) => {
+        recommendations.value[currentMonth.value] = data
+    })
+})
+
+// 监听月份变化，更新推荐数据
+watch(currentMonth, (newMonth) => {
+    // 如果该月份的数据尚未加载，则获取数据
+    if (!recommendations.value[newMonth]) {
+        fetchRecommendations(newMonth).then((data) => {
+            recommendations.value[newMonth] = data
+        })
+    }
+})
 </script>
 
 <style scoped>
@@ -155,6 +209,82 @@ const handleMonthChange = (month) => {
 
 .month-tab.active .tab-underline {
     transform: translateX(-50%) scaleX(1);
+}
+
+/* 加载状态样式 */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #ff6b6b;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-state p {
+    color: #666;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* 错误状态样式 */
+.error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.error-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.error-state p {
+    color: #ff6b6b;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.retry-button {
+    padding: 10px 24px;
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.retry-button:hover {
+    background: #ff5252;
+}
+
+/* 空状态样式 */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 16px;
 }
 
 .recommendation-grid {
@@ -237,7 +367,7 @@ const handleMonthChange = (month) => {
 }
 
 @media (max-width: 768px) {
-    .section-title {
+    .section-title-conter {
         font-size: 26px;
         margin-bottom: 30px;
     }
@@ -260,6 +390,20 @@ const handleMonthChange = (month) => {
 
     .image-wrapper {
         height: 180px;
+    }
+    
+    .loading-state,
+    .error-state {
+        padding: 40px 20px;
+    }
+    
+    .loading-spinner {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .error-icon {
+        font-size: 36px;
     }
 }
 </style>
