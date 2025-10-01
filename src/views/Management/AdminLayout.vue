@@ -287,6 +287,7 @@ import DisplayManagement from '@/views/ManagementViews/DisplayManagement.vue';
 import CarouselManagment from '@/views/ManagementViews/CarouselManagment.vue';
 import DestinationworldManagement from '@/views/ManagementViews/DestinationworldManagement.vue';
 import TravelNewsManagement from '@/views/ManagementViews/TravelNewsManagement.vue';
+import index from '@/views/ManagementViews/DestinationManagement/index.vue';
 // 个人/设置组件
 import CenterManagement from '@/views/ManagementViews/CenterManagement.vue';
 import AdminSetting from '@/views/Management/AdminSetting.vue';
@@ -432,6 +433,7 @@ const menuItems = reactive([
   { id: 25, title: '收藏管理', icon: comIcon, component: CollectionManagement },
   { id: 26, title: '旅行新闻', icon: trnIcon, component: TravelNewsManagement },
   { id: 27, title: '登录信息', icon: liIcon, component: logininformationManagement },
+  { id: 28, title: '目的地管理', icon: indexIcon, component: index },
 ]);
 // 计算属性分类
 const systemMenus = computed(() =>
@@ -443,7 +445,7 @@ const contentMenus = computed(() =>
 )
 
 const travelMenus = computed(() =>
-  menuItems.filter(item => [5, 6, 8, 9, 11, 7, 17, 22, 23, 24, 26].includes(item.id))
+  menuItems.filter(item => [5, 6, 8, 9, 11, 7, 17, 22, 23, 24, 26, 28].includes(item.id))
 )
 const userMenus = computed(() =>
   menuItems.filter(item => [3, 12, 25, 27].includes(item.id))
@@ -754,7 +756,7 @@ const currentCategories = computed(() => {
   // 添加主分类
   if ([1, 2, 18, 19].includes(menuId)) categories.push('系统管理');
   if ([4, 10, 12, 13, 15].includes(menuId)) categories.push('内容管理');
-  if ([5, 6, 7, 8, 9, 11, 22, 23, 24, 26].includes(menuId)) categories.push('旅行管理');
+  if ([5, 6, 7, 8, 9, 11, 22, 23, 24, 26, 28].includes(menuId)) categories.push('旅行管理');
   if ([3, 12, 25, 27].includes(menuId)) categories.push('用户管理');
   if ([14].includes(menuId)) categories.push('个人中心');
   if ([16, 20, 21].includes(menuId)) categories.push('服务监测');
@@ -876,6 +878,9 @@ const trnIcon = `
 `;
 const liIcon = `
   <svg t="1758463339868" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5621" width="32" height="32"><path d="M170.666667 706.389333V274.944c0-16.341333 7.210667-32 20.010666-43.52C203.477333 219.776 220.842667 213.333333 238.933333 213.333333h546.133334c18.090667 0 35.456 6.485333 48.256 18.048 12.8 11.562667 20.010667 27.221333 20.010666 43.562667v431.445333c0 16.341333-7.210667 32-20.010666 43.52-12.8 11.605333-30.165333 18.090667-48.256 18.090667H238.933333c-18.090667 0-35.456-6.485333-48.256-18.048-12.8-11.562667-20.010667-27.221333-20.010666-43.562667z" fill="#71D896" p-id="5622"></path><path d="M533.333333 437.333333a21.333333 21.333333 0 0 1 21.333334-21.333333h170.666666a21.333333 21.333333 0 0 1 0 42.666667h-170.666666a21.333333 21.333333 0 0 1-21.333334-21.333334zM533.333333 544a21.333333 21.333333 0 0 1 21.333334-21.333333h85.333333a21.333333 21.333333 0 0 1 0 42.666666h-85.333333a21.333333 21.333333 0 0 1-21.333334-21.333333z" fill="#FFFFFF" p-id="5623"></path><path d="M363.776 481.024a59.178667 59.178667 0 1 0 0-118.357333 59.178667 59.178667 0 0 0 0 118.357333z" fill="#FFFFFF" p-id="5624"></path><path d="M363.776 618.666667C311.850667 618.666667 256 619.008 256 588.330667a107.776 107.776 0 0 1 99.712-107.477334l14.421333-0.085333a107.818667 107.818667 0 0 1 101.418667 107.52c0 30.72-55.893333 30.378667-107.776 30.378667z" fill="#FFFFFF" p-id="5625"></path></svg>
+`;
+const indexIcon =`
+  <svg t="1759289614931" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4747" width="32" height="32"><path d="M411.7 403.9a172.1 171.4 0 1 0 344.2 0 172.1 171.4 0 1 0-344.2 0Z" fill="#80F688" p-id="4748"></path><path d="M863.6 409.5c-19.1-45.1-46.4-85.7-81.2-120.5s-75.3-62.1-120.5-81.2C615.2 188 565.6 178 514.4 178s-100.8 10-147.5 29.8c-45.1 19.1-85.7 46.4-120.5 81.2s-62.1 75.3-81.2 120.5c-19.8 46.7-29.8 96.4-29.8 147.5s10 100.8 29.8 147.5c19.1 45.1 46.4 85.7 81.2 120.5s75.3 62.1 120.5 81.2C413.6 926 463.2 936 514.4 936s100.8-10 147.5-29.8c45.1-19.1 85.7-46.4 120.5-81.2s62.1-75.3 81.2-120.5c19.8-46.7 29.8-96.4 29.8-147.5s-10-100.8-29.8-147.5z m-106.7 390C692.1 864.3 606 900 514.4 900h-0.8c-1.9-10.4-2.9-21-2.9-31.8 0-94.3 76-170.9 169.8-170.9 40.9 0 91 17.7 120.5 42.1 0.9 0.7 1.9 1.4 2.8 1.9-13.3 20.8-29 40.4-46.9 58.2z m65.7-91.6C786.2 678.8 729 659 680.4 659c-114.7 0-207.7 93.6-207.7 209.2 0 10 0.7 19.8 2.1 29.6-76.6-8.8-147.6-42.8-202.9-98.2-64.8-64.8-100.5-151-100.5-242.6s35.7-177.8 100.5-242.5S422.8 214 514.4 214s177.8 35.7 242.5 100.5S857.4 465.4 857.4 557c0 53.2-12 104.5-34.8 150.9z" fill="#00D8FF" p-id="4749"></path><path d="M545.2 283.6c-5.9-16.9-9.1-35-9.1-53.9 0-90 72.7-163 162.4-163s162.4 73 162.4 163c0 29.2-7.6 56.6-21 80.2-3.1 8.7-6.4 17.1-9.8 25.1-8.1 19.3-41.4 82.9-99.9 190.6-9.5 17.6-31.5 24.1-49.1 14.6-6.1-3.3-11.2-8.3-14.5-14.4C606 415.1 570.5 347.7 560 323.5c-6.8-15.4-11.7-28.7-14.8-39.9z" fill="#00A5FF" p-id="4750"></path><path d="M615.2 238.7a81.3 81.6 0 1 0 162.6 0 81.3 81.6 0 1 0-162.6 0Z" fill="#FEFFFF" p-id="4751"></path><path d="M113.5 517.6a110.8 110.4 0 1 0 221.6 0 110.8 110.4 0 1 0-221.6 0Z" fill="#F1F2F2" p-id="4752"></path></svg>
 `;
 
 </script>

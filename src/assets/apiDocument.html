@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API接口文档 - 旅游管理系统</title>
+    <!-- Bootstrap 5.0.0-beta1 CSS -->
+    <link href="bootstrap-5.0.0-beta1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 图标 -->
+    <link rel="stylesheet" href="/bootstrap-5.0.0-beta1-dist/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .api-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        .api-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        .method-get { border-left: 5px solid #28a745; }
+        .method-post { border-left: 5px solid #007bff; }
+        .method-put { border-left: 5px solid #ffc107; }
+        .method-delete { border-left: 5px solid #dc3545; }
+        .badge-method {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+        }
+        .badge-get { background-color: #28a745; }
+        .badge-post { background-color: #007bff; }
+        .badge-put { background-color: #ffc107; color: #000; }
+        .badge-delete { background-color: #dc3545; }
+        .endpoint {
+            font-family: 'Courier New', monospace;
+            background-color: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        .controller-header {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .nav-pills .nav-link {
+            border-radius: 20px;
+            margin: 0.2rem;
+            color: #495057;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.8rem;
+        }
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .search-box {
+            position: sticky;
+            top: 1rem;
+            z-index: 1000;
+        }
+        .nav-scroll-container {
+            max-height: 600px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #dee2e6 #f8f9fa;
+        }
+        .nav-scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .nav-scroll-container::-webkit-scrollbar-track {
+            background: #f8f9fa;
+            border-radius: 3px;
+        }
+        .nav-scroll-container::-webkit-scrollbar-thumb {
+            background: #dee2e6;
+            border-radius: 3px;
+        }
+        .nav-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #adb5bd;
+        }
+        .controller-nav-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .border-radius{
+            border-radius: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="fas fa-code me-3"></i>API接口文档
+            </h1>
+            <p class="lead">旅游管理系统 - 所有Controller层接口汇总</p>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <svg t="1757902334348" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6915" width="32" height="32">
+                                <path d="M351.1808 59.2896A435.2 435.2 0 0 1 805.376 715.264 460.8 460.8 0 0 1 351.1808 59.3408z" fill="#20C997" p-id="6916"></path><path d="M754.3808 722.2272a358.4 358.4 0 1 0-267.8272 120.2176 51.2 51.2 0 0 1 0 102.4 460.8 460.8 0 1 1 365.1584-179.712l118.8864 121.2416c23.7568 24.2176 23.552 63.0272-0.4096 87.04l-0.4096 0.4096a61.184 61.184 0 0 1-86.9888-0.4608l-148.0192-150.9376a61.7984 61.7984 0 0 1 0.4096-86.9888l0.4096-0.4096c5.632-5.5808 11.9808-9.8304 18.7904-12.8z m-467.968-364.5952h409.6a51.2 51.2 0 1 1 0 102.4h-409.6a51.2 51.2 0 1 1 0-102.4z m0 204.8h256a51.2 51.2 0 0 1 0 102.4h-256a51.2 51.2 0 1 1 0-102.4z" fill="#2C6DD2" p-id="6917"></path>
+                            </svg>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control" placeholder="搜索接口...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- 侧边栏导航 -->
+            <div class="col-lg-3">
+                <div class="sticky-top search-box">
+                    <div class="card border-radius">
+                        <div class="card-header bg-white controller-nav-header">
+                            <h6 class="mb-0"><i class="fas fa-layer-group me-2"></i>Controller导航</h6>
+                            <div class="input-group input-group-sm mt-2">
+                                <span class="input-group-text">
+                                    <svg t="1757902334348" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6915" width="25" height="25">
+                                        <path d="M351.1808 59.2896A435.2 435.2 0 0 1 805.376 715.264 460.8 460.8 0 0 1 351.1808 59.3408z" fill="#20C997" p-id="6916"></path><path d="M754.3808 722.2272a358.4 358.4 0 1 0-267.8272 120.2176 51.2 51.2 0 0 1 0 102.4 460.8 460.8 0 1 1 365.1584-179.712l118.8864 121.2416c23.7568 24.2176 23.552 63.0272-0.4096 87.04l-0.4096 0.4096a61.184 61.184 0 0 1-86.9888-0.4608l-148.0192-150.9376a61.7984 61.7984 0 0 1 0.4096-86.9888l0.4096-0.4096c5.632-5.5808 11.9808-9.8304 18.7904-12.8z m-467.968-364.5952h409.6a51.2 51.2 0 1 1 0 102.4h-409.6a51.2 51.2 0 1 1 0-102.4z m0 204.8h256a51.2 51.2 0 0 1 0 102.4h-256a51.2 51.2 0 1 1 0-102.4z" fill="#2C6DD2" p-id="6917"></path>
+                                    </svg>
+                                </span>
+                                <input type="text" id="navSearchInput" class="form-control" placeholder="搜索控制器...">
+                            </div>
+                        </div>
+                        <div class="card-body p-2">
+                            <div class="nav-scroll-container">
+                                <nav class="nav nav-pills flex-column" id="controllerNav">
+                                    <a class="nav-link" href="#user-controller">用户管理</a>
+                                    <a class="nav-link" href="#cart-controller">购物车管理</a>
+                                    <a class="nav-link" href="#payment-controller">支付管理</a>
+                                    <a class="nav-link" href="#travel-recommend-controller">旅游推荐</a>
+                                    <a class="nav-link" href="#province-controller">省份管理</a>
+                                    <a class="nav-link" href="#scenic-controller">景点管理</a>
+                                    <a class="nav-link" href="#food-controller">美食管理</a>
+                                    <a class="nav-link" href="#order-controller">订单管理</a>
+                                    <a class="nav-link" href="#monitor-controller">系统监控</a>
+                                    <a class="nav-link" href="#auth-controller">认证管理</a>
+                                    <a class="nav-link" href="#login-log-controller">登录日志</a>
+                                    <a class="nav-link" href="#travel-blog-controller">旅游博客</a>
+                                    <a class="nav-link" href="#travel-card-controller">旅游卡管理</a>
+                                    <a class="nav-link" href="#travel-collection-controller">收藏管理</a>
+                                    <a class="nav-link" href="#hotel-controller">酒店管理</a>
+                                    <a class="nav-link" href="#destination-controller">目的地管理</a>
+                                    <a class="nav-link" href="#travel-note-controller">旅游笔记</a>
+                                    <a class="nav-link" href="#travel-post-controller">帖子管理</a>
+                                    <a class="nav-link" href="#travel-world-controller">旅游世界特性</a>
+                                    <a class="nav-link" href="#travel-carousel-controller">轮播图管理</a>
+                                    <a class="nav-link" href="#travel-news-controller">旅游新闻</a>
+                                    <a class="nav-link" href="#strategy-group-controller">攻略组</a>
+                                    <a class="nav-link" href="#safety-tips-controller">安全提示</a>
+                                    <a class="nav-link" href="#chat-group-controller">群组管理</a>
+                                    <a class="nav-link" href="#instant-messaging-controller">即时通信</a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主内容区域 -->
+            <div class="col-lg-9" id="main-content">
+                <!-- API接口将通过JavaScript动态渲染在这里 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="bootstrap-5.0.0-beta1-dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // API接口数据
+        const apiData = {
+            'user-controller': {
+                name: '用户管理接口',
+                controller: 'UserController',
+                basePath: '/api/public/user',
+                icon: 'fas fa-users',
+                apis: [
+                    { method: 'GET', endpoint: '/info', title: '获取用户信息', description: '获取当前登录用户的详细信息', tags: ['用户管理', '需要认证'], icons: ['fa-user', 'fa-shield-alt'] },
+                    { method: 'POST', endpoint: '/login', title: '用户登录', description: '用户登录认证', tags: ['认证管理', '会话创建'], icons: ['fa-sign-in-alt', 'fa-key'] },
+                    { method: 'POST', endpoint: '/adminlogin', title: '管理员登录', description: '管理员登录认证', tags: ['权限管理', '管理员'], icons: ['fa-user-shield', 'fa-lock'] },
+                    { method: 'PUT', endpoint: '/avatar/{username}', title: '上传用户头像', description: '上传或更新用户头像图片', tags: ['用户管理', '图片上传'], icons: ['fa-image', 'fa-user'] },
+                    { method: 'PUT', endpoint: '/update', title: '更新用户信息', description: '更新当前登录用户的基本信息', tags: ['用户管理', '需要认证'], icons: ['fa-user-edit', 'fa-shield-alt'] },
+                    { method: 'PUT', endpoint: '/updateRole', title: '修改用户权限', description: '修改用户的权限角色（管理员操作）', tags: ['权限管理', '管理员权限'], icons: ['fa-user-shield', 'fa-lock'] },
+                    { method: 'PUT', endpoint: '/updateStatus', title: '修改用户状态', description: '启用或禁用用户账号状态', tags: ['用户管理', '账号控制'], icons: ['fa-toggle-on', 'fa-user-lock'] },
+                    { method: 'GET', endpoint: '/search', title: '搜索用户', description: '根据关键词搜索用户信息', tags: ['数据查询', '条件过滤'], icons: ['fa-search', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/export', title: '导出用户列表', description: '导出用户数据到Excel文件', tags: ['数据导出', '文件下载'], icons: ['fa-file-excel', 'fa-download'] },
+                    { method: 'POST', endpoint: '/import', title: '导入用户数据', description: '从Excel文件导入用户数据', tags: ['数据导入', '批量导入'], icons: ['fa-file-import', 'fa-upload'] },
+                    { method: 'POST', endpoint: '/register', title: '用户注册', description: '新用户注册账号', tags: ['用户管理', '账号创建'], icons: ['fa-user-plus', 'fa-address-card'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除用户', description: '删除信息', tags: ['用户管理', '数据删除'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'DELETE', endpoint: '/deleteAll', title: '批量删除用户', description: '批量删除用户信息', tags: ['用户管理', '数据删除'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'POST', endpoint: '/{userId}', title: '用户退出登录', description: '用户退出登录', tags: ['用户管理', '会话销毁'], icons: ['fa-sign-out-alt', 'fa-user'] },
+                    { method: 'GET', endpoint: '/logininfo', title: '获取用户信息', description: '获取当前登录用户的详细信息', tags: ['用户管理', '需要认证'], icons: ['fa-user', 'fa-shield-alt'] },
+                    { method: 'DELETE', endpoint: '/logininfo/{userId}', title: '删除用户登录信息', description: '删除用户登录信息', tags: ['用户管理', '数据删除'], icons: ['fa-trash', 'fa-warning'] },
+                ]
+            },
+            'cart-controller': {
+                name: '购物车管理接口',
+                controller: 'CartController',
+                basePath: '/api/public/cart',
+                icon: 'fas fa-shopping-cart',
+                apis: [
+                    { method: 'POST', endpoint: '', title: '添加购物车', description: '将商品添加到购物车', tags: ['购物车', '商品添加'], icons: ['fa-cart-plus', 'fa-box'] }
+                ]
+            },
+            'payment-controller': {
+                name: '支付管理接口',
+                controller: 'PaymentController',
+                basePath: '/api/public/payment',
+                icon: 'fas fa-credit-card',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '查询支付列表', description: '分页获取支付订单列表', tags: ['支付管理', '数据查询'], icons: ['fa-list', 'fa-search'] },
+                    { method: 'POST', endpoint: '', title: '创建支付订单', description: '创建新的支付订单', tags: ['支付管理', '订单创建'], icons: ['fa-plus', 'fa-file-invoice'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新支付状态', description: '更新支付订单的状态', tags: ['支付管理', '状态更新'], icons: ['fa-sync', 'fa-check-circle'] }
+                ]
+            },
+            'travel-recommend-controller': {
+                name: '旅游推荐接口',
+                controller: 'TravelRecommendController',
+                basePath: '/api/public/recommend',
+                icon: 'fas fa-star',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '查询推荐列表', description: '获取旅游推荐信息列表', tags: ['推荐管理', '数据查询'], icons: ['fa-list', 'fa-star'] },
+                    { method: 'POST', endpoint: '', title: '新增推荐', description: '创建新的旅游推荐信息', tags: ['推荐管理', '新增数据'], icons: ['fa-plus', 'fa-star'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '修改推荐', description: '更新旅游推荐信息', tags: ['推荐管理', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除推荐', description: '删除旅游推荐信息', tags: ['推荐管理', '数据删除'], icons: ['fa-trash', 'fa-warning'] }
+                ]
+            },
+            'province-controller': {
+                name: '省份管理接口',
+                controller: 'ProvinceController',
+                basePath: '/api/public/provinces',
+                icon: 'fas fa-map',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '查询所有省份', description: '获取所有省份的列表', tags: ['省份管理', '数据查询'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询省份', description: '根据ID获取省份的详细信息', tags: ['省份管理', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] }
+                ]
+            },
+            'scenic-controller': {
+                name: '景点管理接口',
+                controller: 'ScenicController',
+                basePath: '/api/public/scenic',
+                icon: 'fas fa-mountain',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询景点', description: '分页获取景点列表，支持关键词搜索', tags: ['景点管理', '数据查询'], icons: ['fa-list', 'fa-search'] },
+                    { method: 'POST', endpoint: '', title: '新增景点', description: '创建新的景点信息，包含图片上传', tags: ['景点管理', '图片支持'], icons: ['fa-plus', 'fa-image'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '修改景点', description: '根据ID更新景点信息', tags: ['景点管理', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除景点', description: '根据ID删除景点记录', tags: ['景点管理', '数据删除'], icons: ['fa-trash', 'fa-warning'] }
+                ]
+            },
+            'food-controller': {
+                name: '美食管理接口',
+                controller: 'FoodController',
+                basePath: '/api/public/foods',
+                icon: 'fas fa-utensils',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询美食', description: '分页获取美食列表，支持关键词搜索', tags: ['美食管理', '数据查询'], icons: ['fa-list', 'fa-search'] },
+                    { method: 'GET', endpoint: '/search', title: '搜索美食', description: '根据名称或描述搜索美食', tags: ['美食管理', '关键词搜索'], icons: ['fa-search', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询美食', description: '根据ID获取美食的详细信息', tags: ['美食管理', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'POST', endpoint: '', title: '新增美食', description: '创建新的美食信息，包含图片上传', tags: ['美食管理', '图片支持'], icons: ['fa-plus', 'fa-image'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '修改美食', description: '根据ID更新美食信息', tags: ['美食管理', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除美食', description: '根据ID删除美食记录', tags: ['美食管理', '数据删除'], icons: ['fa-trash', 'fa-warning'] }
+                ]
+            },
+            'order-controller': {
+                name: '订单管理接口',
+                controller: 'OrderController',
+                basePath: '/api/public/order',
+                icon: 'fas fa-receipt',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询订单', description: '分页获取订单列表，支持关键词搜索', tags: ['订单管理', '数据查询'], icons: ['fa-list', 'fa-search'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询订单', description: '根据ID获取订单的详细信息', tags: ['订单管理', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'POST', endpoint: '', title: '新增订单', description: '创建新的订单，包含图片上传', tags: ['订单管理', '图片支持'], icons: ['fa-plus', 'fa-image'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新订单', description: '根据ID更新订单信息', tags: ['订单管理', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除订单', description: '根据ID删除订单记录', tags: ['订单管理', '数据删除'], icons: ['fa-trash', 'fa-warning'] }
+                ]
+            },
+            'monitor-controller': {
+                name: '系统监控接口',
+                controller: 'MonitorController',
+                basePath: '/api',
+                icon: 'fas fa-chart-line',
+                apis: [
+                    { method: 'GET', endpoint: '/server-monitor', title: '获取服务器监控数据', description: '获取服务器的监控数据信息', tags: ['系统监控', '性能数据'], icons: ['fa-server', 'fa-chart-bar'] }
+                ]
+            },
+            'auth-controller': {
+                name: '认证管理接口',
+                controller: 'AuthController',
+                basePath: '/api/auth',
+                icon: 'fas fa-user-shield',
+                apis: [
+                    { method: 'POST', endpoint: '/send-code', title: '发送验证码', description: '发送邮箱验证码', tags: ['认证管理', '验证码'], icons: ['fa-envelope', 'fa-key'] },
+                    { method: 'POST', endpoint: '/Emaillogin', title: '邮箱验证码登录', description: '使用邮箱验证码进行登录', tags: ['认证管理', '邮箱登录'], icons: ['fa-sign-in-alt', 'fa-envelope'] },
+                    { method: 'GET', endpoint: '/token-status', title: '获取Token状态', description: '获取JWT令牌的详细状态信息，包括有效期、用户名等', tags: ['认证管理', 'Token验证'], icons: ['fa-shield-alt', 'fa-info-circle'] }
+                ]
+            },
+            'login-log-controller': {
+                name: '登录日志接口',
+                controller: 'LoginLogController',
+                basePath: '/api/public/system/log/operation',
+                icon: 'fas fa-history',
+                apis: [
+                    { method: 'GET', endpoint: '/list', title: '查询登录日志列表', description: '获取登录日志列表', tags: ['系统日志', '数据查询'], icons: ['fa-list', 'fa-history'] }
+                ]
+            },
+            'travel-blog-controller': {
+                name: '旅游博客接口',
+                controller: 'TravelBlogController',
+                basePath: '/api/public/blogs',
+                icon: 'fas fa-blog',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询博客', description: '分页获取旅游博客列表，支持关键词搜索', tags: ['博客管理', '数据查询'], icons: ['fa-list', 'fa-search'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询博客', description: '根据ID获取博客的详细信息', tags: ['博客管理', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'POST', endpoint: '', title: '新增博客', description: '创建新的旅游博客，包含封面图片上传', tags: ['博客管理', '图片支持'], icons: ['fa-plus', 'fa-image'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新博客', description: '根据ID更新博客内容', tags: ['博客管理', '内容更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除博客', description: '根据ID删除博客记录', tags: ['博客管理', '数据删除'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'POST', endpoint: '/{id}/like', title: '点赞博客', description: '用户点赞旅游博客', tags: ['用户互动', '点赞功能'], icons: ['fa-thumbs-up', 'fa-heart'] },
+                    { method: 'POST', endpoint: '/{id}/favorite', title: '收藏博客', description: '用户收藏旅游博客', tags: ['用户互动', '收藏功能'], icons: ['fa-heart', 'fa-bookmark'] }
+                ]
+            },
+            'travel-card-controller': {
+                name: '旅游卡管理接口',
+                controller: 'TravelCardController',
+                basePath: '/api/public/travelcard',
+                icon: 'fas fa-credit-card',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '获取旅游卡列表', description: '分页获取旅游卡列表，支持关键词搜索', tags: ['数据查询', '支持搜索'], icons: ['fa-list', 'fa-search'] },
+                    { method: 'GET', endpoint: '/{id}', title: '获取单个旅游卡', description: '根据ID获取旅游卡的详细信息', tags: ['数据查询', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'POST', endpoint: '', title: '新增旅游卡', description: '创建新的旅游卡，支持图片上传', tags: ['数据操作', '图片支持'], icons: ['fa-plus', 'fa-image'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新旅游卡', description: '根据ID更新旅游卡信息', tags: ['数据操作', '数据同步'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除旅游卡', description: '根据ID删除旅游卡记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'GET', endpoint: '/search/name', title: '按名称搜索', description: '根据名称关键词搜索旅游卡', tags: ['数据查询', '名称搜索'], icons: ['fa-search', 'fa-font'] },
+                    { method: 'GET', endpoint: '/search/keyword', title: '按关键词搜索', description: '根据多个关键词搜索旅游卡', tags: ['数据查询', '多关键词'], icons: ['fa-search', 'fa-tags'] },
+                    { method: 'GET', endpoint: '/search/category', title: '按分类搜索', description: '根据分类筛选旅游卡', tags: ['数据查询', '分类筛选'], icons: ['fa-filter', 'fa-layer-group'] },
+                    { method: 'GET', endpoint: '/search/badge', title: '按徽章搜索', description: '根据徽章类型搜索旅游卡', tags: ['数据查询', '徽章筛选'], icons: ['fa-award', 'fa-star'] }
+                ]
+            },
+            'travel-collection-controller': {
+                name: '收藏管理接口',
+                controller: 'TravelCollectionController',
+                basePath: '/api/public/travel-collections',
+                icon: 'fas fa-heart',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '查询所有收藏', description: '获取所有收藏项目的列表', tags: ['数据查询', '完整列表'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询收藏', description: '根据收藏ID获取详细信息', tags: ['数据查询', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'GET', endpoint: '/user/{username}', title: '按用户名查询', description: '根据用户名查询收藏列表', tags: ['数据查询', '用户特定'], icons: ['fa-user', 'fa-list'] },
+                    { method: 'GET', endpoint: '/page', title: '分页查询收藏', description: '分页获取收藏列表', tags: ['数据查询', '分页数据'], icons: ['fa-list-alt', 'fa-database'] },
+                    { method: 'GET', endpoint: '/count', title: '查询收藏总数', description: '获取收藏项目的总数统计', tags: ['数据统计', '数量查询'], icons: ['fa-chart-bar', 'fa-hashtag'] },
+                    { method: 'POST', endpoint: '', title: '新增收藏', description: '创建新的收藏项目', tags: ['数据操作', '新增数据'], icons: ['fa-plus', 'fa-heart'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '修改收藏', description: '根据ID更新收藏信息', tags: ['数据操作', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除收藏', description: '根据ID删除收藏记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'POST', endpoint: '/advanced-search', title: '高级搜索收藏', description: '多条件高级搜索收藏项目', tags: ['数据查询', '高级搜索'], icons: ['fa-search-plus', 'fa-filter'] }
+                ]
+            },
+            'hotel-controller': {
+                name: '酒店管理接口',
+                controller: 'HotelController',
+                basePath: '/api/public/hotel',
+                icon: 'fas fa-hotel',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '查询酒店列表', description: '分页获取酒店列表，支持关键词搜索', tags: ['数据查询', '支持搜索'], icons: ['fa-list', 'fa-search'] },
+                    { method: 'POST', endpoint: '', title: '新增酒店', description: '创建新的酒店信息，包含价格验证', tags: ['数据操作', '价格验证'], icons: ['fa-plus', 'fa-money-bill'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '修改酒店', description: '根据ID更新酒店信息', tags: ['数据操作', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除酒店', description: '根据ID删除酒店记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] }
+                ]
+            },
+            'travel-post-controller': {
+                name: '帖子管理接口',
+                controller: 'TravelPostController',
+                basePath: '/api/public/posts',
+                icon: 'fas fa-newspaper',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询帖子', description: '分页获取帖子列表', tags: ['数据查询', '分页数据'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询帖子', description: '根据ID获取帖子的详细信息', tags: ['数据查询', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'POST', endpoint: '', title: '新增帖子', description: '创建新的帖子内容', tags: ['数据操作', '新增数据'], icons: ['fa-plus', 'fa-edit'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新帖子', description: '根据ID更新帖子内容', tags: ['数据操作', '内容更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除帖子', description: '根据ID删除帖子记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'GET', endpoint: '/search/destination', title: '按地点搜索帖子', description: '根据旅游地点搜索相关帖子', tags: ['数据查询', '地点搜索'], icons: ['fa-search', 'fa-map-marker'] },
+                    { method: 'GET', endpoint: '/search/tag', title: '按标签搜索帖子', description: '根据标签关键词搜索帖子', tags: ['数据查询', '标签搜索'], icons: ['fa-search', 'fa-tag'] }
+                ]
+            },
+            'travel-world-controller': {
+                name: '旅游世界特性接口',
+                controller: 'TravelWorldcharacteristicsController',
+                basePath: '/api/public/travelworld',
+                icon: 'fas fa-globe-americas',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询特性', description: '分页获取旅游世界特性列表', tags: ['数据查询', '分页数据'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'POST', endpoint: '', title: '新增特性', description: '创建新的旅游世界特性', tags: ['数据操作', '新增数据'], icons: ['fa-plus', 'fa-plus-circle'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '修改特性', description: '根据ID更新旅游世界特性', tags: ['数据操作', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除特性', description: '根据ID删除旅游世界特性', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] }
+                ]
+            },
+            'destination-controller': {
+                name: '目的地管理接口',
+                controller: 'DestinationController',
+                basePath: '/api/public/destination',
+                icon: 'fas fa-map-marker-alt',
+                apis: [
+                    // 基础目的地管理接口
+                    { method: 'GET', endpoint: '', title: '查询目的地列表', description: '获取所有目的地的列表', tags: ['数据查询', '完整列表'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'POST', endpoint: '', title: '新增目的地', description: '创建新的旅游目的地', tags: ['数据操作', '新增数据'], icons: ['fa-plus', 'fa-map-pin'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '修改目的地', description: '根据ID更新目的地信息', tags: ['数据操作', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除目的地', description: '根据ID删除目的地记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] },
+                    
+                    // RegionTab相关接口
+                    { method: 'GET', endpoint: '/region-tab/{id}', title: '根据ID查询地区标签', description: '根据ID获取地区标签的详细信息', tags: ['地区标签', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'GET', endpoint: '/region-tabs', title: '查询所有地区标签', description: '获取所有地区标签的完整列表', tags: ['地区标签', '完整列表'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/region-tab/name/{name}', title: '根据名称查询地区标签', description: '根据名称查询地区标签信息', tags: ['地区标签', '名称查询'], icons: ['fa-search', 'fa-filter'] },
+                    { method: 'POST', endpoint: '/region-tab', title: '新增地区标签', description: '创建新的地区标签', tags: ['地区标签', '新增数据'], icons: ['fa-plus', 'fa-tag'] },
+                    { method: 'PUT', endpoint: '/region-tab', title: '更新地区标签', description: '更新地区标签信息', tags: ['地区标签', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/region-tab/{id}', title: '删除地区标签', description: '根据ID删除地区标签记录', tags: ['地区标签', '删除操作'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'GET', endpoint: '/region-tabs/count', title: '统计地区标签总数', description: '获取地区标签的总数统计', tags: ['地区标签', '数量统计'], icons: ['fa-chart-bar', 'fa-hashtag'] },
+                    
+                    // TravelDestination相关接口
+                    { method: 'GET', endpoint: '/travel-destination/{id}', title: '根据ID查询旅游目的地', description: '根据ID获取旅游目的地的详细信息', tags: ['旅游目的地', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'GET', endpoint: '/travel-destinations', title: '查询所有旅游目的地', description: '获取所有旅游目的地的完整列表', tags: ['旅游目的地', '完整列表'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/travel-destinations/region/{regionId}', title: '根据地区ID查询目的地', description: '根据地区ID查询该地区的旅游目的地', tags: ['旅游目的地', '地区查询'], icons: ['fa-map-marker', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/travel-destinations/region-name/{regionName}', title: '根据地区名称查询目的地', description: '根据地区名称查询该地区的旅游目的地', tags: ['旅游目的地', '名称查询'], icons: ['fa-search', 'fa-filter'] },
+                    { method: 'POST', endpoint: '/travel-destination', title: '新增旅游目的地', description: '创建新的旅游目的地', tags: ['旅游目的地', '新增数据'], icons: ['fa-plus', 'fa-map-pin'] },
+                    { method: 'PUT', endpoint: '/travel-destination', title: '更新旅游目的地', description: '更新旅游目的地信息', tags: ['旅游目的地', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/travel-destination/{id}', title: '删除旅游目的地', description: '根据ID删除旅游目的地记录', tags: ['旅游目的地', '删除操作'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'GET', endpoint: '/travel-destinations/count', title: '统计旅游目的地总数', description: '获取旅游目的地的总数统计', tags: ['旅游目的地', '数量统计'], icons: ['fa-chart-bar', 'fa-hashtag'] },
+                    { method: 'GET', endpoint: '/travel-destinations/count/region-name/{regionName}', title: '根据地区统计目的地数', description: '根据地区名称统计该地区的旅游目的地数量', tags: ['旅游目的地', '地区统计'], icons: ['fa-chart-pie', 'fa-filter'] },
+                    
+                    // City相关接口
+                    { method: 'GET', endpoint: '/city/{id}', title: '根据ID查询城市', description: '根据ID获取城市的详细信息', tags: ['城市管理', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'GET', endpoint: '/cities', title: '查询所有城市', description: '获取所有城市的完整列表', tags: ['城市管理', '完整列表'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/cities/destination/{destinationId}', title: '根据目的地查询城市', description: '根据目的地ID查询相关的城市列表', tags: ['城市管理', '目的地查询'], icons: ['fa-map-marker', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/cities/region-name/{regionName}', title: '根据地区查询城市', description: '根据地区名称查询相关的城市列表', tags: ['城市管理', '地区查询'], icons: ['fa-search', 'fa-filter'] },
+                    { method: 'POST', endpoint: '/city', title: '新增城市', description: '创建新的城市记录', tags: ['城市管理', '新增数据'], icons: ['fa-plus', 'fa-city'] },
+                    { method: 'PUT', endpoint: '/city', title: '更新城市', description: '更新城市信息', tags: ['城市管理', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/city/{id}', title: '删除城市', description: '根据ID删除城市记录', tags: ['城市管理', '删除操作'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'GET', endpoint: '/cities/count', title: '统计城市总数', description: '获取城市的总数统计', tags: ['城市管理', '数量统计'], icons: ['fa-chart-bar', 'fa-hashtag'] },
+                    { method: 'GET', endpoint: '/cities/count/destination/{destinationId}', title: '根据目的地统计城市数', description: '根据目的地ID统计相关的城市数量', tags: ['城市管理', '目的地统计'], icons: ['fa-chart-pie', 'fa-filter'] },
+                    { method: 'POST', endpoint: '/cities/batch', title: '批量新增城市', description: '批量创建城市记录', tags: ['城市管理', '批量操作'], icons: ['fa-clone', 'fa-database'] },
+                    
+                    // 综合查询接口
+                    { method: 'GET', endpoint: '/region-tabs-with-destinations', title: '查询地区标签及目的地', description: '获取地区标签及其关联的旅游目的地列表', tags: ['综合查询', '关联数据'], icons: ['fa-sitemap', 'fa-link'] },
+                    { method: 'GET', endpoint: '/travel-destinations-with-cities', title: '查询目的地及城市', description: '获取旅游目的地及其关联的城市列表', tags: ['综合查询', '关联数据'], icons: ['fa-sitemap', 'fa-link'] },
+                    { method: 'GET', endpoint: '/cities-with-destination-and-region', title: '查询城市及关联信息', description: '获取城市及其关联的目的地和地区信息', tags: ['综合查询', '关联数据'], icons: ['fa-sitemap', 'fa-link'] },
+                    
+                    // TravelRecommendation相关接口
+                    { method: 'GET', endpoint: '/travel-recommendation/{id}', title: '根据ID查询旅游推荐', description: '根据ID获取旅游推荐的详细信息', tags: ['旅游推荐', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/month/{monthId}', title: '根据月份ID查询推荐', description: '根据月份ID查询该月份的旅游推荐列表', tags: ['旅游推荐', '月份查询'], icons: ['fa-calendar', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/month-name/{monthName}', title: '根据月份名称查询推荐', description: '根据月份名称查询该月份的旅游推荐列表', tags: ['旅游推荐', '名称查询'], icons: ['fa-search', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/travel-recommendations', title: '分页查询旅游推荐', description: '分页获取旅游推荐列表', tags: ['旅游推荐', '分页数据'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'POST', endpoint: '/travel-recommendation', title: '新增旅游推荐', description: '创建新的旅游推荐，支持图片上传', tags: ['旅游推荐', '新增数据'], icons: ['fa-plus', 'fa-image'] },
+                    { method: 'PUT', endpoint: '/travel-recommendation', title: '更新旅游推荐', description: '更新旅游推荐信息', tags: ['旅游推荐', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/travel-recommendation/{id}', title: '删除旅游推荐', description: '根据ID删除旅游推荐记录', tags: ['旅游推荐', '删除操作'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/count', title: '统计旅游推荐总数', description: '获取旅游推荐的总数统计', tags: ['旅游推荐', '数量统计'], icons: ['fa-chart-bar', 'fa-hashtag'] },
+                    { method: 'POST', endpoint: '/travel-recommendations/batch', title: '批量新增旅游推荐', description: '批量创建旅游推荐记录', tags: ['旅游推荐', '批量操作'], icons: ['fa-clone', 'fa-database'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/search/tags', title: '按标签搜索旅游推荐', description: '根据标签关键词搜索旅游推荐', tags: ['旅游推荐', '标签搜索'], icons: ['fa-search', 'fa-tags'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/popular', title: '查询热门旅游推荐', description: '获取热门旅游推荐列表', tags: ['旅游推荐', '热门推荐'], icons: ['fa-fire', 'fa-star'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/count/month/{monthId}', title: '根据月份统计推荐数', description: '根据月份ID统计该月份的旅游推荐数量', tags: ['旅游推荐', '月份统计'], icons: ['fa-chart-pie', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/count/month-name/{monthName}', title: '根据月份名称统计推荐数', description: '根据月份名称统计该月份的旅游推荐数量', tags: ['旅游推荐', '名称统计'], icons: ['fa-chart-pie', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/random', title: '随机查询旅游推荐', description: '随机获取旅游推荐列表', tags: ['旅游推荐', '随机推荐'], icons: ['fa-random', 'fa-dice'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/featured', title: '查询精选旅游推荐', description: '获取精选旅游推荐列表', tags: ['旅游推荐', '精选推荐'], icons: ['fa-star', 'fa-award'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/season/{season}', title: '根据季节查询推荐', description: '根据季节查询该季节的旅游推荐列表', tags: ['旅游推荐', '季节查询'], icons: ['fa-leaf', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/budget/{budgetRange}', title: '根据预算查询推荐', description: '根据预算范围查询旅游推荐列表', tags: ['旅游推荐', '预算查询'], icons: ['fa-money-bill', 'fa-filter'] },
+                    { method: 'GET', endpoint: '/travel-recommendations/duration/{duration}', title: '根据时长查询推荐', description: '根据旅游时长查询推荐列表', tags: ['旅游推荐', '时长查询'], icons: ['fa-clock', 'fa-filter'] }
+                ]
+            },
+            'travel-carousel-controller': {
+                name: '轮播图管理接口',
+                controller: 'TravelCarouselController',
+                basePath: '/api/public/travelcarousel',
+                icon: 'fas fa-images',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询轮播图', description: '分页获取轮播图列表', tags: ['数据查询', '分页数据'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'POST', endpoint: '', title: '新增轮播图', description: '创建新的轮播图，支持图片上传', tags: ['数据操作', '图片支持'], icons: ['fa-plus', 'fa-image'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '修改轮播图', description: '根据ID更新轮播图信息', tags: ['数据操作', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除轮播图', description: '根据ID删除轮播图记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] }
+                ]
+            },
+            'travel-note-controller': {
+                name: '旅游笔记接口',
+                controller: 'TravelNoteController',
+                basePath: '/api/public/notes',
+                icon: 'fas fa-sticky-note',
+                apis: [
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询笔记', description: '根据ID获取旅游笔记的详细信息', tags: ['数据查询', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'GET', endpoint: '', title: '分页查询笔记', description: '分页获取旅游笔记列表', tags: ['数据查询', '分页数据'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'POST', endpoint: '', title: '新增笔记', description: '创建新的旅游笔记', tags: ['数据操作', '新增数据'], icons: ['fa-plus', 'fa-edit'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新笔记', description: '根据ID更新旅游笔记内容', tags: ['数据操作', '内容更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除笔记', description: '根据ID删除旅游笔记记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'GET', endpoint: '/search', title: '搜索笔记', description: '根据关键词搜索旅游笔记', tags: ['数据查询', '关键词搜索'], icons: ['fa-search', 'fa-filter'] }
+                ]
+            },
+            'travel-news-controller': {
+                name: '旅游新闻接口',
+                controller: 'TravelNewsController',
+                basePath: '/api/public/news',
+                icon: 'fas fa-newspaper',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询新闻', description: '分页获取旅游新闻列表', tags: ['数据查询', '分页数据'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询新闻', description: '根据ID获取新闻的详细信息', tags: ['数据查询', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'POST', endpoint: '', title: '新增新闻', description: '创建新的旅游新闻', tags: ['数据操作', '新增数据'], icons: ['fa-plus', 'fa-edit'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新新闻', description: '根据ID更新新闻内容', tags: ['数据操作', '内容更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除新闻', description: '根据ID删除新闻记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'POST', endpoint: '/like', title: '点赞新闻', description: '用户点赞旅游新闻', tags: ['用户互动', '点赞功能'], icons: ['fa-thumbs-up', 'fa-heart'] },
+                    { method: 'POST', endpoint: '/collect', title: '收藏新闻', description: '用户收藏旅游新闻', tags: ['用户互动', '收藏功能'], icons: ['fa-heart', 'fa-bookmark'] }
+                ]
+            },
+            'strategy-group-controller': {
+                name: '攻略组接口',
+                controller: 'StrategygroupController',
+                basePath: '/api/public/strategy-groups',
+                icon: 'fas fa-book',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询攻略组', description: '分页获取攻略组列表', tags: ['数据查询', '分页数据'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询攻略组', description: '根据ID获取攻略组的详细信息', tags: ['数据查询', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'POST', endpoint: '', title: '新增攻略组', description: '创建新的攻略组，支持图片上传', tags: ['数据操作', '图片支持'], icons: ['fa-plus', 'fa-image'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新攻略组', description: '根据ID更新攻略组信息', tags: ['数据操作', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除攻略组', description: '根据ID删除攻略组记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'GET', endpoint: '/search/title', title: '按标题搜索攻略组', description: '根据标题关键词搜索攻略组', tags: ['数据查询', '标题搜索'], icons: ['fa-search', 'fa-heading'] }
+                ]
+            },
+            'safety-tips-controller': {
+                name: '安全提示接口',
+                controller: 'SafetyTipsController',
+                basePath: '/api/public/safety-tips',
+                icon: 'fas fa-shield-alt',
+                apis: [
+                    { method: 'GET', endpoint: '', title: '分页查询安全提示', description: '分页获取安全提示列表', tags: ['数据查询', '分页数据'], icons: ['fa-list', 'fa-database'] },
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询安全提示', description: '根据ID获取安全提示的详细信息', tags: ['数据查询', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'GET', endpoint: '/count', title: '统计安全提示总数', description: '获取安全提示的总数统计', tags: ['数据统计', '数量查询'], icons: ['fa-chart-bar', 'fa-hashtag'] },
+                    { method: 'POST', endpoint: '', title: '新增安全提示', description: '创建新的安全提示', tags: ['数据操作', '新增数据'], icons: ['fa-plus', 'fa-plus-circle'] },
+                    { method: 'POST', endpoint: '/batch', title: '批量新增安全提示', description: '批量创建安全提示', tags: ['数据操作', '批量操作'], icons: ['fa-clone', 'fa-database'] },
+                    { method: 'POST', endpoint: '/condition', title: '条件查询安全提示', description: '根据条件查询安全提示', tags: ['数据查询', '条件过滤'], icons: ['fa-search', 'fa-filter'] },
+                    { method: 'POST', endpoint: '/condition-count', title: '条件统计安全提示', description: '根据条件统计安全提示数量', tags: ['数据统计', '条件统计'], icons: ['fa-chart-pie', 'fa-filter'] },
+                    { method: 'PUT', endpoint: '/{id}', title: '更新安全提示', description: '根据ID更新安全提示信息', tags: ['数据操作', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'PUT', endpoint: '/batch', title: '批量更新安全提示', description: '批量更新安全提示信息', tags: ['数据操作', '批量操作'], icons: ['fa-sync-alt', 'fa-database'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除安全提示', description: '根据ID删除安全提示记录', tags: ['数据操作', '不可恢复'], icons: ['fa-trash', 'fa-warning'] },
+                    { method: 'DELETE', endpoint: '/batch', title: '批量删除安全提示', description: '批量删除安全提示记录', tags: ['数据操作', '批量操作'], icons: ['fa-trash-alt', 'fa-database'] }
+                ]
+            },
+            'chat-group-controller': {
+                name: '群组管理接口',
+                controller: 'ChatGroupController',
+                basePath: '/api/public/chat-group',
+                icon: 'fas fa-users',
+                apis: [
+                    { method: 'GET', endpoint: '/{id}', title: '根据ID查询群组', description: '根据ID获取群组的详细信息', tags: ['群组管理', 'ID查询'], icons: ['fa-id-card', 'fa-info-circle'] },
+                    { method: 'GET', endpoint: '/creator/{creatorId}', title: '根据创建者查询群组', description: '根据创建者ID查询用户创建的群组', tags: ['群组管理', '创建者查询'], icons: ['fa-user', 'fa-search'] },
+                    { method: 'GET', endpoint: '/search', title: '搜索群组', description: '根据名称关键词搜索群组', tags: ['群组管理', '关键词搜索'], icons: ['fa-search', 'fa-filter'] },
+                    { method: 'POST', endpoint: '', title: '创建群组', description: '创建新的聊天群组', tags: ['群组管理', '创建操作'], icons: ['fa-plus', 'fa-users'] },
+                    { method: 'PUT', endpoint: '', title: '更新群组信息', description: '更新群组的基本信息', tags: ['群组管理', '信息更新'], icons: ['fa-edit', 'fa-sync'] },
+                    { method: 'DELETE', endpoint: '/{id}', title: '删除群组', description: '根据ID删除群组记录', tags: ['群组管理', '删除操作'], icons: ['fa-trash', 'fa-warning'] }
+                ]
+            },
+            'instant-messaging-controller': {
+                name: '即时通信接口',
+                controller: 'InstantMessagingController',
+                basePath: '/api/public/im',
+                icon: 'fas fa-comments',
+                apis: [
+                    { method: 'POST', endpoint: '/single/send/param', title: '发送单聊消息(参数)', description: '通过参数方式发送单聊消息', tags: ['即时通信', '消息发送'], icons: ['fa-paper-plane', 'fa-comment'] },
+                    { method: 'POST', endpoint: '/single/send', title: '发送单聊消息(实体)', description: '通过实体方式发送单聊消息', tags: ['即时通信', '消息发送'], icons: ['fa-paper-plane', 'fa-comment'] },
+                    { method: 'POST', endpoint: '/group/send/param', title: '发送群聊消息(参数)', description: '通过参数方式发送群聊消息', tags: ['即时通信', '消息发送'], icons: ['fa-paper-plane', 'fa-comments'] },
+                    { method: 'POST', endpoint: '/group/send', title: '发送群聊消息(实体)', description: '通过实体方式发送群聊消息', tags: ['即时通信', '消息发送'], icons: ['fa-paper-plane', 'fa-comments'] },
+                    { method: 'GET', endpoint: '/single/history', title: '获取单聊历史消息', description: '获取两个用户之间的单聊历史消息', tags: ['即时通信', '历史消息'], icons: ['fa-history', 'fa-comment'] },
+                    { method: 'GET', endpoint: '/group/history', title: '获取群聊历史消息', description: '获取群组的聊天历史消息', tags: ['即时通信', '历史消息'], icons: ['fa-history', 'fa-comments'] },
+                    { method: 'POST', endpoint: '/friend/request/param', title: '发送好友申请(参数)', description: '通过参数方式发送好友申请', tags: ['好友管理', '申请发送'], icons: ['fa-user-plus', 'fa-envelope'] },
+                    { method: 'POST', endpoint: '/friend/request', title: '发送好友申请(实体)', description: '通过实体方式发送好友申请', tags: ['好友管理', '申请发送'], icons: ['fa-user-plus', 'fa-envelope'] },
+                    { method: 'PUT', endpoint: '/friend/request/handle', title: '处理好友申请', description: '处理收到的好友申请', tags: ['好友管理', '申请处理'], icons: ['fa-check', 'fa-user-check'] },
+                    { method: 'GET', endpoint: '/friend/list', title: '获取好友列表', description: '获取用户的好友列表', tags: ['好友管理', '列表查询'], icons: ['fa-list', 'fa-users'] },
+                    { method: 'DELETE', endpoint: '/friend/delete', title: '删除好友', description: '删除好友关系', tags: ['好友管理', '关系删除'], icons: ['fa-user-times', 'fa-trash'] },
+                    { method: 'GET', endpoint: '/friend/request/pending', title: '获取待处理申请', description: '获取待处理的好友申请列表', tags: ['好友管理', '申请查询'], icons: ['fa-clock', 'fa-envelope-open'] },
+                    { method: 'POST', endpoint: '/message/read', title: '标记消息已读', description: '将消息标记为已读状态', tags: ['消息管理', '状态更新'], icons: ['fa-check-square', 'fa-eye'] },
+                    { method: 'GET', endpoint: '/message/unread/count', title: '获取未读消息数', description: '获取用户的未读消息数量', tags: ['消息管理', '数量统计'], icons: ['fa-bell', 'fa-hashtag'] }
+                ]
+            }
+        };
+
+        // 渲染API接口卡片
+        function renderApiCards() {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = '';
+
+            Object.keys(apiData).forEach(sectionId => {
+                const section = apiData[sectionId];
+                const sectionHtml = `
+                    <div class="controller-section" id="${sectionId}">
+                        <div class="controller-header">
+                            <h4><i class="${section.icon} me-2"></i>${section.name}</h4>
+                            <small>${section.controller} - ${section.basePath}</small>
+                        </div>
+                        <div class="row" id="${sectionId}-apis">
+                            ${section.apis.map(api => `
+                                <div class="col-md-6 api-item">
+                                    <div class="card api-card method-${api.method.toLowerCase()}">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="badge badge-method badge-${api.method.toLowerCase()}">${api.method}</span>
+                                                <small class="text-muted">${api.tags[0]}</small>
+                                            </div>
+                                            <h6 class="card-title">${api.title}</h6>
+                                            <div class="endpoint">${section.basePath}${api.endpoint}</div>
+                                            <p class="card-text small text-muted">${api.description}</p>
+                                            <div class="d-flex justify-content-between">
+                                                <small><i class="fas ${api.icons[0]} me-1"></i>${api.tags[0]}</small>
+                                                <small><i class="fas ${api.icons[1]} me-1"></i>${api.tags[1]}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                mainContent.innerHTML += sectionHtml;
+            });
+
+            // 重新初始化搜索功能
+            initSearch();
+        }
+
+        // 初始化搜索功能
+        function initSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const apiItems = document.querySelectorAll('.api-item');
+                    
+                    apiItems.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(searchTerm)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // 初始化导航栏搜索功能
+            const navSearchInput = document.getElementById('navSearchInput');
+            if (navSearchInput) {
+                navSearchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase();
+                    const navLinks = document.querySelectorAll('#controllerNav .nav-link');
+                    
+                    navLinks.forEach(link => {
+                        const text = link.textContent.toLowerCase();
+                        if (text.includes(searchTerm)) {
+                            link.style.display = 'block';
+                        } else {
+                            link.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        }
+
+        // 导航激活状态
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.controller-section');
+        
+        window.addEventListener('scroll', function() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 页面加载时渲染API卡片
+        document.addEventListener('DOMContentLoaded', function() {
+            renderApiCards();
+        });
+
+        // 立即渲染API卡片（如果DOM已经加载完成）
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', renderApiCards);
+        } else {
+            renderApiCards();
+        }
+    </script>
+</body>
+</html>

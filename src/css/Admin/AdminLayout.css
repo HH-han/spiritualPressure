@@ -204,10 +204,10 @@
   display: flex;
   padding: 0 15px;
   font-size: 14px;
+  gap: 10px;
 }
 
 .breadcrumb-wrapper {
-  width: 130px;
   display: flex;
   justify-content: center;
   gap: 5px;

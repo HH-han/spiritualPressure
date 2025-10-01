@@ -1,1 +1,1026 @@
-Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received
+{
+    "code": "0",
+    "msg": null,
+    "data": [
+        {
+            "id": 1,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "直辖市",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 1,
+                    "destination": null,
+                    "cityName": "北京",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 2,
+                    "destination": null,
+                    "cityName": "上海",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 3,
+                    "destination": null,
+                    "cityName": "重庆",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 4,
+                    "destination": null,
+                    "cityName": "天津",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "云南",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 5,
+                    "destination": null,
+                    "cityName": "丽江",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 6,
+                    "destination": null,
+                    "cityName": "大理",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 7,
+                    "destination": null,
+                    "cityName": "昆明",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 8,
+                    "destination": null,
+                    "cityName": "香格里拉",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 9,
+                    "destination": null,
+                    "cityName": "泸沽湖",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 10,
+                    "destination": null,
+                    "cityName": "双廊",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 11,
+                    "destination": null,
+                    "cityName": "西双版纳",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 12,
+                    "destination": null,
+                    "cityName": "束河",
+                    "sortOrder": 8,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 13,
+                    "destination": null,
+                    "cityName": "腾冲",
+                    "sortOrder": 9,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 14,
+                    "destination": null,
+                    "cityName": "雨崩",
+                    "sortOrder": 10,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "四川",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 15,
+                    "destination": null,
+                    "cityName": "成都",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 16,
+                    "destination": null,
+                    "cityName": "九寨沟",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 17,
+                    "destination": null,
+                    "cityName": "稻城",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 18,
+                    "destination": null,
+                    "cityName": "色达",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 19,
+                    "destination": null,
+                    "cityName": "若尔盖",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 20,
+                    "destination": null,
+                    "cityName": "都江堰",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 21,
+                    "destination": null,
+                    "cityName": "亚丁",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 22,
+                    "destination": null,
+                    "cityName": "阿坝",
+                    "sortOrder": 8,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 23,
+                    "destination": null,
+                    "cityName": "峨眉山",
+                    "sortOrder": 9,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 24,
+                    "destination": null,
+                    "cityName": "牛背山",
+                    "sortOrder": 10,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "浙江",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 25,
+                    "destination": null,
+                    "cityName": "杭州",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 26,
+                    "destination": null,
+                    "cityName": "乌镇",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 27,
+                    "destination": null,
+                    "cityName": "西塘",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 28,
+                    "destination": null,
+                    "cityName": "千岛湖",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 29,
+                    "destination": null,
+                    "cityName": "普陀山",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 30,
+                    "destination": null,
+                    "cityName": "东极岛",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 31,
+                    "destination": null,
+                    "cityName": "南浔",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "海南 福建",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 32,
+                    "destination": null,
+                    "cityName": "三亚",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 33,
+                    "destination": null,
+                    "cityName": "蜈支洲岛",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 34,
+                    "destination": null,
+                    "cityName": "海口",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 35,
+                    "destination": null,
+                    "cityName": "厦门",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 36,
+                    "destination": null,
+                    "cityName": "鼓浪屿",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 37,
+                    "destination": null,
+                    "cityName": "武夷山",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 38,
+                    "destination": null,
+                    "cityName": "泉州",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "江苏",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 39,
+                    "destination": null,
+                    "cityName": "南京",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 40,
+                    "destination": null,
+                    "cityName": "苏州",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 41,
+                    "destination": null,
+                    "cityName": "无锡",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 42,
+                    "destination": null,
+                    "cityName": "扬州",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 43,
+                    "destination": null,
+                    "cityName": "周庄",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 44,
+                    "destination": null,
+                    "cityName": "常州",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 45,
+                    "destination": null,
+                    "cityName": "连云港",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 46,
+                    "destination": null,
+                    "cityName": "同里",
+                    "sortOrder": 8,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "广东 广西",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 47,
+                    "destination": null,
+                    "cityName": "广州",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 48,
+                    "destination": null,
+                    "cityName": "深圳",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 49,
+                    "destination": null,
+                    "cityName": "珠海",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 50,
+                    "destination": null,
+                    "cityName": "汕头",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 51,
+                    "destination": null,
+                    "cityName": "桂林",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 52,
+                    "destination": null,
+                    "cityName": "阳朔",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 53,
+                    "destination": null,
+                    "cityName": "北海",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 54,
+                    "destination": null,
+                    "cityName": "黄姚古镇",
+                    "sortOrder": 8,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 55,
+                    "destination": null,
+                    "cityName": "涠洲岛",
+                    "sortOrder": 9,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 56,
+                    "destination": null,
+                    "cityName": "龙脊梯田",
+                    "sortOrder": 10,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "西藏 贵州",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 57,
+                    "destination": null,
+                    "cityName": "拉萨",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 58,
+                    "destination": null,
+                    "cityName": "林芝",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 59,
+                    "destination": null,
+                    "cityName": "阿里",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 60,
+                    "destination": null,
+                    "cityName": "黔东南",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 61,
+                    "destination": null,
+                    "cityName": "荔波",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 62,
+                    "destination": null,
+                    "cityName": "镇远",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 63,
+                    "destination": null,
+                    "cityName": "西江",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 64,
+                    "destination": null,
+                    "cityName": "黄果树",
+                    "sortOrder": 8,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "西北",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 65,
+                    "destination": null,
+                    "cityName": "西安",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 66,
+                    "destination": null,
+                    "cityName": "青海湖",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 67,
+                    "destination": null,
+                    "cityName": "西宁",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 68,
+                    "destination": null,
+                    "cityName": "祁连",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 69,
+                    "destination": null,
+                    "cityName": "敦煌",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 70,
+                    "destination": null,
+                    "cityName": "兰州",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 71,
+                    "destination": null,
+                    "cityName": "甘南",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 72,
+                    "destination": null,
+                    "cityName": "张掖",
+                    "sortOrder": 8,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 73,
+                    "destination": null,
+                    "cityName": "嘉峪关",
+                    "sortOrder": 9,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 74,
+                    "destination": null,
+                    "cityName": "新疆",
+                    "sortOrder": 10,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "山东 山西",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 75,
+                    "destination": null,
+                    "cityName": "青岛",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 76,
+                    "destination": null,
+                    "cityName": "泰山",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 77,
+                    "destination": null,
+                    "cityName": "日照",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 78,
+                    "destination": null,
+                    "cityName": "威海",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 79,
+                    "destination": null,
+                    "cityName": "烟台",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 80,
+                    "destination": null,
+                    "cityName": "长岛",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 81,
+                    "destination": null,
+                    "cityName": "蓬莱",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 82,
+                    "destination": null,
+                    "cityName": "平遥",
+                    "sortOrder": 8,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 83,
+                    "destination": null,
+                    "cityName": "大同",
+                    "sortOrder": 9,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 84,
+                    "destination": null,
+                    "cityName": "五台山",
+                    "sortOrder": 10,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 85,
+                    "destination": null,
+                    "cityName": "壶口瀑布",
+                    "sortOrder": 11,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "湖南 湖北",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 86,
+                    "destination": null,
+                    "cityName": "张家界",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 87,
+                    "destination": null,
+                    "cityName": "凤凰",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 88,
+                    "destination": null,
+                    "cityName": "郴州",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 89,
+                    "destination": null,
+                    "cityName": "武汉",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 90,
+                    "destination": null,
+                    "cityName": "恩施",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 91,
+                    "destination": null,
+                    "cityName": "神农架",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "安徽 江西",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 92,
+                    "destination": null,
+                    "cityName": "黄山",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 93,
+                    "destination": null,
+                    "cityName": "宏村",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 94,
+                    "destination": null,
+                    "cityName": "婺源",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 95,
+                    "destination": null,
+                    "cityName": "景德镇",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 96,
+                    "destination": null,
+                    "cityName": "庐山",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 97,
+                    "destination": null,
+                    "cityName": "三清山",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 98,
+                    "destination": null,
+                    "cityName": "南昌",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 13,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "河北 河南",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 99,
+                    "destination": null,
+                    "cityName": "北戴河",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 100,
+                    "destination": null,
+                    "cityName": "秦皇岛",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 101,
+                    "destination": null,
+                    "cityName": "承德",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 102,
+                    "destination": null,
+                    "cityName": "张北",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 103,
+                    "destination": null,
+                    "cityName": "少林寺",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 104,
+                    "destination": null,
+                    "cityName": "洛阳",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 105,
+                    "destination": null,
+                    "cityName": "龙门石窟",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 14,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "内蒙古 东北",
+            "createdAt": "2025-09-30T09:19:41",
+            "cities": [
+                {
+                    "id": 106,
+                    "destination": null,
+                    "cityName": "呼伦贝尔",
+                    "sortOrder": 1,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 107,
+                    "destination": null,
+                    "cityName": "阿尔山",
+                    "sortOrder": 2,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 108,
+                    "destination": null,
+                    "cityName": "海拉尔",
+                    "sortOrder": 3,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 109,
+                    "destination": null,
+                    "cityName": "哈尔滨",
+                    "sortOrder": 4,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 110,
+                    "destination": null,
+                    "cityName": "漠河",
+                    "sortOrder": 5,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 111,
+                    "destination": null,
+                    "cityName": "雪乡",
+                    "sortOrder": 6,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 112,
+                    "destination": null,
+                    "cityName": "大连",
+                    "sortOrder": 7,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 113,
+                    "destination": null,
+                    "cityName": "丹东",
+                    "sortOrder": 8,
+                    "createdAt": "2025-09-30T09:19:41"
+                },
+                {
+                    "id": 114,
+                    "destination": null,
+                    "cityName": "盘锦",
+                    "sortOrder": 9,
+                    "createdAt": "2025-09-30T09:19:41"
+                }
+            ]
+        },
+        {
+            "id": 15,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "江苏省",
+            "createdAt": "2025-09-30T10:15:29",
+            "cities": []
+        },
+        {
+            "id": 16,
+            "region": {
+                "id": 1,
+                "name": "国内",
+                "sortOrder": 1,
+                "createdAt": "2025-09-30T09:19:41",
+                "destinations": null
+            },
+            "provinceName": "浙江省",
+            "createdAt": "2025-09-30T10:15:29",
+            "cities": []
+        }
+    ]
+}
