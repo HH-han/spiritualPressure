@@ -76,7 +76,7 @@ const props = defineProps({
     items: {
         type: Array,
         required: true,
-        validator: value => value.length > 0 && value.every(item => 'image' in item)
+        validator: value => value.length > 0 && value.every(item => 'image' in item),
     },
     interval: {
         type: Number,

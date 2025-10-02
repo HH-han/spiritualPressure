@@ -3,7 +3,7 @@
   <div class="food-container-all">
     <div class="food-search_background">
       <div>
-        <img src="../../assets/pagebackground/面条.jpg" alt="">
+        <img src="@/assets/scenery/风景4.webp" alt="">
       </div>
       <!-- 搜索框 -->
       <div class="food-search-box">

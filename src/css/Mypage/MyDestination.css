@@ -1,6 +1,7 @@
 .mydestination-all {
   animation: fadeInUp 1s ease-out;
 }
+
 /* 主视觉区样式 */
 .main-section {
   width: 100%;
@@ -35,24 +36,6 @@
   left: 20px;
   z-index: 2;
   animation: fadeInUp 1s ease-out;
-}
-
-.content-section h1 {
-  font-size: 3.5rem;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(to right, #ffffff, #f9d423);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: 1px;
-  line-height: 1.2;
-}
-
-.content-section p {
-  font-size: 1.2rem;
-  line-height: 1.8;
-  opacity: 0.9;
-  color: #000;
 }
 
 /* 搜索框样式 */
@@ -155,16 +138,17 @@
     padding: 1.5rem;
     border-radius: 12px;
   }
-  
+
   .mydestination-input-wrapper {
     flex-direction: column;
   }
-  
+
   .mydestination-input-wrapper button {
     padding: 1rem;
     width: 100%;
   }
 }
+
 /* 轮播图容器 */
 .carousel {
   width: 100%;
@@ -225,6 +209,7 @@
 .carousel-item {
   backface-visibility: hidden;
 }
+
 /* 添加指示器样式 */
 .carousel-indicators {
   position: absolute;
@@ -289,13 +274,16 @@
   0% {
     box-shadow: 0 0 0 0 rgba(58, 123, 213, 0.4);
   }
+
   70% {
     box-shadow: 0 0 0 8px rgba(58, 123, 213, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0 rgba(58, 123, 213, 0);
   }
 }
+
 /* 轮播按钮 */
 .carousel-buttons {
   position: absolute;
@@ -314,8 +302,8 @@
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border: none;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   color: white;
   font-size: 2rem;
@@ -338,6 +326,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -361,15 +350,15 @@
   .content-section h1 {
     font-size: 2.5rem;
   }
-  
+
   .content-section p {
     font-size: 1rem;
   }
-  
+
   .carousel {
     height: 350px;
   }
-  
+
   .carousel-buttons button {
     width: 50px;
     height: 50px;
@@ -381,12 +370,13 @@
   .content-section h1 {
     font-size: 2rem;
   }
-  
+
   .carousel {
     height: 250px;
     border-radius: 10px;
   }
 }
+
 .action-buttons {
   margin-top: 20px;
   display: flex;
@@ -521,9 +511,11 @@
   margin-bottom: 1rem;
   font-size: 1.4rem;
 }
-.destination-description{
+
+.destination-description {
   color: #c0c0c0;
 }
+
 .city-list {
   list-style: none;
   padding: 0;
@@ -624,6 +616,7 @@
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
 }
+
 .destination-detail-content {
   position: relative;
   max-width: 800px;
@@ -637,8 +630,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .destination-detail-header-top {
@@ -684,7 +684,7 @@
   }
 }
 
-.destination-detail-image-container{
+.destination-detail-image-container {
   width: 450px;
   height: 550px;
 }
@@ -757,4 +757,29 @@
   font-weight: 600;
 }
 
+.slide-caption {
+  display: flex;
+  padding: 2rem;
+  color: var(--text-color);
+  max-width: 800px;
+  margin: 0 auto;
+  z-index: 1000;
+  flex-direction: column;
+  align-items: flex-start
+}
 
+.slide-caption h3 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slide-caption p {
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  margin-bottom: 0;
+  opacity: 0.9;
+  line-height: 1.6;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}

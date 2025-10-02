@@ -37,6 +37,7 @@
                                 </td>
                                 <td>{{ card.description.substring(0, 25) }}...</td>
                                 <td>{{ card.location.substring(0, 35) }}...</td>
+                                <td>{{ card.type }}</td>
                                 <td>{{ formatDate(card.createdAt) }}</td>
                                 <td>{{ formatDate(card.updatedAt) }}</td>
                                 <td class="table-btn-display">
@@ -129,6 +130,13 @@
                                 <label>轮播地点:</label>
                                 <input v-model="formData.location" required />
                             </div>
+                            <div class="form-group"> 
+                                <label>轮播类型:</label>
+                                <select v-model="formData.type" required>
+                                    <option value="hc">首页</option>
+                                    <option value="dc">目的地</option>
+                                </select>
+                            </div>
                         </div>
                         <!-- 创建修改时间 -->
                         <div class="dialog-buttons">
@@ -161,6 +169,7 @@ const columns = [
     { key: 'image', title: '轮播图片' },
     { key: 'description', title: '轮播简介' },
     { key: 'location', title: '轮播地点' },
+    { key: 'type', title: '类型' },
     { key: 'createdAt', title: '创建时间' },
     { key: 'updatedAt', title: '更新时间' },
 ];

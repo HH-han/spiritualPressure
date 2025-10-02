@@ -3,7 +3,7 @@
     <!-- 搜索区域 -->
     <div class="search_background">
       <div>
-        <img src="@/assets/pagebackground/北京故宫.webp" alt="">
+        <img src="@/assets/scenery/风景4.webp" alt="">
       </div>
       <div class="search_flex">
         <input type="text" placeholder="搜索酒店" class="search_input_Browse" v-model="searchTitle">

@@ -5,10 +5,13 @@
       <div class="hero-section">
         <!-- 内容区 -->
         <div class="content-section">
-          <h1>"神仙海岛的三款热门玩法，去普吉一定不能错过"</h1>
-          <p>
-            "普吉岛是泰国最受欢迎的旅游胜地之一，拥有丰富的自然景观和多样的活动选择。无论是潜水、冲浪还是沙滩度假，这里都能满足你的需求。"
-          </p>
+          <!-- 文字 -->
+          <div class="slide-caption"
+            v-if="mediaList.images.length > 0 && currentIndex < mediaList.images.length && mediaList.images[currentIndex].title">
+            <h3>{{ mediaList.images[currentIndex].title }}</h3>
+            <p v-if="mediaList.images[currentIndex].location">{{ mediaList.images[currentIndex].location }}</p>
+            <p v-if="mediaList.images[currentIndex].description">{{ mediaList.images[currentIndex].description }}</p>
+          </div>
         </div>
         <!-- 搜索框 -->
         <div class="mydestination-hero-search">
@@ -25,7 +28,7 @@
           <!-- 图片轮播 -->
           <div v-for="(item, index) in mediaList.images" :key="index"
             :class="['carousel-item', { active: currentIndex === index }]">
-            <img :src="item" alt="普吉岛风景" />
+            <img :src="item.url" alt="普吉岛风景" />
           </div>
 
           <!-- 视频轮播 -->
@@ -157,7 +160,8 @@
             </div>
             <div class="destination-detail-info-background">
               <h2 class="destination-detail-name">{{ selectedDestination.name }}</h2>
-              <p class="destination-detail-description">描述:{{ selectedDestination.description  ? selectedDestination.description.substring(0, 145) + '...' : '' }}</p>
+              <p class="destination-detail-description">描述:{{ selectedDestination.description ?
+                selectedDestination.description.substring(0, 145) + '...' : '' }}</p>
               <p class="destination-detail-price">价格: {{ selectedDestination.price }}￥</p>
               <p class="destination-detail-s">评价: {{ selectedDestination.s }}</p>
               <p class="destination-detail-ww">销量: {{ selectedDestination.ww }}</p>
@@ -204,11 +208,14 @@ import HomeFooter from '@/components/DisplayBox/HomeFooter.vue'
 import MydestinationWorld from '@/views/Mypage/MydestinationWorld.vue';
 import DestinationList from '@/views/Mypage/DestinationList.vue';
 import SeasonalRecommend from '@/views/Mypage/SeasonalRecommendations.vue';
+
+
 import { onBeforeUnmount } from 'vue';
 import { ref, onMounted, computed, } from 'vue';
 import request from '@/utils/request';
 import { useRouter } from 'vue-router';
 import { ElMessage } from "element-plus";
+import { getCarouselList } from '@/api/carousel'
 
 // 处理购买按钮点击
 const router = useRouter();
@@ -242,18 +249,34 @@ const defaultImage = new URL('@/assets/defaultimage/moren.webp', import.meta.url
 
 // 媒体资源数据
 const mediaList = ref({
-  images: [
-    new URL('@/assets/pagebackground/北京天坛.jpg', import.meta.url).href,
-    new URL('@/assets/pagebackground/陕西兵马俑.jpg', import.meta.url).href,
-    new URL('@/assets/pagebackground/埃菲尔铁塔.webp', import.meta.url).href,
-    new URL('@/assets/pagebackground/北京故宫.webp', import.meta.url).href,
-    new URL('@/assets/pagebackground/埃及金字塔.webp', import.meta.url).href,
-  ],
-  videos: [
-    { url: 'https://example.com/phuket-video2.mp4' },
-    { url: 'https://example.com/phuket-video2.mp4' },
-  ],
+  images: [],
+  videos: []
 });
+
+const fetchDestinationscarousel = async () => {
+  try {
+    const params = {
+      page: 1,
+      pageSize: 10,
+      keyword: searchQuery.value || '',
+    }
+    const result = await getCarouselList(params)
+    if (result.data && result.data.list) {
+      // 前端过滤：确保只显示type为'dc'的数据
+      const filteredList = result.data.list.filter(item => item.type === 'dc')
+      mediaList.value.images = filteredList.map((item) => ({
+        url: item.image || '默认图片链接',
+        title: item.title || '默认标题',
+        location: item.location || '默认位置',
+        description: item.description || '默认描述'
+      }))
+      // 初始化videos为空数组
+      mediaList.value.videos = []
+    }
+  } catch (error) {
+    console.error('获取轮播图数据失败：', error)
+  }
+}
 
 // 当前轮播索引
 const currentIndex = ref(0);
@@ -396,15 +419,16 @@ const closeDetail = () => {
 onMounted(() => {
   startAutoplay();
   fetchDestinations();
-  
+  fetchDestinationscarousel()
+
   // 保持轮播图16:9比例
   const header = document.querySelector('header');
   const resizeObserver = new ResizeObserver(() => {
     const width = header.clientWidth;
-    header.style.height = `${width * 9/16}px`;
+    header.style.height = `${width * 9 / 16}px`;
   });
   resizeObserver.observe(header);
-  
+
   // 组件卸载时停止观察
   onBeforeUnmount(() => {
     resizeObserver.disconnect();

@@ -332,11 +332,11 @@
   </div>
 </template>
 <script setup>
-import { getAttractionBlogs, likeAttraction, collectAttraction, getSlideshow } from '@/api/travel'
+import { getAttractionBlogs, likeAttraction, collectAttraction } from '@/api/travel'
+import { getCarouselList } from '@/api/carousel'
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router';
 
-import Home_2 from '@/components/NavigationComponent/HomeHeader.vue'
 import MyNote from '@/components/DisplayBox/MyNote.vue'
 import MoreRecommend from '@/components/DisplayBox/MoreRecommend.vue'
 import BottomPage from '@/components/DisplayBox/BottomPage.vue'
@@ -363,13 +363,15 @@ const slides = ref([
 const fetchSlideshow = async () => {
   try {
     const params = {
-      page: currentPage.value,
-      pageSize: pageSize.value,
-      keyword: searchKeyword.value
+      page: 1,
+      pageSize: 10,
+      keyword: searchKeyword.value || '',
+      type: 'hc' // 只获取type类型为hc的图片
     }
-    const result = await getSlideshow(params)
+    const result = await getCarouselList(params)
     if (result.data && result.data.list) {
-      slides.value = result.data.list.map((item) => ({
+      const filteredList = result.data.list.filter(item => item.type === 'hc')
+      slides.value = filteredList.map((item) => ({
         image: item.image || '默认图片链接',
         title: item.title || '默认标题',
         location: item.location || '默认位置',
