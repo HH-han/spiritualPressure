@@ -119,12 +119,15 @@
                 </div>
               </button>
               <div class="profilepicture-inner" v-show="isDropdownVisible">
-                <button style="border-radius: 10px 10px 0 0;" @click="navigateTo('/functionswitching')">个人中心</button>
-                <button v-if="userInfo.permissions === 1" @click="AdminLayout" class="admin-button">博览旅行管理后台</button>
-                <button v-if="userInfo.permissions === 1" @click="navigateTo('/communication')">即时通讯管理后台</button>
-                <button style="border-radius: 0 0 10px 10px;" @click="navigateTo('/accountsettings')">账户设置</button>
-                <button @click="navigateTo('/im')" class="im-button">好友聊天</button>
-                <button @click="localLogout" class="logout-button">退出登录</button>
+                <button 
+                  v-for="item in filteredUserMenuItems" 
+                  :key="item.label"
+                  :style="item.style"
+                  :class="item.class"
+                  @click="handleMenuItemClick(item)"
+                >
+                  {{ item.label }}
+                </button>
               </div>
             </div>
           </div>
@@ -143,7 +146,7 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
-import { ref, onMounted, shallowRef } from 'vue';
+import { ref, onMounted, shallowRef, computed } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 // 页面组件
 import ThemeSwitching from '@/components/ThemeComponents/ThemeSwitching.vue';
@@ -172,6 +175,45 @@ const navItems = [
   { path: 'FoodRecommendation', label: '美食' },
   { path: 'CharacteristicCommodities', label: '小物件' },
   { path: 'StrategyGroup', label: '攻略群' },
+];
+
+// 用户操作菜单项数据
+const userMenuItems = [
+  { 
+    label: '个人中心', 
+    path: '/functionswitching', 
+    style: 'border-radius: 10px 10px 0 0;',
+    show: true
+  },
+  { 
+    label: '博览旅行管理后台', 
+    action: 'AdminLayout', 
+    show: () => userInfo.value.permissions === 1,
+    class: 'admin-button'
+  },
+  { 
+    label: '即时通讯管理后台', 
+    path: '/communication', 
+    show: () => userInfo.value.permissions === 1
+  },
+  { 
+    label: '账户设置', 
+    path: '/accountsettings', 
+    style: 'border-radius: 0 0 10px 10px;',
+    show: true
+  },
+  { 
+    label: '好友聊天', 
+    path: '/im', 
+    show: true,
+    class: 'im-button'
+  },
+  { 
+    label: '退出登录', 
+    action: 'localLogout', 
+    show: true,
+    class: 'logout-button'
+  }
 ];
 
 const handleClick = (path) => {
@@ -285,12 +327,41 @@ const cancelLogout = () => {
   console.log('退出操作已取消');
 };
 
+// 处理菜单项点击
+const handleMenuItemClick = (item) => {
+  if (item.path) {
+    navigateTo(item.path);
+  } else if (item.action) {
+    // 根据action名称调用对应的方法
+    switch (item.action) {
+      case 'AdminLayout':
+        AdminLayout();
+        break;
+      case 'localLogout':
+        localLogout();
+        break;
+      default:
+        console.warn(`未知的操作: ${item.action}`);
+    }
+  }
+};
+
 // 用户信息
 const userInfo = ref({
   image: '',
   username: '',
   permissions: '',
   hasInput: false
+});
+
+// 过滤后的用户菜单项
+const filteredUserMenuItems = computed(() => {
+  return userMenuItems.filter(item => {
+    if (typeof item.show === 'function') {
+      return item.show();
+    }
+    return item.show;
+  });
 });
 
 const loading = ref(false);

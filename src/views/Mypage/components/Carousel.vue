@@ -253,13 +253,12 @@ onUnmounted(() => {
   --nav-bg-hover: rgba(255, 255, 255, 0.3);
   --indicator-size: 15px;
   --indicator-gap: 8px;
-  --border-radius: 12px;
+  --border-radius: 16px;
 
   position: relative;
   width: 100%;
   max-height: 100vh;
   aspect-ratio: var(--carousel-aspect-ratio);
-  border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
