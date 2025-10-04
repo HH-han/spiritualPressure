@@ -23,7 +23,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script setup>
@@ -41,177 +40,195 @@ const handleCancel = () => {
 </script>
 <style scoped>
 .modal {
-    width: 100%;
-    height: 100%;
-    backdrop-filter: blur(10px);
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-out;
 }
 
 .notification {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 450px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 420px;
+    width: 90%;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
     overflow: hidden;
-    z-index: 9999;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-
 }
 
-/* 添加模态背景层 */
 .notification::before {
     content: '';
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.1) 100%);
+    border-radius: 24px;
     z-index: -1;
 }
 
 .notification-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    gap: 24px;
 }
 
 .noticontent {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    gap: 16px;
 }
 
 .notititle {
-    width: 100%;
-    font-size: 22px;
-    font-weight: 600;
-    color: #ffffff;
-    text-align: center;
-    letter-spacing: 0.5px;
     display: flex;
-    justify-content: space-between;
-    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 20px;
+    color: #ff0000;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.notititle .icon {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .notibody {
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.8);
-    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #ffffff;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
 }
 
 .button-container {
     display: flex;
-    justify-content: center;
-    gap: 15px;
+    gap: 12px;
+    justify-content: space-between;
 }
 
 .btn {
-    padding: 8px 38px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
-    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.btn:hover::before {
+    opacity: 1;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #666;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary {
-    background: linear-gradient(45deg, #4285f4, #669df6);
+    background-color: rgb(248, 4, 4);
     color: white;
-    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(66, 133, 244, 0.6);
+    box-shadow:
+        0 6px 20px rgba(234, 102, 157, 0.4),
+        0 2px 8px rgba(234, 102, 102, 0.2);
 }
 
-.btn-primary:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 10px rgba(66, 133, 244, 0.4);
-}
-
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-}
-
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.btn-secondary:active {
+.btn:active {
     transform: translateY(0);
 }
 
-/* 动画效果 */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: scale(0.9) translateY(-20px);
+        transform: scale(0.9);
     }
 
     to {
         opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-@keyframes pulse {
-    0% {
-        opacity: 0.5;
-    }
-
-    100% {
-        opacity: 0.8;
+        transform: scale(1);
     }
 }
 
 /* 响应式设计 */
 @media (max-width: 480px) {
     .notification {
-        padding: 20px;
-        max-width: 90%;
-    }
-
-    .notititle {
-        font-size: 20px;
-    }
-
-    .notibody {
-        font-size: 14px;
+        margin: 20px;
+        padding: 24px;
+        max-width: none;
     }
 
     .button-container {
         flex-direction: column;
-        gap: 10px;
     }
 
     .btn {
         width: 100%;
+    }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+    .notification {
+        background: rgba(30, 30, 30, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .notititle {
+        color: #ffffff;
+    }
+
+    .notibody {
+        color: #cccccc;
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: #cccccc;
     }
 }
 </style>

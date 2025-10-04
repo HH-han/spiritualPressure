@@ -131,11 +131,15 @@
                                 <input v-model="formData.location" required />
                             </div>
                             <div class="form-group"> 
-                                <label>轮播类型:</label>
-                                <select v-model="formData.type" required>
-                                    <option value="hc">首页</option>
-                                    <option value="dc">目的地</option>
-                                </select>
+                                <label>请选择轮播类型:</label>
+                                <el-select v-model="formData.type" placeholder="请选择轮播类型" clearable style="width: 100%" required>
+                                    <el-option 
+                                        v-for="option in carouselTypeOptions" 
+                                        :key="option.value" 
+                                        :label="option.label" 
+                                        :value="option.value" 
+                                    />
+                                </el-select>
                             </div>
                         </div>
                         <!-- 创建修改时间 -->
@@ -172,6 +176,19 @@ const columns = [
     { key: 'type', title: '类型' },
     { key: 'createdAt', title: '创建时间' },
     { key: 'updatedAt', title: '更新时间' },
+];
+
+// 轮播类型选项数据
+const carouselTypeOptions = [
+    { label: '首页', value: 'hc' },
+    { label: '目的地', value: 'dc' },
+    { label: '景点', value: 'sc' },
+    { label: '酒店', value: 'jc' },
+    { label: '游记', value: 'tc' },
+    { label: '美食', value: 'fc' },
+    { label: '小物件', value: 'xc' },
+    { label: '攻略', value: 'gc' },
+    { label: '其他', value: 'oc' },
 ];
 const showToast = ref(false);
 const toastMessage = ref('');
@@ -249,6 +266,7 @@ const showAddDialog = () => {
         description: '',
         image: '',
         location: '',
+        type: '',
         createdAt: '',
         updatedAt: '',
     };

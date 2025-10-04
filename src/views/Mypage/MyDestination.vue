@@ -256,13 +256,12 @@ const mediaList = ref({
 const fetchDestinationscarousel = async () => {
   try {
     const params = {
-      page: 1,
-      pageSize: 10,
+      page: currentPage.value,
+      pageSize: pageSize.value,
       keyword: searchQuery.value || '',
     }
     const result = await getCarouselList(params)
     if (result.data && result.data.list) {
-      // 前端过滤：确保只显示type为'dc'的数据
       const filteredList = result.data.list.filter(item => item.type === 'dc')
       mediaList.value.images = filteredList.map((item) => ({
         url: item.image || '默认图片链接',

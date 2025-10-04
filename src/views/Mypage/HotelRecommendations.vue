@@ -1,19 +1,18 @@
 <template>
   <div class="container-BH">
-    <!-- 搜索区域 -->
-    <div class="search_background">
-      <div>
-        <img src="@/assets/scenery/风景4.webp" alt="">
-      </div>
-      <div class="search_flex">
-        <input type="text" placeholder="搜索酒店" class="search_input_Browse" v-model="searchTitle">
-      </div>
-    </div>
+    <!-- 图片区域 -->
+    <!-- 使用Carousel组件 -->
+    <Carousel :items="mediaList.images" :interval="5000" :showArrows="true" :showIndicators="true" aspect-ratio="16/9" />
     <!-- 酒店推荐 -->
     <div>
       <HotelRecommend />
     </div>
-    <!-- 操作按钮区域 -->
+    <!-- 搜索区域 -->
+    <div class="search_background">
+      <div class="search_flex">
+        <input type="text" placeholder="搜索酒店" class="search_input_Browse" v-model="searchTitle">
+      </div>
+    </div>
     <div class="action-H1-BH">
       <h1 class="action-H1-BH-title">酒店推荐🏬</h1>
     </div>
@@ -146,6 +145,9 @@ import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
 import HotelRecommend from '@/views/Mypage/HotelRecommend.vue';
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
 import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
+import Carousel from '@/views/Mypage/components/Carousel.vue'
+
+import { getCarouselList } from '@/api/carousel';
 import { useRouter } from 'vue-router';
 import { ElMessage } from "element-plus";
 
@@ -183,6 +185,7 @@ const searchTitle = ref('')
 // 分页相关
 const currentPage = ref(1)
 const pageSize = ref(14)
+const searchQuery = ref('')
 const total = ref(0)
 // 加载状态
 const isLoading = ref(true)
@@ -190,6 +193,8 @@ const isLoading = ref(true)
 // 弹出框控制
 const dialogVisible = ref(false)
 const selectedCard = ref(null)
+
+const mediaList = ref({ images: [] });
 
 // 获取卡片数据
 const fetchCards = async () => {
@@ -235,17 +240,33 @@ const detailsCart = (id) => {
 const closeDialog = () => {
   dialogVisible.value = false
 }
-
-// 初始化加载数据
-onMounted(() => {
-  fetchCards()
-})
-
 // 搜索功能
 const filteredCards = computed(() => {
   return cards.value.filter(card =>
     card.hotelName && card.hotelName.toLowerCase().includes(searchTitle.value.toLowerCase())
   )
+})
+// 获取图片背景
+const fetchcarousel = async () => {
+  try {
+    const result = await getCarouselList()
+    if (result.data && result.data.list) {
+      const filteredList = result.data.list.filter(item => item.type === 'jc')
+      mediaList.value.images = filteredList.map((item) => ({
+        image: item.image || '默认图片链接',
+        title: item.title || '默认标题',
+        location: item.location || '默认位置',
+        description: item.description || '默认描述'
+      }))
+    }
+  } catch (error) {
+    console.error('获取轮播图数据失败：', error)
+  }
+}
+// 页面加载时执行
+onMounted(() => {
+  fetchCards();
+  fetchcarousel();
 })
 </script>
 

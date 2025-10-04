@@ -1,20 +1,20 @@
 <template>
     <div class="cc-container-all">
-        <!-- 搜索区域 -->
         <div>
-            <div class="search_background">
-                <div>
-                    <img src="@/assets/scenery/风景4.webp" alt="">
-                </div>
-                <div class="search_flex">
-                    <input type="text" placeholder="🔍搜索景点" class="search_input_Browse" v-model="searchTitle"
-                        @input="handleSearch">
-                </div>
-            </div>
+            <!-- 使用Carousel组件 -->
+            <Carousel :items="mediaList.images" :interval="5000" :showArrows="true" :showIndicators="true"
+                aspect-ratio="16/9" />
         </div>
         <!-- 纪念品推荐 -->
         <div>
             <SouvenirRecommend />
+        </div>
+        <!-- 搜索区域 -->
+        <div class="search_background">
+            <div class="search_flex">
+                <input type="text" placeholder="🔍搜索景点" class="search_input_Browse" v-model="searchTitle"
+                    @input="handleSearch">
+            </div>
         </div>
         <!-- 提示区域 -->
         <h1 class="action-H1-BH-title">小物件点推荐🧺</h1>
@@ -74,11 +74,13 @@
 </template>
 
 <script setup>
-import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
+import { ref, computed, onMounted } from 'vue';
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
 import SouvenirRecommend from '@/views/Mypage/SouvenirRecommend.vue'
 import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
-import { ref, computed, onMounted } from 'vue';
+import Carousel from '@/views/Mypage/components/Carousel.vue'
+
+import { getCarouselList } from '@/api/carousel'
 import request from '@/utils/request';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
@@ -88,12 +90,12 @@ const searchTitle = ref('');
 const rawImageList = ref([]);
 const currentImage = ref(null);
 const isEnlarged = ref(false);
+const mediaList = ref({ images: [] });
 
 // 分页相关
 const currentPage = ref(1);
 const pageSize = ref(12);
 const total = ref(0);
-
 // 跳转购物车页面
 const OrderDetails = (itemId) => {
     const token = localStorage.getItem('token');
@@ -190,9 +192,28 @@ const closeDetail = () => {
     currentImage.value = null;
 };
 
+
+// 获取图片背景
+const fetchcarousel = async () => {
+    try {
+        const result = await getCarouselList()
+        if (result.data && result.data.list) {
+            const filteredList = result.data.list.filter(item => item.type === 'xc')
+            mediaList.value.images = filteredList.map((item) => ({
+                image: item.image || '默认图片链接',
+                title: item.title || '默认标题',
+                location: item.location || '默认位置',
+                description: item.description || '默认描述'
+            }))
+        }
+    } catch (error) {
+        console.error('获取轮播图数据失败：', error)
+    }
+}
 // 初始化加载数据
 onMounted(() => {
     fetchImageList();
+    fetchcarousel();
 });
 </script>
 <style scoped>

@@ -1,4 +1,4 @@
-.container-BH {
+.container-BH{
   animation: fadeInUp 1s ease-out;
 }
 
@@ -110,8 +110,7 @@
 }
 
 .search_background {
-  position: relative;
-  height: 500px;
+  z-index: 1000;
   color: rgb(0, 0, 0);
 }
 
@@ -125,10 +124,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  position: absolute;
   bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
   padding: 10px;
   color: white;
   transition: all 0.5s;

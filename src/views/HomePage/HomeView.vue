@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="background-gradient">
     <!-- 轮播图 -->
     <div class="banner">
       <div class="banner-content-SeamlessCarousel">
@@ -363,8 +363,8 @@ const slides = ref([
 const fetchSlideshow = async () => {
   try {
     const params = {
-      page: 1,
-      pageSize: 10,
+      page: currentPage.value,
+      pageSize: pageSize.value,
       keyword: searchKeyword.value || '',
       type: 'hc' // 只获取type类型为hc的图片
     }

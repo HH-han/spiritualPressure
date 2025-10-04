@@ -1,18 +1,17 @@
 <template>
   <!-- 搜索区域 -->
   <div class="food-container-all">
+    <!-- 使用Carousel组件 -->
+    <Carousel :items="mediaList.images" :interval="5000" :showArrows="true" :showIndicators="true" aspect-ratio="16/9" />
     <div class="food-search_background">
-      <div>
-        <img src="@/assets/scenery/风景4.webp" alt="">
-      </div>
-      <!-- 搜索框 -->
-      <div class="food-search-box">
-        <input type="text" v-model="searchQuery" placeholder="搜索美食..." class="food-search-input" @input="searchFoods">
-      </div>
     </div>
     <!-- 美食推荐 -->
     <div>
       <FoodRecommend />
+    </div>
+    <!-- 搜索框 -->
+    <div class="food-search-box">
+      <input type="text" v-model="searchQuery" placeholder="搜索美食..." class="food-search-input" @input="searchFoods">
     </div>
     <!-- 标题 -->
     <div class="food-container-h1">
@@ -112,6 +111,9 @@ import Home_2 from '../../components/NavigationComponent/HomeHeader.vue';
 import HomeFooter from '@/components/DisplayBox/HomeFooter.vue';
 import FoodRecommend from '@/views/Mypage/FoodRecommend.vue';
 import TavoriteBtn from '@/views/Mypage/TavoriteBtn.vue'
+import Carousel from '@/views/Mypage/components/Carousel.vue'
+
+import { getCarouselList } from '@/api/carousel'
 import { useRouter } from 'vue-router';
 import { ElMessage } from "element-plus";
 
@@ -141,13 +143,15 @@ const OrderDetails = (foodId) => {
   }
 };
 // 数据定义
-const searchQuery = ref(''); // 搜索关键词
-const loading = ref(false); // 加载状态
-const selectedFood = ref(null); // 选中的美食详情
-const currentPage = ref(1); // 当前页码
-const pageSize = ref(12); // 当前每页显示的数量
-const foods = ref([]); // 美食列表
-const total = ref(0); // 总数量
+const searchQuery = ref('');
+const loading = ref(false);
+const selectedFood = ref(null);
+const currentPage = ref(1);
+const pageSize = ref(12);
+const foods = ref([]);
+const total = ref(0);
+// 获取轮播图数据
+const mediaList = ref({ images: [] });
 
 // 计算属性：搜索过滤后的美食列表
 const filteredFoods = computed(() => {
@@ -237,9 +241,27 @@ const closeDetail = () => {
   selectedFood.value = null;
 };
 
+// 获取图片背景
+const fetchcarousel = async () => {
+  try {
+    const result = await getCarouselList()
+    if (result.data && result.data.list) {
+      const filteredList = result.data.list.filter(item => item.type === 'fc')
+      mediaList.value.images = filteredList.map((item) => ({
+        image: item.image || '默认图片链接',
+        title: item.title || '默认标题',
+        location: item.location || '默认位置',
+        description: item.description || '默认描述'
+      }))
+    }
+  } catch (error) {
+    console.error('获取轮播图数据失败：', error)
+  }
+}
 // 初始化加载美食数据
 onMounted(() => {
-  fetchAllFoods(); // 默认加载所有美食
+  fetchAllFoods();
+  fetchcarousel();
 });
 </script>
 

@@ -133,10 +133,9 @@
     </div>
   </div>
   <!-- 渲染器区域 -->
-  <div>
+  <div class="content-area">
     <component :is="currentComponent" v-if="currentComponent" />
   </div>
-
   <!-- 退出登录确认对话框 -->
   <div>
     <Launchlogin v-if="showLogoutConfirm" @confirm="confirmLogout" @cancel="cancelLogout" />
@@ -216,25 +215,6 @@ const AdminLayout = () => {
 const isLoggedIn = ref(false);
 const isDropdownVisible = ref(false);
 const showLogoutConfirm = ref(false);
-
-// 初始化检查登录状态
-onMounted(() => {
-  // 从Pinia store恢复当前组件状态，如果没有则默认显示首页
-  const savedPath = authStore.currentComponentPath;
-  const componentMap = {
-    'HomeView': HomeView,
-    'BrowseAttractions': BrowseAttractions,
-    'HotelRecommendations': HotelRecommendations,
-    'FoodRecommendation': FoodRecommendation,
-    'MyDestination': MyDestination,
-    'CharacteristicCommodities': CharacteristicCommodities,
-    'StrategyGroup': StrategyGroup
-  };
-  currentComponent.value = savedPath ? componentMap[savedPath] : HomeView;
-
-  isLoggedIn.value = !!localStorage.getItem('token');
-});
-
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value;
 };
@@ -345,7 +325,22 @@ const fetchUserInfo = async () => {
     loading.value = false;
   }
 };
+// 初始化检查登录状态
 onMounted(() => {
+  // 从Pinia store恢复当前组件状态，如果没有则默认显示首页
+  const savedPath = authStore.currentComponentPath;
+  const componentMap = {
+    'HomeView': HomeView,
+    'BrowseAttractions': BrowseAttractions,
+    'HotelRecommendations': HotelRecommendations,
+    'FoodRecommendation': FoodRecommendation,
+    'MyDestination': MyDestination,
+    'CharacteristicCommodities': CharacteristicCommodities,
+    'StrategyGroup': StrategyGroup
+  };
+  currentComponent.value = savedPath ? componentMap[savedPath] : HomeView;
+
+  isLoggedIn.value = !!localStorage.getItem('token');
   fetchUserInfo();
 });
 </script>

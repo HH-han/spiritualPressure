@@ -1,31 +1,12 @@
 <template>
     <div class="raiders-app-container">
+        <!-- 使用Carousel组件 -->
+        <Carousel :items="mediaList.images" :interval="5000" :showArrows="true" :showIndicators="true" aspect-ratio="16/9" />
+        <!-- 轮播图下方内容区域 -->
         <div class="raiders-header">
             <p>探索世界，分享旅程，与志同道合的旅行者一起出发</p>
             <div class="raiders-divider"></div>
         </div>
-
-        <!-- 轮播图 -->
-        <div class="raiders-carousel-container">
-            <div v-for="(slide, index) in carouselSlides" :key="index" class="raiders-carousel-slide"
-                :class="{ 'raiders-active': currentSlide === index }"
-                :style="{ backgroundImage: `url(${slide.image})` }">
-                <div class="raiders-carousel-caption">
-                    <h2>{{ slide.title }}</h2>
-                    <p>{{ slide.description }}</p>
-                </div>
-            </div>
-
-            <div class="raiders-carousel-controls">
-                <button class="raiders-carousel-btn" @click="prevSlide">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="raiders-carousel-btn" @click="nextSlide">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-
         <!-- 搜索区域 -->
         <div class="raiders-search-section">
             <div class="raiders-search-box">
@@ -173,8 +154,10 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import Home_2 from '@/components/NavigationComponent/HomeHeader.vue';
+import Carousel from '@/views/Mypage/components/Carousel.vue'
+
 import { getStrategyDetail } from '@/api/travel';
+import { getCarouselList } from '@/api/carousel'
 
 // 分页相关数据
 const currentPage = ref(1);
@@ -183,40 +166,25 @@ const searchKeyword = ref('');
 const total = ref(0);
 
 // 轮播图数据
-const carouselSlides = ref([
-    {
-        image: 'https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80',
-        title: '探索未知的旅程',
-        description: '加入我们的旅行社群，与全球旅行爱好者一起分享你的冒险故事'
-    },
-    {
-        image: 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80',
-        title: '发现绝美目的地',
-        description: '从壮丽山川到碧海蓝天，寻找你心中的理想旅行地'
-    },
-    {
-        image: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80',
-        title: '结交旅行伙伴',
-        description: '在旅途中结识志同道合的朋友，共同创造难忘回忆'
+const mediaList = ref({ images: []})
+// 获取图片背景
+const fetchcarousel = async () => {
+  try {
+    const result = await getCarouselList()
+    if (result.data && result.data.list) {
+      const filteredList = result.data.list.filter(item => item.type === 'gc')
+      mediaList.value.images = filteredList.map((item) => ({
+        image: item.image || '默认图片链接',
+        title: item.title || '默认标题',
+        location: item.location || '默认位置',
+        description: item.description || '默认描述'
+      }))
     }
-]);
-
+  } catch (error) {
+    console.error('获取轮播图数据失败：', error)
+  }
+}
 const currentSlide = ref(0);
-
-// 自动轮播逻辑
-const startCarousel = () => {
-    setInterval(() => {
-        nextSlide();
-    }, 5000);
-};
-
-const nextSlide = () => {
-    currentSlide.value = (currentSlide.value + 1) % carouselSlides.value.length;
-};
-
-const prevSlide = () => {
-    currentSlide.value = (currentSlide.value - 1 + carouselSlides.value.length) % carouselSlides.value.length;
-};
 
 // 卡片数据
 const travelCards = ref([]);
@@ -287,10 +255,10 @@ const handleCurrentChange = (val) => {
 };
 
 // 初始化轮播
-onMounted(
-    startCarousel(),
-    fetchCards()
-);
+onMounted(() => {
+    fetchCards();
+    fetchcarousel();
+});
 
 </script>
 
@@ -300,6 +268,20 @@ onMounted(
     min-height: 100vh;
     color: #333;
     margin: 0 auto;
+    animation: fadeInUp 1s ease-out;
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .raiders-header {
@@ -324,86 +306,10 @@ onMounted(
     border-radius: 50%;
 }
 
-/* 轮播图样式 */
-.raiders-carousel-container {
-    position: relative;
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    margin-bottom: 40px;
-}
-
-.raiders-carousel-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 1.2s ease-in-out;
-    background-size: cover;
-    background-position: center;
-}
-
-.raiders-carousel-slide.raiders-active {
-    opacity: 1;
-}
-
-.raiders-carousel-caption {
-    position: absolute;
-    bottom: 50px;
-    left: 50px;
-    color: white;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    max-width: 600px;
-}
-
-.raiders-carousel-caption h2 {
-    font-size: 2.8rem;
-    margin-bottom: 15px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.raiders-carousel-caption p {
-    font-size: 1.3rem;
-    line-height: 1.5;
-}
-
-.raiders-carousel-controls {
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
-    display: flex;
-    gap: 15px;
-}
-
-.raiders-carousel-btn {
-    background: rgba(255, 255, 255, 0.25);
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(5px);
-}
-
-.raiders-carousel-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
-    transform: translateY(-3px);
-}
-
 /* 搜索区域样式 */
 .raiders-search-section {
     max-width: 800px;
-    margin: 0 auto 60px;
+    margin: 20px auto 60px;
     position: relative;
 }
 

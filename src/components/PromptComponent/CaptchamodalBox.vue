@@ -5,19 +5,14 @@
             <div class="captcha-title">验证码</div>
             <p class="captcha-message">我们已向您的邮箱发送了验证码</p>
             <div class="captcha-inputs">
-                <input v-for="(input, index) in inputs" 
-                 :key="index" 
-                 v-model="input.value" 
-                 type="text" 
-                 maxlength="1"
-                 :ref="el => { if (el) inputRefs[index] = el }"
-                 @input="e => {
-                   if(e.target.value.length === 1 && index < 5) {
-                     inputRefs[index+1]?.focus()
-                   } else if(e.target.value.length === 0 && index > 0) {
-                     inputRefs[index-1]?.focus()
-                   }
-                 }">
+                <input v-for="(input, index) in inputs" :key="index" v-model="input.value" type="text" maxlength="1"
+                    :ref="el => { if (el) inputRefs[index] = el }" @input="e => {
+                        if (e.target.value.length === 1 && index < 5) {
+                            inputRefs[index + 1]?.focus()
+                        } else if (e.target.value.length === 0 && index > 0) {
+                            inputRefs[index - 1]?.focus()
+                        }
+                    }">
             </div>
             <button type="submit" class="captcha-action">验证</button>
         </form>
@@ -33,14 +28,14 @@ const inputs = Array(6).fill(0).map((_, i) => ref(''))
 const inputRefs = []
 
 const handleSubmit = (e) => {
-   e?.preventDefault()
-   const code = inputs.map(input => input.value).join('')
-   if(code.length === 6) {
-     emit('verify', code)
-   } else {
-     alert('请输入完整的6位验证码')
-   }
- }
+    e?.preventDefault()
+    const code = inputs.map(input => input.value).join('')
+    if (code.length === 6) {
+        emit('verify', code)
+    } else {
+        alert('请输入完整的6位验证码')
+    }
+}
 </script>
 
 <style scoped>
