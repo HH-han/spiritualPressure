@@ -1127,6 +1127,12 @@ svg {
   font-weight: bold;
 }
 
+.logo img{
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+}
+
 .nav-items {
   display: flex;
   flex-grow: 1;

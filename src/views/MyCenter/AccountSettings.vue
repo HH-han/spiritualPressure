@@ -2,7 +2,7 @@
     <div class="accountsettings-container">
         <!-- 模糊背景 -->
         <div class="accountsettings-background">
-            <img src="@/assets/scenery/风景2.webp" alt="background" />
+            <img src="@/assets/scenery/scenery-2.webp" alt="background" />
         </div>
 
         <!-- 主内容区域 -->

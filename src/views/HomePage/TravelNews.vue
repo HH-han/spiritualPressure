@@ -21,7 +21,7 @@
             <div class="recommend-left_list">
                 <div class="recommend-left_imga">
                     <img :src="currentImage" alt="旅游攻略推荐" v-if="currentImage">
-                    <img src="@/assets/scenery/风景1.webp" alt="默认图片" v-else>
+                    <img src="@/assets/scenery/scenery-1.webp" alt="默认图片" v-else>
                 </div>
                 <div class="recommend-left_js">
                     <div>

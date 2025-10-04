@@ -289,7 +289,7 @@ header p {
 .content-area {
     flex: 3;
     min-width: 300px;
-    background-image: url("@/assets/scenery/风景6.webp");
+    background-image: url("@/assets/scenery/scenery-3.webp");
     background-size: cover;
     background-position: center;
     backdrop-filter: blur(12px);

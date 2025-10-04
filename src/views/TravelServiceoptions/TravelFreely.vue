@@ -1,7 +1,7 @@
 <template>
     <HomeHeader></HomeHeader>
     <div class="hero-image-container">
-        <img src="@/assets/scenery/风景1.webp" alt="旅行英雄图" class="hero-image">
+        <img src="@/assets/scenery/scenery-1.webp" alt="旅行英雄图" class="hero-image">
         <div class="overlay-content">
             <h1 class="title">探索世界奇境</h1>
             <p class="subtitle">发现地球上最令人惊叹的旅行目的地</p>

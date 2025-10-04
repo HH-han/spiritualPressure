@@ -34,7 +34,7 @@
     <main class="personalcenter-main">
       <!-- 固定背景层 -->
       <div class="accountsettings-background">
-        <img src="@/assets/scenery/风景2.webp" alt="background" />
+        <img src="@/assets/scenery/scenery-2.webp" alt="background" />
       </div>
 
       <!-- 可滚动内容区域 -->

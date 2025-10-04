@@ -49,7 +49,7 @@
 <script setup>
 import { ref, computed, onMounted, defineExpose, defineEmits } from 'vue';
 import request from '../../utils/request';
-import defaultImage from '@/assets/scenery/风景1.webp';
+import defaultImage from '@/assets/scenery/scenery-1.webp';
 import { useRouter } from 'vue-router';
 
 // 路由

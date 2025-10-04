@@ -189,6 +189,7 @@ const carouselTypeOptions = [
     { label: '小物件', value: 'xc' },
     { label: '攻略', value: 'gc' },
     { label: '其他', value: 'oc' },
+    { label: 'logo', value: 'logo'},
 ];
 const showToast = ref(false);
 const toastMessage = ref('');

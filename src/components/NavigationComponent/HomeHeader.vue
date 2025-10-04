@@ -4,7 +4,8 @@
     <div class="navbar-background-container">
       <div class="navbar-home">
         <div class="logo" style="display: flex; align-items: center; gap: 10px;">
-          <img src="@/assets/logo/m-logo.png" alt="" style="width: 50px;height: 50px;border-radius: 10px;">
+          <img v-if="mediaList.images.length > 0" :src="mediaList.images[0].image" alt="">
+          <img v-else :src="defaultLogo" alt="">
           <span>博览旅行</span>
         </div>
         <div class="nav-items">
@@ -161,10 +162,14 @@ import Launchlogin from '@/components/PromptComponent/Launchlogin.vue';
 // 接口
 import { getUserInfo, logout } from '@/api/user';
 import { useAuthStore } from '@/stores/auth';
+import { getCarouselList } from '@/api/carousel'
 
 const defaultAvatar = new URL('@/assets/defaultimage/mrtx.png', import.meta.url).href
+const defaultLogo = new URL('@/assets/logo/logo.png', import.meta.url).href
 const currentComponent = shallowRef(null);
 const authStore = useAuthStore();
+
+const mediaList = ref({ images: [] });
 
 // 导航项数据
 const navItems = [
@@ -396,6 +401,25 @@ const fetchUserInfo = async () => {
     loading.value = false;
   }
 };
+
+// 获取图片背景
+const fetchcarousel = async () => {
+  try {
+    const result = await getCarouselList()
+    if (result.data && result.data.list) {
+      const filteredList = result.data.list.filter(item => item.type === 'logo')
+      mediaList.value.images = filteredList.map((item) => ({
+        image: item.image || '默认图片链接',
+        title: item.title || '默认标题',
+        location: item.location || '默认位置',
+        description: item.description || '默认描述'
+      }))
+    }
+  } catch (error) {
+    console.error('获取轮播图数据失败：', error)
+  }
+}
+
 // 初始化检查登录状态
 onMounted(() => {
   // 从Pinia store恢复当前组件状态，如果没有则默认显示首页
@@ -413,6 +437,7 @@ onMounted(() => {
 
   isLoggedIn.value = !!localStorage.getItem('token');
   fetchUserInfo();
+  fetchcarousel();
 });
 </script>
 
